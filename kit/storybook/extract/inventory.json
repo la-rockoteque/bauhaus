@@ -1,0 +1,917 @@
+{
+  "color": [
+    {
+      "value": "#a9b9cc",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:314",
+        "design-system.css:393"
+      ]
+    },
+    {
+      "value": "#adb5bd",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:380",
+        "design-system.css:381"
+      ]
+    },
+    {
+      "value": "rgba(20, 35, 60, 0.06)",
+      "count": 2,
+      "declared": 2,
+      "files": [
+        "design-system.css:131",
+        "design-system.css:132"
+      ]
+    },
+    {
+      "value": "#1a3a5c",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:37"
+      ]
+    },
+    {
+      "value": "#1e5a2c",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:43"
+      ]
+    },
+    {
+      "value": "#213547",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:21"
+      ]
+    },
+    {
+      "value": "#244b7b",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:36"
+      ]
+    },
+    {
+      "value": "#28364a",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:22"
+      ]
+    },
+    {
+      "value": "#5a6b80",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:23"
+      ]
+    },
+    {
+      "value": "#6a3900",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:49"
+      ]
+    },
+    {
+      "value": "#8596ac",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:24"
+      ]
+    },
+    {
+      "value": "#8a4c00",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:48"
+      ]
+    },
+    {
+      "value": "#b33a3a",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:54"
+      ]
+    },
+    {
+      "value": "#cfd8e3",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:32"
+      ]
+    },
+    {
+      "value": "#d2e7d8",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:45"
+      ]
+    },
+    {
+      "value": "#e1e9f3",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:886"
+      ]
+    },
+    {
+      "value": "#e4ebf2",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:33"
+      ]
+    },
+    {
+      "value": "#e4f4e5",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:44"
+      ]
+    },
+    {
+      "value": "#e7c7c7",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:56"
+      ]
+    },
+    {
+      "value": "#edf2f8",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:29"
+      ]
+    },
+    {
+      "value": "#f0c98c",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:51"
+      ]
+    },
+    {
+      "value": "#f5f7fa",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:28"
+      ]
+    },
+    {
+      "value": "#fdecec",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:55"
+      ]
+    },
+    {
+      "value": "#fff3e0",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:50"
+      ]
+    },
+    {
+      "value": "#ffffff",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:27"
+      ]
+    },
+    {
+      "value": "rgba(20, 35, 60, 0.05)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:131"
+      ]
+    },
+    {
+      "value": "rgba(20, 35, 60, 0.12)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:132"
+      ]
+    },
+    {
+      "value": "rgba(20, 35, 60, 0.32)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:135"
+      ]
+    },
+    {
+      "value": "rgba(255, 255, 255, 0.18)",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:450"
+      ]
+    },
+    {
+      "value": "rgba(255, 255, 255, 0.85)",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:382"
+      ]
+    },
+    {
+      "value": "rgba(36, 75, 123, 0.06)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:40"
+      ]
+    },
+    {
+      "value": "rgba(36, 75, 123, 0.12)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:38"
+      ]
+    }
+  ],
+  "spacing": [
+    {
+      "value": "2px",
+      "count": 7,
+      "declared": 0,
+      "files": [
+        "design-system.css:508",
+        "design-system.css:522",
+        "design-system.css:637",
+        "design-system.css:718",
+        "design-system.css:753",
+        "design-system.css:823",
+        "design-system.css:900"
+      ]
+    },
+    {
+      "value": "12px",
+      "count": 4,
+      "declared": 1,
+      "files": [
+        "design-system.css:93",
+        "design-system.css:298",
+        "design-system.css:439",
+        "design-system.css:830"
+      ]
+    },
+    {
+      "value": "6px",
+      "count": 4,
+      "declared": 0,
+      "files": [
+        "design-system.css:331",
+        "design-system.css:449",
+        "design-system.css:830",
+        "design-system.css:1133"
+      ]
+    },
+    {
+      "value": "8px",
+      "count": 4,
+      "declared": 1,
+      "files": [
+        "design-system.css:92",
+        "design-system.css:508",
+        "design-system.css:522",
+        "design-system.css:777"
+      ]
+    },
+    {
+      "value": "16px",
+      "count": 3,
+      "declared": 1,
+      "files": [
+        "design-system.css:94",
+        "design-system.css:348",
+        "design-system.css:959"
+      ]
+    },
+    {
+      "value": "1px",
+      "count": 3,
+      "declared": 0,
+      "files": [
+        "design-system.css:578",
+        "design-system.css:767",
+        "design-system.css:1133"
+      ]
+    },
+    {
+      "value": "3px",
+      "count": 3,
+      "declared": 0,
+      "files": [
+        "design-system.css:777",
+        "design-system.css:1067",
+        "design-system.css:1132"
+      ]
+    },
+    {
+      "value": "4px",
+      "count": 3,
+      "declared": 1,
+      "files": [
+        "design-system.css:91",
+        "design-system.css:900",
+        "design-system.css:1072"
+      ]
+    },
+    {
+      "value": "5px",
+      "count": 3,
+      "declared": 0,
+      "files": [
+        "design-system.css:577",
+        "design-system.css:1216",
+        "design-system.css:1710"
+      ]
+    },
+    {
+      "value": "-1px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:1182",
+        "design-system.css:1389"
+      ]
+    },
+    {
+      "value": "24px",
+      "count": 2,
+      "declared": 1,
+      "files": [
+        "design-system.css:96",
+        "design-system.css:1662"
+      ]
+    },
+    {
+      "value": "9px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:298",
+        "design-system.css:578"
+      ]
+    },
+    {
+      "value": "10px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:331"
+      ]
+    },
+    {
+      "value": "20px",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:95"
+      ]
+    },
+    {
+      "value": "32px",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:97"
+      ]
+    },
+    {
+      "value": "44px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:959"
+      ]
+    },
+    {
+      "value": "48px",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:98"
+      ]
+    }
+  ],
+  "radius": [
+    {
+      "value": "3px",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:84"
+      ]
+    },
+    {
+      "value": "4px",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:85"
+      ]
+    },
+    {
+      "value": "6px",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:86"
+      ]
+    },
+    {
+      "value": "999px",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:87"
+      ]
+    }
+  ],
+  "size": [
+    {
+      "value": "6px",
+      "count": 4,
+      "declared": 0,
+      "files": [
+        "design-system.css:589",
+        "design-system.css:590",
+        "design-system.css:1708",
+        "design-system.css:1709"
+      ]
+    },
+    {
+      "value": "44px",
+      "count": 3,
+      "declared": 0,
+      "files": [
+        "design-system.css:1871",
+        "design-system.css:1872",
+        "design-system.css:1884"
+      ]
+    },
+    {
+      "value": "18px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:1214",
+        "design-system.css:1215"
+      ]
+    },
+    {
+      "value": "1px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:1387",
+        "design-system.css:1388"
+      ]
+    },
+    {
+      "value": "20px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:447",
+        "design-system.css:448"
+      ]
+    },
+    {
+      "value": "24px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:1630",
+        "design-system.css:1631"
+      ]
+    },
+    {
+      "value": "32px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:330",
+        "design-system.css:438"
+      ]
+    },
+    {
+      "value": "34px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:1407",
+        "design-system.css:1408"
+      ]
+    },
+    {
+      "value": "38px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:309",
+        "design-system.css:347"
+      ]
+    },
+    {
+      "value": "3px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:473",
+        "design-system.css:683"
+      ]
+    },
+    {
+      "value": "0.8em",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1085"
+      ]
+    },
+    {
+      "value": "1200px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1780"
+      ]
+    },
+    {
+      "value": "140px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1295"
+      ]
+    },
+    {
+      "value": "1em",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1059"
+      ]
+    },
+    {
+      "value": "28px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:874"
+      ]
+    },
+    {
+      "value": "46px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:890"
+      ]
+    },
+    {
+      "value": "48px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:958"
+      ]
+    },
+    {
+      "value": "4px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:676"
+      ]
+    },
+    {
+      "value": "540px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1772"
+      ]
+    },
+    {
+      "value": "64px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:337"
+      ]
+    },
+    {
+      "value": "800px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1776"
+      ]
+    },
+    {
+      "value": "900px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1757"
+      ]
+    }
+  ],
+  "font-size": [
+    {
+      "value": "16px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:987"
+      ]
+    },
+    {
+      "value": "32px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:227"
+      ]
+    }
+  ],
+  "line-height": [
+    {
+      "value": "1",
+      "count": 5,
+      "declared": 0,
+      "files": [
+        "design-system.css:656",
+        "design-system.css:740",
+        "design-system.css:881",
+        "design-system.css:1224",
+        "design-system.css:1808"
+      ]
+    },
+    {
+      "value": "1.4",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1141"
+      ]
+    }
+  ],
+  "duration": [
+    {
+      "value": "1.4s",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1062"
+      ]
+    },
+    {
+      "value": "150ms",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:106"
+      ]
+    },
+    {
+      "value": "200ms",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:107"
+      ]
+    },
+    {
+      "value": "300ms",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:108"
+      ]
+    },
+    {
+      "value": "400ms",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:109"
+      ]
+    },
+    {
+      "value": "50ms",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:105"
+      ]
+    }
+  ],
+  "easing": [
+    {
+      "value": "cubic-bezier(0, 0, 0.38, 0.9)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:115"
+      ]
+    },
+    {
+      "value": "cubic-bezier(0.2, 0, 0.38, 0.9)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:114"
+      ]
+    },
+    {
+      "value": "cubic-bezier(0.2, 0, 1, 0.9)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:116"
+      ]
+    },
+    {
+      "value": "ease",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:125"
+      ]
+    },
+    {
+      "value": "ease-in-out",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1062"
+      ]
+    },
+    {
+      "value": "ease-out",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:126"
+      ]
+    }
+  ],
+  "shadow": [
+    {
+      "value": "0 0 0 3px var(--mo-primary-soft)",
+      "count": 3,
+      "declared": 0,
+      "files": [
+        "design-system.css:321",
+        "design-system.css:361",
+        "design-system.css:978"
+      ]
+    },
+    {
+      "value": "0 1px 2px rgba(20, 35, 60, 0.06), 0 2px 6px rgba(20, 35, 60, 0.05)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:131"
+      ]
+    },
+    {
+      "value": "0 8px 24px rgba(20, 35, 60, 0.12), 0 2px 6px rgba(20, 35, 60, 0.06)",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:132"
+      ]
+    },
+    {
+      "value": "inset 0 0 0 1px var(--mo-primary)",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1537"
+      ]
+    }
+  ],
+  "z-index": [
+    {
+      "value": "10",
+      "count": 2,
+      "declared": 2,
+      "files": [
+        "design-system.css:143",
+        "design-system.css:144"
+      ]
+    },
+    {
+      "value": "1000",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:151"
+      ]
+    },
+    {
+      "value": "1100",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:152"
+      ]
+    },
+    {
+      "value": "1200",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:153"
+      ]
+    },
+    {
+      "value": "1300",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:156"
+      ]
+    },
+    {
+      "value": "15",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:145"
+      ]
+    },
+    {
+      "value": "20",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:150"
+      ]
+    },
+    {
+      "value": "9",
+      "count": 1,
+      "declared": 1,
+      "files": [
+        "design-system.css:142"
+      ]
+    }
+  ],
+  "font-family": [],
+  "breakpoint": [
+    {
+      "value": "768px",
+      "count": 2,
+      "declared": 0,
+      "files": [
+        "design-system.css:983",
+        "design-system.css:1841"
+      ]
+    },
+    {
+      "value": "640px",
+      "count": 1,
+      "declared": 0,
+      "files": [
+        "design-system.css:1890"
+      ]
+    }
+  ]
+}

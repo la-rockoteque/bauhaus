@@ -1,0 +1,1231 @@
+{
+  "declared": [
+    {
+      "name": "--mo-amber",
+      "value": "#8a4c00",
+      "files": [
+        "design-system.css:48"
+      ]
+    },
+    {
+      "name": "--mo-amber-ink",
+      "value": "#6a3900",
+      "files": [
+        "design-system.css:49"
+      ]
+    },
+    {
+      "name": "--mo-amber-line",
+      "value": "#f0c98c",
+      "files": [
+        "design-system.css:51"
+      ]
+    },
+    {
+      "name": "--mo-amber-soft",
+      "value": "#fff3e0",
+      "files": [
+        "design-system.css:50"
+      ]
+    },
+    {
+      "name": "--mo-duration-base",
+      "value": "200ms",
+      "files": [
+        "design-system.css:107"
+      ]
+    },
+    {
+      "name": "--mo-duration-deliberate",
+      "value": "400ms",
+      "files": [
+        "design-system.css:109",
+        "design-system.css:174"
+      ]
+    },
+    {
+      "name": "--mo-duration-fast",
+      "value": "150ms",
+      "files": [
+        "design-system.css:106"
+      ]
+    },
+    {
+      "name": "--mo-duration-instant",
+      "value": "50ms",
+      "files": [
+        "design-system.css:105"
+      ]
+    },
+    {
+      "name": "--mo-duration-slow",
+      "value": "300ms",
+      "files": [
+        "design-system.css:108",
+        "design-system.css:173"
+      ]
+    },
+    {
+      "name": "--mo-ease",
+      "value": "160ms ease",
+      "files": [
+        "design-system.css:125"
+      ]
+    },
+    {
+      "name": "--mo-ease-enter",
+      "value": "cubic-bezier(0, 0, 0.38, 0.9)",
+      "files": [
+        "design-system.css:115"
+      ]
+    },
+    {
+      "name": "--mo-ease-exit",
+      "value": "cubic-bezier(0.2, 0, 1, 0.9)",
+      "files": [
+        "design-system.css:116"
+      ]
+    },
+    {
+      "name": "--mo-ease-out",
+      "value": "220ms ease-out",
+      "files": [
+        "design-system.css:126"
+      ]
+    },
+    {
+      "name": "--mo-ease-standard",
+      "value": "cubic-bezier(0.2, 0, 0.38, 0.9)",
+      "files": [
+        "design-system.css:114"
+      ]
+    },
+    {
+      "name": "--mo-error",
+      "value": "#b33a3a",
+      "files": [
+        "design-system.css:54"
+      ]
+    },
+    {
+      "name": "--mo-error-line",
+      "value": "#e7c7c7",
+      "files": [
+        "design-system.css:56"
+      ]
+    },
+    {
+      "name": "--mo-error-soft",
+      "value": "#fdecec",
+      "files": [
+        "design-system.css:55"
+      ]
+    },
+    {
+      "name": "--mo-font-body",
+      "value": "'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "files": [
+        "design-system.css:59"
+      ]
+    },
+    {
+      "name": "--mo-font-display",
+      "value": "var(--mo-font-body)",
+      "files": [
+        "design-system.css:63"
+      ]
+    },
+    {
+      "name": "--mo-font-mono",
+      "value": "'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace",
+      "files": [
+        "design-system.css:60"
+      ]
+    },
+    {
+      "name": "--mo-ink",
+      "value": "#213547",
+      "files": [
+        "design-system.css:21"
+      ]
+    },
+    {
+      "name": "--mo-ink-soft",
+      "value": "#28364a",
+      "files": [
+        "design-system.css:22"
+      ]
+    },
+    {
+      "name": "--mo-lh-normal",
+      "value": "1.55",
+      "files": [
+        "design-system.css:76"
+      ]
+    },
+    {
+      "name": "--mo-lh-snug",
+      "value": "1.4",
+      "files": [
+        "design-system.css:75"
+      ]
+    },
+    {
+      "name": "--mo-lh-tight",
+      "value": "1.25",
+      "files": [
+        "design-system.css:74"
+      ]
+    },
+    {
+      "name": "--mo-line",
+      "value": "#cfd8e3",
+      "files": [
+        "design-system.css:32"
+      ]
+    },
+    {
+      "name": "--mo-line-soft",
+      "value": "#e4ebf2",
+      "files": [
+        "design-system.css:33"
+      ]
+    },
+    {
+      "name": "--mo-motion-shift",
+      "value": "8px",
+      "files": [
+        "design-system.css:121",
+        "design-system.css:172"
+      ]
+    },
+    {
+      "name": "--mo-mute-soft",
+      "value": "#8596ac",
+      "files": [
+        "design-system.css:24"
+      ]
+    },
+    {
+      "name": "--mo-muted",
+      "value": "#5a6b80",
+      "files": [
+        "design-system.css:23"
+      ]
+    },
+    {
+      "name": "--mo-primary",
+      "value": "#244b7b",
+      "files": [
+        "design-system.css:36"
+      ]
+    },
+    {
+      "name": "--mo-primary-ink",
+      "value": "#1a3a5c",
+      "files": [
+        "design-system.css:37"
+      ]
+    },
+    {
+      "name": "--mo-primary-soft",
+      "value": "rgba(36, 75, 123, 0.12)",
+      "files": [
+        "design-system.css:38"
+      ]
+    },
+    {
+      "name": "--mo-primary-tint",
+      "value": "rgba(36, 75, 123, 0.06)",
+      "files": [
+        "design-system.css:40"
+      ]
+    },
+    {
+      "name": "--mo-radius-lg",
+      "value": "6px",
+      "files": [
+        "design-system.css:86"
+      ]
+    },
+    {
+      "name": "--mo-radius-md",
+      "value": "4px",
+      "files": [
+        "design-system.css:85"
+      ]
+    },
+    {
+      "name": "--mo-radius-pill",
+      "value": "999px",
+      "files": [
+        "design-system.css:87"
+      ]
+    },
+    {
+      "name": "--mo-radius-sm",
+      "value": "3px",
+      "files": [
+        "design-system.css:84"
+      ]
+    },
+    {
+      "name": "--mo-ready",
+      "value": "#1e5a2c",
+      "files": [
+        "design-system.css:43"
+      ]
+    },
+    {
+      "name": "--mo-ready-line",
+      "value": "#d2e7d8",
+      "files": [
+        "design-system.css:45"
+      ]
+    },
+    {
+      "name": "--mo-ready-soft",
+      "value": "#e4f4e5",
+      "files": [
+        "design-system.css:44"
+      ]
+    },
+    {
+      "name": "--mo-scrim",
+      "value": "rgba(20, 35, 60, 0.32)",
+      "files": [
+        "design-system.css:135"
+      ]
+    },
+    {
+      "name": "--mo-shadow-1",
+      "value": "0 1px 2px rgba(20, 35, 60, 0.06), 0 2px 6px rgba(20, 35, 60, 0.05)",
+      "files": [
+        "design-system.css:131"
+      ]
+    },
+    {
+      "name": "--mo-shadow-2",
+      "value": "0 8px 24px rgba(20, 35, 60, 0.12), 0 2px 6px rgba(20, 35, 60, 0.06)",
+      "files": [
+        "design-system.css:132"
+      ]
+    },
+    {
+      "name": "--mo-space-1",
+      "value": "4px",
+      "files": [
+        "design-system.css:91"
+      ]
+    },
+    {
+      "name": "--mo-space-2",
+      "value": "8px",
+      "files": [
+        "design-system.css:92"
+      ]
+    },
+    {
+      "name": "--mo-space-3",
+      "value": "12px",
+      "files": [
+        "design-system.css:93"
+      ]
+    },
+    {
+      "name": "--mo-space-4",
+      "value": "16px",
+      "files": [
+        "design-system.css:94"
+      ]
+    },
+    {
+      "name": "--mo-space-5",
+      "value": "20px",
+      "files": [
+        "design-system.css:95"
+      ]
+    },
+    {
+      "name": "--mo-space-6",
+      "value": "24px",
+      "files": [
+        "design-system.css:96"
+      ]
+    },
+    {
+      "name": "--mo-space-7",
+      "value": "32px",
+      "files": [
+        "design-system.css:97"
+      ]
+    },
+    {
+      "name": "--mo-space-8",
+      "value": "48px",
+      "files": [
+        "design-system.css:98"
+      ]
+    },
+    {
+      "name": "--mo-surface",
+      "value": "#ffffff",
+      "files": [
+        "design-system.css:27"
+      ]
+    },
+    {
+      "name": "--mo-surface-soft",
+      "value": "#f5f7fa",
+      "files": [
+        "design-system.css:28"
+      ]
+    },
+    {
+      "name": "--mo-surface-sunk",
+      "value": "#edf2f8",
+      "files": [
+        "design-system.css:29"
+      ]
+    },
+    {
+      "name": "--mo-text-2xl",
+      "value": "26px",
+      "files": [
+        "design-system.css:72"
+      ]
+    },
+    {
+      "name": "--mo-text-lg",
+      "value": "16px",
+      "files": [
+        "design-system.css:70"
+      ]
+    },
+    {
+      "name": "--mo-text-md",
+      "value": "14px",
+      "files": [
+        "design-system.css:69"
+      ]
+    },
+    {
+      "name": "--mo-text-sm",
+      "value": "12.5px",
+      "files": [
+        "design-system.css:68"
+      ]
+    },
+    {
+      "name": "--mo-text-xl",
+      "value": "20px",
+      "files": [
+        "design-system.css:71"
+      ]
+    },
+    {
+      "name": "--mo-text-xs",
+      "value": "11px",
+      "files": [
+        "design-system.css:67"
+      ]
+    },
+    {
+      "name": "--mo-weight-medium",
+      "value": "500",
+      "files": [
+        "design-system.css:80"
+      ]
+    },
+    {
+      "name": "--mo-weight-regular",
+      "value": "400",
+      "files": [
+        "design-system.css:79"
+      ]
+    },
+    {
+      "name": "--mo-weight-semibold",
+      "value": "600",
+      "files": [
+        "design-system.css:81"
+      ]
+    },
+    {
+      "name": "--mo-z-modal",
+      "value": "1000",
+      "files": [
+        "design-system.css:151"
+      ]
+    },
+    {
+      "name": "--mo-z-overlay",
+      "value": "1300",
+      "files": [
+        "design-system.css:156"
+      ]
+    },
+    {
+      "name": "--mo-z-popover",
+      "value": "20",
+      "files": [
+        "design-system.css:150"
+      ]
+    },
+    {
+      "name": "--mo-z-shell-footer",
+      "value": "10",
+      "files": [
+        "design-system.css:144"
+      ]
+    },
+    {
+      "name": "--mo-z-shell-header",
+      "value": "10",
+      "files": [
+        "design-system.css:143"
+      ]
+    },
+    {
+      "name": "--mo-z-shell-panel",
+      "value": "15",
+      "files": [
+        "design-system.css:145"
+      ]
+    },
+    {
+      "name": "--mo-z-shell-sidebar",
+      "value": "9",
+      "files": [
+        "design-system.css:142"
+      ]
+    },
+    {
+      "name": "--mo-z-spotlight",
+      "value": "1200",
+      "files": [
+        "design-system.css:153"
+      ]
+    },
+    {
+      "name": "--mo-z-toast",
+      "value": "1100",
+      "files": [
+        "design-system.css:152"
+      ]
+    }
+  ],
+  "used": [
+    {
+      "name": "--mo-font-body",
+      "count": 35,
+      "files": [
+        "design-system.css:63",
+        "design-system.css:217",
+        "design-system.css:237",
+        "design-system.css:259",
+        "design-system.css:268",
+        "design-system.css:288",
+        "design-system.css:301",
+        "design-system.css:351",
+        "design-system.css:512",
+        "design-system.css:523"
+      ]
+    },
+    {
+      "name": "--mo-muted",
+      "count": 26,
+      "files": [
+        "design-system.css:240",
+        "design-system.css:291",
+        "design-system.css:544",
+        "design-system.css:619",
+        "design-system.css:625",
+        "design-system.css:729",
+        "design-system.css:758",
+        "design-system.css:765",
+        "design-system.css:837",
+        "design-system.css:1012"
+      ]
+    },
+    {
+      "name": "--mo-space-3",
+      "count": 26,
+      "files": [
+        "design-system.css:252",
+        "design-system.css:253",
+        "design-system.css:709",
+        "design-system.css:786",
+        "design-system.css:787",
+        "design-system.css:919",
+        "design-system.css:929",
+        "design-system.css:930",
+        "design-system.css:943",
+        "design-system.css:1176"
+      ]
+    },
+    {
+      "name": "--mo-ease",
+      "count": 23,
+      "files": [
+        "design-system.css:305",
+        "design-system.css:305",
+        "design-system.css:356",
+        "design-system.css:356",
+        "design-system.css:356",
+        "design-system.css:465",
+        "design-system.css:475",
+        "design-system.css:839",
+        "design-system.css:839",
+        "design-system.css:882"
+      ]
+    },
+    {
+      "name": "--mo-primary",
+      "count": 23,
+      "files": [
+        "design-system.css:244",
+        "design-system.css:320",
+        "design-system.css:369",
+        "design-system.css:371",
+        "design-system.css:423",
+        "design-system.css:424",
+        "design-system.css:531",
+        "design-system.css:565",
+        "design-system.css:661",
+        "design-system.css:689"
+      ]
+    },
+    {
+      "name": "--mo-line",
+      "count": 21,
+      "files": [
+        "design-system.css:299",
+        "design-system.css:388",
+        "design-system.css:434",
+        "design-system.css:462",
+        "design-system.css:621",
+        "design-system.css:628",
+        "design-system.css:776",
+        "design-system.css:821",
+        "design-system.css:867",
+        "design-system.css:892"
+      ]
+    },
+    {
+      "name": "--mo-space-4",
+      "count": 21,
+      "files": [
+        "design-system.css:709",
+        "design-system.css:919",
+        "design-system.css:919",
+        "design-system.css:1024",
+        "design-system.css:1176",
+        "design-system.css:1244",
+        "design-system.css:1287",
+        "design-system.css:1450",
+        "design-system.css:1471",
+        "design-system.css:1471"
+      ]
+    },
+    {
+      "name": "--mo-text-sm",
+      "count": 19,
+      "files": [
+        "design-system.css:238",
+        "design-system.css:269",
+        "design-system.css:289",
+        "design-system.css:332",
+        "design-system.css:440",
+        "design-system.css:763",
+        "design-system.css:791",
+        "design-system.css:835",
+        "design-system.css:935",
+        "design-system.css:995"
+      ]
+    },
+    {
+      "name": "--mo-weight-semibold",
+      "count": 16,
+      "files": [
+        "design-system.css:219",
+        "design-system.css:261",
+        "design-system.css:454",
+        "design-system.css:525",
+        "design-system.css:581",
+        "design-system.css:654",
+        "design-system.css:738",
+        "design-system.css:746",
+        "design-system.css:880",
+        "design-system.css:898"
+      ]
+    },
+    {
+      "name": "--mo-mute-soft",
+      "count": 15,
+      "files": [
+        "design-system.css:270",
+        "design-system.css:397",
+        "design-system.css:648",
+        "design-system.css:751",
+        "design-system.css:852",
+        "design-system.css:936",
+        "design-system.css:951",
+        "design-system.css:970",
+        "design-system.css:1203",
+        "design-system.css:1359"
+      ]
+    },
+    {
+      "name": "--mo-surface",
+      "count": 14,
+      "files": [
+        "design-system.css:304",
+        "design-system.css:386",
+        "design-system.css:404",
+        "design-system.css:461",
+        "design-system.css:775",
+        "design-system.css:870",
+        "design-system.css:922",
+        "design-system.css:965",
+        "design-system.css:1011",
+        "design-system.css:1442"
+      ]
+    },
+    {
+      "name": "--mo-text-md",
+      "count": 14,
+      "files": [
+        "design-system.css:302",
+        "design-system.css:352",
+        "design-system.css:773",
+        "design-system.css:897",
+        "design-system.css:972",
+        "design-system.css:1029",
+        "design-system.css:1066",
+        "design-system.css:1184",
+        "design-system.css:1264",
+        "design-system.css:1363"
+      ]
+    },
+    {
+      "name": "--mo-weight-medium",
+      "count": 14,
+      "files": [
+        "design-system.css:239",
+        "design-system.css:290",
+        "design-system.css:353",
+        "design-system.css:647",
+        "design-system.css:728",
+        "design-system.css:757",
+        "design-system.css:764",
+        "design-system.css:806",
+        "design-system.css:813",
+        "design-system.css:836"
+      ]
+    },
+    {
+      "name": "--mo-radius-lg",
+      "count": 13,
+      "files": [
+        "design-system.css:463",
+        "design-system.css:712",
+        "design-system.css:921",
+        "design-system.css:1010",
+        "design-system.css:1289",
+        "design-system.css:1341",
+        "design-system.css:1441",
+        "design-system.css:1521",
+        "design-system.css:1598",
+        "design-system.css:1687"
+      ]
+    },
+    {
+      "name": "--mo-space-2",
+      "count": 13,
+      "files": [
+        "design-system.css:254",
+        "design-system.css:346",
+        "design-system.css:766",
+        "design-system.css:787",
+        "design-system.css:1175",
+        "design-system.css:1274",
+        "design-system.css:1303",
+        "design-system.css:1326",
+        "design-system.css:1448",
+        "design-system.css:1488"
+      ]
+    },
+    {
+      "name": "--mo-ink",
+      "count": 12,
+      "files": [
+        "design-system.css:222",
+        "design-system.css:262",
+        "design-system.css:303",
+        "design-system.css:387",
+        "design-system.css:433",
+        "design-system.css:741",
+        "design-system.css:964",
+        "design-system.css:1456",
+        "design-system.css:1557",
+        "design-system.css:1649"
+      ]
+    },
+    {
+      "name": "--mo-ink-soft",
+      "count": 12,
+      "files": [
+        "design-system.css:514",
+        "design-system.css:655",
+        "design-system.css:774",
+        "design-system.css:792",
+        "design-system.css:843",
+        "design-system.css:899",
+        "design-system.css:1032",
+        "design-system.css:1194",
+        "design-system.css:1365",
+        "design-system.css:1419"
+      ]
+    },
+    {
+      "name": "--mo-space-1",
+      "count": 11,
+      "files": [
+        "design-system.css:236",
+        "design-system.css:279",
+        "design-system.css:507",
+        "design-system.css:735",
+        "design-system.css:829",
+        "design-system.css:1007",
+        "design-system.css:1167",
+        "design-system.css:1252",
+        "design-system.css:1337",
+        "design-system.css:1506"
+      ]
+    },
+    {
+      "name": "--mo-surface-sunk",
+      "count": 11,
+      "files": [
+        "design-system.css:510",
+        "design-system.css:543",
+        "design-system.css:620",
+        "design-system.css:626",
+        "design-system.css:677",
+        "design-system.css:820",
+        "design-system.css:1061",
+        "design-system.css:1137",
+        "design-system.css:1218",
+        "design-system.css:1418"
+      ]
+    },
+    {
+      "name": "--mo-text-xs",
+      "count": 11,
+      "files": [
+        "design-system.css:453",
+        "design-system.css:513",
+        "design-system.css:524",
+        "design-system.css:580",
+        "design-system.css:646",
+        "design-system.css:727",
+        "design-system.css:1139",
+        "design-system.css:1221",
+        "design-system.css:1369",
+        "design-system.css:1693"
+      ]
+    },
+    {
+      "name": "--mo-font-mono",
+      "count": 10,
+      "files": [
+        "design-system.css:325",
+        "design-system.css:452",
+        "design-system.css:652",
+        "design-system.css:772",
+        "design-system.css:896",
+        "design-system.css:962",
+        "design-system.css:1138",
+        "design-system.css:1576",
+        "design-system.css:1692",
+        "design-system.css:1720"
+      ]
+    },
+    {
+      "name": "--mo-line-soft",
+      "count": 10,
+      "files": [
+        "design-system.css:255",
+        "design-system.css:398",
+        "design-system.css:509",
+        "design-system.css:711",
+        "design-system.css:788",
+        "design-system.css:1134",
+        "design-system.css:1288",
+        "design-system.css:1597",
+        "design-system.css:1790",
+        "design-system.css:1836"
+      ]
+    },
+    {
+      "name": "--mo-error",
+      "count": 9,
+      "files": [
+        "design-system.css:403",
+        "design-system.css:405",
+        "design-system.css:491",
+        "design-system.css:560",
+        "design-system.css:613",
+        "design-system.css:669",
+        "design-system.css:695",
+        "design-system.css:805",
+        "design-system.css:996"
+      ]
+    },
+    {
+      "name": "--mo-radius-md",
+      "count": 9,
+      "files": [
+        "design-system.css:300",
+        "design-system.css:350",
+        "design-system.css:778",
+        "design-system.css:789",
+        "design-system.css:822",
+        "design-system.css:868",
+        "design-system.css:961",
+        "design-system.css:1077",
+        "design-system.css:1410"
+      ]
+    },
+    {
+      "name": "--mo-primary-soft",
+      "count": 8,
+      "files": [
+        "design-system.css:321",
+        "design-system.css:361",
+        "design-system.css:564",
+        "design-system.css:603",
+        "design-system.css:978",
+        "design-system.css:1147",
+        "design-system.css:1148",
+        "design-system.css:1228"
+      ]
+    },
+    {
+      "name": "--mo-ready",
+      "count": 8,
+      "files": [
+        "design-system.css:483",
+        "design-system.css:539",
+        "design-system.css:555",
+        "design-system.css:607",
+        "design-system.css:665",
+        "design-system.css:699",
+        "design-system.css:812",
+        "design-system.css:1050"
+      ]
+    },
+    {
+      "name": "--mo-surface-soft",
+      "count": 8,
+      "files": [
+        "design-system.css:392",
+        "design-system.css:710",
+        "design-system.css:793",
+        "design-system.css:876",
+        "design-system.css:1290",
+        "design-system.css:1342",
+        "design-system.css:1411",
+        "design-system.css:1599"
+      ]
+    },
+    {
+      "name": "--mo-radius-pill",
+      "count": 7,
+      "files": [
+        "design-system.css:451",
+        "design-system.css:584",
+        "design-system.css:678",
+        "design-system.css:690",
+        "design-system.css:1217",
+        "design-system.css:1632",
+        "design-system.css:1711"
+      ]
+    },
+    {
+      "name": "--mo-space-5",
+      "count": 6,
+      "files": [
+        "design-system.css:1008",
+        "design-system.css:1246",
+        "design-system.css:1685",
+        "design-system.css:1789",
+        "design-system.css:1814",
+        "design-system.css:1835"
+      ]
+    },
+    {
+      "name": "--mo-primary-ink",
+      "count": 5,
+      "files": [
+        "design-system.css:375",
+        "design-system.css:376",
+        "design-system.css:602",
+        "design-system.css:1149",
+        "design-system.css:1229"
+      ]
+    },
+    {
+      "name": "--mo-radius-sm",
+      "count": 5,
+      "files": [
+        "design-system.css:511",
+        "design-system.css:526",
+        "design-system.css:833",
+        "design-system.css:1060",
+        "design-system.css:1136"
+      ]
+    },
+    {
+      "name": "--mo-text-lg",
+      "count": 5,
+      "files": [
+        "design-system.css:260",
+        "design-system.css:653",
+        "design-system.css:879",
+        "design-system.css:963",
+        "design-system.css:1797"
+      ]
+    },
+    {
+      "name": "--mo-amber",
+      "count": 4,
+      "files": [
+        "design-system.css:499",
+        "design-system.css:535",
+        "design-system.css:550",
+        "design-system.css:859"
+      ]
+    },
+    {
+      "name": "--mo-amber-soft",
+      "count": 4,
+      "files": [
+        "design-system.css:549",
+        "design-system.css:597",
+        "design-system.css:797",
+        "design-system.css:1233"
+      ]
+    },
+    {
+      "name": "--mo-lh-normal",
+      "count": 4,
+      "files": [
+        "design-system.css:1038",
+        "design-system.css:1265",
+        "design-system.css:1670",
+        "design-system.css:1822"
+      ]
+    },
+    {
+      "name": "--mo-ready-line",
+      "count": 4,
+      "files": [
+        "design-system.css:479",
+        "design-system.css:609",
+        "design-system.css:811",
+        "design-system.css:1045"
+      ]
+    },
+    {
+      "name": "--mo-ready-soft",
+      "count": 4,
+      "files": [
+        "design-system.css:554",
+        "design-system.css:608",
+        "design-system.css:810",
+        "design-system.css:1046"
+      ]
+    },
+    {
+      "name": "--mo-amber-ink",
+      "count": 3,
+      "files": [
+        "design-system.css:596",
+        "design-system.css:799",
+        "design-system.css:1234"
+      ]
+    },
+    {
+      "name": "--mo-amber-line",
+      "count": 3,
+      "files": [
+        "design-system.css:495",
+        "design-system.css:598",
+        "design-system.css:798"
+      ]
+    },
+    {
+      "name": "--mo-error-line",
+      "count": 3,
+      "files": [
+        "design-system.css:487",
+        "design-system.css:615",
+        "design-system.css:804"
+      ]
+    },
+    {
+      "name": "--mo-error-soft",
+      "count": 3,
+      "files": [
+        "design-system.css:559",
+        "design-system.css:614",
+        "design-system.css:803"
+      ]
+    },
+    {
+      "name": "--mo-lh-tight",
+      "count": 3,
+      "files": [
+        "design-system.css:220",
+        "design-system.css:1186",
+        "design-system.css:1799"
+      ]
+    },
+    {
+      "name": "--mo-motion-shift",
+      "count": 3,
+      "files": [
+        "design-system.css:192",
+        "design-system.css:199",
+        "design-system.css:206"
+      ]
+    },
+    {
+      "name": "--mo-text-xl",
+      "count": 3,
+      "files": [
+        "design-system.css:737",
+        "design-system.css:1071",
+        "design-system.css:1807"
+      ]
+    },
+    {
+      "name": "--mo-duration-fast",
+      "count": 2,
+      "files": [
+        "design-system.css:173",
+        "design-system.css:174"
+      ]
+    },
+    {
+      "name": "--mo-duration-slow",
+      "count": 2,
+      "files": [
+        "design-system.css:1750",
+        "design-system.css:1764"
+      ]
+    },
+    {
+      "name": "--mo-ease-enter",
+      "count": 2,
+      "files": [
+        "design-system.css:1750",
+        "design-system.css:1764"
+      ]
+    },
+    {
+      "name": "--mo-lh-snug",
+      "count": 2,
+      "files": [
+        "design-system.css:1031",
+        "design-system.css:1556"
+      ]
+    },
+    {
+      "name": "--mo-primary-tint",
+      "count": 2,
+      "files": [
+        "design-system.css:1354",
+        "design-system.css:1538"
+      ]
+    },
+    {
+      "name": "--mo-space-6",
+      "count": 2,
+      "files": [
+        "design-system.css:1008",
+        "design-system.css:1339"
+      ]
+    },
+    {
+      "name": "--mo-ease-out",
+      "count": 1,
+      "files": [
+        "design-system.css:691"
+      ]
+    },
+    {
+      "name": "--mo-scrim",
+      "count": 1,
+      "files": [
+        "design-system.css:1749"
+      ]
+    },
+    {
+      "name": "--mo-shadow-2",
+      "count": 1,
+      "files": [
+        "design-system.css:1763"
+      ]
+    },
+    {
+      "name": "--mo-space-7",
+      "count": 1,
+      "files": [
+        "design-system.css:708"
+      ]
+    },
+    {
+      "name": "--mo-text-2xl",
+      "count": 1,
+      "files": [
+        "design-system.css:218"
+      ]
+    },
+    {
+      "name": "--mo-weight-regular",
+      "count": 1,
+      "files": [
+        "design-system.css:752"
+      ]
+    },
+    {
+      "name": "--mo-z-modal",
+      "count": 1,
+      "files": [
+        "design-system.css:1745"
+      ]
+    }
+  ],
+  "unused": [
+    "--mo-duration-base",
+    "--mo-duration-deliberate",
+    "--mo-duration-instant",
+    "--mo-ease-exit",
+    "--mo-ease-standard",
+    "--mo-font-display",
+    "--mo-shadow-1",
+    "--mo-space-8",
+    "--mo-z-overlay",
+    "--mo-z-popover",
+    "--mo-z-shell-footer",
+    "--mo-z-shell-header",
+    "--mo-z-shell-panel",
+    "--mo-z-shell-sidebar",
+    "--mo-z-spotlight",
+    "--mo-z-toast"
+  ],
+  "undeclared": []
+}
