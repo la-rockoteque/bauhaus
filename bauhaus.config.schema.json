@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://git.nexapptech.com/vbernier/bauhaus/bauhaus.config.schema.json",
+  "title": "Bauhaus project config",
+  "description": "bauhaus.config.json at the project root. Tells Bauhaus agents and skills where each design-system artifact lives. Every path is relative to the project root.",
+  "type": "object",
+  "required": ["name", "prefix", "tokens"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": { "type": "string", "description": "Design system name, e.g. \"Acme DS\"." },
+    "prefix": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]{0,7}$",
+      "description": "Prefix for CSS custom properties and classes: \"ds\" gives --ds-color-text and .ds-btn."
+    },
+    "tokens": {
+      "type": "object",
+      "required": ["source"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string", "description": "Folder of *.tokens.json files (DTCG format)." },
+        "themes": {
+          "type": "object",
+          "description": "Theme name to folder of semantic overrides. The default theme is tokens.source itself.",
+          "additionalProperties": { "type": "string" }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["format", "path"],
+            "additionalProperties": false,
+            "properties": {
+              "format": { "enum": ["css", "scss", "js", "ts", "json", "tailwind"] },
+              "path": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "stylesheet": { "type": "string", "description": "Hand-written primitives stylesheet, e.g. src/styles/design-system.css." },
+    "guide": { "type": "string", "description": "Styleguide Markdown file or folder." },
+    "components": { "type": "string", "description": "Folder of primitive components." },
+    "storybook": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "config": { "type": "string", "description": "Folder holding main.ts / preview.tsx." },
+        "stories": { "type": "string" }
+      }
+    },
+    "rulebook": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rules": { "type": "string", "description": "Folder of rule files, one per primitive." },
+        "advisories": { "type": "string", "description": "File holding standing advisories." }
+      }
+    },
+    "responsiveInventory": { "type": "string", "description": "Ledger of routes and the viewports each was verified at." },
+    "stack": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "framework": { "enum": ["react", "vue", "svelte", "angular", "solid", "web-components", "native", "none"] },
+        "styling": { "enum": ["css", "scss", "tailwind", "css-in-js", "css-modules", "native"] }
+      }
+    },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": { "type": "string", "default": "en", "description": "Comments, identifiers, test names." },
+        "ui": { "type": "string", "default": "en", "description": "BCP 47 locale of UI copy." },
+        "reports": { "type": "string", "default": "en", "description": "Language agents write findings in." }
+      }
+    },
+    "house": {
+      "type": "object",
+      "description": "House standards that tighten WCAG. Agents state the WCAG level each one corresponds to.",
+      "additionalProperties": false,
+      "properties": {
+        "contrast": { "enum": ["AA", "AAA"], "default": "AA" },
+        "targetSize": { "type": "integer", "default": 24, "description": "Minimum target in CSS px. 24 is WCAG 2.5.8 (AA); 44 is 2.5.5 (AAA)." },
+        "breakpoints": { "type": "array", "items": { "type": "integer" }, "default": [640, 768, 1024] },
+        "viewports": { "type": "array", "items": { "type": "string" }, "default": ["320x640", "375x812", "768x1024", "1440x900"] },
+        "maxDurationMs": { "type": "integer", "default": 400 }
+      }
+    }
+  }
+}

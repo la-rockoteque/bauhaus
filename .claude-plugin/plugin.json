@@ -1,0 +1,22 @@
+{
+  "name": "bauhaus",
+  "version": "0.1.0",
+  "description": "Design system workshop for AI agents: build, extract, audit, evolve and advise on a design system (DSM), its tokens, its styleguide and its Storybook. Tech-agnostic tokens (DTCG), specialist agents for UI, UX, motion and responsive, and a knowledge base the agents cite.",
+  "author": {
+    "name": "Rocko Bernier",
+    "email": "vbernier@nexapp.ca"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "dtcg",
+    "styleguide",
+    "storybook",
+    "accessibility",
+    "wcag",
+    "motion",
+    "ui",
+    "ux"
+  ]
+}
