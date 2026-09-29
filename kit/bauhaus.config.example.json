@@ -1,0 +1,40 @@
+{
+  "$schema": "../bauhaus.config.schema.json",
+  "name": "Example DS",
+  "prefix": "ds",
+  "tokens": {
+    "source": "tokens",
+    "themes": {
+      "dark": "tokens/themes/dark"
+    },
+    "outputs": [
+      {
+        "format": "css",
+        "path": "build/tokens.css"
+      },
+      {
+        "format": "scss",
+        "path": "build/_tokens.scss"
+      },
+      {
+        "format": "ts",
+        "path": "build/tokens.ts"
+      },
+      {
+        "format": "json",
+        "path": "build/tokens.json"
+      },
+      {
+        "format": "tailwind",
+        "path": "build/tailwind.preset.js"
+      }
+    ]
+  },
+  "stack": {
+    "framework": "none",
+    "styling": "css"
+  },
+  "house": {
+    "contrast": "AA"
+  }
+}

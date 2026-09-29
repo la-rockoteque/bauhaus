@@ -1,0 +1,219 @@
+{
+  "color": {
+    "$type": "color",
+    "text": {
+      "default": {
+        "$value": "{color.gray.900}"
+      },
+      "muted": {
+        "$value": "{color.gray.600}"
+      },
+      "disabled": {
+        "$value": "{color.gray.400}"
+      },
+      "inverse": {
+        "$value": "{color.white}"
+      },
+      "link": {
+        "$value": "{color.blue.700}"
+      },
+      "on-accent": {
+        "$value": "{color.white}"
+      }
+    },
+    "surface": {
+      "default": {
+        "$value": "{color.white}"
+      },
+      "soft": {
+        "$value": "{color.gray.50}"
+      },
+      "raised": {
+        "$value": "{color.white}"
+      },
+      "sunken": {
+        "$value": "{color.gray.100}"
+      },
+      "inverse": {
+        "$value": "{color.gray.900}"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$value": "{color.gray.200}"
+      },
+      "default": {
+        "$value": "{color.gray.300}"
+      },
+      "strong": {
+        "$value": "{color.gray.500}"
+      }
+    },
+    "accent": {
+      "default": {
+        "$value": "{color.blue.600}"
+      },
+      "hover": {
+        "$value": "{color.blue.700}"
+      },
+      "active": {
+        "$value": "{color.blue.800}"
+      },
+      "subtle": {
+        "$value": "{color.blue.50}"
+      }
+    },
+    "status": {
+      "ready": {
+        "text": {
+          "$value": "{color.green.800}"
+        },
+        "surface": {
+          "$value": "{color.green.50}"
+        },
+        "border": {
+          "$value": "{color.green.600}"
+        }
+      },
+      "warning": {
+        "text": {
+          "$value": "{color.amber.800}"
+        },
+        "surface": {
+          "$value": "{color.amber.50}"
+        },
+        "border": {
+          "$value": "{color.amber.600}"
+        }
+      },
+      "error": {
+        "text": {
+          "$value": "{color.red.800}"
+        },
+        "surface": {
+          "$value": "{color.red.50}"
+        },
+        "border": {
+          "$value": "{color.red.600}"
+        }
+      },
+      "neutral": {
+        "text": {
+          "$value": "{color.gray.700}"
+        },
+        "surface": {
+          "$value": "{color.gray.100}"
+        },
+        "border": {
+          "$value": "{color.gray.500}"
+        }
+      }
+    }
+  },
+  "space": {
+    "$type": "dimension",
+    "inset": {
+      "xs": {
+        "$value": "{space.1}"
+      },
+      "sm": {
+        "$value": "{space.2}"
+      },
+      "md": {
+        "$value": "{space.4}"
+      },
+      "lg": {
+        "$value": "{space.6}"
+      },
+      "xl": {
+        "$value": "{space.8}"
+      }
+    },
+    "stack": {
+      "xs": {
+        "$value": "{space.1}"
+      },
+      "sm": {
+        "$value": "{space.2}"
+      },
+      "md": {
+        "$value": "{space.4}"
+      },
+      "lg": {
+        "$value": "{space.6}"
+      },
+      "xl": {
+        "$value": "{space.10}"
+      }
+    },
+    "inline": {
+      "xs": {
+        "$value": "{space.1}"
+      },
+      "sm": {
+        "$value": "{space.2}"
+      },
+      "md": {
+        "$value": "{space.3}"
+      },
+      "lg": {
+        "$value": "{space.4}"
+      },
+      "xl": {
+        "$value": "{space.6}"
+      }
+    }
+  },
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "instant": {
+        "$value": "{duration.50}"
+      },
+      "fast": {
+        "$value": "{duration.150}"
+      },
+      "base": {
+        "$value": "{duration.200}"
+      },
+      "slow": {
+        "$value": "{duration.300}"
+      },
+      "deliberate": {
+        "$value": "{duration.400}"
+      }
+    },
+    "ease": {
+      "$type": "cubicBezier",
+      "standard": {
+        "$value": "{easing.standard}"
+      },
+      "enter": {
+        "$value": "{easing.enter}"
+      },
+      "exit": {
+        "$value": "{easing.exit}"
+      }
+    }
+  },
+  "elevation": {
+    "$type": "shadow",
+    "1": {
+      "$value": "{shadow.1}"
+    },
+    "2": {
+      "$value": "{shadow.2}"
+    }
+  },
+  "focus": {
+    "ring": {
+      "$type": "border",
+      "$description": "Focus indicator, 2px, 3:1 against adjacent colours (WCAG 1.4.11).",
+      "$value": {
+        "color": "{color.accent.default}",
+        "width": "2px",
+        "style": "solid"
+      }
+    }
+  }
+}

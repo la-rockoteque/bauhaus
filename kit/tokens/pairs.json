@@ -1,0 +1,162 @@
+[
+  {
+    "fg": "color.text.default",
+    "bg": "color.surface.default",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.default",
+    "bg": "color.surface.soft",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.default",
+    "bg": "color.surface.raised",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.default",
+    "bg": "color.surface.sunken",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.muted",
+    "bg": "color.surface.default",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.muted",
+    "bg": "color.surface.soft",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.muted",
+    "bg": "color.surface.raised",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.muted",
+    "bg": "color.surface.sunken",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.link",
+    "bg": "color.surface.default",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.link",
+    "bg": "color.surface.soft",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.link",
+    "bg": "color.surface.raised",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.link",
+    "bg": "color.surface.sunken",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.inverse",
+    "bg": "color.surface.inverse",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.on-accent",
+    "bg": "color.accent.default",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.on-accent",
+    "bg": "color.accent.hover",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.on-accent",
+    "bg": "color.accent.active",
+    "use": "text"
+  },
+  {
+    "fg": "color.text.default",
+    "bg": "color.accent.subtle",
+    "use": "text"
+  },
+  {
+    "fg": "color.status.ready.text",
+    "bg": "color.status.ready.surface",
+    "use": "text"
+  },
+  {
+    "fg": "color.status.ready.border",
+    "bg": "color.surface.default",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.status.ready.border",
+    "bg": "color.status.ready.surface",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.status.warning.text",
+    "bg": "color.status.warning.surface",
+    "use": "text"
+  },
+  {
+    "fg": "color.status.warning.border",
+    "bg": "color.surface.default",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.status.warning.border",
+    "bg": "color.status.warning.surface",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.status.error.text",
+    "bg": "color.status.error.surface",
+    "use": "text"
+  },
+  {
+    "fg": "color.status.error.border",
+    "bg": "color.surface.default",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.status.error.border",
+    "bg": "color.status.error.surface",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.status.neutral.text",
+    "bg": "color.status.neutral.surface",
+    "use": "text"
+  },
+  {
+    "fg": "color.status.neutral.border",
+    "bg": "color.surface.default",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.status.neutral.border",
+    "bg": "color.status.neutral.surface",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.border.strong",
+    "bg": "color.surface.default",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.border.strong",
+    "bg": "color.surface.soft",
+    "use": "non-text"
+  },
+  {
+    "fg": "color.accent.default",
+    "bg": "color.surface.default",
+    "use": "non-text"
+  }
+]
