@@ -20,17 +20,17 @@ sources:
 2. Offer two modes: `comfortable` (default) and `compact`. Add a third only when a real use needs it. (Each mode multiplies the test surface.)
 3. Set the default to comfortable. Let the user or the product choose compact. (Comfortable is safer for touch and for new users.)
 4. Density changes vertical space, control height and inline gaps. It does not change font size below the type scale minimum, colour, or contrast. (Compact must stay readable. See `typography.md`.)
-5. Publish control heights as tokens: `--ds-size-control-sm`, `--ds-size-control-md`, `--ds-size-control-lg`. Density picks which one a default control uses.
+5. Publish control heights as tokens: `--ds-size-control-sm`, `--ds-size-control-md`, `--ds-size-control-lg`. Density picks which one a default control uses. (Carbon sizes controls `sm`, `md` and `lg`.)
 6. Publish row heights as tokens for tables and lists. The values below are examples, not a standard: compact 32px, comfortable 40px or 48px. Pick values from your 4px grid. (See `spacing-layout.md`.)
 7. Every pointer target must be at least 24 x 24 CSS px, in every density mode. (WCAG 2.5.8 Target Size (Minimum), AA)
 8. The 24px minimum has exceptions. A smaller target passes when a 24px-diameter circle centred on it does not overlap another target or its circle (the spacing exception), when an equivalent control of enough size exists on the same page, when the target sits inside a sentence or is limited by line height (inline), when the size is set by the browser (user agent control), or when the size is essential. (WCAG 2.5.8 Target Size (Minimum), AA)
 9. Target size 44 x 44 CSS px is a separate, stricter criterion at level AAA. Say "WCAG 2.5.5 Target Size (Enhanced), AAA". Do not say "AA requires 44". (WCAG 2.5.5 Target Size (Enhanced), AAA)
 10. Adopt 44px as a house standard when the setting justifies it, such as gloved hands, touch-first kiosks or mobile field work. State it as a house standard at AAA level. (WCAG 2.5.5 Target Size (Enhanced), AAA)
-11. Make the visible control smaller than the target when needed. Use padding or a pseudo-element to extend the hit area. Do not let extended areas overlap neighbouring targets.
+11. Make the visible control smaller than the target when needed. Use padding or a pseudo-element to extend the hit area. Do not let extended areas overlap neighbouring targets. (WCAG 2.5.8 Target Size (Minimum), AA: the target is the area that responds to input.)
 12. Use compact mode only for pointer-first, data-dense views such as tables, toolbars and admin lists. Do not apply compact to touch-first screens by default. (Small targets raise error rates for touch. See Fitts, 1954, in `motion.md`.)
 13. Keep space between adjacent targets in compact mode. A 24px target with no gap to its neighbour fails 2.5.8 unless another exception applies. (WCAG 2.5.8 Target Size (Minimum), AA)
 14. Do not shrink the focus indicator in compact mode. It keeps the size from `shape.md`. (WCAG 2.4.7 Focus Visible, AA)
-15. Persist the user's density choice. Respect it across sessions and pages. Do not reset it on navigation.
+15. Persist the user's density choice. Respect it across sessions and pages. Do not reset it on navigation. (Nielsen 7, Flexibility and efficiency of use.)
 16. Test both modes for contrast, target size, reflow at 320 CSS px and text spacing overrides. (WCAG 1.4.10 Reflow, AA; WCAG 1.4.12 Text Spacing, AA)
 
 ## Density tokens

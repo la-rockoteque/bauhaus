@@ -88,7 +88,8 @@ Save, send, delete. If pressing it takes you somewhere else, it is a link, not a
 |---|---|---|
 | `color.action.primary` | 2 | Fill of the primary variant |
 | `color.text.on-action` | 2 | Label on the fill; pair must reach 4.5:1 |
-| `color.state.hover-layer` | 2 | Hover overlay |
+| `color.state.hover-layer` | 2 | Hover overlay (state layer) |
+| `color.action.primary.hover` | 2 | Hover colour of the primary fill (per-role state token) |
 | `focus.ring.*` | 2 | Focus indicator |
 | `radius.control` | 2 | Corner radius |
 | `size.target.min` | 2 | Minimum height and width |
@@ -122,8 +123,8 @@ Interaction: default, hover, focus-visible, active, disabled, loading. Lifecycle
 |---|---|---|---|
 | `outline: none` with no replacement | Keyboard users lose their place | WCAG 2.4.7 (AA) | `button.focus-ring` |
 | A `<div>` with a click handler | No focus, no Space or Enter, no role | APG Button; WCAG 4.1.2 (A) | `button.native-element` |
-| Red fill as the only sign of "danger" | Colour-blind users miss it | WCAG 1.4.1 (A) | `button.not-colour-only` |
-| `variant="disabled"` | A state modelled as a choice; cannot combine with primary or secondary | Bauhaus `misfile.state-as-variant` | `button.state-not-variant` |
+| Red fill as the only sign of "danger" | Colour-blind users miss it | WCAG 1.4.1 (A) | `button.states.not-colour-alone` |
+| `variant="disabled"` | A state modelled as a choice; cannot combine with primary or secondary | Bauhaus `misfile.state-as-variant` | `button.states.not-variant` |
 | Two primary buttons side by side | Users cannot tell which action leads | Hick 1952; Nielsen 8 | `button.one-primary` |
 ````
 
@@ -192,7 +193,7 @@ Fix a failing line by adding a fact about this component and its basis. If no ba
 | 1 | "Buttons should be clear and easy to use." | True of any control. No basis. | "Start the label with a verb and name the object: 'Save changes' (WCAG 2.4.6, AA: labels describe purpose)." |
 | 2 | "Make sure it is accessible." | No criterion. Nobody can check it. | "Give an icon-only button an accessible name (WCAG 1.1.1 and 4.1.2, both A)." |
 | 3 | "Use spacing consistently." | Says nothing about steps. | "Use `space.stack.related` (8px) between a label and its control and `space.stack.group` (24px) between groups (Wertheimer 1923, proximity)." |
-| 4 | "Avoid using too many colours." | No number. No reason. | "Use four status hues and never a fifth; a fifth needs a scale proposal (moship guide §5; this system's colour foundation)." |
+| 4 | "Avoid using too many colours." | No number. No reason. | "Use four status hues and never a fifth; a fifth needs a scale proposal (this system's colour foundation)." |
 | 5 | "Don't make the text too small." | Vague. | "Body text stays at or above `font.size.md` (14px here). Raising text to 200% must not clip (WCAG 1.4.4 Resize Text, AA)." |
 | 6 | "Keep it simple." | A platitude. | "Show one primary action per view region (Hick 1952; Nielsen 8, aesthetic and minimalist design)." |
 | 7 | "Ensure good contrast." | No ratio. | "Label on fill reaches 4.5:1 (WCAG 1.4.3, AA); the focus ring reaches 3:1 against its neighbours (WCAG 1.4.11, AA)." |

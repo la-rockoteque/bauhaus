@@ -478,8 +478,7 @@ platform's reduce-motion setting.
 
 You own the motion rubric. Unlike your colleagues, your rules land in **both**
 verification halves, because motion has a measurable and a judged side. The
-`auto`/`review` split describes **how a rule is established**, not who wrote it. Rulebook
-alias: barème. Rule shape: `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/rulebook.md`.
+`auto`/`review` split describes **how a rule is established**, not who wrote it. Rule shape: `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/rulebook.md`.
 
 **`verify: auto`** — what the stylesheet settles:
 

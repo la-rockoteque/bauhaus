@@ -1,11 +1,11 @@
 ---
 name: storybook
-description: Install the Bauhaus Storybook kit into a React project, or set up the equivalent for another stack. Adapts prefix and paths, prunes moship-specific pages, wires the dev overlay. Use when the user says "set up storybook", "install the storybook kit", "add the dev overlay", "storybook for our design system", "storybook for vue", or "document components in storybook".
+description: Install the Bauhaus Storybook kit into a React project, or set up the equivalent for another stack. Adapts prefix and paths, prunes pages specific to the upstream project, wires the dev overlay. Use when the user says "set up storybook", "install the storybook kit", "add the dev overlay", "storybook for our design system", "storybook for vue", or "document components in storybook".
 ---
 
 # /bauhaus:storybook — the running spec
 
-Storybook is the running spec: one page per foundation, primitive and pattern. The kit is a React adapter ported from moship. Other stacks get Storybook for their framework and the same page structure. Lead: `bauhaus:design-system-architect`.
+Storybook is the running spec: one page per foundation, primitive and pattern. The kit is a React adapter ported from an upstream project. Other stacks get Storybook for their framework and the same page structure. Lead: `bauhaus:design-system-architect`.
 
 ## Loads
 
@@ -42,10 +42,10 @@ Every page, in order: 1 Introduction, 2 Tokens, 3 Anatomy, 4 States, 5 Usage, 6 
    - `src/stories` (foundation, component, pattern and General pages)
    - `src/styles` helpers
    Show the copy list first. Ask before overwriting anything.
-5. **Adapt the prefix.** Replace the moship prefix (`mo-`, `--mo-`) with `<config.prefix>`. Grep afterwards for leftover `mo-`.
+5. **Adapt the prefix.** Replace the upstream prefix (`mo-`, `--mo-`) with `<config.prefix>`. Grep afterwards for leftover `mo-`.
 6. **Adapt the paths.** Point imports at `<config.tokens.outputs>` (the generated CSS), `<config.stylesheet>`, `<config.components>` and `<config.rulebook.rules>`. Never hardcode a path: read it from config, or parameterise it in one file.
-7. **Prune moship-specific pages.** Remove pages that document moship product features (shipments, scan bay, provenance, and the like), French copy tied to moship, and ADR or ticket links. Keep the structure: DocPage, the foundation pages, the benchmark page, the inventory pages. Replace project content with the project's own. List what you pruned.
-8. **Rebuild pages to the contract.** Each kept page follows the six sections. Fill Tokens from the generated source. Add one story per state for each primitive (from `/bauhaus:states`).
+7. **Prune upstream-specific pages.** Remove pages that document the upstream product's features (shipments, scan bay, provenance, and the like), French copy tied to it, and ADR or ticket links. Keep the structure: DocPage, the foundation pages, the benchmark page, the inventory pages. Replace project content with the project's own. List what you pruned.
+8. **Rebuild pages to the contract.** Each kept page follows the six sections. Fill Tokens from the generated source. Add one story per designed state-matrix cell for each primitive (`${CLAUDE_PLUGIN_ROOT}/knowledge/states/state-matrix.md`, from `/bauhaus:states`).
 9. **Wire the dev overlay.** The overlay draws advisories over the live component. Point it at `<config.rulebook.advisories>`. Mount it in the preview file only in development. Confirm it never ships to production builds.
 10. **Add a11y and theme addons.** Add an accessibility addon and a theme switcher when `config.tokens.themes` exists (`/bauhaus:theme`).
 11. **Install and run.** Run the package manager install for the missing dev dependencies, using the project's manager. Ask before adding dependencies. Then run the Storybook build. Fix errors from moved paths.
@@ -74,7 +74,7 @@ Every page, in order: 1 Introduction, 2 Tokens, 3 Anatomy, 4 States, 5 Usage, 6 
 
 ```
 Storybook — <framework>
-Kit:      copied <n files> · pruned <n moship pages> · prefix → <prefix>
+Kit:      copied <n files> · pruned <n upstream pages> · prefix → <prefix>
 Pages:    <n foundations> · <n primitives> · <n patterns> · states stories <n>
 Overlay:  wired to <advisories path> · dev only
 Build:    pass | fail (<message>)
@@ -85,4 +85,4 @@ Gaps:     <primitives without a page>
 
 - Never overwrite an existing file without asking.
 - Never add a dependency without asking.
-- Never keep moship content.
+- Never keep upstream-project content.

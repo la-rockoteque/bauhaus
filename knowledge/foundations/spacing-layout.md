@@ -20,22 +20,22 @@ sources:
 2. Publish the scale as tokens with numeric names or t-shirt names. Keep 8 to 12 steps: 4, 8, 12, 16, 20, 24, 32, 48, then optional 64, 96. Skip 6, 10 and 14 on purpose. The gaps force alignment. (Fewer steps mean fewer near-duplicates.)
 3. Store spacing in `rem` when it must follow the user's font size, such as padding around text. Use `px` only for hairline offsets. (WCAG 1.4.4 Resize Text, AA: text resize must not break the layout.)
 4. Name spacing by scale step, not by use: `--ds-space-3`. Use semantic aliases (`--ds-space-inset-card`) only when several components share a decision. (See `tokens/naming.md`.)
-5. Classify each gap as one of three kinds:
+5. Classify each gap as one of three kinds (house convention: each kind has one CSS owner, `padding` or `gap`, see rule 6):
    - **Inset:** space between a container's edge and its content (padding).
    - **Stack:** vertical space between siblings.
    - **Inline:** horizontal space between siblings.
 6. Give a stack one owner. Set gaps on the parent with `gap`, or with a stack primitive. Do not set margins on the children of a stack. (Child margins collide and leak into other contexts.)
 7. Use spacing to show grouping. The gap inside a group is smaller than the gap between groups. (Gestalt proximity.)
-8. Never use a raw pixel value for a gap at a call site. Use a scale token. Values inside one component's private layout may be explicit when no other component shares them.
-9. Build the layout grid with CSS Grid or Flexbox. Use 12 columns for wide layouts and 4 for narrow ones. Set gutters from the spacing scale.
+8. Never use a raw pixel value for a gap at a call site. Use a scale token. Values inside one component's private layout may be explicit when no other component shares them. (Tier rule: call sites use semantic tokens, `tokens/architecture.md`.)
+9. Build the layout grid with CSS Grid or Flexbox. Use 12 columns for wide layouts and 4 for narrow ones. Set gutters from the spacing scale. (Material 3 layout uses 4 columns on compact windows and 12 on expanded ones.)
 10. Wrap page content in a container with a maximum width and a side gutter. Reading prose stays at 45 to 75 characters. (See `typography.md`.)
 11. Offer few container widths: for example `narrow` (forms, prose), `default` and `full`. (Few widths keep pages aligned.)
 12. Set breakpoints from content, not from devices. Add a breakpoint where the layout breaks, not at a phone or tablet width. (Device sizes change. Content behaviour does not.)
-13. Keep breakpoints few. Three or four cover most products. Name them by intent or size step: `sm`, `md`, `lg`. Publish them as tokens for JavaScript and documentation. Use the literal value in CSS media queries because custom properties do not work there.
+13. Keep breakpoints few. Three or four cover most products. Name them by intent or size step: `sm`, `md`, `lg`. Publish them as tokens for JavaScript and documentation. Use the literal value in CSS media queries because custom properties do not work there. (CSS media conditions do not accept `var()`. Few breakpoints keep the test matrix small: house convention.)
 14. Prefer container queries for components that live in different-width slots. Use media queries for page-level layout. (A component should respond to its own space.)
-15. Use `min-width` media queries and design mobile first. Base styles work at 320 CSS px.
+15. Use `min-width` media queries and design mobile first. Base styles work at 320 CSS px. (WCAG 1.4.10 Reflow, AA sets the 320 px floor. `min-width` queries are a house convention: base styles then need no override at narrow widths.)
 16. Content must reflow with no two-dimensional scrolling at a viewport 320 CSS px wide. This equals 400% zoom on a 1280 px window. For content that scrolls horizontally, the test size is 256 CSS px high. Data tables, maps, diagrams and toolbars that need two dimensions are exempt. (WCAG 1.4.10 Reflow, AA)
-17. Do not fix widths in `px` on containers that hold text. Use `max-width`, `min-width`, `%`, `fr` and `minmax()`.
+17. Do not fix widths in `px` on containers that hold text. Use `max-width`, `min-width`, `%`, `fr` and `minmax()`. (WCAG 1.4.10 Reflow, AA; 1.4.4 Resize Text, AA: fixed widths break at 400% zoom.)
 18. Do not hide content at small widths to pass reflow. Rearrange it. (WCAG 1.4.10 Reflow, AA: no loss of information or function.)
 19. Never disable pinch zoom. Do not set `user-scalable=no` or a low `maximum-scale`. (WCAG 1.4.4 Resize Text, AA)
 

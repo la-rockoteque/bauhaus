@@ -13,7 +13,7 @@ The styleguide is the prose spec: philosophy, token tables, per-primitive anatom
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/contribution.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/layers.md`, `plain-language.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/states/state-matrix.md`
-- Seed: `${CLAUDE_PLUGIN_ROOT}/kit/styleguide/design-system.md` (structure only. Drop moship names.)
+- Optional seed: `${CLAUDE_PLUGIN_ROOT}/kit/styleguide/design-system.md`. It is an upstream port pending pruning. Take the structure only, and drop its project names. The contract is `knowledge/governance/contribution.md` and `knowledge/governance/page-contract.md`.
 - The shelf for each page you write (foundations, tokens, components, patterns).
 
 ## Structure

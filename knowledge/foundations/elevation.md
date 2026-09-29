@@ -19,15 +19,15 @@ sources:
 
 1. Define few elevation rungs. Two or three is enough. Level 0 is the flat page and its cards. Example: `1` for menus, dropdowns and tooltips; `2` for modals and drawers. (Each rung keeps a distinct meaning only when there are few.)
 2. Name elevation by meaning, not by number of pixels: `--ds-shadow-raised`, `--ds-shadow-overlay`, or `--ds-shadow-1`, `--ds-shadow-2`. Never `--ds-shadow-0-4-8`. (See `tokens/naming.md`.)
-3. Do not add a rung "in between". Something that needs to sit between two levels needs spacing or a surface change instead.
+3. Do not add a rung "in between". Something that needs to sit between two levels needs spacing or a surface change instead. (Material 3 fixes its elevation set at six levels, 0 to 5.)
 4. Do not write a one-off `box-shadow` at a call site. Use an elevation token. (One-offs break the rung meaning.)
 5. Build each shadow from two layers: a tight, darker layer for the contact edge and a wide, lighter layer for the ambient spread. Tint the shadow colour toward the surface hue and do not use pure black. (Two layers read as more natural than one.)
-6. Define one scrim (the wash behind a modal). Keep it to a single value. A second scrim would give a second answer to "how far back does the page go".
-7. Keep semantic elevation and stacking order separate. Elevation is the visual depth. `z-index` is the paint order. A surface has both, and they are set by different tokens.
+6. Define one scrim (the wash behind a modal). Keep it to a single value. A second scrim would give a second answer to "how far back does the page go". (Material 3 defines a single scrim colour role.)
+7. Keep semantic elevation and stacking order separate. Elevation is the visual depth. `z-index` is the paint order. A surface has both, and they are set by different tokens. (House convention: elevation is meaning, z-index is implementation. See `misfile.magic-z-index` in `taxonomy/misfiles.md`.)
 8. Publish z-index values as tokens of DTCG type `number`. Name them by role: `--ds-z-sidebar`, `--ds-z-header`, `--ds-z-panel`, `--ds-z-popover`, `--ds-z-modal`, `--ds-z-toast`, `--ds-z-overlay`. (One written stacking order removes magic numbers.)
-9. Keep all stacking values in one file. Order the roles from lowest to highest. Each tier out-ranks the one before it. Leave gaps between tiers for future roles.
+9. Keep all stacking values in one file. Order the roles from lowest to highest. Each tier out-ranks the one before it. Leave gaps between tiers for future roles. (House convention: one file keeps the order auditable. Gaps let a new role slot in without renumbering.)
 10. Never write a bare `z-index` number at a call site. Use a token. Flag any bare value of 100 or more. (Scattered numbers start an arms race.)
-11. Use `isolation: isolate` on a component that needs its own stacking context. Do not raise the global number to fix a local overlap.
+11. Use `isolation: isolate` on a component that needs its own stacking context. Do not raise the global number to fix a local overlap. (CSS Positioned Layout: `isolation: isolate` creates a stacking context without a `z-index`.)
 12. In a dark theme, show elevation with lighter surfaces. A higher surface has a lighter fill than the one below it. Keep a subtle shadow only as a secondary cue, and re-derive it. (Shadows are hard to see on dark surfaces.)
 13. Re-derive shadows for a dark theme. Do not reuse the light values. Increase opacity, or drop the shadow and rely on surface lightness and a border. (See `tokens/theming.md`.)
 14. In `forced-colors` mode, shadows are not drawn. Add a border to floating surfaces for that mode. (The user agent removes `box-shadow` in forced-colors mode.)

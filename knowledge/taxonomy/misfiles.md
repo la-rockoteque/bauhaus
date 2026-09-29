@@ -7,7 +7,6 @@ owner: design-system-architect
 tags: [audit, misclassification, grep, foundation, token, primitive, pattern, state, theme]
 sources:
   - Bauhaus architecture contract — docs/architecture.md § The four layers
-  - moship design-system guide §5 Do/Don't, §6 Adding a new primitive (kit/styleguide/design-system.md)
   - W3C Design Tokens Community Group, Design Tokens Format Module — https://www.w3.org/community/design-tokens/
   - WCAG 2.2 1.4.1 (A), 1.4.11 (AA), 2.4.7 (AA) — https://www.w3.org/TR/WCAG22/
 ---
@@ -50,7 +49,7 @@ Call sites are everything outside the token source and outside the semantic-toke
 ### misfile.magic-z-index
 - **Symptom:** `z-index: 9999` or any bare integer at a call site.
 - **Detect:** `grep -rEn 'z-index:\s*[0-9]+' <components>`
-- **Why it hurts:** Stacking wars. Nobody knows which layer wins. Elevation is meaning; z-index is implementation (moship guide).
+- **Why it hurts:** Stacking wars. Nobody knows which layer wins. Elevation is meaning; z-index is implementation
 - **Belongs:** The z-index foundation: named layers as tokens (`--ds-z-modal`).
 - **Smallest fix:** Replace the integer with the nearest named layer. If none fits, propose a layer in the foundation.
 
@@ -65,7 +64,7 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Symptom:** A state rule holds a literal: `.btn:hover { background: #1a3a5c }`, `:disabled { opacity: .4 }`.
 - **Detect:** `grep -rEn ':(hover|active|focus|focus-visible|disabled)[^{]*\{[^}]*(#[0-9a-fA-F]{3,8}|rgba?\()' <components>`
 - **Why it hurts:** The state cannot be themed. A dark theme keeps the light colour. Focus indicators can fall below 3:1 (WCAG 1.4.11, AA) and nobody sees it.
-- **Belongs:** A semantic state token (`--ds-color-action-primary-hover`, `--ds-color-text-disabled`).
+- **Belongs:** A semantic state token (`--ds-color-action-primary-hover`, `--ds-color-state-disabled-text`).
 - **Smallest fix:** Add the state token, aliasing a tier-1 value. Reference it in the state rule. See [../states/interaction-states.md](../states/interaction-states.md).
 
 ## Tier confusion inside the token layer
@@ -152,7 +151,7 @@ Call sites are everything outside the token source and outside the semantic-toke
 ### misfile.value-only-in-docs
 - **Symptom:** A value appears in the styleguide prose (`spacing is 12px`) but not in tokens.
 - **Detect:** Numbers or hex codes in styleguide Markdown that resolve to no token.
-- **Why it hurts:** The doc and the code drift. The guide describes something the CSS no longer does (moship: "prose rot").
+- **Why it hurts:** The doc and the code drift. The guide describes something the CSS no longer does.
 - **Belongs:** The token. The guide shows a generated table and explains the reason.
 - **Smallest fix:** Generate the table from tokens. Delete the hand-typed value.
 
@@ -168,14 +167,14 @@ Call sites are everything outside the token source and outside the semantic-toke
 ### misfile.primitive-two-jobs
 - **Symptom:** One component with five unrelated modifiers, or a `type` prop that switches the anatomy.
 - **Detect:** A prop with more than four values that change structure, not look. Docs that say "and".
-- **Why it hurts:** The API is hard to learn. Every change risks every case. (Moship guide §6, gate 3.)
+- **Why it hurts:** The API is hard to learn. Every change risks every case. (Gate 3: [contribution](../governance/contribution.md).)
 - **Belongs:** Two or more primitives with one job each.
 - **Smallest fix:** Split by job. Keep the old name as a thin wrapper during migration.
 
 ### misfile.pattern-promoted-to-primitive
 - **Symptom:** A component added to the library after one use, because it "looks reusable".
 - **Detect:** A library component with one call site. `grep -rc '<Name' src` returns 1.
-- **Why it hurts:** The library grows by guess. Every entry costs docs, tests and rules. (Moship guide §6, gate 1.)
+- **Why it hurts:** The library grows by guess. Every entry costs docs, tests and rules. (Gate 1: [contribution](../governance/contribution.md).)
 - **Belongs:** Page code, until it appears twice.
 - **Smallest fix:** Move it back beside its caller. Add it to the candidate list.
 

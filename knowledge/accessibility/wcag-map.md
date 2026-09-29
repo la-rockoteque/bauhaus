@@ -97,7 +97,7 @@ These criteria need judgement about flow, wording and semantics.
 ## Removed and renamed
 
 - 4.1.1 Parsing was removed in WCAG 2.2. Do not cite it.
-- 2.4.11 in WCAG 2.2 is Focus Not Obscured (Minimum), level AA. The older draft "Focus Appearance" is 2.4.13, level AAA.
+- 2.4.11 in WCAG 2.2 is Focus Not Obscured (Minimum), level AA. Focus Appearance is 2.4.13, level AAA. It was renumbered from 2.4.11 in the WCAG 2.2 drafts.
 - 2.4.12 Focus Not Obscured (Enhanced) is AAA. It needs the focused element to be fully visible.
 
 ## Why

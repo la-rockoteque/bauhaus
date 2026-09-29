@@ -284,6 +284,10 @@ Each entry lists: job, anatomy (`?` = optional), required states, APG pattern, k
 
 Reviews of design systems find the same defects again and again: missing names, missing states, colour-only cues, focus mistakes. A short entry per primitive turns those into a checklist a person or an agent can run.
 
+## Rulebook seeds
+
+Each entry ends with its own **Seeds** line. Those ids are the candidate rules. Add them to the rulebook in the format of `governance/rulebook.md`.
+
 ## Misfiles
 
 - A filter bar, a wizard or a form section is a pattern. See `patterns/`.
@@ -291,10 +295,6 @@ Reviews of design systems find the same defects again and again: missing names, 
 
 ## See also
 
-- `components/anatomy-and-states.md`
-- `components/api-design.md`
-- `states/model.md`
-- `states/state-matrix.md`
-- `accessibility/apg-patterns.md`
-- `accessibility/wcag-map.md`
-- `governance/rulebook.md`
+- `components/anatomy-and-states.md`, `components/api-design.md`
+- `states/model.md`, `states/state-matrix.md`
+- `accessibility/apg-patterns.md`, `accessibility/wcag-map.md`, `governance/rulebook.md`

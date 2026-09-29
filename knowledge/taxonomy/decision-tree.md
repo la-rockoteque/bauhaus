@@ -7,7 +7,6 @@ owner: design-system-architect
 tags: [classification, foundation, token, primitive, pattern, edge-cases]
 sources:
   - Bauhaus architecture contract — docs/architecture.md § The four layers
-  - moship design-system guide §6 "Adding a new primitive" (kit/styleguide/design-system.md)
   - W3C Design Tokens Community Group, Design Tokens Format Module — https://www.w3.org/community/design-tokens/
 ---
 
@@ -72,7 +71,7 @@ A foundation is one of: colour, typography, spacing, radius, border, elevation, 
 
 Signals: it renders UI. It has props or slots. It has states. It has one sentence of purpose with no "and".
 
-**The three gates for a new primitive** (moship guide §6):
+**The three gates for a new primitive** ([contribution](../governance/contribution.md)):
 1. It appears in **two or more** places. One-off styles stay local.
 2. It is **structural**, not incidental. A "callout that happens to be blue" is incidental. A quantity stepper is structural.
 3. Its API has **one job**. Five modifiers for five unrelated cases means split it.
@@ -99,7 +98,7 @@ Page code, feature code, or content. It may use the design system. It is not par
 | 4 | `button.radius` | Token, tier 3 | Scoped to one primitive. |
 | 5 | "Spacing is a 4px grid, 12 steps" | Foundation | A scale with a rule. |
 | 6 | `space.3 = 12px` | Token, tier 1 | One value on the spacing scale. |
-| 7 | **Focus ring** | Split into three | Foundation rule (a visible indicator, 3:1 against neighbours, WCAG 2.4.7 AA). Tokens (`color.focus.ring`, `border.width.focus`, `space.focus.offset`). Primitive state (each primitive's `:focus-visible` state uses them). No single layer owns it. |
+| 7 | **Focus ring** | Split into three | Foundation rule (a visible indicator, 3:1 against neighbours, WCAG 2.4.7 AA). Tokens (`focus.ring.color`, `focus.ring.width`, `focus.ring.offset`). Primitive state (each primitive's `:focus-visible` state uses them). No single layer owns it. |
 | 8 | **Brand colour** | Token, tier 1 plus tier 2 | `color.blue.600` is the raw value. `color.action.primary → {color.blue.600}` is the intent. The brand ramp itself belongs to the colour foundation. |
 | 9 | Colour palette page | Foundation (doc) plus token table | The page explains the ramp logic (foundation) and lists tokens (generated table). Do not let the table replace the reasoning. |
 | 10 | **Dark mode** | Theme, not a foundation | A set of semantic-token overrides. It has no scale of its own. Primitive tokens and primitives do not change. |
@@ -141,7 +140,7 @@ Page code, feature code, or content. It may use the design system. It is not par
 
 ## Edge cases and how to settle them
 
-**A thing is used once but looks reusable.** Keep it as page code. Add a line to the candidate list. Promote at the second use. (Moship guide §6, gate 1.)
+**A thing is used once but looks reusable.** Keep it as page code. Add a line to the candidate list. Promote at the second use. (Gate 1.)
 
 **A thing is used twice but has two jobs.** Do not promote it as one primitive. Split it into two, or leave both as local code. (Gate 3.)
 

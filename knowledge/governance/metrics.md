@@ -7,8 +7,6 @@ owner: design-system-architect
 tags: [metrics, adoption, token-coverage, rulebook-coverage, a11y, debt, grep]
 sources:
   - Bauhaus ubiquitous language — Ratchet, Known violation, Advisory
-  - moship benchmark — rulebook coverage, "not graded", checklist coverage through `covers` (kit/storybook/src/stories/benchmark/types.ts)
-  - moship design-system guide §6 — single-caller families counted by a ratchet (kit/styleguide/design-system.md)
 ---
 
 # Design-system metrics
@@ -99,7 +97,7 @@ Run the pattern with `grep -rEoh '<pattern>' src --include='*.css' | wc -l`. Exc
 
 ## 3. Single-caller share
 
-**Definition.** Library primitives with fewer than two call sites. A primitive needs two places to earn its place (moship guide §6, gate 1).
+**Definition.** Library primitives with fewer than two call sites. A primitive needs two places to earn its place (gate 1, [contribution](contribution.md)).
 
 ```sh
 for f in src/components/*.tsx; do
@@ -113,13 +111,13 @@ Fixture result: `Button 1`, `Card 1`, `Tabs 0`. Each is below two files.
 
 Files that import the primitive are counted, not uses. Change the pattern to `-rEo "<$n\b" | wc -l` to count uses.
 
-**Ratchet it.** The moship guide pins the count of single-caller families held in the shared sheet: the test fails when the count rises and when it drops without the number being lowered. See [rulebook.md](rulebook.md).
+**Ratchet it.** Pin the count of single-caller families held in the shared sheet: the test fails when the count rises and when it drops without the number being lowered. See [rulebook.md](rulebook.md).
 
 ## 4. Rulebook coverage
 
 **Definition.** For each primitive: how many rules grade it. The "not graded" list holds primitives with zero rules.
 
-A primitive with fifteen rules and no failure has been checked fifteen times. A primitive with no rules has never been checked. (Moship benchmark.)
+A primitive with fifteen rules and no failure has been checked fifteen times. A primitive with no rules has never been checked.
 
 ```sh
 node -e '

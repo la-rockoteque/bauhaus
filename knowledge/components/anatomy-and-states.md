@@ -81,11 +81,11 @@ Each anatomy lists: part, job, required or optional, token that styles it. Put t
 | Variant | Caller, at design time | No | `tone="danger"`, `size="sm"`, `emphasis="quiet"` | Enum prop, one class or attribute |
 | Prop | Caller | Sometimes | `label`, `href`, `disabled`, `loading` | Typed prop |
 | Interaction state | User or browser | Yes | hover, focus-visible, active | CSS pseudo-class, no prop |
-| Data state | Caller, from data | Yes | empty, loading, error, partial | Prop or slot, owned by the pattern |
+| Lifecycle state | Caller, from data | Yes | nothing, loading, none, one, some, too-many, incorrect, correct, done | Prop or slot, owned by the pattern |
 
 Test: if two values can hold at the same time (a danger button that is also disabled), one is a state.
 
-**Limit the variant space.** A variant axis multiplies with every other axis and every state. Three axes of three values and eight states give 216 combinations to design and test. Cut axes before adding values. (Basis: cost of combinations; Carbon and Polaris keep button variants to a short list.)
+**Limit the variant space.** A variant axis multiplies with every other axis and every state. Three axes of three values and nine lifecycle states give 243 combinations to design and test. Cut axes before adding values. (Basis: cost of combinations; Carbon and Polaris keep button variants to a short list.)
 
 ## States: short summary
 
@@ -101,9 +101,9 @@ Anatomy gives the team one vocabulary. The variant, prop and state split keeps t
 
 - `<component>.anatomy-documented` · review · MEDIUM · The styleguide section has an anatomy diagram with named parts.
 - `<component>.variants-are-enums` · auto · MEDIUM · Variant props accept a closed set of values.
-- `<component>.state.disabled-explains` · review · HIGH · A disabled control states why and what unlocks it. Nielsen 1.
-- `<component>.state.not-colour-alone` · review · HIGH · Each state differs by more than colour. WCAG 1.4.1 (A).
-- `<component>.state.exposed` · auto · HIGH · State reaches the accessibility tree. WCAG 4.1.2 (A).
+- `<component>.states.disabled-explains` · review · HIGH · A disabled control states why and what unlocks it. Nielsen 1.
+- `<component>.states.not-colour-alone` · review · HIGH · Each state differs by more than colour. WCAG 1.4.1 (A).
+- `<component>.states.exposed` · auto · HIGH · State reaches the accessibility tree. WCAG 4.1.2 (A).
 
 ## Misfiles
 

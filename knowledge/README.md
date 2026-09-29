@@ -41,7 +41,7 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 - `accessibility/testing.md` — axe, keyboard walks, screen readers, reduced-motion and reflow probes.
 
 ## components/ — primitives
-- `components/anatomy-and-states.md` — anatomy, the eight states, variants vs props.
+- `components/anatomy-and-states.md` — anatomy, the nine lifecycle states and the interaction states, variants vs props.
 - `components/api-design.md` — props, composition, slots, headless vs styled, when to add a primitive.
 - `components/catalog.md` — per-primitive checklist for the common set (button … dialog).
 

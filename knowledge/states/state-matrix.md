@@ -16,6 +16,21 @@ sources:
 
 The state matrix is the artifact that makes states real. Every primitive, pattern and screen has one. It lives in the **States** section of the page (`../governance/page-contract.md`), in Storybook as one story per state, and in the rulebook as one rule per state.
 
+## Rules
+
+1. Give every primitive, pattern and screen a state matrix before it ships. (Speelman 2015)
+2. Mark each cell `designed`, `n/a` with a reason, or `missing`. A blank cell is `missing`. (Speelman: a conscious decision to ignore a state is still a decision)
+3. Back each `designed` cell with one story, built with realistic data. (Speelman 2015 § Too many; Figma, "Button states")
+4. Start from the required-rows table. Justify every `n/a`. (Speelman 2015)
+5. Give each applicable state one rulebook rule. (`../governance/rulebook.md`)
+
+## Why
+
+- Speelman (2015): the nine states make a team think about the unhappy path, even when it decides to skip a state. The matrix records that decision.
+- A cell with three values keeps a forgotten state visible. An empty box reads as "done" only when nobody looks.
+- Figma's advice to "explode" a screen into every state combination is the same practice in a design file.
+- The code is the truth. A state that exists in code but not on the page is a finding against the page.
+
 ## Shape
 
 Rows are states. Columns are variants (or, for a pattern, the main configurations). Each cell holds one of three values:
@@ -83,7 +98,7 @@ Not every state applies to every kind. Start from this table, then justify any `
 ## In the rulebook
 
 - One rule per applicable state: `<component>.state.<state>`, verify `review`, severity from `model.md` § Why states are core.
-- Interaction-state rules that the stylesheet settles are `auto`: `<component>.state.focus-visible`, `<component>.state.tokens`, `<component>.state.hover-guarded`.
+- Interaction-state rules that the stylesheet settles are `auto`: `<component>.state.focus-visible`, `<component>.states.tokens`, `<component>.states.hover-guarded`.
 - An `n/a` cell has no rule. Its reason is in the page.
 
 ## Auditing a matrix
@@ -111,6 +126,18 @@ Each ✗ becomes a finding with its rule id.
 | One "Error" story for both user and system errors | They need different content and recovery. | `lifecycle-states.md` § Incorrect; Nielsen 9 |
 | Matrix per screen but not per primitive | Each screen reinvents the primitive's states. | Nielsen 4, Consistency and standards |
 | Short sample data | *Too many* never gets tested. | Speelman 2015 § Too many |
+
+## Rulebook seeds
+
+- `<component>.state.<state>` · review · severity from `model.md` · "The `<state>` state is designed, or marked n/a with a reason."
+- `<component>.states.tokens` · auto · MEDIUM · "Every state declaration uses a state token, no literal."
+- `page.states` · auto · MEDIUM · "Section 4 has a state matrix with no blank cell; `n/a` carries a reason."
+
+## Misfiles
+
+- A state used as a matrix column. Columns are variants. A state is a row (`misfile.state-as-variant`).
+- A "States" page that lists state colours. That is the colour foundation's state-token table. States belong on each primitive's page.
+- A matrix that lives only in the design file. It belongs on the page and in Storybook too (four artifacts, `../governance/contribution.md`).
 
 ## See also
 

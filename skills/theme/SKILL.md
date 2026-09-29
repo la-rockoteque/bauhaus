@@ -41,16 +41,17 @@ A theme is a set of semantic-token overrides chosen at runtime. Primitives never
    ```
    For a single pair: `node ${CLAUDE_PLUGIN_ROOT}/scripts/contrast.mjs <fg> <bg>`.
    Targets: text `WCAG 1.4.3 (AA)` 4.5:1, or 7:1 for AAA when `house.contrast` is AAA. Large text 3:1. UI components and focus indicators `WCAG 1.4.11 (AA)` 3:1. Any fail is a finding. Fix the override, not the threshold.
-8. **Density theme.** Check the smallest target against `house.targetSize` (`WCAG 2.5.8 (AA)` at 24 px, `2.5.5 (AAA)` at 44 px). Do not shrink hit areas below it.
-9. **Build and check.**
+8. **State tokens per theme.** For every interaction state (hover, pressed, focus-visible, disabled, selected, error), check that the theme defines its tokens (`${CLAUDE_PLUGIN_ROOT}/knowledge/tokens/naming.md` § State tokens). Re-run the state matrix contrast per theme: the same pairs, in each theme (`${CLAUDE_PLUGIN_ROOT}/knowledge/states/state-matrix.md`). A state that passes in light can fail in dark.
+9. **Density theme.** Check the smallest target against `house.targetSize` (`WCAG 2.5.8 (AA)` at 24 px, `2.5.5 (AAA)` at 44 px). Do not shrink hit areas below it.
+10. **Build and check.**
    ```
    node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build
    node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check
    ```
-10. **Wire the switch.** Say how the theme is selected in this stack: a `data-theme` attribute, a class, `prefers-color-scheme`, or the framework's provider. Respect the user's system preference as the default. Persist an explicit choice.
-11. **Four artifacts.** Tokens (the overrides). Styleguide: a Themes section with the override table, the contrast table and the selection rule. Storybook: a theme switcher in the toolbar and a page showing each foundation per theme. Rulebook: rules such as `theme.<name>.contrast` (`auto`, HIGH) and `theme.<name>.no-primitive-override` (`auto`).
-12. **Slop check.** Each Usage and Pitfall line in the Themes page needs a basis and must not fit any DS unchanged.
-13. **Verify visually.** Walk the primitives and patterns in the theme, states included (`/bauhaus:states` matrices). Dispatch `bauhaus:ui-designer` for the walk.
+11. **Wire the switch.** Say how the theme is selected in this stack: a `data-theme` attribute, a class, `prefers-color-scheme`, or the framework's provider. Respect the user's system preference as the default. Persist an explicit choice.
+12. **Four artifacts.** Tokens (the overrides). Styleguide: a Themes section with the override table, the contrast table and the selection rule. Storybook: a theme switcher in the toolbar and a page showing each foundation per theme. Rulebook: rules such as `theme.<name>.contrast` (`auto`, HIGH) and `theme.<name>.no-primitive-override` (`auto`).
+13. **Slop check.** Each Usage and Pitfall line in the Themes page needs a basis and must not fit any DS unchanged.
+14. **Verify visually.** Walk the primitives and patterns in the theme, states included (`/bauhaus:states` matrices). Dispatch `bauhaus:ui-designer` for the walk.
 
 ## Writes
 

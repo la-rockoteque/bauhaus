@@ -7,7 +7,6 @@ owner: design-system-architect
 tags: [maturity, assessment, roadmap, detection, next-step]
 sources:
   - Bauhaus architecture contract — docs/architecture.md
-  - moship design-system guide §6, §9 (kit/styleguide/design-system.md) — the path from CSS custom properties to a ratcheted rulebook
   - W3C Design Tokens Community Group, Design Tokens Format Module — https://www.w3.org/community/design-tokens/
 ---
 

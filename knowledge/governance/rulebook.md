@@ -6,8 +6,8 @@ layer: cross-cutting
 owner: ui-designer
 tags: [rulebook, rules, advisory, known-violation, ratchet, verify-mode, barème]
 sources:
-  - moship benchmark — rule shape, KNOWN_VIOLATIONS and its ratchet (kit/storybook/src/stories/benchmark/types.ts, baseline.ts)
-  - moship ui-designer agent §3 "Your half of the barème" (reference/moship-agents/ui-designer.md)
+  - WCAG 2.2 — https://www.w3.org/TR/WCAG22/
+  - Contribution guide — contribution.md (fix vs recommend, the `auto` and `review` split)
   - Bauhaus ubiquitous language — Rulebook, Rule, Verify mode, Advisory, Known violation, Ratchet
 ---
 
@@ -38,6 +38,18 @@ sources:
 | **Known violation** | An `auto` rule that fails today, tracked as debt | A list of rule ids |
 | **Ratchet** | A test that pins a debt count in both directions | A test file |
 | **Covers** | The checklist items a rule settles | A field on the rule |
+
+## Rule id shapes
+
+Most ids are `<component>.<slug>`. Three shapes are reserved.
+
+| Shape | Use | Example |
+|---|---|---|
+| `<component>.state.<state>` | Only a state-matrix cell. `<state>` is one of the nine lifecycle states or an interaction state listed in `UBIQUITOUS-LANGUAGE.md`. | `button.state.disabled`, `list.state.too-many` |
+| `<component>.states.<slug>` | Every other state-related rule. | `button.states.tokens`, `button.states.hover-guarded`, `list.states.none-cases`, `button.states.loading-no-shift`, `toast.states.done-announced`, `button.states.disabled-explains`, `button.states.not-colour-alone` |
+| `page.<section>` | A page-contract finding. `<section>` is `intro`, `tokens`, `anatomy`, `states`, `usage` or `pitfalls`. `page.basis` is a Usage rule or pitfall with no basis. | `page.pitfalls`, `page.basis` |
+
+Colour has one id: `not-colour-alone`. The `layers` taxonomy rule is `layers.state-not-variant`.
 
 ## Rule shape
 
@@ -77,7 +89,7 @@ interface Advisory {
 }
 ```
 
-The `basis` field is a Bauhaus addition to the moship shape. The rule needs it to be reportable.
+The `basis` field makes the rule reportable.
 
 ### Field guide
 
@@ -93,7 +105,7 @@ The `basis` field is a Bauhaus addition to the moship shape. The rule needs it t
 | `covers` | Ids from the accessibility checklist. | `["target-size"]` |
 | `basis` | Criterion and level, system, or decision. | `WCAG 2.5.8 (AA) sets 24px; house floor is 44px` |
 
-Be exact about levels. WCAG 2.5.8 Target Size (Minimum) is 24 by 24 CSS px at AA. WCAG 2.5.5 Target Size (Enhanced) is 44 by 44 at AAA. A 44px floor is a house standard at the AAA figure. Say so; do not write "AA requires 44px". (Moship ui-designer §2.)
+Be exact about levels. WCAG 2.5.8 Target Size (Minimum) is 24 by 24 CSS px at AA. WCAG 2.5.5 Target Size (Enhanced) is 44 by 44 at AAA. A 44px floor is a house standard at the AAA figure. Say so; do not write "AA requires 44px".
 
 ## JSON example
 
@@ -123,7 +135,7 @@ Be exact about levels. WCAG 2.5.8 Target Size (Minimum) is 24 by 24 CSS px at AA
       "basis": "House floor at the WCAG 2.5.5 (AAA) figure; WCAG 2.5.8 (AA) minimum is 24px"
     },
     {
-      "id": "button.disabled-explains-itself",
+      "id": "button.states.disabled-explains",
       "component": "Button",
       "rubric": "states",
       "severity": "MEDIUM",
@@ -158,7 +170,7 @@ Be exact about levels. WCAG 2.5.8 Target Size (Minimum) is 24 by 24 CSS px at AA
 | `auto` | Reading code or the stylesheet, asserted by a test | A test failure, or a known violation | A test |
 | `review` | Judgement: is this the right primitive? Does the disabled state explain itself? | An advisory | An agent, named as owner |
 
-Write `auto` rules against the source text of the stylesheets. Asserting the declaration is stronger than measuring the pixel: it fails on the hard-coded value, not on what it produces. Typical checks: declares a property, omits a property, at least N px, has a focus ring, has no literal colour, contrast meets AA. (Moship ui-designer §3.)
+Write `auto` rules against the source text of the stylesheets. Asserting the declaration is stronger than measuring the pixel: it fails on the hard-coded value, not on what it produces. Typical checks: declares a property, omits a property, at least N px, has a focus ring, has no literal colour, contrast meets AA.
 
 `ui-designer` writes the `auto` half. `ux-designer` grades the `review` half. See [contribution.md](contribution.md) for the full ownership table.
 

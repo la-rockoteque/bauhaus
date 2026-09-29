@@ -19,17 +19,17 @@ sources:
 1. Publish a radius scale of 3 to 6 steps plus one full-round value. Example: `sm` 3px, `md` 4px, `lg` 6px, `pill` 999px. Add `none` if you need it. (A short scale keeps shapes consistent.)
 2. Map each radius to a kind of element. Small for tags and chips. Medium for inputs and buttons. Large for cards and panels. Pill for progress tracks and status pills. (Radius encodes element type, so users learn it.)
 3. Use one radius per nesting level. A child inside a padded parent has a smaller radius than the parent: `inner radius = outer radius - padding`. (Concentric corners look aligned.)
-4. Do not use a radius that turns a square control into a circle unless it is an avatar or an icon button. Name the pill value as a token, not `9999px` at call sites.
+4. Do not use a radius that turns a square control into a circle unless it is an avatar or an icon button. Name the pill value as a token, not `9999px` at call sites. (Material 3 names a `full` corner in its shape scale.)
 5. Publish a border-width scale of 2 or 3 steps: `hairline` 1px, `medium` 2px, and optionally `thick` 4px. Use 1px for default edges and dividers. Use 2px for emphasis and focus rings. (Few widths keep edges consistent.)
-6. Use `px` for border widths. Text-independent lines do not need to scale with the font size.
-7. Use a border style of `solid` by default. Keep `dashed` for drop zones and placeholders. Keep `dotted` out of the system unless a use is documented.
-8. Keep icon strokes on their own scale. See `iconography.md`.
+6. Use `px` for border widths. Text-independent lines do not need to scale with the font size. (House convention: keeps the width scale in rule 5 exact at every text size.)
+7. Use a border style of `solid` by default. Keep `dashed` for drop zones and placeholders. Keep `dotted` out of the system unless a use is documented. (House convention: solid reads as an edge, dashed as a target. See the dragged edge in Anatomy.)
+8. Keep icon strokes on their own scale. See `iconography.md`. (Cross-reference: that file holds the stroke scale.)
 9. A boundary that is the only visual cue for a control must have at least 3:1 contrast against the adjacent colour. This applies to an input's border, a checkbox outline and a radio ring. (WCAG 1.4.11 Non-text Contrast, AA)
 10. A boundary is not required to meet 3:1 when another cue identifies the control, such as a filled background at 3:1, a visible label plus a text cue, or an icon. Do not use this exception to make every border faint. (WCAG 1.4.11 Non-text Contrast, AA)
 11. Decorative dividers and card edges that carry no information are not covered by 1.4.11. Use a subtle border token for them. Use a strong border token for controls. (WCAG 1.4.11 Non-text Contrast, AA: only parts needed to identify a component or state.)
-12. Show the focus indicator as an outline or ring of at least 2px with 3:1 contrast against adjacent colours. Do not remove `outline` without a replacement. Draw it on `:focus-visible`. (WCAG 2.4.7 Focus Visible, AA; WCAG 1.4.11 Non-text Contrast, AA)
+12. Show the focus indicator as an outline or ring of at least 2px with 3:1 contrast against adjacent colours. Do not remove `outline` without a replacement. Draw it on `:focus-visible`. (WCAG 2.4.7 Focus Visible, AA. The 3:1 contrast is WCAG 1.4.11 Non-text Contrast, AA. The 2px thickness is WCAG 2.4.13 Focus Appearance, AAA. Treat 2px as a house standard at the AAA level.)
 13. Do not animate the focus ring in or out. Focus appears at once. (See `motion.md`.)
-14. Choose one edge strategy per surface family and state it in the styleguide: bordered or shadowed. Do not mix both on one card.
+14. Choose one edge strategy per surface family and state it in the styleguide: bordered or shadowed. Do not mix both on one card. (Material 3 keeps elevated, filled and outlined cards as separate types.)
 15. Prefer a border to a shadow for cards in dense, data-heavy interfaces. The border is the edge and the shadow stays free for things that float. (Two elevation rungs stay meaningful when cards do not use them. See `elevation.md`.)
 16. Prefer a shadow to a border for cards in sparse, content-led interfaces where surfaces sit on a tinted canvas. Add a border in forced-colors mode because shadows disappear there. (`forced-colors` removes `box-shadow`.)
 17. Store shape as three token families: `radius`, `border-width`, `border-style`. Combine them into a DTCG `border` composite only when a component always uses the same trio. (See `tokens/architecture.md`.)
@@ -111,7 +111,7 @@ A shape page carries these six sections. (Order: `docs/architecture.md` § Page 
 - `shape.radius-token` · auto · MEDIUM · `border-radius` uses a radius token.
 - `shape.border-width-token` · auto · LOW · Border widths come from the scale.
 - `shape.control-boundary-contrast` · auto · HIGH · Input, checkbox and radio boundaries reach 3:1 against their surface. (1.4.11, AA)
-- `shape.focus-outline` · auto · HIGH · Every interactive element has a visible focus style on `:focus-visible`, at least 2px. (2.4.7, AA)
+- `shape.focus-outline` · auto · HIGH · Every interactive element has a visible focus style on `:focus-visible`, at least 2px (house standard at 2.4.13, AAA). (2.4.7, AA)
 - `shape.edge-strategy` · review · LOW · A card uses a border or a shadow, not both.
 - `shape.nested-radius` · review · LOW · A nested child has a smaller radius than its parent.
 

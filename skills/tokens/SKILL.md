@@ -63,7 +63,7 @@ node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check [--config bauhaus.config.jso
 
 ## State tokens
 
-Interaction states (hover, active, disabled, selected, focus-visible) are semantic tokens, not raw values in a rule. Name them by the grammar (`color.action.primary.hover`). Every new colour token that a control uses needs its state siblings, or a written reason it has none. Each state pair passes `contrast.mjs`. The token group page lists the states it provides tokens for.
+Interaction states (hover, active, disabled, selected, focus-visible) are semantic tokens, not raw values in a rule. Use the two families in `${CLAUDE_PLUGIN_ROOT}/knowledge/tokens/naming.md` § State tokens: layers and shared colours (`color.state.hover-layer`, `color.state.pressed-layer`, `color.state.selected`, `color.state.disabled.{text,surface,border}`), and per-role colours (`color.action.<role>.<state>`, for example `color.action.primary.hover`). Focus is `focus.ring.{color,width,offset}`. Every new colour token that a control uses needs its state siblings, or a written reason it has none. Each state pair passes `contrast.mjs`. The token group page lists the states it provides tokens for.
 
 ## Token group page
 

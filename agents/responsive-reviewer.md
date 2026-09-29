@@ -133,8 +133,8 @@ is reachable on a phone.
 **Page contract.** When you review documentation, apply
 `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md`. You check the small-viewport
 claims in Usage and Pitfalls: each names its basis (a criterion with level, or a measured
-width). A missing section or a claim with no basis is a finding with rule id
-`page.<section>`, for example `page.usage`. Hand the wording to `ux-designer`.
+width). A missing section is a finding with rule id `page.<section>`, for example `page.usage`.
+A claim with no basis is `page.basis`. Hand the wording to `ux-designer`.
 
 ---
 

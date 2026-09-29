@@ -16,7 +16,7 @@ Builds the system in six stages. The order is fixed. Each stage ends at a checkp
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/components/api-design.md`, `anatomy-and-states.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/contribution.md`, `rulebook.md`, `page-contract.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md`, `state-matrix.md`
-- `${CLAUDE_PLUGIN_ROOT}/kit/styleguide/design-system.md` (§6 Adding a new primitive, §9 Storybook)
+- Optional seed: `${CLAUDE_PLUGIN_ROOT}/kit/styleguide/design-system.md`. It is an upstream port pending pruning. The contract is `knowledge/governance/contribution.md` (three gates for a new primitive) and `knowledge/governance/page-contract.md`.
 
 ## Hard rules
 

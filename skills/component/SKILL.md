@@ -16,7 +16,6 @@ A primitive is a reusable block that does one job and consumes semantic tokens. 
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/accessibility/apg-patterns.md` — keyboard contract, if the primitive is interactive.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/decision-tree.md`, `misfiles.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/contribution.md`, `rulebook.md`, `page-contract.md`
-- `${CLAUDE_PLUGIN_ROOT}/kit/styleguide/design-system.md` §6 Adding a new primitive.
 
 ## Steps
 

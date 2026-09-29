@@ -48,7 +48,7 @@ Ask with `AskUserQuestion` when unclear: author (new matrix), audit (grade an ex
    - **Tokens.** New state tokens (`color.action.primary.hover`) go through `/bauhaus:tokens`. No raw value in a state rule.
    - **Styleguide.** Write the matrix table into section 4 (States) of the page of the primitive or pattern in `<config.guide>`. Rows = states, columns = variants, cell = designed, n/a with reason, or missing. Keep the six-section page order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Add state-specific Usage rules and Pitfalls, each with a basis.
    - **Storybook.** In the States section of the page, one story per state, named after the state. Use forced-state helpers where the state cannot be reached by hand (hover, focus-visible). Follow `knowledge/tooling/storybook.md`.
-   - **Rulebook.** One rule per designed state, id `<component>.state.<state>` (for example `button.state.disabled`). Verify mode `auto` when code or CSS settles it (a `:focus-visible` rule exists), `review` otherwise. Ids are permanent.
+   - **Rulebook.** One rule per designed state, id `<component>.state.<state>` (for example `button.state.disabled`). Verify mode `auto` when code or CSS settles it (a `:focus-visible` rule exists), `review` otherwise. Other state rules use `<component>.states.<slug>` (for example `button.states.tokens`); see `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/rulebook.md` § Rule id shapes. Ids are permanent.
 8. **Audit mode.** Do steps 3-5. Do not write. Report each `missing` cell as a finding. Basis: `knowledge/states/model.md`, plus a criterion when one applies (`WCAG 2.4.7 (AA)` for focus visible, `WCAG 4.1.3 (AA)` for status messages, `WCAG 1.4.1 (A)` when state uses colour alone). Check the number in `wcag-map.md` before you cite.
 9. **Slop check.** For each state-related Usage line and Pitfall ask: "What is the basis?" and "Would this line be true of any component?" No basis or generic: rewrite or cut. Example of a basis: a disabled control still needs a reason the user can read (`WCAG 3.3.1 (A)` for errors, Nielsen "Visibility of system status").
 10. **Verify.**
@@ -90,5 +90,6 @@ Next:    <one step>
 ## Rules
 
 - Never mark a state `n/a` without a reason.
+- Sort findings by severity descending; cap at ten.
 - A state that only shows through colour also needs a second cue (`WCAG 1.4.1 (A)`).
 - Do not add states nobody can reach. Say why a candidate state is out.

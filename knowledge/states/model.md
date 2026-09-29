@@ -31,7 +31,7 @@ The evidence for why this matters is in the heuristics and criteria a missing st
 | None (empty) | A barren screen gives no next step. | Nielsen 1; Nielsen 6, Recognition rather than recall |
 | Incorrect | A silent red border does not identify the error or suggest a fix. | WCAG 3.3.1 Error Identification (A), 3.3.3 Error Suggestion (AA) |
 | Done | The user does not know the action landed and repeats it. | Nielsen 1; WCAG 4.1.3 Status Messages (AA) |
-| Disabled without reason | The user cannot learn what unlocks the action. | Nielsen 9, Help users recognise, diagnose and recover from errors |
+| Disabled without reason | The user cannot learn what unlocks the action. | Nielsen 1, Visibility of system status; Lapomeray 2024 |
 | Focus-visible | A keyboard user loses their place. | WCAG 2.4.7 Focus Visible (AA) |
 | Too many | Content overflows, truncates without recourse, or cannot be oriented in. | WCAG 1.4.10 Reflow (AA); Nielsen 8, Aesthetic and minimalist design |
 
@@ -95,7 +95,7 @@ States are not a layer. They attach to the layer they are a state **of**. See `.
 
 | State kind | Owned by | Styled with | Example |
 |---|---|---|---|
-| Interaction state of a control | The **primitive** | Semantic **state tokens** (`color.state.hover`, `focus.ring`, `color.text.disabled`) | Button hover, Checkbox indeterminate |
+| Interaction state of a control | The **primitive** | Semantic **state tokens** (`color.state.hover-layer`, `color.action.primary.hover`, `focus.ring.color`, `color.state.disabled.text`; grammar in `../tokens/naming.md` § State tokens) | Button hover, Checkbox indeterminate |
 | The values state tokens take | The **foundation** (colour, elevation, motion) | Primitive tokens | "Hover darkens by one step on the ramp"; "state changes run at `duration.fast`" |
 | Lifecycle state of a data-bearing primitive | The **primitive** | Semantic tokens | Field incorrect, Select none, Table loading |
 | Lifecycle state of a screen or flow | The **pattern** | Composes primitives, no new token | Empty-results pattern using the EmptyState primitive |
@@ -129,8 +129,8 @@ Classification rules:
 ## Rulebook seeds
 
 - `<component>.state.<state>` · review · severity by the table above · "The `<state>` state of `<component>` is designed, or marked n/a with a reason."
-- `<component>.state.disabled-explains` · review · MEDIUM · "A disabled control says why and what unlocks it."
-- `<component>.state.not-colour-only` · review · HIGH · "Every state is distinguishable without colour."
+- `<component>.states.disabled-explains` · review · MEDIUM · "A disabled control says why and what unlocks it."
+- `<component>.states.not-colour-alone` · review · HIGH · "Every state is distinguishable without colour."
 
 ## Misfiles
 

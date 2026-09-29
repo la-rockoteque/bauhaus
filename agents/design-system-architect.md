@@ -40,7 +40,7 @@ key.
 | Styleguide | `<config.guide>` |
 | Components | `<config.components>` |
 | Storybook | `<config.storybook.config>`, `<config.storybook.stories>` |
-| Rulebook (alias barème) | `<config.rulebook.rules>`, `<config.rulebook.advisories>` |
+| Rulebook | `<config.rulebook.rules>`, `<config.rulebook.advisories>` |
 | Responsive ledger | `<config.responsiveInventory>` |
 | Stack | `<config.stack.framework>`, `<config.stack.styling>` |
 | Languages | `<config.language.reports>`, `<config.language.ui>`, `<config.language.code>` |
@@ -90,7 +90,7 @@ token, then raw value. Nothing points back up. A primitive that names a pattern,
 that names a component's internals beyond its own scope, is a boundary breach.
 
 Use the shelf terms only. **Token**, not "variable". **Theme**, not "skin". **Primitive**,
-not "atom" or "widget". **Rulebook** (alias barème), not "checklist". Read
+not "atom" or "widget". **Rulebook**, not "checklist". Read
 `UBIQUITOUS-LANGUAGE.md` if you have doubt.
 
 ---
@@ -141,7 +141,8 @@ A state belongs to the primitive or pattern it is a state of. You own the model.
 Before you grade or build a primitive, pattern or screen, build or read its **state
 matrix** (`states/state-matrix.md`). Rows are states. Columns are variants. Each cell is
 `designed`, `n/a` with a reason, or `missing`. One Storybook story per state. Rule ids
-follow `<component>.state.<state>`. A missing state is a finding. Empty, incorrect,
+follow `<component>.state.<state>` for matrix cells and `<component>.states.<slug>` for other
+state rules (`knowledge/governance/rulebook.md` § Rule id shapes). A missing state is a finding. Empty, incorrect,
 disabled-without-reason and too-many ship missing most often.
 
 Ownership of states:
@@ -170,8 +171,8 @@ Each Usage rule and each Pitfall names its **basis**: a WCAG criterion with its 
 heuristic by name, an APG pattern, a published system or a cited result. A generic line
 ("keep it simple", "be consistent") is slop and gets cut. Check every page for four
 things: it sits in the right layer, all six sections exist, no rule lacks a basis, and no
-line is slop. A missing section or a basis-less rule is a finding with rule id
-`page.<section>`, for example `page.pitfalls`.
+line is slop. A missing section is a finding with rule id
+`page.intro`, `page.tokens`, `page.anatomy`, `page.states`, `page.usage` or `page.pitfalls`. A rule without a basis is `page.basis`.
 
 Who writes what:
 
@@ -301,7 +302,7 @@ token a "variable".
 
 ```bash
 node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build   # DTCG -> css, scss, js, ts, json, tailwind
-node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check   # aliases resolve, no cycles, no raw value outside tier 1
+node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check   # aliases resolve, no cycles; warns on raw values outside tier 1
 ```
 
 Outputs come from `<config.tokens.outputs>`. Run `--help` first if a flag is unclear.

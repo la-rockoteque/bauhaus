@@ -6,8 +6,6 @@ layer: cross-cutting
 owner: design-system-architect
 tags: [contribution, four-artifacts, review, ownership, primitive-gates, propose-before-populate]
 sources:
-  - moship design-system guide §6 Adding a new primitive (kit/styleguide/design-system.md)
-  - moship ui-designer agent — fix vs recommend, four edits (reference/moship-agents/ui-designer.md)
   - Bauhaus architecture contract — docs/architecture.md
 ---
 
@@ -17,11 +15,11 @@ sources:
 
 ## Rules
 
-1. Ship the four artifacts together: tokens, styleguide section, Storybook page, rulebook entries. A foundation or a primitive is not done until all four exist. (Ubiquitous language: Four artifacts; moship ui-designer: "four edits or it is not done".)
+1. Ship the four artifacts together: tokens, styleguide section, Storybook page, rulebook entries. A foundation or a primitive is not done until all four exist. (Ubiquitous language: Four artifacts.)
 2. Each of the four artifacts carries the state matrix. A missing state is a visible blank, not a silent gap. (See [../states/state-matrix.md](../states/state-matrix.md); a state omitted in one artifact drifts from the others.)
-3. A new primitive needs two or more occurrences, a structural reason and one job. (Moship guide §6, gates 1 to 3.)
+3. A new primitive needs two or more occurrences, a structural reason and one job.
 4. Propose a foundation before you populate it. Write the rationale, the scale and the limits. Then add tokens. (A token with no scale is an arbitrary number.)
-5. Fix in place what is a defect. Recommend what is a judgement or a ripple. (Moship ui-designer §4.)
+5. Fix in place what is a defect. Recommend what is a judgement or a ripple.
 6. Migrate the first call site in the same change. (An unused primitive is a guess.)
 7. Classify the artifact before the work starts. Put the one-line classification in the change description. (See [../taxonomy/decision-tree.md](../taxonomy/decision-tree.md).)
 8. One change, one layer where possible. Do not mix a scale change with a new primitive. (Reviewers cannot judge two layers at once.)
@@ -47,7 +45,7 @@ Every page in the four artifacts follows [page-contract.md](page-contract.md): i
 
 ## Adding a primitive
 
-Check three gates before you write code. (Moship guide §6.)
+Check three gates before you write code.
 
 | Gate | Question | Evidence to attach |
 |---|---|---|
@@ -57,7 +55,7 @@ Check three gates before you write code. (Moship guide §6.)
 
 If a gate fails, keep the code local and add the candidate to the candidate list. Do not add it to the library.
 
-Where the styles live: a family read by several components goes in the shared sheet. A family read by one component stays beside that component. Tokens are always shared. (Moship guide §6, "Where the rules go".)
+Where the styles live: a family read by several components goes in the shared sheet. A family read by one component stays beside that component. Tokens are always shared.
 
 Then:
 1. Write the tokens it needs (semantic first; tier 1 only if the scale lacks a step).
@@ -127,7 +125,7 @@ Separate the authoring pass from the review pass. The author does not approve th
 | **motion-designer** | Durations, easing, choreography, reduced motion | `foundations/motion.md` | ui-designer for tokens; ux-designer for whether the motion helps |
 | **responsive-reviewer** | Breakpoints, reflow, target sizes across widths, density modes | `foundations/spacing-layout.md`, `patterns/responsive.md` | ui-designer for a token or a scale change |
 
-The split between `auto` and `review` is not administrative. It is the difference between a fact and a judgement. (Moship ui-designer §3.)
+The split between `auto` and `review` is not administrative. It is the difference between a fact and a judgement.
 
 ## Rulebook seeds
 

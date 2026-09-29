@@ -12,10 +12,10 @@ knowledge/             the knowledge base, one folder per shelf
 scripts/               zero-dependency Node ≥ 20 tools (ESM, .mjs)
 test/                  node:test suites for scripts/ (node --test test/)
 kit/                   starter files skills copy into a project
-  storybook/           seed Storybook + dev overlay + rulebook, ported from moship-web (React). To be pruned.
-  styleguide/          seed styleguide + responsive inventory, ported from moship.
+  storybook/           seed Storybook + dev overlay + rulebook, ported from an upstream project (React). To be pruned.
+  styleguide/          seed styleguide + responsive inventory, ported from an upstream project.
   tokens/              seed DTCG tokens
-reference/             source material kept for comparison only (the original moship agents). Never loaded by skills.
+reference/             source material kept for comparison only (the original upstream agents). Never loaded by skills.
 docs/                  plugin docs
 bauhaus.config.schema.json
 ```
@@ -38,7 +38,7 @@ Every primitive, pattern and screen has a **state matrix** (`knowledge/states/st
 - **Lifecycle states** — Speelman's nine: nothing, loading, none, one, some, too-many, incorrect, correct, done.
 - **Interaction states** — default, hover, focus-visible, active, disabled; functional: loading, success, error, selected; plus read-only, indeterminate, expanded, current.
 
-Each cell is `designed`, `n/a` with a reason, or `missing`. A `missing` cell is a finding. Rule ids: `<component>.state.<state>`. Reports carry a `## States` line.
+Each cell is `designed`, `n/a` with a reason, or `missing`. A `missing` cell is a finding. Rule ids: `<component>.state.<state>` for a matrix cell, `<component>.states.<slug>` for every other state rule (`knowledge/governance/rulebook.md` § Rule id shapes). Reports carry a `## States` line.
 
 ## Page contract — every DSM page
 
@@ -106,7 +106,7 @@ model: sonnet
 ---
 ```
 
-Body sections, in order: mandate · what you own · the shelves you read (knowledge files + project config paths) · the standards you cite · rubric · fix vs recommend · what you do not own (hand-offs) · verify before you claim · report format · language. Reports use `language.reports` from the project config; code prose is English.
+Body: numbered sections covering at least: mandate · what you own · the shelves you read (knowledge files + project config paths) · the standards you cite · rubric · fix vs recommend · what you do not own (hand-offs) · verify before you claim · report format · language. The order is free. Reports use `language.reports` from the project config; code prose is English.
 
 ## Skill format
 

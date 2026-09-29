@@ -13,6 +13,7 @@ Sorts artifacts into the four layers using the decision tree. Flags misfiles wit
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/decision-tree.md` — five questions.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/misfiles.md` — ids, how to spot, where it belongs.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/tokens/architecture.md` — tier rules.
+- `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md` — which layer owns which state.
 
 ## Input
 
@@ -36,21 +37,26 @@ Any of: file paths, a folder, component names, token names, CSS class names, a p
 2. **Collect the artifacts.** Expand folders. For "working changes", list changed files and their new names and values.
 3. **Split multi-layer files.** A stylesheet may hold tokens and primitives. A component file may hold a pattern. Classify each part, not the file.
 4. **Run the decision tree** on each artifact. Record the answer to each of the five questions in one clause.
-5. **Compare with where it lives.** Location rules:
+5. **Classify states.** A state has no layer of its own. It belongs to the layer it is a state of (`${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md` § Which layer owns which state).
+   - A state filed as a variant or a prop (`variant="disabled"`): `misfile.state-as-variant`.
+   - A state colour written as a literal: `misfile.state-colour-literal`.
+   - A primitive or pattern that documents only default and hover: `misfile.state-only-happy-path`.
+   - A lifecycle state of a screen belongs to a pattern. An interaction state belongs to its primitive.
+6. **Compare with where it lives.** Location rules:
    - Token: `<config.tokens.source>`.
    - Primitive: `<config.components>`, `<config.stylesheet>`.
    - Foundation: styleguide §Foundations and Storybook `Foundations/*`.
    - Pattern: styleguide §Patterns and Storybook `Patterns/*`.
-6. **Flag misfiles.** Match each mismatch to an id in `misfiles.md`. When none fits, write "unlisted" and describe it. Never invent an id.
-7. **Report.** One row per artifact. Then the misfile list with a smallest fix each.
-8. **Offer to move.** Ask with `AskUserQuestion`: move all, move some, or report only. Default is report only.
-9. **Move, when approved.**
+7. **Flag misfiles.** Match each mismatch to an id in `misfiles.md`. When none fits, write "unlisted" and describe it. Never invent an id.
+8. **Report.** One row per artifact. Then the misfile list with a smallest fix each.
+9. **Offer to move.** Ask with `AskUserQuestion`: move all, move some, or report only. Default is report only.
+10. **Move, when approved.**
    - Token misfiled as raw value: create the token in the source, replace the literal, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build` and `check`.
    - Value found in a pattern: promote it to a semantic token, then reference it.
    - Flow found in a primitive: extract the flow into a pattern that composes the primitive.
    - Not-DS found in the DS folder: move it to the product code. Update imports.
    - Keep each move small. Show the diff summary.
-10. **Verify.** Re-run the decision tree on moved artifacts. Run the token check. Grep for broken imports and dangling aliases.
+11. **Verify.** Re-run the decision tree on moved artifacts. Run the token check. Grep for broken imports and dangling aliases.
 
 ## Report format
 

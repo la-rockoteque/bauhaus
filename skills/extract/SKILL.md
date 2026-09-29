@@ -47,7 +47,7 @@ Scans an existing codebase, clusters what it finds, classifies findings into the
    - A ratchet per family: the count of raw literals may not rise, and must be lowered when it drops.
    - Risks: near-duplicate merges change pixels. List them.
 9. **Grade existing docs and states.** For each documented foundation, primitive and pattern:
-   - Page contract: which of the six sections exist (Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts). A missing section is a finding, rule id `page.<section>`. A Usage or Pitfall line with no basis is a finding, `page.usage` or `page.pitfalls`.
+   - Page contract: which of the six sections exist (Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts). A missing section is a finding, rule id `page.intro`, `page.tokens`, `page.anatomy`, `page.states`, `page.usage` or `page.pitfalls`. A Usage or Pitfall line with no basis is `page.basis`.
    - State matrix: read the CSS and stories for hover, focus-visible, active, disabled, loading, error and the lifecycle states. Mark each designed, n/a with reason, or missing. Missing is a finding.
    Summarise counts. Do not fix here. The migration plan hands fixes to `/bauhaus:states` and `/bauhaus:styleguide`.
 10. **Assess maturity.** Using `knowledge/governance/maturity.md`, name the level. Give evidence: token coverage percent, custom-property count, primitives with docs, rulebook presence. Give the next level and the first step.
@@ -79,3 +79,4 @@ Plan:      .bauhaus/extract/migration.md (<n batches>)
 - Never rewrite call sites in this skill. The plan hands that to `/bauhaus:tokens` and `/bauhaus:component`.
 - Never promote a one-off value to a token.
 - Every merge states its pixel or colour delta.
+- Sort findings by severity descending; cap at ten.

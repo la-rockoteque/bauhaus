@@ -8,7 +8,6 @@ tags: [foundation, token, primitive, pattern, dependency, classification]
 sources:
   - Bauhaus architecture contract — docs/architecture.md § The four layers
   - W3C Design Tokens Community Group, Design Tokens Format Module (DTCG) — https://www.w3.org/community/design-tokens/
-  - moship design-system guide §1, §5, §6 (kit/styleguide/design-system.md)
   - Vince Speelman, "The Nine States of Design", 2015 — https://medium.com/swlh/the-nine-states-of-design-5bfe9b3d6d85
 ---
 
@@ -25,9 +24,9 @@ Use this file first. Every agent classifies an artifact here before it creates, 
 3. A raw value (`#244b7b`, `12px`, `150ms`) appears in the token layer only. (A raw value elsewhere cannot be themed, audited or renamed in one place.)
 4. A foundation defines the family and the scale. Tokens populate the scale. (A token with no scale is an arbitrary number.)
 5. A call site uses semantic tokens, never primitive tokens. (Primitive tokens carry no intent; a theme cannot remap them safely.)
-6. A primitive has one job and its own API. If it has two jobs, split it. (moship guide §6, rule 3.)
+6. A primitive has one job and its own API. If it has two jobs, split it. (Gate 3: [contribution](../governance/contribution.md).)
 7. A pattern adds no token, no raw value and no new visual style. If it needs one, the gap is in a primitive or a foundation. (A pattern is composition, not decoration.)
-8. Layout may be local. Look may not. A component-scoped style may place things; it may not colour, round, shade or set type. (moship guide §5: "component-scoped styles are fine for layout, not for look".)
+8. Layout may be local. Look may not. A component-scoped style may place things; it may not colour, round, shade or set type.
 9. Ship the four artifacts together for a foundation or a primitive: tokens, styleguide section, Storybook page, rulebook entries. (Ubiquitous language: Four artifacts.)
 10. A theme changes semantic tokens only. It never changes a primitive. (Ubiquitous language: Theme.)
 11. A state is not a layer. An interaction state belongs to its primitive. A lifecycle state belongs to a pattern or to a data-bearing primitive. (A state describes a moment of one thing; it has no owner of its own.)
@@ -106,7 +105,7 @@ A primitive does not contain:
 - Page layout or routing.
 - Two unrelated jobs behind a `type` prop.
 
-A new primitive passes three gates: it appears in **two or more** places; it is **structural**, not incidental; its API has **one job** (moship guide §6). See [../governance/contribution.md](../governance/contribution.md).
+A new primitive passes three gates: it appears in **two or more** places; it is **structural**, not incidental; its API has **one job** See [../governance/contribution.md](../governance/contribution.md).
 
 ## Pattern
 
@@ -132,7 +131,7 @@ A state is a condition of a block at one moment. States are not a fifth layer. T
 
 | Kind | Examples | Belongs to | Styled by |
 |---|---|---|---|
-| **Interaction state** | default, hover, focus, active, disabled, selected, loading, error | The primitive that shows it | Semantic state tokens (`color.action.primary.hover`, `color.text.disabled`), never a literal |
+| **Interaction state** | default, hover, focus, active, disabled, selected, loading, error | The primitive that shows it | Semantic state tokens (`color.action.primary.hover`, `color.state.disabled.text`), never a literal |
 | **Lifecycle state** | Speelman's nine: nothing, loading, none (empty), one, some, too many, incorrect, correct, done | A pattern, or a primitive that holds data (`Table`, `List`) | The primitives the pattern composes |
 
 Consequences:
@@ -192,7 +191,7 @@ Note the pattern column. No pattern introduces a value. It reuses values through
 - `layers.pattern.no-own-style` · review · MEDIUM · A pattern adds no token and no new visual style.
 - `layers.foundation.rationale-present` · review · LOW · Each foundation page states its scale and its reason.
 - `layers.four-artifacts` · auto · MEDIUM · Each primitive has tokens, a styleguide section, a Storybook page and rulebook entries.
-- `layers.state.not-variant` · review · MEDIUM · Disabled, selected and loading are states, not variants.
+- `layers.state-not-variant` · review · MEDIUM · Disabled, selected and loading are states, not variants.
 
 ## Misfiles
 

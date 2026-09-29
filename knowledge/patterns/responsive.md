@@ -58,7 +58,7 @@ Same `<table>`, re-laid-out at the narrow breakpoint.
 
 - Modals and side panels become full-viewport drawers at the narrow breakpoint.
 - A popover anchored to its trigger switches to `position: fixed` pinned to both gutters: `inset-inline: 8px`. Never keep a negative offset that runs off the left edge.
-- The close control stays reachable and at least 44 px.
+- The close control stays reachable and at least 44 px (house standard; WCAG 2.5.5 Target Size (Enhanced) is AAA; 2.5.8 Target Size (Minimum) at AA is 24 × 24).
 - Set `min-width: 0` on a grid or flex child that holds a `nowrap` table, so the table scrolls inside its card and does not stretch the page.
 
 ## Probes

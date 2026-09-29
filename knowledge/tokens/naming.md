@@ -53,21 +53,16 @@ sources:
 | `--ds-ease` (with `160ms ease` inside) | A curve name that also holds a duration. | `--ds-duration-fast` and `--ds-ease-standard` |
 | `--ds-card-radius-6` | Component and value fused. | `--ds-radius-lg` or `--ds-card-radius` |
 
-## Naming a state family
+## State tokens
 
-Use the same state suffixes across families. A reader who knows `accent.hover` also knows `danger.hover`.
+State tokens come in two families. Use no other shape.
 
-```
-color.accent.default
-color.accent.hover
-color.accent.pressed
-color.text.disabled
-color.surface.selected
-color.border.focus
-color.status.danger.line
-```
+1. **State layers and shared state colours.** They belong to no role: `color.state.hover-layer`, `color.state.pressed-layer`, `color.state.selected`, `color.state.disabled.text`, `color.state.disabled.surface`, `color.state.disabled.border`.
+2. **Per-role interactive colours.** The pattern is `color.action.<role>.<state>`, for example `color.action.primary.hover`. The CSS form is `--ds-color-action-primary-hover`. Use the same state names for every role: a reader who knows `primary.hover` also knows `danger.hover`.
 
-For overlays that apply to any base colour, name the layer, not each result: `state.hover.opacity`, `state.pressed.opacity`. (`foundations/color.md`)
+Focus has its own group: `focus.ring.color`, `focus.ring.width`, `focus.ring.offset`.
+
+A layer applies to any base colour, so it is named once, not once per result. Lifecycle states rarely need tokens. When they do, use a state name from rule 11. (`states/interaction-states.md`, `foundations/color.md`)
 
 ## Page contract
 

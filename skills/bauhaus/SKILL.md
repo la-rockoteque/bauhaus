@@ -69,7 +69,7 @@ Plus the four artifacts that make a foundation or a primitive real: tokens, styl
 |---|---|
 | `bauhaus:design-system-architect` | Taxonomy, build, extract, tokens, governance, advising. Lead. |
 | `bauhaus:ui-designer` | Measurable look: tokens, contrast, spacing, radius, elevation, typography, focus appearance. |
-| `bauhaus:ux-designer` | Flow, the eight states, copy, keyboard, ARIA, data shape, filtering. |
+| `bauhaus:ux-designer` | Flow, the nine lifecycle states and the interaction states, copy, keyboard, ARIA, data shape, filtering. |
 | `bauhaus:motion-designer` | Time: durations, easing, reduced motion. |
 | `bauhaus:responsive-reviewer` | Phone floor. Scores working changes out of 100. |
 

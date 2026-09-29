@@ -59,7 +59,7 @@ Precisely
 
 States: <matrix status, when a component or screen is in question>
 Basis: <WCAG x.y.z (level) · system · research · knowledge/<path>>
-Next: </bauhaus:skill> — <why>   (only when work follows)
+Next: /bauhaus:<skill> — <why>   (only when work follows)
 ```
 
 ## Rules

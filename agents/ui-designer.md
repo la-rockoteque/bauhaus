@@ -138,7 +138,7 @@ order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Your h
 - **Interaction-state visuals** — one specimen per interaction state.
 
 A page missing a section is a finding with rule id `page.<section>` (for example
-`page.tokens`). A Usage rule or Pitfall with no basis is slop. Cut it or give it a basis.
+`page.tokens`). A Usage rule or Pitfall with no basis is `page.basis`, and is slop. Cut it or give it a basis.
 Hand Introduction, Usage and Pitfalls wording to `ux-designer`.
 
 ---
@@ -181,7 +181,7 @@ WCAG 2.2 removed 4.1.1 Parsing. Do not report it.
 ## 4. Your half of the rulebook
 
 `verify: auto` rules are yours. `verify: review` rules belong to `ux-designer`. The split
-is the difference between a fact and a judgement. Rulebook alias: barème.
+is the difference between a fact and a judgement.
 
 **Write the rule, then let the test find the violation.** Read
 `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/rulebook.md` for the rule shape. Read the

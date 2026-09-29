@@ -32,17 +32,17 @@ sources:
 6. Publish durations as a scale of primitive tokens. Call sites use the semantic role, not the number. (See "Duration scale".)
 7. Cap every user-triggered animation at 400 ms. Use the top of the scale only for full-viewport change. (Doherty & Thadhani, 1982: 400 ms productivity threshold; Miller, 1968: 0.1 s reads as instant.)
 8. Use one easing triad: standard, enter and exit. An enter curve has no ease-in. An exit curve ends at full speed. (See "Easing".)
-9. Make an exit one scale step shorter than its enter. Arriving carries information. Leaving does not.
-10. Use linear easing for progress that reports a rate. An eased progress bar misreports speed.
+9. Make an exit one scale step shorter than its enter. Arriving carries information. Leaving does not. (Material Design motion guidance runs exits shorter than enters.)
+10. Use linear easing for progress that reports a rate. An eased progress bar misreports speed. (Nielsen 1, Visibility of system status.)
 11. Never animate a target the pointer is moving toward. No overshoot, no bounce. A control must not shift its own centre on hover. (Fitts, 1954: a moving target has no stable distance or width.)
-12. Make motion interruptible. Prefer CSS transitions to keyframes where a transition can express the change. Transitions interrupt cleanly from any point.
+12. Make motion interruptible. Prefer CSS transitions to keyframes where a transition can express the change. Transitions interrupt cleanly from any point. (House convention: a transition retargets from its current value when the state flips. A keyframe animation restarts.)
 13. Show one moving thing at a time. Motion onset captures attention involuntarily. (Abrams & Christ, 2003)
 14. Do not flash more than three times in any one second. (WCAG 2.3.1 Three Flashes or Below Threshold, A)
 15. A loop that runs more than five seconds beside other content needs a way to pause, stop or hide it. (WCAG 2.2.2 Pause, Stop, Hide, A)
 16. Never make motion the only signal. Motion announces nothing to a screen reader. Add a status message. (WCAG 4.1.3 Status Messages, AA)
 17. Under `prefers-reduced-motion: reduce`, keep the transient and remove the displacement. Do not delete the animation. (See "Reduced motion".)
 18. Animate `transform` and `opacity`. Do not animate `width`, `height`, `top`, `left`, `margin` or `padding`. (Frame budget: layout runs every frame on the main thread.)
-19. Do not write `transition: all`. It animates properties nobody considered, including layout-forcing ones.
+19. Do not write `transition: all`. It animates properties nobody considered, including layout-forcing ones. (Frame budget, rule 18.)
 20. Do not add an entrance animation to the initial page load, or to rows that refetch on a timer. The user did not cause the change and cannot have missed it. (Motion-onset capture; Rensink et al., 1997)
 21. Do not animate data. A number that counts up hides the value the reader came for. (Tversky et al., 2002: apprehension.)
 22. Do not put a transition on the focus indicator. Focus appears at once. (WCAG 2.4.7 Focus Visible, AA: the indicator must be visible when focus lands.)

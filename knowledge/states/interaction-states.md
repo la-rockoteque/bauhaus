@@ -19,6 +19,16 @@ sources:
 
 An interaction state is a **condition** of a primitive at this instant. It is never a variant (a variant is a design choice, such as primary or secondary). Every state is styled with semantic **state tokens**, never with literals. See `model.md` for the lifecycle axis.
 
+## Rules
+
+1. Style every state with semantic state tokens. Never write a literal colour in a state rule. (`../tokens/naming.md` § State tokens; `misfile.state-colour-literal`)
+2. Draw `:focus-visible` on every focusable control, from `focus.ring.*`. Never write `outline: none` without a replacement. (WCAG 2.4.7 Focus Visible, AA)
+3. Guard hover with `@media (hover: hover)`. Never put information or a control only behind hover. (WCAG 2.1.1 Keyboard, A)
+4. Say why a control is disabled, and what unlocks it. (Nielsen 1, Visibility of system status; Lapomeray 2024)
+5. Keep the control's size while it loads, and block a second submit. (Nielsen 1; Nielsen 5, Error prevention)
+6. Show every state by more than colour. (WCAG 1.4.1 Use of Color, A)
+7. Decide the precedence of stacked states once, and apply it everywhere. (Nielsen 4, Consistency and standards; § Combinations and precedence)
+
 ## The core five
 
 Figma's resource names five essential states. Each row gives the trigger, the selector, the visual job, and the basis.
@@ -29,7 +39,7 @@ Figma's resource names five essential states. Each row gives the trigger, the se
 | **Hover** | Pointer over | `:hover`, inside `@media (hover: hover)` | A subtle shift that confirms the target. | Figma: "keep changes subtle". Touch devices have no hover (see § Touch). |
 | **Focus-visible** | Keyboard focus | `:focus-visible` | A ring that is always visible, never clipped or covered. | WCAG 2.4.7 Focus Visible (AA); 2.4.11 Focus Not Obscured (Minimum) (AA); 2.4.13 Focus Appearance (AAA) sets size and contrast. |
 | **Active** (pressed) | Pointer or key down | `:active` | Immediate acknowledgement of the press. | Miller 1968: under 0.1 s reads as instantaneous. |
-| **Disabled** | Not available now | `:disabled`, or `aria-disabled="true"` to stay focusable | Recognisably unavailable, and explained. | Nielsen 9; Lapomeray 2024: users must understand "why an action is disabled". WCAG 1.4.3 exempts inactive components from contrast, which is a floor, not a goal. |
+| **Disabled** | Not available now | `:disabled`, or `aria-disabled="true"` to stay focusable | Recognisably unavailable, and explained. | Nielsen 1, Visibility of system status; Lapomeray 2024: users must understand "why an action is disabled". WCAG 1.4.3 exempts inactive components from contrast, which is a floor, not a goal. |
 
 ## Functional states
 
@@ -71,7 +81,7 @@ Material 3 models hover, focus, pressed and dragged as a **state layer**: a tran
 
 ## Tokens
 
-State visuals come from semantic tokens. Suggested set (prefix `--ds-`):
+State visuals come from semantic tokens in two families (grammar: `../tokens/naming.md` § State tokens). Suggested set (prefix `--ds-`):
 
 ```
 color.state.hover-layer         opacity or colour delta for hover
@@ -80,6 +90,7 @@ color.state.selected            container colour for selected
 color.state.disabled.text       disabled text colour
 color.state.disabled.surface
 color.state.disabled.border
+color.action.<role>.<state>     per-role colour, e.g. color.action.primary.hover
 focus.ring.color  focus.ring.width  focus.ring.offset
 color.status.error.*  color.status.success.*
 motion.duration.fast            hover / focus colour changes
@@ -110,7 +121,7 @@ Owned by `motion-designer` (`../foundations/motion.md`):
 |---|---|---|
 | `outline: none` without a replacement | Keyboard users lose their place. | WCAG 2.4.7 (AA) |
 | Style `:focus` instead of `:focus-visible` | The ring appears on mouse click and teams then remove it. | Selectors Level 4 intent of `:focus-visible` |
-| A disabled button with no explanation | The user cannot learn what unlocks it. | Nielsen 9; Lapomeray 2024 |
+| A disabled button with no explanation | The user cannot learn what unlocks it. | Nielsen 1; Lapomeray 2024 |
 | Disabled as the only form validation | The user must guess which field blocks submit. Prefer an enabled submit plus an error summary. | WCAG 3.3.1 (A) |
 | Selected shown by colour only | Colour-blind users cannot see it. | WCAG 1.4.1 (A) |
 | Hover-only row actions | Unreachable on touch and invisible to keyboard users. | WCAG 2.1.1 Keyboard (A) |
@@ -119,14 +130,29 @@ Owned by `motion-designer` (`../foundations/motion.md`):
 | Dramatic hover colour swaps | They draw attention away from the task. | Figma: "avoid dramatic color swaps that distract" |
 | Loading spinner that replaces the label and shrinks the button | Layout shift, and the user loses what they pressed. | Nielsen 1; CLS |
 
+## Why
+
+- A control that gives no sign of its condition breaks Nielsen 1, Visibility of system status. Each state answers one question: can I act, did it hear me, is it busy.
+- Figma's resource names five essential states. Missing hover, focus or disabled is the usual failure.
+- Keyboard users depend on the focus ring: WCAG 2.4.7 (AA) requires it, and 2.4.11 (AA) requires that it is not hidden.
+- Material 3 models hover, focus, pressed and dragged as state layers. A layer is a delta on any colour, so contrast stays predictable in every theme.
+- Under 0.1 s a response reads as instant (Miller 1968). The press state must answer inside that limit.
+
 ## Rulebook seeds
 
 - `<c>.state.focus-visible` · auto · HIGH · "`:focus-visible` declares the house ring from `focus.ring.*`; no `outline: none` without it." (2.4.7 AA)
-- `<c>.state.hover-guarded` · auto · LOW · "Hover styles sit inside `@media (hover: hover)`."
-- `<c>.state.tokens` · auto · MEDIUM · "Every state declaration uses a `color.state.*` or status token, no literal."
-- `<c>.state.disabled-explains` · review · MEDIUM · "A disabled control says why and what unlocks it."
-- `<c>.state.selected-not-colour-only` · review · HIGH · (1.4.1 A)
-- `<c>.state.loading-no-shift` · review · MEDIUM · "Loading keeps the control's size and blocks re-submission."
+- `<c>.states.hover-guarded` · auto · LOW · "Hover styles sit inside `@media (hover: hover)`."
+- `<c>.states.tokens` · auto · MEDIUM · "Every state declaration uses a `color.state.*`, `color.action.*` or status token, no literal."
+- `<c>.states.disabled-explains` · review · MEDIUM · "A disabled control says why and what unlocks it."
+- `<c>.states.not-colour-alone` · review · HIGH · "Every state differs by more than colour." (1.4.1 A)
+- `<c>.states.loading-no-shift` · review · MEDIUM · "Loading keeps the control's size and blocks re-submission."
+
+## Misfiles
+
+- `Button variant="disabled"`: a condition filed as a choice. It is `misfile.state-as-variant`. Use a `disabled` prop.
+- A hover colour written as `#1a3a5c` in a state rule: a semantic state token belongs there (`misfile.state-colour-literal`).
+- A "States" page that lists hover colours: that is the colour foundation's token table. Each primitive's page holds its own state matrix.
+- Hover-only row actions: an action, not a state. Give it a visible, keyboard-reachable control.
 
 ## See also
 

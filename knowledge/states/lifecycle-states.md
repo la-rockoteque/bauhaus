@@ -18,6 +18,25 @@ sources:
 
 The nine states come from Speelman (2015). This file gives each one a definition, what it must show, the primitives and patterns where it matters most, and its evidence. Order follows Speelman's lifecycle.
 
+## Rules
+
+1. *Nothing*: say what the component is for and offer the first action. Never show *none* copy before the user asked. (Nielsen 6, Recognition rather than recall; Nielsen 10, Help and documentation)
+2. *Loading*: match the feedback to the wait. Nothing under 0.1 s, a skeleton or spinner from 1 to 10 s, progress above 10 s. (Miller 1968; Nielsen 1, Visibility of system status)
+3. *None*: write one message per case: first use, filtered, cleared. (Nielsen 1; Nielsen 3, User control and freedom; WCAG 4.1.3, AA)
+4. *One*: keep the layout and the plural correct with one item. (CLDR plural rules; Nielsen 4, Consistency and standards)
+5. *Some*: design with realistic data, not lorem ipsum. (Nielsen 2, Match between system and the real world)
+6. *Too many*: give every overflow axis a strategy. Never truncate an ID or an amount. (WCAG 1.4.10 Reflow, AA; 1.4.13 Content on Hover or Focus, AA)
+7. *Incorrect*: put the error in text, name the field, suggest the fix, keep the input. (WCAG 3.3.1, A; 3.3.3, AA; 1.4.1, A)
+8. *Correct*: confirm quietly, where the rule was not obvious. (Nielsen 5, Error prevention)
+9. *Done*: say what landed and announce it. (WCAG 4.1.3 Status Messages, AA)
+
+## Why
+
+- Speelman (2015): teams design components first, which "leaves an often glaring hole for users on 'the unhappy path'". The nine states are a checklist for that hole.
+- The unhappy states are where users stall. A user who cannot tell whether the system heard them is a Nielsen 1 failure. A user who meets a dead end is a Nielsen 3 failure.
+- Timing rules come from Miller 1968 and Nielsen's three response-time limits: 0.1 s, 1 s, 10 s.
+- Text, focus and announcement rules come from WCAG 3.3.1 (A), 3.3.3 (AA), 1.4.1 (A) and 4.1.3 (AA). A state only some users can perceive is not designed.
+
 ## 1. Nothing
 
 **Definition.** "The component exists but hasn't started" (Speelman): first use, not activated, no query yet.
@@ -155,11 +174,17 @@ Every arrow is a transition the motion foundation must handle (`../foundations/m
 ## Rulebook seeds
 
 - `<c>.state.nothing` · review · MEDIUM · "Before first use, the component says what it is for and offers the first action."
-- `<c>.state.none-cases` · review · MEDIUM · "First-use, filtered and cleared empties have different messages."
+- `<c>.states.none-cases` · review · MEDIUM · "First-use, filtered and cleared empties have different messages."
 - `<c>.state.one` · review · LOW · "The layout and the plural hold with exactly one item."
 - `<c>.state.too-many` · review · MEDIUM · "Overflow has a strategy on every axis; no value is truncated without recourse."
-- `<c>.state.incorrect-text` · review · HIGH · "The error is in text, names the field and suggests the fix." (3.3.1 A, 3.3.3 AA)
-- `<c>.state.done-announced` · review · HIGH · "Completion reaches a live region." (4.1.3 AA)
+- `<c>.states.incorrect-text` · review · HIGH · "The error is in text, names the field and suggests the fix." (3.3.1 A, 3.3.3 AA)
+- `<c>.states.done-announced` · review · HIGH · "Completion reaches a live region." (4.1.3 AA)
+
+## Misfiles
+
+- An "empty state" illustration hardcoded inside a list or table primitive. The empty-results decision belongs to a pattern, which composes the EmptyState primitive (`../patterns/empty-and-error.md`).
+- One "error" story or component that mixes user error and system error. They need different content and recovery: split them (`## 7. Incorrect`).
+- The `loading` of a button and the *loading* of a region as one thing. The first is an interaction state of the primitive. The second is a lifecycle state (`model.md` § Which layer owns which state).
 
 ## See also
 

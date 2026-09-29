@@ -21,13 +21,13 @@ sources:
 2. Build the type scale from a modular ratio or from a short hand-tuned list. Common ratios are 1.2 (minor third), 1.25 (major third) and 1.333 (perfect fourth). Dense tools suit the smaller ratios. (Ratio-based scales give predictable steps.)
 3. Keep the scale to 5 to 8 steps. Name steps by intent, not pixel value: `xs`, `sm`, `md`, `lg`, `xl`, `2xl`. (Intent names allow retuning without renaming. See `tokens/naming.md`.)
 4. Set sizes in `rem`, not `px`. Users who change the browser's default font size then get scaled text. (WCAG 1.4.4 Resize Text, AA: text resizes up to 200% without loss of content.)
-5. Never set `font-size` on `html` in `px`. Leave it at the user's default, or use a percentage.
-6. Keep 16px (1rem) as the default body size for reading text. Dense data tools may go lower for tables and metadata. Do not go below what your audience can read at the intended distance.
+5. Never set `font-size` on `html` in `px`. Leave it at the user's default, or use a percentage. (House convention: a px root ignores the user's default text size. WCAG 1.4.4 Resize Text, AA, is met by zoom alone.)
+6. Keep 16px (1rem) as the default body size for reading text. Dense data tools may go lower for tables and metadata. Do not go below what your audience can read at the intended distance. (House convention: 16px is the browser default. Material 3 body large is 16.)
 7. Set unitless `line-height`. Use about 1.5 for body prose, about 1.25 for headings and counts, and about 1.4 between the two. (Unitless values scale with the element's font size.)
 8. Body text must survive these user overrides with no loss of content or function: line height 1.5 times the font size, paragraph spacing 2 times the font size, letter spacing 0.12 times, word spacing 0.16 times. Do not fix the height of text containers. (WCAG 1.4.12 Text Spacing, AA)
 9. Do not clip text with a fixed `height` or `overflow: hidden`. Use `min-height`. Let containers grow. (WCAG 1.4.12 Text Spacing, AA; WCAG 1.4.4 Resize Text, AA)
 10. Limit line length for reading text to 45 to 75 characters. Use `max-width: 65ch` as a starting point. (Readability practice. WCAG 1.4.8 Visual Presentation, AAA, sets an upper limit of 80 characters.)
-11. Do not cap the measure of tables, forms and code. The measure rule applies to prose.
+11. Do not cap the measure of tables, forms and code. The measure rule applies to prose. (WCAG 1.4.8 Visual Presentation, AAA: the 80-character limit is for blocks of text.)
 12. Use weight, size and colour, in that order of restraint, to build hierarchy. Reach for colour or size before a heavier weight. Three weights are enough: regular, medium, semibold. (Fewer weights keep the hierarchy readable.)
 13. Do not use uppercase with wide letter spacing as a default label style. Use size, weight and colour. (Uppercase runs are harder to scan and read more slowly.)
 14. Use the monospace family for values people scan or compare: IDs, serial numbers, codes, quantities, percentages. Do not set prose in mono. (Fixed-width glyphs align characters and make differences visible.)

@@ -60,7 +60,7 @@ Only facts that the sources above support.
 
 The phrase comes from the American architect Louis Sullivan. In his 1896 essay he wrote that "form ever follows function". Modernists, including many at the Bauhaus, adopted the idea. The school never used it as an official slogan. Hannes Meyer, director 1928–1930, held the most strictly functional position.
 
-For a design system: a primitive exists because it does a job. Its shape follows that job. A button that needs ornament to read is the wrong button. The moship guide states it as "if a primitive needs ornament to read, the primitive is wrong".
+For a design system: a primitive exists because it does a job. Its shape follows that job. A button that needs ornament to read is the wrong button.
 
 ### Unity of art and craft, and the workshop model
 
@@ -78,7 +78,7 @@ For a design system: the foundations are the Vorkurs. Everyone learns colour, ty
 
 Kandinsky asked in 1923 whether the three primary forms, triangle, square and circle, matched the three primary colours, yellow, red and blue. He proposed the pairing yellow-triangle, red-square, blue-circle and asked students to test it. The answers were not unanimous. Treat it as a teaching question, not a finding.
 
-For a design system: a small, reasoned set beats a large, arbitrary one. Choose few forms and hues, and give each a reason. The scale is closed. This is a design choice supported by system practice (moship: "coherence comes from constraint, not variety"). It is not a claim that Kandinsky's pairing is true.
+For a design system: a small, reasoned set beats a large, arbitrary one. Choose few forms and hues, and give each a reason. The scale is closed. This is a design choice supported by system practice. It is not a claim that Kandinsky's pairing is true.
 
 ### Gesamtkunstwerk
 
@@ -104,10 +104,10 @@ Derived from the ideas above. Each has a basis in a system practice, a standard 
 
 | # | Principle | From | Basis for the rule |
 |---|---|---|---|
-| 1 | **Function decides form.** Every part exists for a job that can be stated in one sentence. | Form follows function | moship guide §1 rule 1; §6 gate 3 (one job). |
+| 1 | **Function decides form.** Every part exists for a job that can be stated in one sentence. | Form follows function | One-job gate: [contribution](../governance/contribution.md). |
 | 2 | **Teach the foundations first.** Foundations are written, closed and read before any primitive is built. | The Vorkurs | Layer order in [../taxonomy/layers.md](../taxonomy/layers.md): foundation defines the scale tokens populate. |
-| 3 | **Make small, reusable parts.** A primitive has one job and appears at least twice. | Standardisation; workshops | moship guide §6 gates 1–3. |
-| 4 | **Keep the set small and reasoned.** A closed scale, few hues, few radii, two elevation rungs. | Primary forms and colours; less is more | moship guide §1 ("coherence comes from constraint"); §5 ("never a fifth state colour"). |
+| 3 | **Make small, reusable parts.** A primitive has one job and appears at least twice. | Standardisation; workshops | Three gates: [contribution](../governance/contribution.md). |
+| 4 | **Keep the set small and reasoned.** A closed scale, few hues, few radii, two elevation rungs. | Primary forms and colours; less is more | Closed scales: [colour](../foundations/color.md). |
 | 5 | **Constrain to cohere.** Tokens are the only source of a raw value. | Gesamtkunstwerk | [../taxonomy/layers.md](../taxonomy/layers.md) rule 3. |
 | 6 | **Makers own the whole part.** Look, code, states and accessibility belong to one owner per primitive. | Unity of art and craft | Four artifacts ship together ([../governance/contribution.md](../governance/contribution.md)). |
 | 7 | **Design for reproduction.** Vary by props and tokens, not by copies. | Standardisation for industry | Adoption and token-coverage metrics ([../governance/metrics.md](../governance/metrics.md)). |
