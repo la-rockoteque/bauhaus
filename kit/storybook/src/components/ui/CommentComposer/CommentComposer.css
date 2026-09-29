@@ -1,0 +1,185 @@
+/* --- Comment composer ----------------------------------------------------- */
+/* A field for writing a comment, its send button, and the `@mention` list that
+   opens above it. Belongs to no domain: a requisition thread, a shipment's
+   grouped threads and a tracker task's thread all mount the same one, and the
+   only thing that differs between them is where the names come from.
+ *
+ * THE FIELD GROWS, IT DOES NOT SCROLL, and that is the whole point of it (TM-99).
+ * A composer that scrolls its own content is a scroll container nested inside the
+ * panel's, and the caret ends up in the innermost of three. */
+
+/* Padding, border and flex behaviour belong to `.mo-panel-foot` now. What stays is the
+   containing block the mention popover positions against. */
+.mo-composer {
+  position: relative;
+}
+
+/* TM-99. The field grew a scrollbar instead of growing, and sat inside two more scrollers.
+   Sized in `lh` because nothing declared a `line-height`: "72px" (and `rows={2}`'s 50px) is a
+   whole number of lines in no browser, which is why what you typed left the box.
+
+   The cap is a FRACTION OF THE VIEWPORT, not a line count, because the invariant is that the
+   composer never takes more than the thread. The panel is a fixed-height flex column where
+   this element is `flex-shrink: 0` against a `flex: 1` body, so an uncapped field always wins
+   and the thread always loses. Measured: 1500 characters of prose is 35 lines — 66% of the
+   panel at 900px, 78% at 768px — and 1500 characters that are mostly newlines is 1804px, which
+   collapses the thread to 24px and puts « Envoyer » off screen. `maxLength` caps characters,
+   not lines, so it is no defence: 120 part numbers is well under 1500 characters.
+
+   NOT `45%`: this element's containing block is auto-height, so a percentage resolves to
+   `none` and the cap would silently do nothing. `svh` tracks the panel at ~48% everywhere.
+
+   And NOT `dvh`, which is the one this will get "fixed" to. `svh` is the viewport with the
+   browser chrome EXPANDED, so the cap is tightest exactly when the keyboard is up and the
+   panel is shortest — which is when it matters. `dvh` would resize the composer under the
+   caret as the URL bar hides and unhides while you type.
+   At 45svh the inner scroller never engages for a realistic comment (24 lines at 900px, 20 at
+   768px) — it is a guarantee against the paste that destroys the panel, not a routine limit. */
+.mo-composer-field {
+  width: 100%;
+  field-sizing: content;
+  line-height: 1.45;
+  min-block-size: 4lh;
+  max-block-size: 45svh;
+  overflow-y: auto;
+  /* Six wheel notches over a field already at its bottom scrolled the document 720px, which
+     throws the panel's context away while you re-read your own comment. */
+  overscroll-behavior: contain;
+  /* Kept: auto-grow replaces the drag handle, which WCAG 2.5.7 gives no single-pointer
+     alternative to anyway. */
+  resize: none;
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  padding: 8px 12px;
+  font-family: var(--mo-font-body);
+  font-size: 0.875rem;
+  color: var(--mo-ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.mo-composer-field {
+    block-size: 5rem;
+  }
+.mo-composer-field:focus {
+  border-color: var(--mo-primary);
+}
+
+.mo-composer-field:disabled {
+  opacity: 0.6;
+}
+
+.mo-composer-send {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: var(--mo-primary);
+  color: white;
+  border: none;
+  border-radius: var(--mo-radius-lg);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.mo-composer-send:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.mo-composer-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mo-composer {
+  border-top: 1px solid var(--mo-primary-soft);
+  padding: 8px 12px;
+}
+
+.mo-mention-list {
+  position: absolute;
+  bottom: 100%;
+  left: 16px;
+  right: 16px;
+  margin-bottom: 4px;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  box-shadow: var(--mo-shadow-1);
+  max-height: 240px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mo-mention-list--empty {
+  padding: 6px 12px;
+}
+
+.mo-mention-empty {
+  margin: 0;
+  color: var(--mo-muted);
+  font-size: 0.8125rem;
+}
+
+.mo-mention-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 6px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--mo-ink);
+}
+
+.mo-mention-option--active {
+  background-color: var(--mo-primary-tint);
+}
+
+.mo-mention-option-name {
+  font-weight: 500;
+}
+
+.mo-mention-option-email {
+  font-size: 0.6875rem;
+  color: var(--mo-muted);
+}
+
+.mo-mention-option {
+    min-height: 44px;
+    justify-content: center;
+    padding: 8px 14px;
+    font-size: 0.9375rem;
+  }
+
+.mo-mention-option-email {
+    font-size: 0.75rem;
+  }
+
+.mo-mention-list {
+    /* Six rows of 44px, so the list still shows several names above the keyboard. */
+    max-height: min(45vh, 264px);
+  }
+
+.mo-mention-list--empty {
+    padding: 12px 14px;
+  }
+
+.mo-mention-empty {
+    font-size: 0.875rem;
+  }
+@media (max-width: 768px), (pointer: coarse) {
+          }
+
+.discussion-comment--highlight {
+  animation: discussion-comment-flash 2s ease-out;
+}

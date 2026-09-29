@@ -1,0 +1,43 @@
+/**
+ * The `.mo-spinner` family, filed beside its only caller — see
+ * `styles/componentOwnedCss.ratchet.test.ts`. Graded from `GRADED_SHEETS`.
+ */
+
+/* --- Spinner ------------------------------------------------------------ */
+/* The one "working" glyph. It paints in currentColor, so it takes the ink of
+   whatever holds it — a primary button's white, a panel's navy — and its
+   contrast is settled where it sits. Decorative: the button (aria-busy) or the
+   overlay (its label) that holds it says what is happening. */
+
+.mo-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: mo-spin 0.6s linear infinite;
+}
+
+.mo-spinner--lg {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+}
+
+@keyframes mo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Held still, the open ring still reads as "busy"; the words beside it carry
+   the rest. */
+@media (prefers-reduced-motion: reduce) {
+  .mo-spinner {
+    animation: none;
+  }
+}

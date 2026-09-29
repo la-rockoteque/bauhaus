@@ -1,0 +1,344 @@
+/* Layout for the Foundations pages only — swatch grids, type ramp, scale bars. */
+
+.fnd {
+  padding: 48px 56px 80px;
+  background: var(--mo-surface-soft);
+  min-height: 100vh;
+  max-width: 1180px;
+  font-family: var(--mo-font-body);
+}
+
+.fnd__lede {
+  margin: 12px 0 0;
+  max-width: 720px;
+  font-size: var(--mo-text-lg);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-ink-soft);
+}
+
+.fnd__grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.fnd__panel {
+  padding: 20px 22px 22px;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+}
+
+.fnd__panelText {
+  margin: 8px 0 0;
+  font-size: var(--mo-text-sm);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-muted);
+}
+
+/* --- Swatches ----------------------------------------------------------- */
+
+.fnd__group {
+  margin-top: 28px;
+}
+
+.fnd__groupHead {
+  margin: 0 0 12px;
+  font-size: var(--mo-text-lg);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.fnd__swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(212px, 1fr));
+  gap: 14px;
+}
+
+.fnd__swatch {
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  overflow: hidden;
+}
+
+.fnd__chip {
+  height: 76px;
+  border-bottom: 1px solid var(--mo-line-soft);
+}
+
+.fnd__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px 12px;
+}
+
+.fnd__name {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  color: var(--mo-ink);
+}
+
+.fnd__hex {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  color: var(--mo-mute-soft);
+}
+
+.fnd__usage {
+  font-size: var(--mo-text-xs);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-muted);
+}
+
+/* --- Type ramp ---------------------------------------------------------- */
+
+.fnd__ramp {
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  padding: 4px 22px;
+}
+
+.fnd__rampRow {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  align-items: baseline;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--mo-line-soft);
+}
+
+.fnd__rampRow:last-child {
+  border-bottom: 0;
+}
+
+.fnd__rampSpec {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fnd__rampSample {
+  color: var(--mo-ink);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* --- Scale -------------------------------------------------------------- */
+
+.fnd__scale {
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  padding: 16px 22px;
+}
+
+.fnd__scaleRow {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  gap: 18px;
+  padding: 6px 0;
+}
+
+.fnd__bar {
+  height: 14px;
+  border-radius: var(--mo-radius-sm);
+  background: var(--mo-primary);
+}
+
+.fnd__radii {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.fnd__radiusCell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px 18px;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+}
+
+.fnd__radiusSample {
+  height: 48px;
+  background: var(--mo-surface-sunk);
+  border: 1px solid var(--mo-line);
+}
+
+/* --- Elevation ---------------------------------------------------------- */
+
+.fnd__elevations {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 22px;
+  padding: 10px 4px 4px;
+}
+
+.fnd__elevationCell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fnd__elevationSample {
+  height: 84px;
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+}
+
+/* --- Mouvement — the live specimens on Fondations/Mouvement --------------- */
+
+/* Every specimen here runs, because motion is the one foundation a still page
+   cannot show: a reader who has never felt 150 ms beside 300 ms will not
+   respect the scale. */
+
+.mvt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-4);
+}
+
+.mvt__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-4);
+  flex-wrap: wrap;
+}
+
+.mvt__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mo-space-2);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-muted);
+}
+
+.mvt__stage {
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-md);
+  background: var(--mo-surface);
+  padding: var(--mo-space-5);
+}
+
+/* The simulation the toggle drives, and the same override the stylesheet
+   applies for real under prefers-reduced-motion: the travel collapses and the
+   fade survives. */
+.mvt__stage[data-reduced],
+.mvt__compareCell[data-reduced] {
+  --mo-motion-shift: 0px;
+  --mo-duration-slow: var(--mo-duration-fast);
+  --mo-duration-deliberate: var(--mo-duration-fast);
+}
+
+.mvt__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-3);
+}
+
+.mvt__row {
+  display: grid;
+  grid-template-columns: 220px 1fr 64px minmax(0, 1.2fr);
+  align-items: center;
+  gap: var(--mo-space-4);
+}
+
+/* The curve rows all run the same duration, so they carry no value column. */
+.mvt__row--curve {
+  grid-template-columns: 220px 1fr minmax(0, 1.2fr);
+}
+
+.mvt__rail {
+  position: relative;
+  height: 20px;
+  border-radius: var(--mo-radius-pill);
+  background: var(--mo-surface-sunk);
+  /* So the travel below can be expressed against the rail's own width and stay
+     the same distance in every row, whatever the viewport does. */
+  container-type: inline-size;
+}
+
+.mvt__dot {
+  position: absolute;
+  inset-block: 3px;
+  inline-size: 14px;
+  border-radius: 50%;
+  background: var(--mo-primary);
+  animation-name: mvt-travel;
+  animation-timing-function: var(--mo-ease-standard);
+  animation-fill-mode: both;
+}
+
+/* Same distance every row, so the only variable a reader sees is the one the
+   row is about. */
+@keyframes mvt-travel {
+  from {
+    transform: translateX(3px);
+  }
+  to {
+    transform: translateX(calc(100cqw - 17px));
+  }
+}
+
+.mvt__value {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-ink-soft);
+  text-align: right;
+}
+
+.mvt__note {
+  margin: var(--mo-space-2) 0 0;
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-muted);
+}
+
+.mvt__compare {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--mo-space-5);
+}
+
+.mvt__compareCell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-2);
+  overflow: hidden;
+}
+
+.mvt__compareHead {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  color: var(--mo-muted);
+}
+
+.mvt__panel {
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-md);
+  background: var(--mo-surface-soft);
+  padding: var(--mo-space-4);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-ink-soft);
+}
+
+.mvt__panel--enter {
+  animation: mo-enter-from-right var(--mo-duration-slow) var(--mo-ease-enter) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mvt__dot {
+    animation-name: mo-fade-in;
+  }
+}

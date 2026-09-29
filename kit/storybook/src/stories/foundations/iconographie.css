@@ -1,0 +1,112 @@
+.ico-section {
+  margin-bottom: var(--mo-space-7);
+}
+
+.ico-h2 {
+  margin: 0 0 var(--mo-space-2);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-lg);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.ico-note {
+  max-width: 68ch;
+  margin: 0 0 var(--mo-space-4);
+  color: var(--mo-ink-soft);
+  line-height: var(--mo-lh-normal);
+}
+
+.ico-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: var(--mo-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ico-cell {
+  display: flex;
+  gap: var(--mo-space-2);
+  align-items: center;
+  padding: var(--mo-space-2) var(--mo-space-3);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-md);
+  background: var(--mo-surface);
+  color: var(--mo-muted);
+}
+
+.ico-cell__means {
+  flex: 1;
+  color: var(--mo-ink);
+}
+
+.ico-cell__name {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  color: var(--mo-mute-soft);
+}
+
+.ico-table {
+  width: 100%;
+  max-width: 720px;
+  border-collapse: collapse;
+  font-size: var(--mo-text-sm);
+}
+
+.ico-table th {
+  padding: var(--mo-space-2) var(--mo-space-3);
+  border-bottom: 1px solid var(--mo-line);
+  color: var(--mo-muted);
+  font-weight: var(--mo-weight-medium);
+  text-align: left;
+}
+
+.ico-table td {
+  padding: var(--mo-space-2) var(--mo-space-3);
+  border-bottom: 1px solid var(--mo-line-soft);
+  color: var(--mo-ink-soft);
+  vertical-align: middle;
+}
+
+/* The count is a magnitude to compare down the column, so it sits right and in mono. */
+.ico-table td:nth-child(3) {
+  font-family: var(--mo-font-mono);
+  text-align: right;
+}
+
+.ico-strokes,
+.ico-rules {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ico-stroke {
+  display: flex;
+  gap: var(--mo-space-3);
+  align-items: center;
+  padding: var(--mo-space-2) 0;
+  border-bottom: 1px solid var(--mo-line-soft);
+  color: var(--mo-ink-soft);
+}
+
+.ico-stroke code {
+  min-width: 4ch;
+  font-family: var(--mo-font-mono);
+  text-align: right;
+}
+
+.ico-rules li {
+  max-width: 72ch;
+  margin-bottom: var(--mo-space-3);
+  color: var(--mo-ink-soft);
+  line-height: var(--mo-lh-normal);
+}
+
+.ico-rules code,
+.ico-note code {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-sm);
+}

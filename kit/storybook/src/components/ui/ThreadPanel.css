@@ -1,0 +1,126 @@
+/* --- Side panel ---------------------------------------------------------- */
+/* A surface that slides over the page from the trailing edge: a thread, a
+   filter set, a detail a route would be too much for.
+ *
+ * THE SCROLL CONTRACT IS THE POINT, not the surface. One element owns the
+ * scroll — `.mo-panel-body` — while the head and the foot are `flex-shrink: 0`,
+ * so a composer or a toolbar pinned in the foot never leaves view as the body
+ * grows. `min-height: 0` on both the panel and the body is what lets the body
+ * give way instead of the panel growing past the viewport; a flex child will
+ * not shrink below its content without it.
+ *
+ * It is drawn through a portal on purpose. A panel rendered in place inherits
+ * every scrolling ancestor it happens to sit under, and `overflow-x: auto`
+ * computes the other axis to `auto` — so an ancestor meant to pan a wide table
+ * sideways also clips the panel and any popover inside it. Portalled and fixed,
+ * the panel nests inside nothing. That is the rule the whole family keeps:
+ * never nest a scroll container inside another. */
+
+.mo-panel-scrim {
+  position: fixed;
+  /* Below the app header, which stays reachable while the panel is open. */
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--mo-scrim);
+  z-index: var(--mo-z-shell-panel);
+}
+
+.mo-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  /* `min()` is the clamp, not the design — the phone rule below is the design.
+     This only guarantees the panel cannot exceed the viewport in between. */
+  width: min(400px, 100vw);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background-color: var(--mo-surface);
+  box-shadow: var(--mo-shadow-2);
+  animation: mo-panel-in var(--mo-ease-out);
+}
+
+@keyframes mo-panel-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.mo-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--mo-space-2);
+  flex-shrink: 0;
+  padding: var(--mo-space-3) var(--mo-space-4);
+  border-bottom: 1px solid var(--mo-line);
+}
+
+.mo-panel-title {
+  margin: 0;
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.mo-panel-head-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-1);
+}
+
+/* The dismiss glyph. Not a `.mo-btn`: those carry a label and a box, and this is a
+   single character whose whole job is to be unmissable in the corner. */
+.mo-panel-close {
+  border: 0;
+  background: none;
+  padding: 0 var(--mo-space-1);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--mo-muted);
+  cursor: pointer;
+  transition: color var(--mo-ease);
+}
+
+.mo-panel-close:hover {
+  color: var(--mo-ink);
+}
+
+/* The only scrolling element of the panel. */
+.mo-panel-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  /* Reaching the end of the body must not start scrolling the page behind it. */
+  overscroll-behavior: contain;
+  padding: var(--mo-space-3) var(--mo-space-4);
+}
+
+/* Pinned under the body — a composer, a toolbar, an error. Never scrolls away. */
+.mo-panel-foot {
+  flex-shrink: 0;
+  position: relative;
+  border-top: 1px solid var(--mo-line);
+  padding: var(--mo-space-3) var(--mo-space-4);
+}
+
+/* A phone gets the whole width: 400px of panel beside 20px of page is neither. */
+@media (max-width: 768px) {
+  .mo-panel {
+    width: 100%;
+  }
+}
+
+/* A panel that arrives is information, not decoration — a reader who asked for
+   less motion still gets the panel, just without the slide. */
+@media (prefers-reduced-motion: reduce) {
+  .mo-panel {
+    animation: none;
+  }
+}

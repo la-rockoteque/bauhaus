@@ -1,0 +1,589 @@
+/* Chrome for the Storybook documentation pages.
+   Ported from the Moreau FLEX storybook and retargeted onto the --mo-* tokens.
+
+   The doc chrome obeys the system it documents: no uppercase tracked-out
+   labels, no gradients, borders and surfaces do the work. */
+
+.doc {
+  padding: 48px 56px 80px;
+  background: var(--mo-surface-soft);
+  min-height: 100vh;
+  max-width: 1180px;
+  font-family: var(--mo-font-body);
+}
+
+.doc code {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-ink);
+}
+
+/* --- Header ------------------------------------------------------------- */
+
+.doc__header {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--mo-line);
+}
+
+.doc__eyebrow {
+  margin: 0;
+  font-size: var(--mo-text-sm);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-muted);
+}
+
+.doc__h1 {
+  margin: 8px 0 0;
+  font-size: 34px;
+  font-weight: var(--mo-weight-semibold);
+  line-height: var(--mo-lh-tight);
+  letter-spacing: -0.022em;
+  color: var(--mo-ink);
+}
+
+/* --- Sections ----------------------------------------------------------- */
+
+.doc__section {
+  margin-top: 40px;
+}
+
+.doc__sectionHead {
+  margin-bottom: 16px;
+}
+
+.doc__h2 {
+  margin: 0;
+  font-size: var(--mo-text-xl);
+  font-weight: var(--mo-weight-semibold);
+  line-height: var(--mo-lh-tight);
+  color: var(--mo-ink);
+}
+
+.doc__h3 {
+  margin: 28px 0 10px;
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.doc__kicker {
+  margin: 6px 0 0;
+  max-width: 760px;
+  font-size: var(--mo-text-sm);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-muted);
+}
+
+.doc__lede {
+  margin: 0;
+  max-width: 760px;
+  font-size: var(--mo-text-lg);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-ink-soft);
+}
+
+.doc__meta {
+  margin: 14px 0 0;
+  font-size: var(--mo-text-sm);
+  color: var(--mo-ink-soft);
+}
+
+.doc__metaLabel {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 2px 8px;
+  border-radius: var(--mo-radius-sm);
+  background: var(--mo-surface-sunk);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-muted);
+}
+
+/* --- Anatomy ------------------------------------------------------------ */
+
+.doc__anatomy {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.doc__stage {
+  position: relative;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  /* Faint grid so spacing reads as measured, not arbitrary. */
+  background-image:
+    linear-gradient(var(--mo-line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mo-line-soft) 1px, transparent 1px);
+  background-size: 8px 8px;
+  background-position: -1px -1px;
+}
+
+.doc__stageInner {
+  position: relative;
+  display: inline-block;
+}
+
+.doc__pin {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border-radius: var(--mo-radius-pill);
+  background: var(--mo-primary);
+  color: #fff;
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-semibold);
+  line-height: 1;
+  box-shadow: 0 0 0 2px var(--mo-surface);
+  z-index: 2;
+}
+
+.doc__legend {
+  flex: 1 1 280px;
+  min-width: 260px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc__legendItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--mo-line-soft);
+  font-size: var(--mo-text-sm);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-ink-soft);
+}
+
+.doc__legendItem:last-child {
+  border-bottom: 0;
+}
+
+.doc__legendNum {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--mo-radius-pill);
+  background: var(--mo-primary);
+  color: #fff;
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-semibold);
+  line-height: 1;
+}
+
+.doc__legendLabel {
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.doc__legendNote {
+  color: var(--mo-muted);
+}
+
+/* --- Tables ------------------------------------------------------------- */
+
+.doc__table {
+  width: 100%;
+  max-width: 820px;
+  border-collapse: collapse;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  overflow: hidden;
+}
+
+.doc__table th,
+.doc__table td {
+  padding: 10px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--mo-line-soft);
+}
+
+.doc__table tr:last-child th,
+.doc__table tr:last-child td {
+  border-bottom: 0;
+}
+
+.doc__table th {
+  width: 34%;
+  font-size: var(--mo-text-sm);
+  font-weight: var(--mo-weight-semibold);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-ink);
+}
+
+.doc__table td {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-sm);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-ink-soft);
+}
+
+.doc__table--api td {
+  font-family: var(--mo-font-body);
+}
+
+/* --- Tokens ------------------------------------------------------------- */
+
+.doc__tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc__tokens li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 11px 5px 7px;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-pill);
+}
+
+.doc__tokenSwatch {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--mo-radius-sm);
+  border: 1px solid var(--mo-line);
+}
+
+/* --- Rules -------------------------------------------------------------- */
+
+.doc__rules {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 980px;
+}
+
+.doc__rule {
+  padding: 18px 22px 20px;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  border-top-width: 3px;
+}
+
+.doc__rule--do {
+  border-top-color: var(--mo-ready);
+}
+
+.doc__rule--dont {
+  border-top-color: var(--mo-error);
+}
+
+.doc__ruleHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-size: var(--mo-text-lg);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.doc__ruleMark {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--mo-radius-pill);
+  font-size: var(--mo-text-xs);
+}
+
+.doc__rule--do .doc__ruleMark {
+  background: var(--mo-ready-soft);
+  color: var(--mo-ready);
+}
+
+.doc__rule--dont .doc__ruleMark {
+  background: var(--mo-error-soft);
+  color: var(--mo-error);
+}
+
+.doc__rule ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.doc__rule li {
+  margin-bottom: 8px;
+  font-size: var(--mo-text-sm);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-ink-soft);
+}
+
+.doc__rule li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .doc__rules {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- States grid -------------------------------------------------------- */
+
+.doc__states {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.doc__state {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  max-width: 340px;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  overflow: hidden;
+}
+
+.doc__stateStage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  min-height: 92px;
+  border-bottom: 1px solid var(--mo-line-soft);
+  background-image:
+    linear-gradient(var(--mo-line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mo-line-soft) 1px, transparent 1px);
+  background-size: 8px 8px;
+  background-position: -1px -1px;
+}
+
+.doc__stateMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 16px 14px;
+}
+
+.doc__stateLabel {
+  font-size: var(--mo-text-sm);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.doc__stateTrigger {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  color: var(--mo-muted);
+}
+
+.doc__stateNote {
+  font-size: var(--mo-text-xs);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-muted);
+}
+
+/* --- Demo helpers ------------------------------------------------------- */
+
+/* :focus-visible cannot be triggered in a static grid, so this repeats the
+   real ring. Deliberate duplication — change the real rule, change this one. */
+.demo-focus .mo-btn,
+.demo-focus .mo-input,
+.demo-focus .mo-scope-btn {
+  outline: none;
+  border-color: var(--mo-primary);
+  box-shadow: 0 0 0 3px var(--mo-primary-soft);
+}
+
+/* A neutral canvas for samples that would otherwise blend into the stage. */
+.doc__sample {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-3);
+}
+
+.doc__sampleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-3);
+  flex-wrap: wrap;
+}
+
+/* --- Sample data table -------------------------------------------------- */
+/* The table conventions documented in Patterns → Structures de données,
+   written out once so the page shows what it describes. */
+
+.doc__dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  overflow: hidden;
+  font-size: var(--mo-text-sm);
+}
+
+.doc__dataTable th,
+.doc__dataTable td {
+  padding: 9px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--mo-line-soft);
+}
+
+.doc__dataTable thead th {
+  background: var(--mo-surface-soft);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+  white-space: nowrap;
+}
+
+.doc__dataTable tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.doc__dataTable td {
+  color: var(--mo-ink-soft);
+}
+
+.doc__dataTable .is-mono {
+  font-family: var(--mo-font-mono);
+}
+
+/* Right-aligned with tabular figures, so units stack digit over digit. */
+.doc__dataTable .is-numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Two-column workspace ----------------------------------------------- */
+/* The layout documented in Patterns → Mise en page dynamique. */
+
+.doc__workspace {
+  display: grid;
+  /* minmax(0, 1fr) and not 1fr: a wide table inside the left column would
+     otherwise set that column's minimum width and push the grid out. */
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: var(--mo-space-6);
+  align-items: start;
+}
+
+.doc__workspaceAside {
+  position: sticky;
+  top: var(--mo-space-4);
+  padding: var(--mo-space-4);
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+}
+
+@media (max-width: 900px) {
+  .doc__workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Discovery first: a basket read before there is anything to put in it
+     only ever says zero. */
+  .doc__workspaceAside {
+    position: static;
+    order: 2;
+  }
+}
+
+/* --- Barème -------------------------------------------------------------- */
+/* The rules the primitive is graded against. A table because the four columns are
+   compared down, not read across: what is asked, what value, how it is checked, and
+   whether it holds today. */
+.doc__benchmark {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--mo-text-sm);
+}
+
+.doc__benchmark th {
+  padding: var(--mo-space-2) var(--mo-space-3);
+  border-bottom: 1px solid var(--mo-line);
+  color: var(--mo-muted);
+  font-weight: var(--mo-weight-medium);
+  text-align: left;
+}
+
+.doc__benchmark td {
+  padding: var(--mo-space-3);
+  border-bottom: 1px solid var(--mo-line-soft);
+  vertical-align: top;
+}
+
+.doc__benchmarkExpectation {
+  margin: 0;
+  color: var(--mo-ink);
+}
+
+.doc__benchmarkMeta {
+  margin: var(--mo-space-1) 0 0;
+  color: var(--mo-muted);
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+}
+
+/* The verdict carries a word as well as a colour — the status must read in grayscale. */
+.doc__benchmark [data-verdict='réussi'] { color: var(--mo-ready); }
+.doc__benchmark [data-verdict='échoué'] { color: var(--mo-error); font-weight: var(--mo-weight-semibold); }
+.doc__benchmark [data-verdict='revue'] { color: var(--mo-muted); }
+.doc__benchmark [data-verdict='indisponible'] { color: var(--mo-mute-soft); }
+
+/* A sub-heading inside a section. Used by the pattern pages since they were written and
+   never defined here, so those headings rendered as unstyled browser h3. */
+.doc__h3 {
+  margin: 0 0 var(--mo-space-3);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+/* --- Prose in an extra section ------------------------------------------- */
+/* An `extra` whose content is explanation rather than a specimen. Measured, because a
+   paragraph that runs the full width of a fullscreen page is not read. */
+.doc__prose {
+  max-width: 76ch;
+}
+
+.doc__prose p {
+  margin: 0 0 var(--mo-space-3);
+  color: var(--mo-ink-soft);
+  line-height: var(--mo-lh-normal);
+}
+
+.doc__prose p:last-child {
+  margin-bottom: 0;
+}
+
+.doc__prose code {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-sm);
+}
+
+.doc__a11yNote {
+  max-width: 76ch;
+  margin: 0 0 var(--mo-space-4);
+  color: var(--mo-ink-soft);
+  line-height: var(--mo-lh-normal);
+}
+
+/* « à vérifier » must not read as a pass — it is the absence of a check, so it carries
+   the muted treatment rather than a status colour. */
+.doc__benchmark [data-verdict='à vérifier'] {
+  color: var(--mo-mute-soft);
+}

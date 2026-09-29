@@ -1,0 +1,76 @@
+.bareme-counts {
+  display: flex;
+  gap: var(--mo-space-2);
+  margin: 0 0 var(--mo-space-6);
+}
+
+.bareme-group {
+  margin-bottom: var(--mo-space-6);
+}
+
+.bareme-component {
+  margin: 0 0 var(--mo-space-2);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-lg);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.bareme-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--mo-text-sm);
+}
+
+.bareme-table th {
+  padding: var(--mo-space-2) var(--mo-space-3);
+  border-bottom: 1px solid var(--mo-line);
+  color: var(--mo-muted);
+  font-weight: var(--mo-weight-medium);
+  text-align: left;
+}
+
+.bareme-table td {
+  padding: var(--mo-space-3);
+  border-bottom: 1px solid var(--mo-line-soft);
+  vertical-align: top;
+}
+
+.bareme-expectation {
+  margin: 0;
+  color: var(--mo-ink);
+}
+
+.bareme-meta {
+  margin: var(--mo-space-1) 0 0;
+  color: var(--mo-muted);
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+}
+
+/* A word as well as a colour — the verdict must read in grayscale. */
+.bareme-table [data-verdict='réussi'] { color: var(--mo-ready); }
+.bareme-table [data-verdict='échoué'] { color: var(--mo-error); font-weight: var(--mo-weight-semibold); }
+.bareme-table [data-verdict='revue'] { color: var(--mo-muted); }
+.bareme-table [data-verdict='indisponible'] { color: var(--mo-mute-soft); }
+
+.acc-unclaimed {
+  color: var(--mo-mute-soft);
+}
+
+.acc-caveats {
+  max-width: 88ch;
+  margin: 0;
+  padding-left: var(--mo-space-4);
+}
+
+.acc-caveats li {
+  margin-bottom: var(--mo-space-2);
+  color: var(--mo-ink-soft);
+  line-height: var(--mo-lh-normal);
+}
+
+.acc-caveats code {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-sm);
+}

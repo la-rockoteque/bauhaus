@@ -1,0 +1,1899 @@
+/* ==========================================================================
+   MoShip Design System — tokens + primitives
+   ==========================================================================
+   An honest, restrained admin surface for warehouse and logistics work.
+   Two voices of one type family: IBM Plex Sans for everything readable,
+   IBM Plex Mono for everything scannable. Color carries status, never
+   decoration. No gradients, no glows, no uppercase tracked-out labels —
+   if a primitive needs ornament to read, the primitive is wrong.
+
+   See: docs/guides/design-system.md
+
+   Naming:
+     --mo-*   tokens
+     .mo-*    primitive classes (BEM-style: single-dash elements,
+              double-dash modifiers)
+   ========================================================================== */
+
+:root {
+  /* ---------- Color ---------------------------------------------------- */
+  /* Ink scale — text from most to least emphasis */
+  --mo-ink: #213547;
+  --mo-ink-soft: #28364a;
+  --mo-muted: #5a6b80;
+  --mo-mute-soft: #8596ac;
+
+  /* Surfaces */
+  --mo-surface: #ffffff;
+  --mo-surface-soft: #f5f7fa;
+  --mo-surface-sunk: #edf2f8;
+
+  /* Lines */
+  --mo-line: #cfd8e3;
+  --mo-line-soft: #e4ebf2;
+
+  /* Brand */
+  --mo-primary: #244b7b;
+  --mo-primary-ink: #1a3a5c;
+  --mo-primary-soft: rgba(36, 75, 123, 0.12);
+  /* The quietest primary wash — a selected row, a marked cell. */
+  --mo-primary-tint: rgba(36, 75, 123, 0.06);
+
+  /* State — ready / ok */
+  --mo-ready: #1e5a2c;
+  --mo-ready-soft: #e4f4e5;
+  --mo-ready-line: #d2e7d8;
+
+  /* State — substitution / warning */
+  --mo-amber: #8a4c00;
+  --mo-amber-ink: #6a3900;
+  --mo-amber-soft: #fff3e0;
+  --mo-amber-line: #f0c98c;
+
+  /* State — error */
+  --mo-error: #b33a3a;
+  --mo-error-soft: #fdecec;
+  --mo-error-line: #e7c7c7;
+
+  /* ---------- Typography ---------------------------------------------- */
+  --mo-font-body: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mo-font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+  /* Legacy alias — kept so callers using --mo-font-display fall through to
+     the body face. Hero titles differentiate via size + letter-spacing. */
+  --mo-font-display: var(--mo-font-body);
+
+  /* Type scale — five rungs cover everything in the app. Size names match
+     intent, not pixel value, so the scale can be retuned without renaming. */
+  --mo-text-xs: 11px;
+  --mo-text-sm: 12.5px;
+  --mo-text-md: 14px;
+  --mo-text-lg: 16px;
+  --mo-text-xl: 20px;
+  --mo-text-2xl: 26px;
+
+  --mo-lh-tight: 1.25;
+  --mo-lh-snug: 1.4;
+  --mo-lh-normal: 1.55;
+
+  /* Weights — three rungs. Stay disciplined; reach for color before weight. */
+  --mo-weight-regular: 400;
+  --mo-weight-medium: 500;
+  --mo-weight-semibold: 600;
+
+  /* ---------- Radius --------------------------------------------------- */
+  --mo-radius-sm: 3px;
+  --mo-radius-md: 4px;
+  --mo-radius-lg: 6px;
+  --mo-radius-pill: 999px;
+
+  /* ---------- Spacing -------------------------------------------------- */
+  /* 4-based rhythm. The discipline of skipping 6 / 10 / 14 forces alignment. */
+  --mo-space-1: 4px;
+  --mo-space-2: 8px;
+  --mo-space-3: 12px;
+  --mo-space-4: 16px;
+  --mo-space-5: 20px;
+  --mo-space-6: 24px;
+  --mo-space-7: 32px;
+  --mo-space-8: 48px;
+
+  /* ---------- Motion --------------------------------------------------- */
+  /* Durations: the scale Material 3, Carbon, Fluent 2 and Polaris converge on.
+     150 and 400 are unanimous across all four; 50 / 200 / 300 carry three.
+     400ms is the ceiling — past the Doherty threshold a response stops reading
+     as one, so nothing a user triggers may exceed it. */
+  --mo-duration-instant: 50ms; /* press, tick, state layer */
+  --mo-duration-fast: 150ms; /* hover, focus, colour */
+  --mo-duration-base: 200ms; /* a component changes state */
+  --mo-duration-slow: 300ms; /* a surface enters: drawer, modal, toast */
+  --mo-duration-deliberate: 400ms; /* full viewport only. The ceiling. */
+
+  /* Easing: Carbon's productive set — the one drawn for dense work software.
+     An entrance never eases in (x1 = 0) and an exit ends at full speed
+     (x2 = 1); Material and Fluent agree on that shape under other names. */
+  --mo-ease-standard: cubic-bezier(0.2, 0, 0.38, 0.9); /* moves within view */
+  --mo-ease-enter: cubic-bezier(0, 0, 0.38, 0.9); /* appears */
+  --mo-ease-exit: cubic-bezier(0.2, 0, 1, 0.9); /* leaves */
+
+  /* The one displacement distance. It collapses to 0 under reduced motion,
+     which keeps the fade — and so the feedback — while removing the travel
+     that triggers vection. */
+  --mo-motion-shift: 8px;
+
+  /* Deprecated: a duration bundled into a token named for a curve, so no call
+     site can change one without the other. Kept until the last caller moves. */
+  --mo-ease: 160ms ease;
+  --mo-ease-out: 220ms ease-out;
+
+  /* ---------- Elevation ------------------------------------------------ */
+  /* Two rungs only. Cards do NOT use shadow — the border is the edge.
+     Use shadow-1 for floating menus, shadow-2 for modals/overlays. */
+  --mo-shadow-1: 0 1px 2px rgba(20, 35, 60, 0.06), 0 2px 6px rgba(20, 35, 60, 0.05);
+  --mo-shadow-2: 0 8px 24px rgba(20, 35, 60, 0.12), 0 2px 6px rgba(20, 35, 60, 0.06);
+  /* The wash behind a modal surface — elevation seen from underneath. One value:
+     a second would be a second answer to "how far back does the page go". */
+  --mo-scrim: rgba(20, 35, 60, 0.32);
+
+  /* ---------- Z-Index ---------------------------------------------------- */
+  /* One stacking order for the whole app, written once. The shell renders in
+     layers of its own — header/footer/sidebar chrome, then a slide-over panel
+     above it — then popovers, modals, toasts, the materials spotlight, and
+     finally the blocking overlay each out-rank the one before. */
+  --mo-z-shell-sidebar: 9;
+  --mo-z-shell-header: 10;
+  --mo-z-shell-footer: 10;
+  --mo-z-shell-panel: 15;
+  /* A transient overlay anchored to a control — the `+N` requisition reveal, and any popover
+     after it. It floats over the fixed chrome (header, footer, sidebar, slide-over panel) and
+     stays under the dialogs. Added with MFX-138: that overlay is `position: fixed`, so it must
+     out-rank every other fixed element or the footer draws on top of it. */
+  --mo-z-popover: 20;
+  --mo-z-modal: 1000;
+  --mo-z-toast: 1100;
+  --mo-z-spotlight: 1200;
+  /* A blocking wait covers everything: an upload started from inside a modal
+     must not leave that modal clickable. */
+  --mo-z-overlay: 1300;
+}
+
+/* ==========================================================================
+   MOTION
+   ========================================================================== */
+
+/* Reduced motion, in one place rather than in every component.
+   The usual `* { animation-duration: 0.01ms }` reset deletes the motion
+   transient, and the transient is what makes a change get noticed at all
+   (Rensink, O'Regan & Clark 1997) — so the user who most needs a calm screen
+   is left with one that changes silently under them. WCAG's own text is the
+   way out: a change of colour or opacity is not motion animation. Keep the
+   fade, remove the travel. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --mo-motion-shift: 0px;
+    --mo-duration-slow: var(--mo-duration-fast);
+    --mo-duration-deliberate: var(--mo-duration-fast);
+  }
+}
+
+/* The shared entrances. A surface enters from its own edge — a drawer anchored
+   right comes from the right, never from nowhere — because displacement is what
+   says "this is the same object arriving" rather than "a different one appeared".
+   Component files spell these four ideas thirty-six times over; this is the one
+   copy they are meant to reach for. */
+@keyframes mo-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes mo-enter-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(var(--mo-motion-shift));
+  }
+}
+
+@keyframes mo-enter-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--mo-motion-shift)));
+  }
+}
+
+@keyframes mo-enter-from-below {
+  from {
+    opacity: 0;
+    transform: translateY(var(--mo-motion-shift));
+  }
+}
+
+/* ==========================================================================
+   PRIMITIVES
+   ========================================================================== */
+
+/* --- Page title — for hero titles at the top of a route ----------------- */
+
+.mo-page-title {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-2xl);
+  font-weight: var(--mo-weight-semibold);
+  line-height: var(--mo-lh-tight);
+  letter-spacing: -0.018em;
+  color: var(--mo-ink);
+  margin: 0;
+}
+
+.mo-page-title--lg {
+  font-size: 32px;
+  letter-spacing: -0.022em;
+}
+
+/* --- Kicker (small eyebrow label) --------------------------------------- */
+
+.mo-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mo-space-1);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-muted);
+}
+
+.mo-kicker--primary {
+  color: var(--mo-primary);
+}
+
+/* --- Section head (section heading with optional hint) ----------------- */
+
+.mo-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mo-space-3);
+  margin-bottom: var(--mo-space-3);
+  padding-bottom: var(--mo-space-2);
+  border-bottom: 1px solid var(--mo-line-soft);
+}
+
+.mo-section-title {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-lg);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.mo-section-hint {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-mute-soft);
+  margin-left: auto;
+}
+
+/* --- Field (vertical label + input wrapper) ---------------------------- */
+
+.mo-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-1);
+}
+
+.mo-field--grow {
+  min-width: 0;
+  flex: 1;
+}
+
+.mo-field-label {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-muted);
+}
+
+/* --- Input / textarea --------------------------------------------------- */
+
+.mo-input,
+.mo-textarea {
+  padding: 9px 12px;
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-md);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-md);
+  color: var(--mo-ink);
+  background-color: var(--mo-surface);
+  transition: border-color var(--mo-ease), box-shadow var(--mo-ease);
+}
+
+.mo-input {
+  height: 38px;
+}
+
+.mo-input:hover:not(:focus):not(:disabled),
+.mo-textarea:hover:not(:focus):not(:disabled) {
+  border-color: #a9b9cc;
+}
+
+.mo-input:focus,
+.mo-textarea:focus {
+  outline: none;
+  border-color: var(--mo-primary);
+  box-shadow: 0 0 0 3px var(--mo-primary-soft);
+}
+
+.mo-input--mono {
+  font-family: var(--mo-font-mono);
+  /* Plex Mono needs no extra tracking — it's already designed for clarity */
+}
+
+.mo-input--sm {
+  height: 32px;
+  padding: 6px 10px;
+  font-size: var(--mo-text-sm);
+}
+
+.mo-textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+
+/* --- Button ------------------------------------------------------------- */
+
+.mo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mo-space-2);
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: var(--mo-radius-md);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-medium);
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  transition: background var(--mo-ease), border-color var(--mo-ease), color var(--mo-ease);
+}
+
+.mo-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--mo-primary-soft);
+}
+
+.mo-btn:disabled {
+  cursor: not-allowed;
+}
+
+.mo-btn--primary {
+  background: var(--mo-primary);
+  color: white;
+  border-color: var(--mo-primary);
+}
+
+.mo-btn--primary:hover:not(:disabled) {
+  background: var(--mo-primary-ink);
+  border-color: var(--mo-primary-ink);
+}
+
+.mo-btn--primary:disabled {
+  background: #adb5bd;
+  border-color: #adb5bd;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.mo-btn--ghost {
+  background: var(--mo-surface);
+  color: var(--mo-ink);
+  border-color: var(--mo-line);
+}
+
+.mo-btn--ghost:hover:not(:disabled) {
+  background: var(--mo-surface-soft);
+  border-color: #a9b9cc;
+}
+
+.mo-btn--ghost:disabled {
+  color: var(--mo-mute-soft);
+  border-color: var(--mo-line-soft);
+}
+
+/* The one action in a region that cannot be taken back. */
+.mo-btn--danger {
+  background: var(--mo-error);
+  color: var(--mo-surface);
+  border-color: var(--mo-error);
+}
+
+.mo-btn--danger:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.mo-btn--danger:disabled {
+  opacity: 0.5;
+}
+
+/* Pending is disabled, but not unavailable: the button keeps its tone so the
+   user reads "my click landed, it is working" rather than "I cannot do this". */
+.mo-btn[aria-busy='true'] {
+  cursor: progress;
+}
+
+.mo-btn--primary[aria-busy='true']:disabled {
+  background: var(--mo-primary);
+  border-color: var(--mo-primary);
+  color: white;
+}
+
+.mo-btn--danger[aria-busy='true']:disabled {
+  opacity: 1;
+}
+
+.mo-btn--ghost[aria-busy='true']:disabled {
+  color: var(--mo-ink);
+  border-color: var(--mo-line);
+}
+
+.mo-btn--sm {
+  height: 32px;
+  padding: 0 12px;
+  font-size: var(--mo-text-sm);
+}
+
+.mo-btn-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: var(--mo-radius-pill);
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-semibold);
+}
+
+/* --- Card --------------------------------------------------------------- */
+
+.mo-card {
+  position: relative;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  overflow: hidden;
+  transition: border-color var(--mo-ease);
+}
+
+/* Left-edge status accent on a pseudo so content padding stays stable. */
+.mo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: transparent;
+  transition: background var(--mo-ease);
+}
+
+.mo-card--state-ready {
+  border-color: var(--mo-ready-line);
+}
+
+.mo-card--state-ready::before {
+  background: var(--mo-ready);
+}
+
+.mo-card--state-error {
+  border-color: var(--mo-error-line);
+}
+
+.mo-card--state-error::before {
+  background: var(--mo-error);
+}
+
+.mo-card--state-warning {
+  border-color: var(--mo-amber-line);
+}
+
+.mo-card--state-warning::before {
+  background: var(--mo-amber);
+}
+
+/* --- Chip / Tag --------------------------------------------------------- */
+
+.mo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mo-space-1);
+  padding: 2px 8px;
+  border: 1px solid var(--mo-line-soft);
+  background: var(--mo-surface-sunk);
+  border-radius: var(--mo-radius-sm);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-xs);
+  color: var(--mo-ink-soft);
+  max-width: 100%;
+}
+
+/* Tag — small semantic label. Sentence case, never uppercase. */
+.mo-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-semibold);
+  border-radius: var(--mo-radius-sm);
+  color: white;
+}
+
+.mo-tag--primary {
+  background: var(--mo-primary);
+}
+
+.mo-tag--amber {
+  background: var(--mo-amber);
+}
+
+.mo-tag--ready {
+  background: var(--mo-ready);
+}
+
+.mo-tag--muted {
+  background: var(--mo-surface-sunk);
+  color: var(--mo-muted);
+}
+
+/* Soft variants — tinted background, colored ink */
+.mo-tag--soft-amber {
+  background: var(--mo-amber-soft);
+  color: var(--mo-amber);
+}
+
+.mo-tag--soft-ready {
+  background: var(--mo-ready-soft);
+  color: var(--mo-ready);
+}
+
+.mo-tag--soft-error {
+  background: var(--mo-error-soft);
+  color: var(--mo-error);
+}
+
+.mo-tag--soft-primary {
+  background: var(--mo-primary-soft);
+  color: var(--mo-primary);
+}
+
+/* --- Status (the state of a record in a list) --------------------------- */
+/* A dot and a tinted pill with a 1 px edge: « À classer », « Soumise », « Annulée ».
+   Not `mo-tag`: a status carries a dot and an edge, so it holds on a zebra row, and
+   `--draft` is the one dashed edge — a record that does not exist yet. The 1/5/9 px
+   are below the smallest space token (4 px), as the padding of `mo-tag` is. */
+
+.mo-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 9px;
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-semibold);
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: var(--mo-radius-pill);
+}
+
+.mo-status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.mo-status--amber {
+  color: var(--mo-amber-ink);
+  background: var(--mo-amber-soft);
+  border-color: var(--mo-amber-line);
+}
+
+.mo-status--primary {
+  color: var(--mo-primary-ink);
+  background: var(--mo-primary-soft);
+}
+
+.mo-status--ready {
+  color: var(--mo-ready);
+  background: var(--mo-ready-soft);
+  border-color: var(--mo-ready-line);
+}
+
+.mo-status--error {
+  color: var(--mo-error);
+  background: var(--mo-error-soft);
+  border-color: var(--mo-error-line);
+}
+
+.mo-status--muted {
+  color: var(--mo-muted);
+  background: var(--mo-surface-sunk);
+  border-color: var(--mo-line);
+}
+
+.mo-status--draft {
+  color: var(--mo-muted);
+  background: var(--mo-surface-sunk);
+  border-style: dashed;
+  border-color: var(--mo-line);
+}
+
+/* --- Counter (stacked count key + value) -------------------------------- */
+
+.mo-counter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.mo-counter--center {
+  align-items: center;
+}
+
+.mo-counter-key {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-mute-soft);
+}
+
+.mo-counter-val {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-lg);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink-soft);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.mo-counter-val--accent {
+  color: var(--mo-primary);
+}
+
+.mo-counter-val--ready {
+  color: var(--mo-ready);
+}
+
+.mo-counter-val--error {
+  color: var(--mo-error);
+}
+
+/* --- Track (progress bar rail) ------------------------------------------ */
+
+.mo-track {
+  position: relative;
+  height: 4px;
+  background: var(--mo-surface-sunk);
+  border-radius: var(--mo-radius-pill);
+  overflow: hidden;
+}
+
+.mo-track--sm {
+  height: 3px;
+}
+
+.mo-track-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--mo-primary);
+  border-radius: var(--mo-radius-pill);
+  transition: width var(--mo-ease-out);
+}
+
+.mo-track-fill--error {
+  background: var(--mo-error);
+}
+
+.mo-track-fill--ready {
+  background: var(--mo-ready);
+}
+
+/* --- HUD (progress header with eyebrow + count + track) ---------------- */
+
+.mo-hud {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--mo-space-7);
+  padding: var(--mo-space-3) var(--mo-space-4);
+  background: var(--mo-surface-soft);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+}
+
+.mo-hud-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mo-hud-stack--end {
+  align-items: flex-end;
+}
+
+.mo-hud-eyebrow {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-muted);
+}
+
+.mo-hud-count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--mo-space-1);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-xl);
+  font-weight: var(--mo-weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--mo-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.mo-hud-count strong {
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-primary);
+}
+
+.mo-hud-count-slash {
+  color: var(--mo-mute-soft);
+  font-weight: var(--mo-weight-regular);
+  padding: 0 2px;
+}
+
+.mo-hud-count-total {
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-muted);
+}
+
+.mo-hud-count-label {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-muted);
+  margin-left: var(--mo-space-2);
+  padding-bottom: 1px;
+  letter-spacing: 0;
+}
+
+.mo-hud-token {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-md);
+  color: var(--mo-ink-soft);
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line);
+  padding: 3px 8px;
+  border-radius: var(--mo-radius-md);
+}
+
+/* --- Banner (attention block) ------------------------------------------ */
+
+.mo-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-3);
+  padding: var(--mo-space-2) var(--mo-space-3);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-md);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-ink-soft);
+  background: var(--mo-surface-soft);
+}
+
+.mo-banner--amber {
+  background: var(--mo-amber-soft);
+  border-color: var(--mo-amber-line);
+  color: var(--mo-amber-ink);
+}
+
+.mo-banner--error {
+  background: var(--mo-error-soft);
+  border-color: var(--mo-error-line);
+  color: var(--mo-error);
+  font-weight: var(--mo-weight-medium);
+}
+
+.mo-banner--ready {
+  background: var(--mo-ready-soft);
+  border-color: var(--mo-ready-line);
+  color: var(--mo-ready);
+  font-weight: var(--mo-weight-medium);
+}
+
+/* --- Scope / segmented control ----------------------------------------- */
+
+.mo-scope {
+  display: inline-flex;
+  background: var(--mo-surface-sunk);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-md);
+  padding: 2px;
+}
+
+.mo-scope-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mo-space-1);
+  padding: 6px 12px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--mo-radius-sm);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-muted);
+  cursor: pointer;
+  transition: background var(--mo-ease), color var(--mo-ease);
+}
+
+.mo-scope-btn:hover:not(.is-active) {
+  color: var(--mo-ink-soft);
+}
+
+.mo-scope-btn.is-active {
+  background: var(--mo-primary);
+  color: white;
+}
+
+.mo-scope-btn:disabled {
+  color: var(--mo-mute-soft);
+  cursor: not-allowed;
+}
+
+/* Amber-coloured active state — used to signal "this choice changes
+   semantics" (e.g. enables substitution mode in a scope selector). */
+.mo-scope-btn--warn.is-active {
+  background: var(--mo-amber);
+}
+
+/* --- Qty stepper ------------------------------------------------------- */
+
+.mo-qty {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-md);
+  overflow: hidden;
+  background: var(--mo-surface);
+}
+
+.mo-qty-btn {
+  width: 28px;
+  border: 0;
+  background: var(--mo-surface-soft);
+  color: var(--mo-primary);
+  cursor: pointer;
+  font-size: var(--mo-text-lg);
+  font-weight: var(--mo-weight-semibold);
+  line-height: 1;
+  transition: background var(--mo-ease);
+}
+
+.mo-qty-btn:hover {
+  background: #e1e9f3;
+}
+
+.mo-qty-input {
+  width: 46px;
+  border: 0;
+  border-left: 1px solid var(--mo-line);
+  border-right: 1px solid var(--mo-line);
+  background: transparent;
+  text-align: center;
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink-soft);
+  padding: 4px 2px;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+
+.mo-qty-input::-webkit-outer-spin-button,
+.mo-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mo-qty-input:focus {
+  outline: 2px solid var(--mo-primary);
+  outline-offset: -2px;
+}
+
+/* --- Scan bay (specialized scan input with icon slot + button) --------- */
+
+.mo-scan {
+  padding: var(--mo-space-3) var(--mo-space-4) var(--mo-space-4);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface);
+}
+
+.mo-scan-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mo-space-3);
+  margin-bottom: var(--mo-space-3);
+}
+
+.mo-scan-hint {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-mute-soft);
+}
+
+.mo-scan-field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: var(--mo-space-3);
+}
+
+.mo-scan-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mo-mute-soft);
+  pointer-events: none;
+}
+
+.mo-scan-input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 16px 0 44px;
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-md);
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-lg);
+  color: var(--mo-ink);
+  background: var(--mo-surface);
+  transition: border-color var(--mo-ease), box-shadow var(--mo-ease);
+}
+
+.mo-scan-input::placeholder {
+  color: var(--mo-mute-soft);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-md);
+}
+
+.mo-scan-input:focus {
+  outline: none;
+  border-color: var(--mo-primary);
+  box-shadow: 0 0 0 3px var(--mo-primary-soft);
+}
+
+/* --- Mobile: prevent iOS auto-zoom on input focus --------------------- */
+
+@media (max-width: 768px) {
+  .mo-input,
+  .mo-textarea,
+  .mo-scan-input {
+    font-size: 16px;
+  }
+}
+
+/* --- Utility: error text ----------------------------------------------- */
+
+.mo-error-text {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-error);
+}
+
+/* --- Empty state -------------------------------------------------------- */
+/* Nothing to show is not an error. No illustration, no apology, no action
+   inside the block — the action lives in the page header. */
+
+.mo-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--mo-space-1);
+  padding: var(--mo-space-5) var(--mo-space-6);
+  border: 1px dashed var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface);
+  color: var(--mo-muted);
+}
+
+.mo-empty--center {
+  align-items: center;
+  text-align: center;
+}
+
+/* Inside an existing bordered surface, the dashed box would be a second edge. */
+.mo-empty--bare {
+  border: 0;
+  background: none;
+  padding: var(--mo-space-4) 0;
+}
+
+.mo-empty-title {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-medium);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-ink-soft);
+}
+
+.mo-empty-body {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-muted);
+}
+
+/* "Tout est en règle" rather than "rien trouvé" — the only tone that earns a
+   status colour, and it earns the quiet one. */
+.mo-empty--ready {
+  border-color: var(--mo-ready-line);
+  background: var(--mo-ready-soft);
+}
+
+.mo-empty--ready .mo-empty-title {
+  color: var(--mo-ready);
+}
+
+/* --- Skeleton ----------------------------------------------------------- */
+/* A pulse, not a sweeping gradient: the system bans gradients, and a block
+   that quietly breathes reads as "loading" just as well. */
+
+.mo-skeleton {
+  display: block;
+  height: 1em;
+  border-radius: var(--mo-radius-sm);
+  background: var(--mo-surface-sunk);
+  animation: mo-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.mo-skeleton--text {
+  height: var(--mo-text-md);
+  margin: 3px 0;
+}
+
+.mo-skeleton--title {
+  height: var(--mo-text-xl);
+  margin: 4px 0;
+}
+
+.mo-skeleton--block {
+  height: 100%;
+  border-radius: var(--mo-radius-md);
+}
+
+/* A bar inside the text element it stands for, shorter than that element's line: the host keeps
+   its own line box, so the placeholder is exactly as tall as the text that replaces it. The
+   fixed-height variants above add their own height and margins, and a row of them grows. */
+.mo-skeleton--line {
+  display: inline-block;
+  height: 0.8em;
+  vertical-align: middle;
+}
+
+/* `SkeletonText`'s wrapper. A bare inline element sized to content has no
+   width for its lines' percentage widths to resolve against — harmless in
+   normal flow (the browser blockifies it around its block-level children),
+   but a flex item is sized by its own content first, so the lines' percentages
+   have nothing definite to resolve against and collapse to 0. An explicit
+   `width: 100%` gives the wrapper a used width before its children are laid
+   out, in either context — flexbox takes a specified (non-auto) width as the
+   item's flex-basis instead of measuring content. */
+.mo-skeleton-lines {
+  display: block;
+  width: 100%;
+}
+
+@keyframes mo-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* A placeholder that throbs is a hazard for vestibular and attention
+   sensitivities, and it carries no information a static block does not. */
+@media (prefers-reduced-motion: reduce) {
+  .mo-skeleton {
+    animation: none;
+  }
+}
+
+/* --- Provenance badge --------------------------------------------------- */
+/* Where a value came from: an assistant, a CSV feed, a MIR feed, a person.
+   Not a status and not a data value — `mo-tag` says what something IS, this
+   says who put it there.
+
+   Two tones, and the font is the tell. Neutral is mono because an origin is
+   usually a code you match against a system (CSV, MIR, `user`); primary is the
+   body face because it is a word you read (« Assistant »). */
+
+.mo-provenance {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 6px;
+  border: 1px solid var(--mo-line-soft);
+  /* --mo-radius-sm, not pill: the pill radius is reserved for progress tracks. */
+  border-radius: var(--mo-radius-sm);
+  background: var(--mo-surface-sunk);
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-medium);
+  line-height: 1.4;
+  color: var(--mo-muted);
+  vertical-align: middle;
+}
+
+.mo-provenance--primary {
+  border-color: var(--mo-primary-soft);
+  background: var(--mo-primary-soft);
+  color: var(--mo-primary-ink);
+  font-family: var(--mo-font-body);
+  letter-spacing: 0.01em;
+}
+
+/* The hint is a tooltip, so say so on hover. Attribute selector rather than a
+   modifier: the cursor follows the title being there, never a caller's memory. */
+.mo-provenance[title] {
+  cursor: help;
+}
+
+/* --- Tabs ---------------------------------------------------------------- */
+/* One row of routes through the same record. The underline is the only
+   indicator: a filled pill reads as a button and invites a second click. */
+
+.mo-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: var(--mo-space-1);
+  border-bottom: 1px solid var(--mo-line);
+  overflow-x: auto;
+}
+
+.mo-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mo-space-2);
+  padding: var(--mo-space-3) var(--mo-space-4);
+  background: none;
+  border: 0;
+  /* The active underline sits on the shared border, so reserve its height on
+     every tab — otherwise the row shifts by 2px when the selection moves. */
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-medium);
+  line-height: var(--mo-lh-tight);
+  color: var(--mo-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--mo-ease), border-color var(--mo-ease);
+}
+
+.mo-tab:hover:not(:disabled):not(.is-active) {
+  color: var(--mo-ink-soft);
+}
+
+.mo-tab.is-active {
+  color: var(--mo-primary);
+  border-bottom-color: var(--mo-primary);
+}
+
+.mo-tab:disabled {
+  color: var(--mo-mute-soft);
+  cursor: not-allowed;
+}
+
+/* --- Count badge --------------------------------------------------------- */
+/* A number riding on something else — a tab, a nav link, a section head. */
+
+.mo-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--mo-radius-pill);
+  background: var(--mo-surface-sunk);
+  color: var(--mo-muted);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.mo-tab.is-active .mo-count {
+  background: var(--mo-primary-soft);
+  color: var(--mo-primary-ink);
+}
+
+.mo-count--attention {
+  background: var(--mo-amber-soft);
+  color: var(--mo-amber-ink);
+}
+
+/* --- Page head ----------------------------------------------------------- */
+/* Title, one line of context, and the actions that belong to the whole route. */
+
+.mo-page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--mo-space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--mo-space-5);
+}
+
+.mo-page-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-1);
+  min-width: 0;
+}
+
+.mo-page-head-title {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-3);
+}
+
+.mo-page-subtitle {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-md);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-muted);
+  margin: 0;
+  max-width: 68ch;
+}
+
+.mo-page-head-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-2);
+  flex-shrink: 0;
+}
+
+/* --- Filter bar ---------------------------------------------------------- */
+/* The row of narrow labelled fields above a table. Fields keep their own
+   width so a date input and a text input do not stretch to the same column. */
+
+.mo-filters {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--mo-space-3);
+  padding: var(--mo-space-3) var(--mo-space-4);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface-soft);
+}
+
+.mo-filters .mo-field {
+  flex: 0 1 auto;
+  min-width: 140px;
+}
+
+/* Pushes the reset back to the right edge without a spacer element. */
+.mo-filters-end {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-2);
+}
+
+/* --- Pager --------------------------------------------------------------- */
+
+.mo-pager {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-3);
+  padding: var(--mo-space-3) 0;
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-muted);
+}
+
+.mo-pager-info {
+  font-variant-numeric: tabular-nums;
+}
+
+.mo-pager-controls {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-2);
+}
+
+/* --- Dropzone ------------------------------------------------------------ */
+/* The drop target is also the browse button: a separate link would give two
+   affordances for one action, and the keyboard needs the button anyway. */
+
+.mo-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mo-space-1);
+  width: 100%;
+  padding: var(--mo-space-6);
+  border: 1px dashed var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface-soft);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-muted);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--mo-ease), background var(--mo-ease);
+}
+
+.mo-dropzone:hover:not(:disabled),
+.mo-dropzone.is-active {
+  border-color: var(--mo-primary);
+  background: var(--mo-primary-tint);
+}
+
+.mo-dropzone:disabled {
+  cursor: not-allowed;
+  color: var(--mo-mute-soft);
+}
+
+.mo-dropzone-lead {
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-ink-soft);
+}
+
+.mo-dropzone-hint {
+  font-size: var(--mo-text-xs);
+}
+
+/* --- Empty state action -------------------------------------------------- */
+/* The action inside the block, for the one case the header cannot serve: a
+   route whose entire body is the empty list, where a header button would sit
+   far from the sentence explaining why there is nothing to see. */
+
+.mo-empty-action {
+  margin-top: var(--mo-space-3);
+}
+
+/* --- Visually hidden ------------------------------------------------------ */
+/* Present to assistive tech, absent to the eye. `display: none` would remove it
+   from both, which is why a hidden file input needs this and not that. */
+
+.mo-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Icon button --------------------------------------------------------- */
+/* A square target for an action that needs no word. It still needs a name:
+   every one of these carries aria-label, enforced by the component. */
+
+.mo-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid transparent;
+  border-radius: var(--mo-radius-md);
+  background: var(--mo-surface-soft);
+  color: var(--mo-muted);
+  cursor: pointer;
+  transition: background var(--mo-ease), color var(--mo-ease);
+}
+
+.mo-icon-btn:hover:not(:disabled) {
+  background: var(--mo-surface-sunk);
+  color: var(--mo-ink-soft);
+}
+
+.mo-icon-btn:disabled {
+  color: var(--mo-mute-soft);
+  cursor: not-allowed;
+}
+
+/* The count rides the corner, outside the flow, so the icon stays centred. */
+.mo-icon-btn .mo-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--mo-primary);
+  color: white;
+}
+
+/* --- Disclosure ---------------------------------------------------------- */
+/* A section that opens. The triangle turns; nothing else moves. */
+
+.mo-disclosure {
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface);
+}
+
+.mo-disclosure-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-2);
+  width: 100%;
+  padding: var(--mo-space-3) var(--mo-space-4);
+  background: none;
+  border: 0;
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.mo-disclosure-caret {
+  color: var(--mo-mute-soft);
+  transition: transform var(--mo-ease);
+}
+
+.mo-disclosure-summary[aria-expanded='true'] .mo-disclosure-caret {
+  transform: rotate(90deg);
+}
+
+.mo-disclosure-body {
+  padding: 0 var(--mo-space-4) var(--mo-space-4);
+}
+
+/* --- Side list ----------------------------------------------------------- */
+/* The master pane of a master/detail split: a search, its filters, then a
+   scrolling stack of selectable cards. */
+
+.mo-sidelist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-3);
+  min-height: 0;
+}
+
+.mo-sidelist-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-2);
+  overflow-y: auto;
+  min-height: 0;
+  /* A real <ul>, so assistive tech announces "list, N items" — the roles have
+     to be owned directly, and a bare button under role="list" loses them. */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* The <li> is the flex child; the card inside stretches to fill it. */
+.mo-listcard-item {
+  display: flex;
+}
+
+.mo-sidelist-note {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-1);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-muted);
+}
+
+/* --- List card ----------------------------------------------------------- */
+
+.mo-listcard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-2);
+  width: 100%;
+  padding: var(--mo-space-3);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface);
+  font-family: var(--mo-font-body);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--mo-ease), background var(--mo-ease);
+}
+
+.mo-listcard:hover:not(.is-selected) {
+  border-color: var(--mo-mute-soft);
+}
+
+/* Two signals, not one: the border alone fails at 3:1 against the resting
+   border for some viewers, so the tint carries it too. */
+.mo-listcard.is-selected {
+  border-color: var(--mo-primary);
+  box-shadow: inset 0 0 0 1px var(--mo-primary);
+  background: var(--mo-primary-tint);
+}
+
+.mo-listcard-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mo-space-1);
+}
+
+.mo-listcard-body {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--mo-space-3);
+}
+
+.mo-listcard-title {
+  font-size: var(--mo-text-md);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-ink);
+}
+
+.mo-listcard-aside {
+  flex-shrink: 0;
+  font-size: var(--mo-text-sm);
+  color: var(--mo-muted);
+  white-space: nowrap;
+}
+
+.mo-listcard-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--mo-space-3);
+  font-size: var(--mo-text-sm);
+}
+
+.mo-listcard-key {
+  font-family: var(--mo-font-mono);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink-soft);
+}
+
+.mo-listcard-meta {
+  color: var(--mo-muted);
+}
+
+/* --- Wizard -------------------------------------------------------------- */
+/* Numbered steps down the page, each one a card that opens. A step the data
+   does not allow yet stays shut and says why — it is never hidden, so the
+   reader can see the whole shape of the task from the start. */
+
+.mo-wizard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-3);
+}
+
+.mo-step {
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface-soft);
+  transition: background var(--mo-ease), border-color var(--mo-ease);
+}
+
+.mo-step.is-open {
+  border-color: var(--mo-line);
+  background: var(--mo-surface);
+}
+
+.mo-step-head {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-3);
+  width: 100%;
+  padding: var(--mo-space-4);
+  background: none;
+  border: 0;
+  font-family: var(--mo-font-body);
+  text-align: left;
+  cursor: pointer;
+}
+
+.mo-step-head:disabled {
+  cursor: not-allowed;
+}
+
+.mo-step-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--mo-radius-pill);
+  background: var(--mo-surface-sunk);
+  color: var(--mo-muted);
+  font-size: var(--mo-text-sm);
+  font-weight: var(--mo-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.mo-step.is-open .mo-step-n {
+  background: var(--mo-primary);
+  color: white;
+}
+
+.mo-step-title {
+  flex: 1;
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.mo-step-head:disabled .mo-step-title {
+  color: var(--mo-muted);
+}
+
+.mo-step-caret {
+  color: var(--mo-mute-soft);
+  flex-shrink: 0;
+}
+
+.mo-step-body {
+  padding: 0 var(--mo-space-4) var(--mo-space-4) calc(var(--mo-space-4) * 2 + 24px);
+}
+
+/* The sentence that says why a step is shut. Quieter than the title it sits
+   under, because it is an explanation and not a warning. */
+.mo-step-gate {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-muted);
+  margin: 0;
+}
+
+/* --- Summary rail -------------------------------------------------------- */
+/* The standing answer to "what have I filled in so far". Sticks beside a long
+   form; an em dash marks every entry that has no value yet. */
+
+.mo-rail {
+  position: sticky;
+  top: var(--mo-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-4);
+  padding: var(--mo-space-5);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface);
+}
+
+.mo-rail-title {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mo-muted);
+}
+
+.mo-rail-item {
+  display: flex;
+  gap: var(--mo-space-2);
+}
+
+/* The dot is decoration with a job: it lines the entries up and marks which
+   ones are answered. */
+.mo-rail-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  margin-top: 5px;
+  border-radius: var(--mo-radius-pill);
+  background: var(--mo-line);
+}
+
+.mo-rail-item--filled .mo-rail-dot {
+  background: var(--mo-primary);
+}
+
+.mo-rail-label {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mo-muted);
+}
+
+.mo-rail-value {
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-ink);
+}
+
+.mo-rail-value--empty {
+  color: var(--mo-mute-soft);
+}
+
+/* --- Dialog -------------------------------------------------------------- */
+/* A modal: the backdrop is the scrim, the surface floats on shadow-2. Head and foot
+   stay put and only the body scrolls, so a long form never pushes its actions out of
+   reach. Behaviour (portal, focus trap, Escape, scroll lock) lives in ui/Dialog. */
+
+.mo-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: var(--mo-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--mo-scrim);
+  animation: mo-fade-in var(--mo-duration-slow) var(--mo-ease-enter);
+}
+
+.mo-dialog-surface {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow: hidden;
+  background-color: var(--mo-surface);
+  border-radius: var(--mo-radius-lg);
+  box-shadow: var(--mo-shadow-2);
+  animation: mo-enter-from-below var(--mo-duration-slow) var(--mo-ease-enter);
+}
+
+.mo-dialog-surface:focus {
+  outline: none;
+}
+
+.mo-dialog-surface--narrow {
+  max-width: 540px;
+}
+
+.mo-dialog-surface--wide {
+  max-width: 800px;
+}
+
+.mo-dialog-surface--xl {
+  max-width: 1200px;
+}
+
+.mo-dialog-head {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mo-space-3);
+  padding: var(--mo-space-4) var(--mo-space-5);
+  border-bottom: 1px solid var(--mo-line-soft);
+}
+
+.mo-dialog-title {
+  min-width: 0;
+  margin: 0;
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-lg);
+  font-weight: var(--mo-weight-semibold);
+  line-height: var(--mo-lh-tight);
+  color: var(--mo-ink);
+  overflow-wrap: anywhere;
+}
+
+.mo-dialog-close {
+  flex-shrink: 0;
+  background: none;
+  font-size: var(--mo-text-xl);
+  line-height: 1;
+}
+
+.mo-dialog-body {
+  flex: 1;
+  min-height: 0;
+  padding: var(--mo-space-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.mo-dialog-message {
+  margin: 0 0 var(--mo-space-3);
+  font-size: var(--mo-text-md);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-ink-soft);
+}
+
+.mo-dialog-message:last-child {
+  margin-bottom: 0;
+}
+
+.mo-dialog-foot {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: flex-end;
+  gap: var(--mo-space-2);
+  padding: var(--mo-space-4) var(--mo-space-5);
+  border-top: 1px solid var(--mo-line-soft);
+}
+
+/* Under 769px a dialog is a full-height sheet that rises from the bottom edge, with
+   finger-sized close and actions. dvh, so the mobile browser's own bars do not hide the foot. */
+@media (max-width: 768px) {
+  .mo-dialog {
+    align-items: flex-end;
+  }
+
+  .mo-dialog-surface,
+  .mo-dialog-surface--narrow,
+  .mo-dialog-surface--wide,
+  .mo-dialog-surface--xl {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+
+  /* A question is not a form: the narrow sheet takes the height it needs and keeps its top
+     corners, so the page it asks about stays in view above it. */
+  .mo-dialog-surface--narrow {
+    height: auto;
+    border-radius: var(--mo-radius-lg) var(--mo-radius-lg) 0 0;
+  }
+
+  .mo-dialog-head {
+    padding: var(--mo-space-3) var(--mo-space-4);
+  }
+
+  .mo-dialog-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .mo-dialog-body {
+    padding: var(--mo-space-4);
+  }
+
+  .mo-dialog-foot {
+    padding-bottom: max(var(--mo-space-4), env(safe-area-inset-bottom));
+  }
+
+  .mo-dialog-foot .mo-btn {
+    min-height: 44px;
+  }
+}
+
+/* A phone stacks the actions full width, the primary on top under the thumb. A tablet keeps
+   them in a row. */
+@media (max-width: 640px) {
+  .mo-dialog-foot {
+    flex-direction: column-reverse;
+  }
+
+  .mo-dialog-foot .mo-btn {
+    width: 100%;
+  }
+}
+

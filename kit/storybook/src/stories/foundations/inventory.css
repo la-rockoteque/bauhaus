@@ -1,0 +1,230 @@
+/* Layout for the two inventory pages — long tables, count strips, benches.
+   Shares the page frame with foundations.css (.fnd) and the section faces with
+   docs.css (.doc__*); what lives here is only what a table this long needs. */
+
+/* --- Count strip -------------------------------------------------------- */
+
+.inv__counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  margin-top: 24px;
+  background: var(--mo-line-soft);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  overflow: hidden;
+}
+
+.inv__count {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px 16px;
+  background: var(--mo-surface);
+}
+
+.inv__countVal {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xl);
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-ink);
+}
+
+.inv__countVal--warn {
+  color: var(--mo-amber);
+}
+
+.inv__countKey {
+  font-size: var(--mo-text-xs);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-muted);
+}
+
+/* --- Tables ------------------------------------------------------------- */
+
+.inv__table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+  overflow: hidden;
+  font-size: var(--mo-text-sm);
+}
+
+.inv__table th,
+.inv__table td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--mo-line-soft);
+}
+
+.inv__table tr:last-child th,
+.inv__table tr:last-child td {
+  border-bottom: 0;
+}
+
+.inv__table thead th {
+  background: var(--mo-surface-soft);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-muted);
+  white-space: nowrap;
+}
+
+.inv__table code {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  color: var(--mo-ink);
+}
+
+.inv__note {
+  color: var(--mo-muted);
+  line-height: var(--mo-lh-snug);
+}
+
+.inv__num {
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  color: var(--mo-mute-soft);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Bordered square, so #ffffff on a white row is still a swatch. */
+.inv__dot {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-sm);
+  vertical-align: -4px;
+}
+
+.inv__groupHead {
+  margin: 26px 0 10px;
+  font-size: var(--mo-text-md);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.inv__groupHead:first-child {
+  margin-top: 0;
+}
+
+.inv__groupNote {
+  margin: -6px 0 10px;
+  font-size: var(--mo-text-xs);
+  color: var(--mo-muted);
+}
+
+/* --- Badges ------------------------------------------------------------- */
+
+.inv__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.inv__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: var(--mo-radius-sm);
+  font-size: var(--mo-text-xs);
+  font-weight: var(--mo-weight-medium);
+  white-space: nowrap;
+  background: var(--mo-surface-sunk);
+  color: var(--mo-muted);
+}
+
+.inv__badge--ok {
+  background: var(--mo-ready-soft);
+  color: var(--mo-ready);
+}
+
+.inv__badge--gap {
+  background: var(--mo-amber-soft);
+  color: var(--mo-amber);
+}
+
+/* --- Bench (both playgrounds) ------------------------------------------- */
+
+.inv__bench {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.inv__benchCell {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px 20px;
+  background: var(--mo-surface);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-lg);
+}
+
+.inv__benchHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0;
+  font-size: var(--mo-text-sm);
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink);
+}
+
+.inv__specimen {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--mo-space-3);
+  padding: var(--mo-space-4);
+  border-radius: var(--mo-radius-lg);
+  background: var(--mo-surface-soft);
+}
+
+.inv__files {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  max-height: 260px;
+  overflow: auto;
+  background: var(--mo-surface-soft);
+  border-radius: var(--mo-radius-md);
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  line-height: 1.7;
+  color: var(--mo-ink-soft);
+  list-style: none;
+}
+
+.inv__cmd {
+  display: block;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--mo-surface-sunk);
+  border-radius: var(--mo-radius-md);
+  font-family: var(--mo-font-mono);
+  font-size: var(--mo-text-xs);
+  line-height: var(--mo-lh-snug);
+  color: var(--mo-ink);
+  overflow-wrap: anywhere;
+}
+
+/* --- Unbound notice ----------------------------------------------------- */
+
+.inv__unbound {
+  margin-top: 24px;
+  padding: 16px 18px;
+  background: var(--mo-amber-soft);
+  border: 1px solid var(--mo-amber-line);
+  border-radius: var(--mo-radius-lg);
+  font-size: var(--mo-text-sm);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-amber-ink);
+}

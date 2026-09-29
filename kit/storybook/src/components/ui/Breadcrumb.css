@@ -1,0 +1,58 @@
+/**
+ * The `.mo-crumbs` family, filed beside its only caller — see
+ * `styles/componentOwnedCss.ratchet.test.ts`. Graded from `GRADED_SHEETS`.
+ */
+
+.mo-crumbs-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--mo-space-2);
+  margin: 0 0 var(--mo-space-3);
+  padding: 0;
+  list-style: none;
+}
+
+.mo-crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mo-space-2);
+  min-width: 0;
+  max-width: 100%;
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-md);
+}
+
+.mo-crumb-sep {
+  flex-shrink: 0;
+  color: var(--mo-mute-soft);
+}
+
+/* A rung is one line that shortens, never a row that pushes the page sideways: the list
+   wraps, and a name too long for a line of its own ends in an ellipsis. */
+.mo-crumb-link,
+.mo-crumb-current {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mo-crumb-link {
+  color: var(--mo-muted);
+  text-decoration: none;
+}
+
+.mo-crumb-link:hover {
+  color: var(--mo-primary);
+}
+
+.mo-crumb-link:focus-visible {
+  outline: none;
+  border-radius: var(--mo-radius-sm);
+  box-shadow: 0 0 0 3px var(--mo-primary-soft);
+}
+
+.mo-crumb-current {
+  color: var(--mo-ink-soft);
+  font-weight: var(--mo-weight-medium);
+}

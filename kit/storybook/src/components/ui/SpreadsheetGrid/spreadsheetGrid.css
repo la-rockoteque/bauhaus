@@ -1,0 +1,645 @@
+/* The spreadsheet grid (TM-105): the toolbar above it, and everything react-data-grid does not
+   draw — a rectangular selection, its border, the fill handle and the fill it previews. */
+
+.mo-grid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-2);
+  min-inline-size: 0;
+}
+
+/* react-data-grid ships its own palette; these are the design system's, so the grid reads as
+   the same table as the ones drawn by hand elsewhere on the page. */
+.mo-grid-rdg {
+  --rdg-color: var(--mo-ink);
+  --rdg-background-color: var(--mo-surface);
+  --rdg-header-background-color: var(--mo-surface-sunk);
+  --rdg-header-draggable-background-color: var(--mo-surface-soft);
+  --rdg-row-hover-background-color: var(--mo-primary-tint);
+  --rdg-border-color: var(--mo-line-soft);
+  --rdg-summary-border-color: var(--mo-line);
+  --rdg-selection-color: var(--mo-primary);
+  --rdg-font-size: var(--mo-text-sm);
+
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-md);
+  font-family: var(--mo-font-body);
+  /* A dragged selection would otherwise paint the browser's own text highlight over the tint. */
+  user-select: none;
+}
+
+/* react-data-grid ships its cells on 8px of inline padding, which reads as a dense wall at 840
+   rows. Widened here for the body cells and the two header rows alike.
+
+   Selected by ROLE, not by class: this build of the library hashes its class names with its own
+   version (`.rdg-7-0-0-beta-61-…`), so a class selector would silently stop matching on the next
+   bump. Its own rule lives in `@layer rdg.Cell`, and an unlayered rule outranks a layered one
+   whatever the specificity — so this needs no `!important` and no deeper selector. */
+.mo-grid-rdg [role='gridcell'],
+.mo-grid-rdg [role='columnheader'] {
+  padding-inline: var(--mo-space-3);
+}
+
+.mo-grid-head {
+  font-weight: var(--mo-weight-medium);
+  color: var(--mo-ink-soft);
+}
+
+/* Mono, because the point of a number in a column is to line up digit under digit —
+   `docs/guides/design-system.md` § typographie, same rule `.mo-table-num` is graded against. */
+.mo-grid-cell--numeric {
+  text-align: right;
+  font-family: var(--mo-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The group headings above the columns (TM-49). The split is the point of the grid — what the
+   tracker stores as its own fields on the left, what it merely carries on the right — so the
+   headings are read before the columns. */
+.mo-grid-group {
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-ink-soft);
+  text-align: center;
+}
+
+/* Metadata is carried, never read: the site derives nothing from it, so it is drawn back from
+   the fields beside it rather than competing with them. */
+.mo-grid-cell--muted {
+  color: var(--mo-muted);
+}
+
+/* Except under the selection wash. --mo-muted reads 5.45:1 on white but 4.47:1 over
+   --mo-primary-soft — under AA — so selecting a metadata column would quietly make it
+   unreadable. --mo-ink-soft keeps its margin either way. */
+.mo-grid-cell--selected.mo-grid-cell--muted {
+  color: var(--mo-ink-soft);
+}
+
+/* A cell that takes typing, drawn as the field it becomes on a double-click. Faint on purpose:
+   a column of boxed inputs at 840 rows is a wall, and what is wanted is « this one is mine to
+   fill », not a form. */
+.mo-grid-cell--editable {
+  background-color: var(--mo-surface);
+  box-shadow: inset 0 0 0 1px var(--mo-line-soft);
+}
+
+.mo-grid-cell--editable:hover {
+  box-shadow: inset 0 0 0 1px var(--mo-line);
+}
+
+/* Typed but not saved yet. Amber is the system's « pending » and neither of the grid's other
+   blues nor the saisie's done-green; the selection's edges, declared below, still win. */
+.mo-grid-cell--edited,
+.mo-grid-cell--edited:hover {
+  box-shadow: inset 0 0 0 1px var(--mo-amber-line);
+}
+
+/* Refused by the server: still a draft, so it wins over the amber above. Its fill is declared
+   after the selection's, below; the selection's edges still win the border. */
+.mo-grid-cell--invalid,
+.mo-grid-cell--invalid:hover {
+  box-shadow: inset 0 0 0 1px var(--mo-error);
+}
+
+/* The selection's own border wins over the field's outline — one of them says where the block
+   is, and two rectangles on one cell say nothing. */
+.mo-grid-cell--editable.mo-grid-cell--selected {
+  background-color: var(--mo-primary-soft);
+}
+
+/* The other half of the same statement: in a grid that takes entry, a cell that does not is
+   sunk and drawn back, the way a disabled field is. Without it « read-only » was the absence of
+   a treatment, which reads as nothing at all — and the columns that refuse a paste looked
+   exactly like the ones that accept it. Only in a grid where something IS writable: greying
+   every cell of a read-only preview would say « refused » about a table nobody was going to
+   type into. */
+.mo-grid-cell--locked {
+  background-color: var(--mo-surface-sunk);
+  color: var(--mo-ink-soft);
+}
+
+/* Selected, it keeps the wash — the block has to be visible across whatever it crosses — but
+   stays flatter than the cells beside it that can be typed into. */
+.mo-grid-cell--locked.mo-grid-cell--selected {
+  background-color: var(--mo-primary-soft);
+}
+
+/* ---- Folded groups (the accordion) ------------------------------------------------------ */
+
+/* The group heading is also the fold control, so it fills its cell and keeps the heading's own
+   type rather than looking like a button dropped into the header. */
+.mo-grid-group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mo-space-1);
+  inline-size: 100%;
+  padding: 0 var(--mo-space-2);
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.mo-grid-group-toggle:hover {
+  color: var(--mo-primary);
+}
+
+.mo-grid-group-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Folded, the heading is 28px of chevron over an empty column — the one control there is until
+   the panel it opens offers the pin. The cell's own 12px of padding would leave four of those
+   twenty-eight for the chevron, so it goes. */
+/* No `position` of its own: the header cell is `position: sticky` and that is what keeps it on
+   screen while the rows scroll under it. A sticky box is a containing block for an absolutely
+   positioned child all the same, which is all the chevron below needs. */
+.mo-grid-group--strip {
+  padding: 0;
+}
+
+.mo-grid-group-strip {
+  /* Over the whole cell rather than inside it: the grid pads its header cells by 12px a side,
+     which leaves four of the strip's twenty-eight for the chevron. */
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--mo-ink-soft);
+  cursor: pointer;
+}
+
+.mo-grid-group-strip:hover {
+  color: var(--mo-primary);
+  background-color: var(--mo-primary-soft);
+}
+
+
+/* The strip's own column: a column like any other, only narrow and empty. Drawn apart from its
+   neighbours it read as a scrollbar or a seam rather than as the group it stands for. */
+.mo-grid-cell--strip,
+.mo-grid-head--strip {
+  padding: 0;
+}
+
+/* ---- The peek panel --------------------------------------------------------------------- */
+
+/* A folded group opened over the grid instead of back into it — so the column someone is
+   typing in does not move. Raised, because it is on top of live content and the two have to be
+   told apart at a glance. */
+.mo-grid-peek {
+  position: absolute;
+  z-index: 3;
+  border: 1px solid var(--mo-primary);
+  border-radius: var(--mo-radius-md);
+  background-color: var(--mo-surface);
+  box-shadow: var(--mo-shadow-2);
+  overflow: hidden;
+}
+
+/* Its own scrollbar would sit between the two grids and offset every row by its width; the
+   wheel still works, because the panel and the grid are scrolled together. */
+.mo-grid-peek-grid {
+  border: 0;
+  scrollbar-width: none;
+}
+
+.mo-grid-peek-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---- Selection ------------------------------------------------------------------------- */
+
+/* A tint rather than a fill: the values stay readable inside the block, which is the whole
+   point of selecting a column of numbers to read its total. */
+.mo-grid-cell--selected {
+  background-color: var(--mo-primary-soft);
+  /* The handle hangs off the bottom-right corner and must not be clipped by its cell. */
+  overflow: visible;
+}
+
+.mo-grid-cell--edge-top {
+  box-shadow: inset 0 1px 0 0 var(--mo-primary);
+}
+.mo-grid-cell--edge-bottom {
+  box-shadow: inset 0 -1px 0 0 var(--mo-primary);
+}
+.mo-grid-cell--edge-left {
+  box-shadow: inset 1px 0 0 0 var(--mo-primary);
+}
+.mo-grid-cell--edge-right {
+  box-shadow: inset -1px 0 0 0 var(--mo-primary);
+}
+/* A single cell is all four edges at once, and `box-shadow` does not accumulate across rules —
+   the corners of the block need their pairs spelled out. */
+.mo-grid-cell--edge-top.mo-grid-cell--edge-left {
+  box-shadow: inset 0 1px 0 0 var(--mo-primary), inset 1px 0 0 0 var(--mo-primary);
+}
+.mo-grid-cell--edge-top.mo-grid-cell--edge-right {
+  box-shadow: inset 0 1px 0 0 var(--mo-primary), inset -1px 0 0 0 var(--mo-primary);
+}
+.mo-grid-cell--edge-bottom.mo-grid-cell--edge-left {
+  box-shadow: inset 0 -1px 0 0 var(--mo-primary), inset 1px 0 0 0 var(--mo-primary);
+}
+.mo-grid-cell--edge-bottom.mo-grid-cell--edge-right {
+  box-shadow: inset 0 -1px 0 0 var(--mo-primary), inset -1px 0 0 0 var(--mo-primary);
+}
+.mo-grid-cell--edge-top.mo-grid-cell--edge-left.mo-grid-cell--edge-right {
+  box-shadow:
+    inset 0 1px 0 0 var(--mo-primary),
+    inset 1px 0 0 0 var(--mo-primary),
+    inset -1px 0 0 0 var(--mo-primary);
+}
+.mo-grid-cell--edge-bottom.mo-grid-cell--edge-left.mo-grid-cell--edge-right {
+  box-shadow:
+    inset 0 -1px 0 0 var(--mo-primary),
+    inset 1px 0 0 0 var(--mo-primary),
+    inset -1px 0 0 0 var(--mo-primary);
+}
+.mo-grid-cell--edge-top.mo-grid-cell--edge-bottom.mo-grid-cell--edge-left.mo-grid-cell--edge-right {
+  box-shadow: inset 0 0 0 1px var(--mo-primary);
+}
+
+/* A refused cell stays red when selected, or locked — the commonest refusal is a tier turned
+   « s.o. » while the draft was waiting. */
+.mo-grid-cell--invalid,
+.mo-grid-cell--invalid.mo-grid-cell--selected,
+.mo-grid-cell--invalid.mo-grid-cell--locked {
+  background-color: var(--mo-error-soft);
+}
+
+/* Where the fill would land if the mouse came up now. Dashed and untinted, so it reads as a
+   proposal rather than as part of the selection. */
+.mo-grid-cell--fill {
+  outline: 1px dashed var(--mo-primary);
+  outline-offset: -1px;
+}
+
+.mo-grid-fill-handle {
+  position: absolute;
+  inset-block-end: -3px;
+  inset-inline-end: -3px;
+  inline-size: 7px;
+  block-size: 7px;
+  background-color: var(--mo-primary);
+  border: 1px solid var(--mo-surface);
+  cursor: crosshair;
+  z-index: 1;
+}
+
+.mo-grid-editor {
+  inline-size: 100%;
+  block-size: 100%;
+  padding-inline: var(--mo-space-3);
+  border: 0;
+  outline: 2px solid var(--mo-primary);
+  outline-offset: -2px;
+  font: inherit;
+  color: var(--mo-ink);
+  background-color: var(--mo-surface);
+}
+
+/* ---- Row actions ------------------------------------------------------------------------ */
+
+/* The layer the strip floats in: pinned to the row the pointer is on, against the grid's own
+   right edge. Outside the scroller, so a grid scrolled sideways keeps its actions in reach. */
+.mo-grid-row-actions-layer {
+  position: absolute;
+  inset-inline-end: 0;
+  display: flex;
+  /* Stretched, not centred: the strip is the end of the row it belongs to, and a band shorter
+     than the row reads as a thing floating over it rather than as part of it. */
+  align-items: stretch;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* It wears the row's own hover wash — `--rdg-row-hover-background-color`, which is what the
+   rest of the row is painted while the pointer is on it. On `--mo-surface` the strip was a
+   white patch cut out of a tinted row. */
+.mo-grid-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-inline: var(--mo-space-3) var(--mo-space-2);
+  pointer-events: auto;
+  /* Two stacked fades rather than one: `--mo-primary-tint` is translucent — it is a wash laid
+     over the row, not a colour — so on its own it would let the values underneath read straight
+     through the strip. The surface beneath it is what hides them, and the pair together come
+     out at exactly what the hovered row is painted. Fading rather than a square edge, so the
+     values it covers taper off instead of being cut. */
+  background-image:
+    linear-gradient(to right, transparent, var(--mo-primary-tint) var(--mo-space-4)),
+    linear-gradient(to right, transparent, var(--mo-surface) var(--mo-space-4));
+}
+
+.mo-grid-row-action {
+  inline-size: 26px;
+  block-size: 26px;
+}
+
+/* ---- Toolbar --------------------------------------------------------------------------- */
+
+/* Collapsed, the bar is one button and nothing else — no surface, no border, no padding worth
+   the name. A strip of chrome around a single icon reads as an empty toolbar rather than as a
+   table with a way to expand it. */
+.mo-grid-bar[data-collapsed] {
+  justify-content: flex-end;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+/* The bar holds the search field and the toolbar side by side. They are separate because the
+   search field is a text input, and APG keeps a text field out of a `role="toolbar"`: inside
+   the roving region Left/Right mean « move along the bar », and inside an input they mean
+   « move the caret ». Same bar to the eye, two things to the keyboard. */
+.mo-grid-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--mo-space-2);
+  padding: var(--mo-space-2);
+  background-color: var(--mo-surface-sunk);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-md);
+}
+
+.mo-grid-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--mo-space-2);
+  flex: 1 1 auto;
+}
+
+.mo-grid-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.mo-grid-toolbar-group + .mo-grid-toolbar-group {
+  padding-inline-start: var(--mo-space-2);
+  border-inline-start: 1px solid var(--mo-line);
+}
+
+.mo-grid-search {
+  position: relative;
+}
+
+.mo-grid-search-icon {
+  position: absolute;
+  inset-inline-start: var(--mo-space-2);
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  display: flex;
+  color: var(--mo-muted);
+  pointer-events: none;
+}
+
+.mo-grid-search .mo-input {
+  padding-inline-start: calc(var(--mo-space-3) + 14px);
+  inline-size: 18ch;
+}
+
+/* Hard against the end of the bar, which is where the ask put it — and where it stays when the
+   bar is one button. Restored after an edit swallowed it: the icon quietly moved to the left
+   and nothing failed, which is what `spreadsheet-grid.expand-at-the-end` now prevents. */
+.mo-grid-expand {
+  margin-inline-start: auto;
+}
+
+/* The native disclosure the column list hangs off: `<details>` opens and closes by itself, and
+   only the panel needs positioning. */
+.mo-grid-columns {
+  position: relative;
+}
+
+.mo-grid-columns > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.mo-grid-columns > summary::-webkit-details-marker {
+  display: none;
+}
+
+.mo-grid-columns-menu {
+  position: absolute;
+  inset-block-start: calc(100% + var(--mo-space-1));
+  inset-inline-end: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mo-space-1);
+  min-inline-size: 14rem;
+  max-block-size: 18rem;
+  overflow-y: auto;
+  padding: var(--mo-space-2);
+  background-color: var(--mo-surface);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-md);
+  box-shadow: var(--mo-shadow-1);
+}
+
+.mo-grid-columns-item {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-2);
+  font-size: var(--mo-text-sm);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* ---- Header cell ----------------------------------------------------------------------- */
+
+/* The heading, its sort arrow, the hide control and the column's filter, stacked in one cell.
+   react-data-grid centres a header cell's content; this one fills it instead. */
+.mo-grid-head-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--mo-space-1);
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.mo-grid-head-top {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-1);
+  min-inline-size: 0;
+}
+
+.mo-grid-head-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mo-grid-head-arrow {
+  flex: none;
+  color: var(--mo-primary);
+}
+
+/* The unsorted arrow is an affordance, not a state: visible enough to invite the click, faint
+   enough that a column nobody sorted does not read as sorted. */
+.mo-grid-head-arrow--idle {
+  color: var(--mo-muted);
+  opacity: 0.5;
+}
+
+/* Out of sight until the pointer or the keyboard reaches the column. One per heading, lit at
+   all times, is a row of controls competing with the headings themselves — and hiding a column
+   is not something anyone does often enough to pay for it on every glance.
+
+   `visibility` rather than `display`, so the button keeps its box and the heading beside it
+   does not shift when it appears. */
+.mo-grid-head-hide {
+  flex: none;
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border: 0;
+  border-radius: var(--mo-radius-sm);
+  background: none;
+  color: var(--mo-muted);
+  cursor: pointer;
+  visibility: hidden;
+}
+
+[role='columnheader']:hover .mo-grid-head-hide,
+[role='columnheader']:focus-within .mo-grid-head-hide,
+.mo-grid-head-hide:focus-visible {
+  visibility: visible;
+}
+
+.mo-grid-head-hide:hover {
+  color: var(--mo-ink);
+  background-color: var(--mo-surface-soft);
+}
+
+.mo-grid-head-filter {
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding: 2px var(--mo-space-2);
+  font: inherit;
+  font-weight: var(--mo-weight-regular);
+  color: var(--mo-ink);
+  background-color: var(--mo-surface);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-sm);
+}
+
+.mo-grid-head-filter::placeholder {
+  color: var(--mo-muted);
+}
+
+.mo-grid-head-filter:focus {
+  outline: 2px solid var(--mo-primary);
+  outline-offset: -1px;
+}
+
+/* ---- Footbar -------------------------------------------------------------------------- */
+
+.mo-grid-footbar {
+  display: flex;
+  align-items: center;
+  gap: var(--mo-space-3);
+  padding: var(--mo-space-2) var(--mo-space-3);
+  font-size: var(--mo-text-xs);
+  color: var(--mo-ink-soft);
+  font-variant-numeric: tabular-nums;
+  background-color: var(--mo-surface-sunk);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-md);
+}
+
+.mo-grid-footbar-stats {
+  display: flex;
+  gap: var(--mo-space-3);
+  margin-inline-start: auto;
+}
+
+/* « Voir la liste complète » (TM-109) — the foot of a grid capped at `maxRows`.
+
+   The fade is the affordance, not decoration. A table cut off on a hard edge reads as the whole
+   table, and a capped grid has no scrollbar of its own left to say otherwise — so the last rows
+   are faded into the button that opens the rest. Hence the gradient hangs above its own box: it
+   belongs to the rows, and this element is only what positions it.
+
+   It stops one pixel short of the grid's bottom edge, which is where `--mo-space-2` of flex gap
+   plus that border land — an opaque gradient run to the very bottom erases the border it covers. */
+.mo-grid-more {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.mo-grid-more::before {
+  content: '';
+  position: absolute;
+  inset-inline: 1px;
+  inset-block-end: calc(100% + var(--mo-space-2) + 1px);
+  block-size: var(--mo-space-8);
+  background-image: linear-gradient(to top, var(--mo-surface), transparent);
+  pointer-events: none;
+}
+
+.mo-grid-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mo-space-3);
+  padding: var(--mo-space-5) var(--mo-space-3);
+  text-align: center;
+  color: var(--mo-muted);
+  font-size: var(--mo-text-sm);
+  border: 1px solid var(--mo-line-soft);
+  border-radius: var(--mo-radius-md);
+}
+
+.mo-grid-empty p {
+  margin: 0;
+}
+
+/* ---- Expanded ---------------------------------------------------------------------------- */
+
+/* The whole browser window, and not the platform's full screen: the OS kind hides the browser's
+   own chrome, which is wrong for a tool someone works in beside the rest of the app. A panel
+   pinned over the page looks the same to the person using it and costs none of that.
+
+   `position: fixed` against the viewport, so it does not matter how deep in the page the grid
+   was sitting when it was opened. */
+.mo-grid[data-expanded] {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  padding: var(--mo-space-4);
+  background-color: var(--mo-surface);
+}
+
+.mo-grid[data-expanded] .mo-grid-bar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 3;
+}
+
+/* Collapsed the height is set inline from the row count; expanded it takes what is left. */
+.mo-grid[data-expanded] .mo-grid-rdg {
+  flex: 1 1 auto;
+  block-size: auto;
+  min-block-size: 0;
+}

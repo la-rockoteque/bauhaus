@@ -1,0 +1,199 @@
+/*
+ * Developer chrome, deliberately outside the product's design system: it must never be
+ * mistaken for the application it is drawn over, and it must not inherit a token whose
+ * change would move it. Its colours and its one z-index are local to this file — the
+ * `--mo-shadow-*` / elevation rules in docs/guides/design-system.md govern product
+ * surfaces, and this is not one.
+ */
+[data-mo-dev-overlay] {
+  --mo-dev-z: 2147483000;
+  --mo-dev-haut: #e11d48;
+  --mo-dev-moyen: #d97706;
+  --mo-dev-bas: #0284c7;
+  --mo-dev-ink: #f8fafc;
+  --mo-dev-panel: #0f172a;
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--mo-dev-z);
+  pointer-events: none;
+  font: 12px/1.4 ui-monospace, "IBM Plex Mono", monospace;
+  color: var(--mo-dev-ink);
+}
+
+[data-mo-dev-overlay] * {
+  box-sizing: border-box;
+}
+
+.mo-dev__layer {
+  position: absolute;
+  inset: 0;
+}
+
+/*
+ * One box per finding, sitting exactly on the element it is about.
+ *
+ * IT DOES NOT TAKE THE POINTER, and that is the default on purpose. The box covers the
+ * whole rectangle of its element, so an interactive one sits between you and the control
+ * it annotates — with a dozen findings on a page, the application underneath stopped
+ * being clickable and the button an advisory was about could not be pressed. « Marqueurs
+ * cliquables » in the HUD turns them into targets when you want to read a detail.
+ */
+.mo-dev__marker {
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 2px solid var(--mo-dev-bas);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.mo-dev__layer[data-pickable='true'] .mo-dev__marker {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.mo-dev__marker[data-severity='HAUT'] { border-color: var(--mo-dev-haut); }
+.mo-dev__marker[data-severity='MOYEN'] { border-color: var(--mo-dev-moyen); }
+
+/* Kind is carried by the line style as well as the colour, so the two layers stay
+   distinguishable in a grayscale screenshot — the same rule the product follows. */
+.mo-dev__marker[data-kind='advisory'] { border-style: dashed; }
+.mo-dev__marker[data-active='true'] { background: rgb(255 255 255 / 12%); }
+
+/*
+ * The label sits INSIDE its box, and only while the box is hovered or open.
+ *
+ * Both halves are load-bearing. Outside and above, a box at the top of the viewport
+ * had its label cut off, and a column of stacked findings — five cards each failing
+ * the same contrast rule — piled five labels on top of each other. Inside never
+ * clips, and one-at-a-time is what makes a page with a dozen findings readable. The
+ * count that matters at a glance is in the HUD.
+ */
+.mo-dev__badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  max-width: 34ch;
+  overflow: hidden;
+  padding: 0 4px;
+  background: var(--mo-dev-bas);
+  color: var(--mo-dev-ink);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mo-dev__layer[data-pickable='true'] .mo-dev__marker:hover .mo-dev__badge,
+.mo-dev__layer[data-pickable='true'] .mo-dev__marker:focus-visible .mo-dev__badge,
+.mo-dev__marker[data-active='true'] .mo-dev__badge {
+  display: block;
+}
+
+/* Hovering a finding lifts it clear of the boxes it overlaps. */
+.mo-dev__marker:hover,
+.mo-dev__marker:focus-visible,
+.mo-dev__marker[data-active='true'] {
+  z-index: 1;
+}
+
+.mo-dev__marker[data-severity='HAUT'] .mo-dev__badge { background: var(--mo-dev-haut); }
+.mo-dev__marker[data-severity='MOYEN'] .mo-dev__badge { background: var(--mo-dev-moyen); }
+
+.mo-dev__detail,
+.mo-dev__hud {
+  position: fixed;
+  right: 12px;
+  padding: 10px 12px;
+  background: var(--mo-dev-panel);
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 4px;
+  pointer-events: auto;
+}
+
+.mo-dev__detail {
+  bottom: 190px;
+  width: 340px;
+  border-left: 3px solid var(--mo-dev-bas);
+}
+
+.mo-dev__detail[data-severity='HAUT'] { border-left-color: var(--mo-dev-haut); }
+.mo-dev__detail[data-severity='MOYEN'] { border-left-color: var(--mo-dev-moyen); }
+.mo-dev__detail p { margin: 6px 0; white-space: pre-wrap; }
+.mo-dev__detail a { color: var(--mo-dev-bas); }
+
+.mo-dev__hud {
+  bottom: 12px;
+  display: grid;
+  gap: 6px;
+  width: 260px;
+}
+
+.mo-dev__hud header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mo-dev__hud label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mo-dev__actions {
+  display: flex;
+  gap: 6px;
+}
+
+/*
+ * Chrome buttons only. This deliberately does NOT say `[data-mo-dev-overlay] button`:
+ * a marker is a button too, and that selector outranked `.mo-dev__marker`, which filled
+ * an opened marker solid and hid the very component it was pointing at.
+ */
+.mo-dev__hud button,
+.mo-dev__detail button,
+.mo-dev__tab {
+  padding: 3px 8px;
+  background: rgb(255 255 255 / 10%);
+  color: inherit;
+  font: inherit;
+  border: 1px solid rgb(255 255 255 / 25%);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.mo-dev__hud button[data-active='true'] {
+  background: var(--mo-dev-bas);
+}
+
+[data-mo-dev-overlay] button:focus-visible {
+  outline: 2px solid var(--mo-dev-ink);
+  outline-offset: 1px;
+}
+
+/* The benchmark rule behind the finding — the id is what `Fondations/Barème` lists. */
+.mo-dev__rule {
+  margin: 0 0 6px;
+  opacity: 0.75;
+}
+
+.mo-dev__note { margin: 0; opacity: 0.75; }
+.mo-dev__note--error { color: var(--mo-dev-haut); opacity: 1; }
+
+.mo-dev__picked {
+  display: block;
+  overflow-wrap: anywhere;
+  opacity: 0.85;
+}
+
+/* Collapsed: a single count that says how much is on screen. */
+.mo-dev__tab {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  min-width: 28px;
+  pointer-events: auto;
+}

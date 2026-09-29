@@ -1,0 +1,173 @@
+/* The `mo-table` family: DataTable is its one caller, so its rules live beside it
+   (componentOwnedCss.ratchet.test.ts). Moved unchanged from design-system.css. */
+
+/* --- Table --------------------------------------------------------------- */
+
+.mo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  color: var(--mo-ink);
+}
+
+.mo-table th {
+  padding: var(--mo-space-2) var(--mo-space-3);
+  border-bottom: 1px solid var(--mo-line);
+  text-align: left;
+  font-weight: var(--mo-weight-semibold);
+  color: var(--mo-muted);
+  white-space: nowrap;
+}
+
+.mo-table td {
+  padding: var(--mo-space-3);
+  border-bottom: 1px solid var(--mo-line-soft);
+  vertical-align: top;
+}
+
+.mo-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.mo-table tfoot td,
+.mo-table tfoot th {
+  padding: var(--mo-space-3);
+  border-top: 1px solid var(--mo-line);
+  border-bottom: 0;
+  color: var(--mo-ink);
+  font-weight: var(--mo-weight-semibold);
+}
+
+.mo-table tbody tr.is-selected td {
+  background: var(--mo-primary-tint);
+}
+
+.mo-table--hover tbody tr:hover td {
+  background: var(--mo-surface-soft);
+}
+
+/* Scoped under .mo-table so it outranks `.mo-table th` — a numeric header aligns with its cells. */
+.mo-table .mo-table-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The whole header cell is the hit target, so the button fills it rather than
+   sitting as a small word inside a wider cell. */
+.mo-table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mo-space-1);
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.mo-table-sort:hover {
+  color: var(--mo-ink-soft);
+}
+
+/* Off while the table loads its first rows — there is nothing to sort yet. */
+.mo-table-sort:disabled {
+  cursor: progress;
+}
+
+.mo-table-sort-arrow {
+  color: var(--mo-mute-soft);
+}
+
+[aria-sort='ascending'] .mo-table-sort-arrow,
+[aria-sort='descending'] .mo-table-sort-arrow {
+  color: var(--mo-primary);
+}
+
+.mo-table-empty {
+  padding: var(--mo-space-6) var(--mo-space-3);
+  text-align: center;
+  color: var(--mo-muted);
+}
+
+/* --- Table as cards ------------------------------------------------------ */
+/* `DataTable cards`: below 768px a row stops being a line of columns nobody can
+   read at that width and becomes a card of labelled values. Each cell carries
+   its label in `data-label`; the `cardTitle` cell carries none and heads the card. */
+
+@media (max-width: 768px) {
+  .mo-table--cards,
+  .mo-table--cards tbody,
+  .mo-table--cards tr,
+  .mo-table--cards td,
+  .mo-table--cards tbody th {
+    display: block;
+    width: auto;
+  }
+
+  .mo-table--cards thead {
+    display: none;
+  }
+
+  .mo-table--cards tbody tr {
+    background: var(--mo-surface);
+    border: 1px solid var(--mo-line);
+    border-radius: var(--mo-radius-lg);
+    padding: var(--mo-space-3);
+    margin-bottom: var(--mo-space-3);
+  }
+
+  .mo-table--cards tbody td,
+  .mo-table--cards tbody th {
+    padding: 0;
+    border-bottom: 0;
+    white-space: normal;
+    text-align: left;
+  }
+
+  .mo-table--cards .mo-table-card-title {
+    font-size: var(--mo-text-md);
+    font-weight: var(--mo-weight-semibold);
+    color: var(--mo-ink);
+    padding-bottom: var(--mo-space-2);
+  }
+
+  .mo-table--cards [data-label] {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--mo-space-3);
+    padding: var(--mo-space-1) 0;
+    border-top: 1px solid var(--mo-line-soft);
+  }
+
+  .mo-table--cards [data-label]::before {
+    content: attr(data-label);
+    color: var(--mo-muted);
+    font-weight: var(--mo-weight-medium);
+    flex-shrink: 0;
+  }
+
+  .mo-table--cards .mo-table-card-hidden {
+    display: none;
+  }
+
+  .mo-table--cards .mo-table-empty {
+    border: 0;
+  }
+}
+
+/* --- Child row ----------------------------------------------------------- */
+/* A row that belongs to the one above it — a nested feature flag, a sub-line.
+   The indent and the turn-down arrow carry the nesting; the row keeps its own
+   cells so the columns still line up. */
+
+.mo-table-child > td:first-child {
+  padding-left: calc(var(--mo-space-3) + var(--mo-space-5) * var(--mo-depth, 1));
+}
+
+.mo-table-child-mark {
+  color: var(--mo-mute-soft);
+  margin-right: var(--mo-space-2);
+}

@@ -1,0 +1,438 @@
+/* The legacy form classes dialogs have always carried (`.form-group`, `.btn`, `.modal-actions`,
+   `.fulfill-modal-*`), loaded with Dialog because their consumers are dialogs. */
+
+/* --- Generic form classes (used by ConfirmReceipt, CreateShipment, etc.) --- */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group > label,
+.form-group > legend {
+  font-size: var(--mo-text-md);
+  font-weight: 500;
+  color: var(--mo-ink);
+}
+
+/* A radio group is a fieldset: without this it draws the browser's grooved box. */
+fieldset.form-group {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.form-group > legend {
+  padding: 0;
+  margin-bottom: 6px;
+}
+
+.form-control {
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  font-family: var(--mo-font-body);
+  font-size: 1rem;
+  color: var(--mo-ink);
+  background-color: var(--mo-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--mo-primary);
+  box-shadow: 0 0 0 3px var(--mo-primary-soft);
+}
+
+.form-control:disabled {
+  background-color: var(--mo-surface-soft);
+  color: var(--mo-muted);
+  cursor: not-allowed;
+}
+
+textarea.form-control {
+  height: auto;
+  resize: vertical;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  padding: 4px 0;
+}
+
+.radio-label input[type="radio"]:disabled + span,
+.radio-label:has(input:disabled) {
+  color: var(--mo-muted);
+  cursor: not-allowed;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.btn {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: var(--mo-radius-lg);
+  font-family: var(--mo-font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--mo-primary);
+  color: var(--mo-surface);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--mo-primary-ink);
+}
+
+.btn-primary:disabled {
+  background-color: var(--mo-mute-soft);
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--mo-ink);
+  border: 1px solid var(--mo-line);
+}
+
+.btn-secondary:hover {
+  background-color: var(--mo-surface-soft);
+  border-color: var(--mo-mute-soft);
+}
+
+.create-shipment-selection-count {
+  font-size: 0.875rem;
+  color: var(--mo-muted);
+  font-weight: 500;
+}
+
+/* Label for a readonly value inside a form-group (a <span>, not a real <label>,
+   because it captions a fixed value rather than an input) — matches the weight
+   and colour of the group's real labels. */
+.form-label {
+  font-size: var(--mo-text-md);
+  font-weight: 500;
+  color: var(--mo-ink);
+}
+
+/* Character counter under a textarea (e.g. the transfer note, ≤1000) — quiet,
+   right-aligned, non-competing with the input. */
+.form-counter {
+  align-self: flex-end;
+  font-size: 0.75rem;
+  color: var(--mo-muted);
+}
+
+/* The imposed transfer target (line-department-transfer BR-1.2): the OTHER
+   department, not a choice. Rendered as a readonly callout so it reads as a fixed
+   value, echoing the quoted-notes readonly idiom. */
+.transfer-target {
+  margin: 0;
+  padding: 8px 12px;
+  background: var(--mo-primary-soft);
+  border-left: 3px solid var(--mo-primary);
+  border-radius: var(--mo-radius-sm);
+  color: var(--mo-ink);
+  font-size: 1rem;
+}
+
+/* --- Fulfill modal classes (used by Warehouse, Tools, Equipment modals) --- */
+
+.fulfill-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fulfill-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fulfill-modal-label {
+  font-size: var(--mo-text-md);
+  font-weight: 500;
+  color: var(--mo-ink);
+}
+
+.fulfill-modal-input {
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  font-family: var(--mo-font-body);
+  font-size: 1rem;
+  color: var(--mo-ink);
+  background-color: var(--mo-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.fulfill-modal-input:focus {
+  outline: none;
+  border-color: var(--mo-primary);
+  box-shadow: 0 0 0 3px var(--mo-primary-soft);
+}
+
+.fulfill-modal-input:disabled {
+  background-color: var(--mo-surface-soft);
+  color: var(--mo-muted);
+  cursor: not-allowed;
+}
+
+.fulfill-modal-textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  font-family: var(--mo-font-body);
+  font-size: 1rem;
+  color: var(--mo-ink);
+  background-color: var(--mo-surface);
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.fulfill-modal-textarea:focus {
+  outline: none;
+  border-color: var(--mo-primary);
+  box-shadow: 0 0 0 3px var(--mo-primary-soft);
+}
+
+.fulfill-modal-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fulfill-modal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.fulfill-modal-table th {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 2px solid var(--mo-line);
+  font-weight: 600;
+  color: var(--mo-muted);
+  font-size: 0.8125rem;
+}
+
+.fulfill-modal-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--mo-line);
+}
+
+.fulfill-modal-qty {
+  text-align: center;
+  width: 80px;
+}
+
+.fulfill-modal-qty-input {
+  width: 64px;
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  font-family: var(--mo-font-body);
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--mo-ink);
+  background-color: var(--mo-surface);
+}
+
+.fulfill-modal-qty-input:focus {
+  outline: none;
+  border-color: var(--mo-primary);
+  box-shadow: 0 0 0 3px var(--mo-primary-soft);
+}
+
+.fulfill-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.fulfill-modal-actions .fulfill-modal-print {
+  margin-right: auto;
+}
+
+.fulfill-modal-btn-cancel {
+  height: 40px;
+  padding: 0 20px;
+  background-color: transparent;
+  color: var(--mo-ink);
+  border: 1px solid var(--mo-line);
+  border-radius: var(--mo-radius-lg);
+  font-family: var(--mo-font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.fulfill-modal-btn-cancel:hover {
+  background-color: var(--mo-surface-soft);
+  border-color: var(--mo-mute-soft);
+}
+
+.fulfill-modal-btn-confirm {
+  height: 40px;
+  padding: 0 20px;
+  background-color: var(--mo-primary);
+  color: var(--mo-surface);
+  border: none;
+  border-radius: var(--mo-radius-lg);
+  font-family: var(--mo-font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.fulfill-modal-btn-confirm:hover {
+  background-color: var(--mo-primary-ink);
+}
+
+.fulfill-modal-btn-confirm:disabled {
+  background-color: var(--mo-mute-soft);
+  cursor: not-allowed;
+}
+
+/* --- Equipment modal badges & readonly --- */
+
+.fulfill-modal-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.fulfill-modal-badge--return {
+  background-color: var(--mo-ready-soft);
+  color: var(--mo-ready);
+}
+
+.fulfill-modal-badge--request {
+  background-color: var(--mo-primary-soft);
+  color: var(--mo-primary);
+}
+
+.fulfill-modal-unit-readonly {
+  font-size: 0.875rem;
+  color: var(--mo-muted);
+  font-style: italic;
+}
+
+/* Read-only block displaying notes captured from another party (e.g. the
+   requester's notes shown to a warehouse preparer). Reads as a quoted /
+   callout panel so it doesn't get confused with the preparer's own input. */
+.fulfill-modal-quoted-notes {
+  margin: 0;
+  padding: 10px 12px;
+  background: var(--mo-primary-soft);
+  border-left: 3px solid var(--mo-primary);
+  border-radius: var(--mo-radius-sm);
+  font-family: var(--mo-font-body);
+  font-size: var(--mo-text-sm);
+  line-height: var(--mo-lh-normal);
+  color: var(--mo-ink);
+  white-space: pre-wrap;
+}
+
+.fulfill-modal-return-indicator {
+  font-size: 0.75rem;
+  color: var(--mo-amber);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.fulfill-modal-validation-error {
+  font-size: 0.75rem;
+  color: var(--mo-error);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.fulfill-modal-substitution {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.fulfill-modal-substitution-warning {
+  font-size: 0.75rem;
+  color: var(--mo-amber);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .modal-actions,
+  .fulfill-modal-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .modal-actions .btn,
+  .modal-actions button,
+  .fulfill-modal-btn-cancel,
+  .fulfill-modal-btn-confirm {
+    width: 100%;
+    justify-content: center;
+    /* Touch bar: stacked modal actions are tap targets — ≥44px on small screens. */
+    min-height: 44px;
+  }
+
+  .form-control {
+    font-size: 16px;
+  }
+
+  select.form-control,
+  input.form-control {
+    min-height: 44px;
+  }
+
+  .fulfill-modal-input,
+  .fulfill-modal-textarea,
+  .fulfill-modal-qty-input {
+    font-size: 16px;
+  }
+
+  .fulfill-modal-table {
+    font-size: 0.8125rem;
+  }
+
+  .fulfill-modal-table th,
+  .fulfill-modal-table td {
+    padding: 6px 4px;
+  }
+
+  .fulfill-modal-qty {
+    width: 70px;
+  }
+
+  .fulfill-modal-qty-input {
+    width: 56px;
+  }
+}

@@ -1,0 +1,44 @@
+.revue-counts {
+  display: flex;
+  gap: var(--mo-space-2);
+  margin: 0 0 var(--mo-space-5);
+}
+
+.revue-group {
+  margin-bottom: var(--mo-space-6);
+}
+
+.revue-list {
+  margin: var(--mo-space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.revue-finding {
+  display: flex;
+  gap: var(--mo-space-3);
+  align-items: baseline;
+  padding: var(--mo-space-3) 0;
+  border-bottom: 1px solid var(--mo-line);
+}
+
+.revue-finding__body {
+  flex: 1;
+}
+
+.revue-finding__message {
+  margin: 0;
+  color: var(--mo-ink);
+}
+
+.revue-finding__meta {
+  display: flex;
+  gap: var(--mo-space-3);
+  margin: var(--mo-space-1) 0 0;
+  color: var(--mo-mute);
+  font-size: var(--mo-text-sm);
+}
+
+.revue-finding__meta code {
+  font-family: var(--mo-font-mono);
+}
