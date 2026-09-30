@@ -1,0 +1,61 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './chip.stories';
+
+<Meta of={Stories} />
+
+# Chip
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A chip is a small pill that holds one value the user chose, such as a filter. It can carry a button to remove that value, or it can switch on and off.
+
+**Precisely:** Component in the clickables family. It comes in three variants: static, removable and selectable.
+
+**The family.** The chip sits in clickables, next to the button and the icon button, because two of its three variants are pressed and the user acts on them. The badge stays in feedback: it reports a status or a count and the user never presses it. The static chip is the one member that is not pressed. It shares the look and the sizing of the other two, so a row that mixes them stays even, and a separate slice for one passive variant would split one idea in two.
+
+**The job.** A chip answers "what did I choose?" and, for a removable chip, "how do I undo it?". A filter bar needs one chip per active filter. The user can read each value and remove it on its own.
+
+**When it exists.** Use a removable chip for an active filter. Use a selectable chip for a choice that toggles a filter on or off in a short row. Use a static chip for a value that is shown and never changed. For a status or a count, use the badge. For an action, use the button.
+
+## 2. Usage
+
+### When to use
+
+- To show each active filter, with its own remove button (Nielsen heuristic 3, user control and freedom).
+- To toggle a filter in a row of a few choices (APG Button pattern, toggle button).
+
+### When not to use, and what to use instead
+
+- **For a status or a count.** Use the badge. A chip invites a press.
+- **For one choice out of many.** Use a radio group. A row of selectable chips is a set of independent toggles.
+- **For navigation.** Use a link.
+
+### How
+
+- **Remove button name.** The name says what the button removes: "Remove filter Status: Shipped". Pass `removeLabel="Remove filter"` and the chip adds the label. The text arrives as props, so a translation changes both (WCAG 4.1.2, A; 2.4.6, AA).
+- **One shape.** A removable chip is one outlined pill. The remove button sits inside the outline and has no border of its own, so the pair reads as one object (Gestalt common region). Its focus ring is the only extra outline.
+- **Sizes.** A pressable chip is 44px high inside its outline. The remove button is 44px wide and high. This is the house floor and the WCAG 2.5.5 (AAA) figure; 2.5.8 (AA) asks for 24px. A static chip is `space.8` high, since nothing presses it.
+- **Wrap.** Put a row of chips in a `Stack` with `wrap`, and use `as="ul"` so a screen reader counts them. Chips flow onto new lines and never scroll sideways (WCAG 1.4.10, AA).
+- **Long labels.** The label is one line. Past `size.overlay.sm` it ends in an ellipsis. The text stays whole in the DOM, so the accessible name is complete. A tooltip shows the full text on hover and on focus while the label is cut, and only then (WCAG 1.4.13, AA).
+- **Keyboard.** Tab reaches the remove button or the selectable chip. Space and Enter press it. The components are native buttons, so this needs no code.
+- **Selected.** The pressed state is `aria-pressed`. A check and the selection fill mark it (WCAG 1.4.1, A).
+- **After removal.** The view moves focus to a stable place and announces the change in a status region. The chip that held focus is gone. See the filtering pattern.
+
+## 3. Why the states look as they do
+
+- **Hover and pressed** on a selectable chip use a state layer. A selected chip adds an inner outline, since its fill does not change.
+- **Focus-visible** draws an outline offset from the box. On a removable chip the ring sits on the remove button, the one control.
+- **Disabled** uses the disabled roles and the native `disabled` attribute on the button.
+- **Too many** wraps chips onto new lines and truncates one long label. It never drops a chip.
+- **Nothing, loading, none, incorrect, correct, done** are n/a. The chip shows a value that already exists. The view owns the loading, the empty result and the announcement.
+
+## 4. Pitfalls and don'ts
+
+- **Do not name a remove button "×" or "Remove".** A screen reader user cannot tell which chip it removes. (WCAG 4.1.2, A; `chip.removable-labelled`)
+- **Do not draw two bordered controls side by side.** The pair reads as two objects. (Gestalt common region; `chip.one-shape`)
+- **Do not shrink the remove button.** A small target misses. (WCAG 2.5.8, AA; `chip.touch-target`)
+- **Do not show selection by colour alone.** (WCAG 1.4.1, A; `chip.selected-not-colour-alone`)
+- **Do not cut a label with no way to read it.** (WCAG 1.4.13, AA; `chip.truncate-tooltip`)
+- **Do not write a colour literal in `chip.css`.** (Bauhaus `misfile.raw-value-in-component`; `chip.no-literal`)

@@ -1,0 +1,249 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './iconography.stories';
+
+<Meta of={Stories} />
+
+# Iconography
+
+The Showcase story holds the construction grid, the anatomy of one glyph, the tokens, the searchable catalogue in both themes, the size pairing, the sheet of every glyph, the live rulebook and the accessibility coverage. This guide holds the reasoning: how the set is drawn, when an icon earns its place, how to use it, and how to add a glyph.
+
+## 1. Introduction
+
+**In plain words:** An icon is a small picture for an action or a thing. A good set looks like one hand drew it: the same line weight, the same corners, the same amount of room around each picture. This library draws its own set of 42, from circles, squares, triangles and straight lines.
+
+**Precisely:** Foundation. It defines the drawing system (grid, stroke, caps, forms, keylines) and holds the glyph data in `glyphs.ts`. The `Icon` primitive draws the glyphs. The `IconButton` component holds an icon in a pressable target. The colour is `currentColor`, so this foundation defines no colour token.
+
+**The job.** Icons save space and speed up recognition. They only do that when the set is consistent and when each icon has a meaning people already know. This foundation makes the set consistent by rule, and it says when to use no icon at all.
+
+**Where the data lives.** A named glyph is an asset of the iconography foundation (`docs/library.md`, placement rule). The path data is in `foundations/iconography/glyphs.ts`. `primitives/icon` imports it. The import runs from a primitive to a foundation, which is the allowed direction.
+
+## 2. Construction
+
+The drawing system comes first. A glyph that breaks one of these rules is rejected in review, and most of the rules are also checked by the rulebook (`iconography.*`).
+
+### The grid
+
+- **24 by 24 units.** Every glyph is drawn on `viewBox="0 0 24 24"`. One unit is 1/24 of the icon box.
+- **A 2-unit padding, so a 20 by 20 live area.** The stroke, including its caps and joins, stays between 2 and 22 on both axes. The padding keeps a glyph clear of its neighbour when icons sit in a row, and it leaves room for a focus ring or a badge. (Material and Carbon draw on a 24 grid with the same 2-unit padding; Project decision for this set.)
+- **Every glyph is centred on the grid.** The centre of a glyph's ink is at 12, 12. Where a glyph is not symmetric (a magnifier, a pencil), centre its ink, not its bounding box.
+- **Whole units for straight strokes.** Put a horizontal or vertical stroke on a whole coordinate. A 2-unit stroke on a whole coordinate covers whole units, so it renders crisp at 24 px.
+
+### One stroke weight, as a token
+
+- **`icon.stroke` is 2px at 24.** Every glyph has this stroke and no glyph sets its own. The token is in `iconography.tokens.json` and reaches the Icon as `--ds-icon-stroke`.
+- **It scales with the box through the viewBox.** In SVG a `px` length inside a `viewBox` is a user unit. So `stroke-width: 2px` means 2 units of the 24 grid. At `lg` (24 px) the line is 2 px. At `md` (20 px) it is 1.67 px. At `sm` (16 px) it is 1.33 px. The line keeps the same share of the box, 1/12, at every size.
+- **We do not use `vector-effect: non-scaling-stroke`.** It would keep a 2 px line in a 16 px box. The line would then weigh 1/8 of the box, and the small icon would look heavier than the large one. (knowledge/foundations/iconography.md rule 3: do not scale a 24 px icon down and keep the stroke visually thick.)
+- **No second weight and no optical sizes.** One set has one stroke. A bold or light icon needs a new decision and a new token, not a local override (`iconography.stroke-token`).
+
+### Square caps and mitre joins
+
+The set uses **square caps and mitre joins** on every glyph. The reasons:
+
+1. **The line end is a square.** A round cap is a circle at the end of every line. A square cap is a square. The set stays made of the primary forms, from the shape of the glyph down to the end of a stroke.
+2. **Corners are sharp.** A round join puts a small radius on every corner. That contradicts the corner rule below. A mitre join draws the corner as it is.
+3. **A dot is a square.** The dots in `info`, `help` and `warning` are 2 by 2 squares, the width of the stem next to them. A round cap would make a circle that reads bigger than the stem.
+4. **A square cap grows the line by one unit at each end.** The end of a stroke at 3 or 21 reaches the edge of the live area at 2 or 22. You can place ends on the grid without guessing.
+
+The cost is a spike on an acute corner. The default mitre limit is 4, which holds for interior angles of about 29 degrees and up. No glyph has a sharper corner. A triangle has its apex and base corners moved inward so the spikes end inside the live area (the `warning` apex is at y = 5, not 3).
+
+### Primary forms only
+
+- **The forms:** circle, square, triangle, straight line. Kandinsky's triangle, square and circle are the base of the Bauhaus Vorkurs (`knowledge/bauhaus/principles.md`). Form follows function: a form that does not help the reader recognise the icon does not go in.
+- **The path uses `M L H V A Z` only.** An arc must be a piece of one circle: the two radii are equal. No Bézier curve, no ellipse, no free-form contour. The rulebook reads every glyph and fails a stray command (`iconography.primary-forms`).
+- **A person is a circle over a half circle.** A gear is not in the set. A gear with teeth cannot keep a 2-unit stroke on 24 units without its teeth closing up, and it would need curves or dozens of vertices. `settings` shows three sliders, each a line with a circle.
+- **Diagonals run at 45 degrees** where the shape allows. A triangle, a roof or a funnel uses its own angles.
+
+### Corners: none
+
+A corner has no radius. A rectangle has four sharp corners. The only round thing in a glyph is a circle or a piece of one. The set does not use a small radius "to soften" a shape. It would be a second rule, and it would clash with the sharp caps.
+
+### Optical rules and keylines
+
+Equal numbers do not look equal. A circle of the same width as a square looks smaller, because a circle touches the box in four points and a square in four sides. The set draws for the eye. The keylines below are the outer size of the ink, stroke included, centred on 12, 12.
+
+| Keyline | Outer size | Centre line | Use it for |
+|---|---|---|---|
+| Circle | 20 by 20 | radius 9 | clock, info, success, error, help |
+| Square | 18 by 18 | 16 by 16, from 4 to 20 | calendar, copy |
+| Portrait | 16 wide, 20 high | 14 by 18, from 5 to 19 across and 3 to 21 down | file, user |
+| Landscape | 20 wide, 16 high | 18 by 14, from 3 to 21 across and 5 to 19 down | mail, folder, link, eye |
+
+- **A circle is 2 units larger than a square.** That is the optical rule: 20 against 18.
+- **A triangle sits between them.** The base is 16 wide on the centre line and the apex is at y = 5. Its ink ends at about 2.9 at the top and 21 at the bottom. The mitre tips are part of the ink.
+- **Free-standing marks fill the keyline they are closest to.** A chevron or a plus is smaller than a keyline on purpose. A mark that is a line (menu, minus) spans 3 to 21.
+- **Check the ink, not the path.** Measure a new glyph in the zoomed sheet. The ink bounds must stay inside the live area and the centre of the ink must be within half a unit of 12, 12.
+
+### No fills
+
+A glyph is a stroke and nothing else. The Icon sets `fill: none`. No glyph paints a closed shape solid, and no glyph carries a colour. No filled variant is defined today. A filled variant may be defined later for selected states. It would be one filled shape per glyph, for the states that need it, and it would still carry a second cue that is not colour (WCAG 1.4.1, A). Until then, a selected state shows in the control, not in the icon.
+
+### Colour: `currentColor`
+
+Each glyph strokes with `currentColor`. The icon takes the colour of its context and follows the theme. The contrast rule is in section 4. In forced-colors mode the stroke uses `CanvasText`, so a glyph stays visible when the user replaces the palette (`iconography.current-color`).
+
+## 3. The set
+
+42 glyphs in four groups, grouped by job. The names are permanent. A component may depend on a name.
+
+| Group | Glyphs |
+|---|---|
+| Navigation (12) | `chevron-up` · `chevron-down` · `chevron-left` · `chevron-right` · `arrow-up` · `arrow-down` · `arrow-left` · `arrow-right` · `menu` · `more` · `external` · `home` |
+| Actions (14) | `search` · `plus` · `minus` · `close` · `check` · `edit` · `delete` · `copy` · `download` · `upload` · `filter` · `sort` · `settings` · `refresh` |
+| Status (5) | `info` · `success` · `warning` · `error` · `help` |
+| Objects (11) | `user` · `calendar` · `clock` · `mail` · `bell` · `lock` · `eye` · `eye-off` · `file` · `folder` · `link` |
+
+The original 16 keep their names: `check`, `close`, `chevron-down`, `chevron-up`, `chevron-left`, `chevron-right`, `search`, `plus`, `minus`, `info`, `warning`, `error`, `success`, `menu`, `more`, `external`. They are redrawn on the new grid. Banner and Toast still work because the four status names did not change.
+
+**Sizes.** The Icon has three sizes from the existing `size.icon.*` tokens. This foundation does not define a second scale.
+
+| Size | Box | Live area | Pair with |
+|---|---|---|---|
+| `sm` | 16 px | 13.3 px | `text.caption` (14 px): dense rows, meta lines, inside small badges |
+| `md` | 20 px | 16.7 px | `text.body` and `text.label` (16 px): buttons, fields, menu items, banners |
+| `lg` | 24 px | 20 px | `text.heading` (24 px): titles, empty states, icon buttons in a toolbar |
+
+The live area of an icon is about the size of the em box of the text it pairs with. That is why the pairs read as one line.
+
+## 4. Usage
+
+### When an icon earns its place
+
+An icon earns its place in three cases:
+
+1. **The meaning is universal.** Close (a cross), search (a magnifier), menu (three lines), add (a plus), back (a left arrow). People know these from every product. They do not need to recall a word (Nielsen heuristic 6, Recognition rather than recall).
+2. **The action repeats often.** A row action that appears on every line of a table (edit, delete, copy) is easier to scan as an icon. The reader learns it once.
+3. **The space is dense.** A toolbar, a table row or a mobile header may not fit a word for every action.
+
+In each case the icon still needs a name (see below) and, unless the meaning is universal, a visible label.
+
+### When a word is better
+
+Use a word, and no icon, when:
+
+- **The action is abstract.** "Archive", "Publish", "Reconcile", "Share" have no picture that everyone reads the same way. People guess, and a wrong guess costs them a click or an action they did not want. A word costs no recall.
+- **The consequences are high.** A destructive or costly action says what it does. An icon of a bin is fine as a helper next to "Delete account". It is not the only label.
+- **The icon needs a legend.** If the page must explain the icon, the icon has already failed.
+- **Two actions would share one picture.** Give each its own word.
+
+### Icon plus label, or icon only
+
+| Form | Use it when | Notes |
+|---|---|---|
+| **Icon and label** | The default. Any action that is not universal. | The icon is decorative (`aria-hidden`); the label names the control. The icon helps scanning; the word carries the meaning. |
+| **Icon only** | The meaning is universal, or the space is dense, or the action repeats often. | The control needs an accessible name and a tooltip. |
+
+An icon-only control is an `IconButton`, and the `label` prop is required. The label is the accessible name (WCAG 4.1.2 Name, Role, Value, A). The tooltip shows the same words, so a sighted mouse user reads the name a screen reader says. That match also satisfies WCAG 2.5.3 Label in Name (A): what a speech-input user sees is what they can say. The tooltip must be dismissible, hoverable and persistent (WCAG 1.4.13, AA). The name says the action and its object: "Close dialog", "Delete row", not "X" or "Trash can" (`iconography.icon-only-has-name`).
+
+### Decorative and meaningful icons
+
+- **Decorative.** The icon sits beside text that says the same thing. The Icon renders `aria-hidden="true"` and `focusable="false"`. A screen reader hears the text once. This is the default, with no `label` (WCAG 1.1.1 Non-text Content, A; `iconography.decorative-hidden`).
+- **Meaningful.** The icon says something the nearby text does not, and it is not inside a control. Pass `label`. The Icon renders `role="img"` and `aria-label`. Banner and Toast use this for their status icon.
+- **Inside a control.** The icon is decorative and the control has the name. Never label the icon and the control both. The name is then read twice.
+
+### Status icons: never colour alone, always text
+
+`info`, `success`, `warning`, `error` and `help` carry a status. They are the place where colour tempts people to drop the word.
+
+- **Never colour alone.** A red icon and a green icon look the same to a colour-blind reader. The shapes are different (a cross in a circle, a check in a circle, a triangle), and the shapes are the second cue. The shape helps. It does not replace the text (WCAG 1.4.1 Use of Color, A).
+- **Always with text.** A status icon sits next to words that say the status: "Saved", "Card declined". Where the icon stands alone in a visual, give it a `label` (`iconography.no-colour-only`).
+- **Use the status roles.** Colour the icon with `status.<name>` on the page, or set `color` on the parent. It reaches 4.5:1 on the page in both themes.
+
+### Size, alignment and the text baseline
+
+- **Pair size to text.** `sm` with 14 px text, `md` with 16 px text, `lg` with 24 px text (section 3).
+- **Centre on the line.** In a row, use flex with `align-items: center`. Inline, the Icon has `vertical-align: middle`. Do not shift an icon by a pixel to fake a baseline. The live area is centred at 12, 12, so the icon centres on the middle of the line box, which is close to the middle of the cap height.
+- **Space.** Put `space.control.gap` between an icon and its label.
+- **Zoom.** The size tokens are px values, so an icon grows with page zoom. It does not grow with a text-only size setting. Keep a word beside the icon, and let the word carry the meaning at large text sizes (WCAG 1.4.4, AA).
+
+### Target size
+
+The glyph is small. The target around it is not. The house standard is 44 px (`size.target.min`), which is WCAG 2.5.5 Target Size Enhanced (AAA). The floor is 24 px, WCAG 2.5.8 Target Size Minimum (AA). The `IconButton` gives a 44 px target around a 20 px glyph. Do not shrink the target to fit a dense toolbar. Add space and remove an action instead.
+
+### Contrast of meaningful icons
+
+A meaningful icon reaches 3:1 against its background (WCAG 1.4.11 Non-text Contrast, AA). The icon follows the text colour, and `text.default`, `text.muted` and the `status.*` roles all reach at least 4.5:1 in both themes. A disabled icon is exempt, like a disabled label. Do not colour an icon with `border.default`. That role is for decorative dividers and is not built to reach 3:1.
+
+### Directional icons and right-to-left layouts
+
+An arrow that points along the reading direction means "forward" or "back", not "left" or "right". In a right-to-left layout it must flip.
+
+- **Mirror:** `arrow-left`, `arrow-right`, `chevron-left`, `chevron-right`. The Icon adds `ds-icon--mirror` to these four, and the stylesheet flips them with `scaleX(-1)` under `:dir(rtl)`. Choose the glyph for the meaning in a left-to-right layout ("next" is `chevron-right`) and the flip happens.
+- **Do not mirror:** `arrow-up`, `arrow-down`, `chevron-up`, `chevron-down` (vertical), `clock` (the hands turn clockwise everywhere), `check`, `search` (the handle side is a drawing choice, not a direction), `external`, and any object.
+- **Judge by meaning.** Text in a `file` glyph or a `sort` glyph is not language. A glyph that shows a real object stays as it is. A glyph that shows a direction of travel or reading flips (`iconography.mirror-directional`).
+
+### Consistency: one set, one stroke
+
+Use the set. Do not add a third-party icon, an emoji or an icon font next to it. A second set has another stroke, another grid and other metaphors, and the mix reads as noise (Nielsen heuristic 4, Consistency and standards). An icon font fails when the font fails or when a user replaces fonts. Emoji are content: a screen reader reads them aloud. If the set lacks a glyph, add one (section 5).
+
+### States
+
+An icon has no states of its own. The control that holds it owns hover, focus, disabled and selected, and the icon follows through `currentColor`. A loading control swaps the icon for a spinner and keeps its size and name (`patterns/loading`).
+
+## 5. How to add a glyph
+
+A new glyph goes through the same door as the first 42. The steps:
+
+1. **Check that it needs to exist.** Is there a universal meaning, a high-frequency action or a dense-UI need (section 4)? Does an existing glyph already say it? If the honest label is a word, use the word.
+2. **Name it.** Lower-case kebab-case, the object or action, not the picture: `download`, not `arrow-tray`. The name is permanent.
+3. **Pick the group and the keyline.** Navigation, actions, status or objects. Pick circle, square, portrait, landscape or triangle.
+4. **Draw it on the grid.** Use only `M L H V A Z`, one stroke, no fill. Put straight strokes on whole coordinates. Keep the ends of strokes between 3 and 21, and keep pointed vertices further in so the mitre tips stay inside 2 to 22. Do not use an angle under 30 degrees.
+5. **Add the data** to the right group in `glyphs.ts`. Do not draw a path at a call site.
+6. **Read it in the sheet.** Open the Iconography showcase and look at the construction sheet at 8 times, then at `sm`, `md` and `lg` in both themes. It must read at 16 px with a 1.33 px line.
+7. **Run the checks.** `iconography.grid`, `primary-forms`, `current-color` and `named-set-complete` run in the rulebook. The test file adds the live-area and the currentColor tests for every glyph.
+
+**The construction checklist**
+
+- [ ] The name is new, kebab-case, and describes the object or action.
+- [ ] The path uses `M L H V A Z` only, and every arc is part of one circle.
+- [ ] Every coordinate is between 2 and 22; the ink is inside the live area.
+- [ ] The ink is centred on 12, 12 (within half a unit).
+- [ ] It fills the right keyline: circle 20, square 18, portrait 16 by 20, landscape 20 by 16.
+- [ ] One stroke, square caps, mitre joins. No fill, no colour.
+- [ ] The corners are sharp. No corner is sharper than 30 degrees.
+- [ ] It keeps its counters open at 16 px: no gap is under 2 units on the centre line.
+- [ ] Its weight matches its neighbours in the sheet: no glyph reads heavier, lighter or off-centre.
+- [ ] It does not resemble another glyph: not a second bell, not a second cross.
+- [ ] If it points along the reading direction, it is in `MIRRORED_IN_RTL`.
+
+**The review rules.** A reviewer rejects a glyph that:
+
+- copies the shape of a well-known third-party icon line for line, or of a brand mark;
+- needs a curve or an oval to look right (redraw it from lines and circles, or use a word);
+- depends on a fill to be understood;
+- shows a metaphor that is out of date or ambiguous (see pitfalls);
+- adds a second glyph for a meaning the set already has.
+
+## 6. Why the states look as they do
+
+A glyph has no interaction states, so the showcase marks the state matrix as not applicable. The glyph inherits its colour from the control, so a disabled button greys its icon with the label, and a selected item colours its icon with its text. The only design decision here is contrast, and section 4 covers it.
+
+## 7. Pitfalls and don'ts
+
+- **Metaphor debt.** The floppy disk for "save", the telephone handset for "call", the envelope for "message" and the clipboard for "paste" refer to objects many people never used. Younger readers see a shape with no meaning, and older readers see a relic. Prefer a word ("Save") next to the icon, or an action-based picture such as `download`, which shows what happens. When a metaphor is dead, keep the word and drop the picture.
+- **Ambiguous icons.** A heart, a star and a bookmark can each mean "favourite", "like", "save" or "important". A gear can mean settings or a process. An arrow up and a tray can mean upload or share. If two readers give an icon two names, it needs a word. The set leaves out `star`, `heart` and `bookmark` for this reason.
+- **The icon as the only affordance.** An icon that is the only sign that something can be pressed, opened or dragged hides it from people who do not see it or do not know it. Keep a visible label, a border or a text link around the important action (WCAG 1.4.1, A; 4.1.2, A).
+- **An icon-only control with no name.** A screen reader says "button" and nothing else. Use `IconButton` with `label` (WCAG 4.1.2, A; `iconography.icon-only-has-name`).
+- **A tooltip as the only name.** A tooltip does not show on touch, and `title` is not a reliable name. Set the accessible name first and use the tooltip as an addition (WCAG 1.4.13, AA).
+- **A decorative icon read aloud.** A `label` on an icon beside text makes a screen reader say the same thing twice. Leave the icon hidden (WCAG 1.1.1, A; `iconography.decorative-hidden`).
+- **An icon alone for status.** A red circle with a cross tells a colour-blind user nothing without "Card declined" next to it (WCAG 1.4.1, A; `iconography.no-colour-only`).
+- **A hard-coded colour.** A `fill` or `stroke` literal ignores the theme and breaks forced-colors mode (WCAG 1.4.11, AA; `iconography.current-color`).
+- **A local stroke or size.** A `stroke-width` on one icon, or a width in px, breaks the set. Use the token and a size (`iconography.stroke-token`).
+- **Mixing sets.** A third-party icon next to ours has another grid and another weight. Add a glyph to the set instead (Nielsen heuristic 4).
+- **A wrong-way arrow in right-to-left.** A "next" arrow that points left in a right-to-left layout sends people the wrong way. Use the mirrored glyphs (`iconography.mirror-directional`).
+- **A tiny target.** A 20 px glyph with no padding is under the 24 px floor and far under the 44 px house standard (WCAG 2.5.8, AA; 2.5.5, AAA).
+
+## 8. Rules and their basis
+
+| Rule | Checked | Basis |
+|---|---|---|
+| `iconography.grid` | auto | Project decision. Material and Carbon draw on a 24 grid with a padded live area. |
+| `iconography.primary-forms` | auto | Bauhaus primary forms (Kandinsky); form follows function. |
+| `iconography.stroke-token` | auto | Project decision: one stroke weight; `misfile.raw-value-in-component`. |
+| `iconography.current-color` | auto | WCAG 1.4.11 Non-text Contrast (AA); `knowledge/foundations/iconography.md` rule 6. |
+| `iconography.named-set-complete` | auto | Nielsen heuristic 4, Consistency and standards. |
+| `iconography.decorative-hidden` | auto | WCAG 1.1.1 Non-text Content (A). |
+| `iconography.icon-only-has-name` | review | WCAG 4.1.2 Name, Role, Value (A); 2.5.3 Label in Name (A). |
+| `iconography.no-colour-only` | review | WCAG 1.4.1 Use of Color (A); 1.1.1 (A). |
+| `iconography.mirror-directional` | review | Material bidirectionality; W3C internationalization: mirror by direction, not by object. |
+
+The showcase grades the auto rules against the source as it stands. The Icon also keeps its own rules (`icon.*`) for its size tokens, its label and its hidden default.

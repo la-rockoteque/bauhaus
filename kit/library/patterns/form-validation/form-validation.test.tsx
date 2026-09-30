@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { SignUpForm, validate, EMPTY_VALUES } from './form-validation.stories';
@@ -64,11 +64,49 @@ describe('Form validation pattern', () => {
     expect((busy as HTMLButtonElement).disabled).toBe(false);
   });
 
-  it('shows the password confirmation only once the rule is met', async () => {
+  it('shows the password confirmation only once the rule is met, in a polite live region that is not an error', async () => {
     render(<SignUpForm />);
+    const password = screen.getByLabelText(/Password/);
+    const region = () => document.getElementById(`${password.id}-success`);
     expect(screen.queryByText(/Meets the 12 character rule/)).toBeNull();
+    expect(screen.getByText(/Use at least 12 characters/)).toBeTruthy();
+    await userEvent.type(password, 'analytical-engine');
+    const message = screen.getByText(/Meets the 12 character rule/);
+    expect(message.closest('[role="status"]')).toBe(region());
+    expect(region()!.className).not.toContain('error');
+    expect(password.getAttribute('aria-describedby')?.split(' ')).toContain(region()!.id);
+    expect(password.getAttribute('aria-invalid')).toBeNull();
+    // The rule stays in the description; the confirmation does not replace it.
+    expect(screen.getByText(/Use at least 12 characters/)).toBeTruthy();
+  });
+
+  it('keeps the confirmation region in the page before the message, so it is announced when the text arrives', async () => {
+    render(<SignUpForm />);
+    const region = screen.getByLabelText(/Password/).closest('.ds-field')!.querySelector('[role="status"]')!;
+    expect(region.textContent).toBe('');
     await userEvent.type(screen.getByLabelText(/Password/), 'analytical-engine');
-    expect(screen.getByText(/Meets the 12 character rule/)).toBeTruthy();
+    expect(region.textContent).toContain('Meets the 12 character rule');
+  });
+
+  it('validates an empty radio group when focus leaves it', async () => {
+    render(<SignUpForm />);
+    await userEvent.click(screen.getByLabelText(/Country/));
+    expect(screen.queryByText('Choose how we should contact you')).toBeNull();
+    const group = screen.getByRole('radiogroup');
+    const first = within(group).getAllByRole('radio')[0] as HTMLInputElement;
+    act(() => first.focus());
+    expect(screen.queryByText('Choose how we should contact you')).toBeNull();
+    await userEvent.tab();
+    expect(screen.getByText('Choose how we should contact you')).toBeTruthy();
+    expect(group.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('validates the terms checkbox when focus leaves it', async () => {
+    render(<SignUpForm />);
+    act(() => screen.getByRole('checkbox').focus());
+    expect(screen.queryByText('Accept the terms to create your account')).toBeNull();
+    await userEvent.tab();
+    expect(screen.getByText('Accept the terms to create your account')).toBeTruthy();
   });
 
   it('saves a valid form and announces the success in a status region', async () => {

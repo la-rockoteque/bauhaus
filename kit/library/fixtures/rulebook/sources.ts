@@ -7,7 +7,7 @@ import { parseCss, type CssRule } from './css-parser';
  * out, except a pattern's story (a pattern has no component file, so its recipe lives there) and the icon glyph set.
  */
 const files = import.meta.glob(
-  ['../../{foundations,themes,primitives,components,patterns}/**/*.{css,tsx}', '../../primitives/icon/glyphs.ts', '!../../**/*.test.tsx', '!../../**/*.stories.tsx'],
+  ['../../{foundations,themes,primitives,components,patterns}/**/*.{css,tsx}', '../../foundations/iconography/glyphs.ts', '!../../**/*.test.tsx', '!../../**/*.stories.tsx'],
   { query: '?raw', import: 'default', eager: true },
 ) as Record<string, string>;
 

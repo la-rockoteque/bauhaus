@@ -144,6 +144,7 @@
   --ds-focus-ring-width: 2px;
   --ds-focus-ring-offset: 2px;
   --ds-focus-ring-color: var(--ds-colors-primary-600);
+  --ds-icon-stroke: 2px;
   --ds-duration-150: 150ms;
   --ds-duration-200: 200ms;
   --ds-duration-400: 400ms;

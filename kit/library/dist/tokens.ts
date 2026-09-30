@@ -186,6 +186,9 @@ export const tokens = {
       "color": "#2461c7"
     }
   },
+  "icon": {
+    "stroke": "2px"
+  },
   "duration": {
     "150": "150ms",
     "200": "200ms",

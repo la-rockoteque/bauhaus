@@ -138,6 +138,7 @@ Always pair a status colour with an icon or a word (WCAG 1.4.1).
 | `size.target.min` | 44px, smallest pointer target |
 | `size.control.sm` · `md` · `lg` | Control heights: 44, 48, 56 px. Never below the target floor |
 | `size.icon.sm` · `md` · `lg` | Icon box sides: 16, 20, 24 px |
+| `icon.stroke` | Stroke weight of every glyph, 2px at 24; it scales with the icon box |
 | `size.border.thin` | 1px hairline: field, card, table rule, divider |
 | `size.border.thick` | Emphasis border, same as the focus ring width |
 | `size.overlay.sm` · `md` · `lg` | Maximum inline size of a floating surface: 20, 30, 40 rem (toast and tooltip, menu, dialog) |
@@ -210,10 +211,17 @@ Never write a bare `z-index` number. Use `isolation: isolate` for a local stacki
 | `Stack` | A row or column of siblings with a gap step; `as="ul"` for a list |
 | `Text` | Body, caption and heading text |
 | `Heading` | h1 to h6 with `level` for the outline and `size` for the look |
-| `Icon` | One of 16 glyphs at `sm`, `md`, `lg`; hidden unless it has a `label` |
+| `Icon` | One of 42 glyphs at `sm`, `md`, `lg`; hidden unless it has a `label` |
 | `VisuallyHidden` | Text for assistive technology only; `focusable` for a skip link |
 | `Divider` | A horizontal or vertical rule; `decorative` when it carries no meaning |
 
 ## Glyphs
 
-`check`, `close`, `chevron-down`, `chevron-up`, `chevron-left`, `chevron-right`, `search`, `plus`, `minus`, `info`, `warning`, `error`, `success`, `menu`, `more`, `external`. Add a new glyph to `primitives/icon/glyphs.ts`, never at a call site.
+42 glyphs in four groups, drawn on a 24 by 24 grid with one stroke. The set and its drawing rules live in `foundations/iconography/`.
+
+- Navigation: `chevron-up`, `chevron-down`, `chevron-left`, `chevron-right`, `arrow-up`, `arrow-down`, `arrow-left`, `arrow-right`, `menu`, `more`, `external`, `home`.
+- Actions: `search`, `plus`, `minus`, `close`, `check`, `edit`, `delete`, `copy`, `download`, `upload`, `filter`, `sort`, `settings`, `refresh`.
+- Status: `info`, `success`, `warning`, `error`, `help`.
+- Objects: `user`, `calendar`, `clock`, `mail`, `bell`, `lock`, `eye`, `eye-off`, `file`, `folder`, `link`.
+
+Add a new glyph to `foundations/iconography/glyphs.ts`, never at a call site.

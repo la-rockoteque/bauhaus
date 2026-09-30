@@ -70,6 +70,7 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'legend', value: 'Required. The question. It names the group for assistive technology.' },
         { label: 'options', value: 'Required. A list of { value, label, disabled? }.' },
         { label: 'value · defaultValue · onValueChange', value: 'Controlled or uncontrolled selection. Preselect only with a reason.' },
+        { label: 'onBlur', value: 'Group blur: called when focus leaves the group, not when arrow keys move it from one radio to the next. Validate there.' },
         { label: 'name', value: 'Shared by the radios. A generated name is used when omitted.' },
         { label: 'description · error', value: 'Help and error under the legend and under the list, tied to the group with aria-describedby. The error sets aria-invalid.' },
         { label: 'required · requiredText · errorPrefix · disabled', value: 'As the text field. disabled applies to the whole group.' },

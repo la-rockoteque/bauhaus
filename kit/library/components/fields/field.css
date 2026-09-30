@@ -25,7 +25,8 @@
 }
 
 .ds-field__description,
-.ds-field__error {
+.ds-field__error,
+.ds-field__success {
   margin: 0;
   font-family: var(--ds-text-caption-family);
   font-size: var(--ds-text-caption-size);
@@ -44,7 +45,20 @@
   color: var(--ds-status-error);
 }
 
-.ds-field__error .ds-icon {
+.ds-field__success {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-control-gap);
+  color: var(--ds-status-success);
+}
+
+/* The live region stays in the page while empty. Take back its share of the field gap so it adds no space. */
+.ds-field__success:empty {
+  margin-block-start: calc(var(--ds-space-field-gap) * -1);
+}
+
+.ds-field__error .ds-icon,
+.ds-field__success .ds-icon {
   flex-shrink: 0;
 }
 

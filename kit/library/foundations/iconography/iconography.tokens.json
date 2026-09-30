@@ -1,0 +1,9 @@
+{
+  "icon": {
+    "$type": "dimension",
+    "stroke": {
+      "$value": "2px",
+      "$description": "Stroke weight of every glyph, in units of the 24 by 24 grid. The icon scales with its box, so 2px at 24 is 1.67px at 20 and 1.33px at 16."
+    }
+  }
+}

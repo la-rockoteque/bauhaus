@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Stage } from './anatomy';
-import { corner, leaders, type Point } from './leaders';
+import { corner, leaders, OUTSET, type Point } from './leaders';
 
 type Segment = [number, number, number, number];
 
@@ -43,12 +43,29 @@ function sequence(seed: number): () => number {
 
 describe('corner', () => {
   const box = { left: 10, top: 20, right: 110, bottom: 60, width: 100, height: 40 };
-  it('finds the centre and the four corners of a box', () => {
-    expect(corner(box)).toEqual({ x: 60, y: 40 });
-    expect(corner(box, 'top-start')).toEqual({ x: 10, y: 20 });
-    expect(corner(box, 'top-end')).toEqual({ x: 110, y: 20 });
-    expect(corner(box, 'bottom-start')).toEqual({ x: 10, y: 60 });
-    expect(corner(box, 'bottom-end')).toEqual({ x: 110, y: 60 });
+  it('finds the centre of a box', () => {
+    expect(corner(box, 'center')).toEqual({ x: 60, y: 40 });
+  });
+
+  it('puts each corner diagonally outside the box, so it covers nothing inside', () => {
+    expect(corner(box, 'top-start')).toEqual({ x: 10 - OUTSET, y: 20 - OUTSET });
+    expect(corner(box, 'top-end')).toEqual({ x: 110 + OUTSET, y: 20 - OUTSET });
+    expect(corner(box, 'bottom-start')).toEqual({ x: 10 - OUTSET, y: 60 + OUTSET });
+    expect(corner(box, 'bottom-end')).toEqual({ x: 110 + OUTSET, y: 60 + OUTSET });
+  });
+});
+
+describe('corner, start and end', () => {
+  const box = { left: 10, top: 20, right: 110, bottom: 60, width: 100, height: 40 };
+  it('puts the default just outside the leading edge, vertically centred', () => {
+    expect(corner(box)).toEqual({ x: 10 - OUTSET, y: 40 });
+    expect(corner(box, 'start')).toEqual({ x: 10 - OUTSET, y: 40 });
+  });
+  it('puts end just outside the trailing edge, vertically centred', () => {
+    expect(corner(box, 'end')).toEqual({ x: 110 + OUTSET, y: 40 });
+  });
+  it('takes the gap as an argument', () => {
+    expect(corner(box, 'start', 4)).toEqual({ x: 6, y: 40 });
   });
 });
 

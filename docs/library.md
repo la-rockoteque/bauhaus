@@ -26,7 +26,7 @@ packages/design-system/                 one package, one version, one public ent
 │  ├─ box/  text/  icon/  visually-hidden/
 │  └─ text/         text.tsx · text.css · text.stories.tsx · text.test.tsx · text.mdx · text.rules.ts
 ├─ components/
-│  ├─ clickables/   button/ icon-button/ link/ menu-item/   · use-press.ts (shared by clickables)
+│  ├─ clickables/   button/ icon-button/ chip/ link/ menu-item/   · use-press.ts (shared by clickables)
 │  ├─ fields/       text-field/ select/ combobox/ checkbox/ radio-group/ switch/
 │  ├─ data-structures/  table/ list/ tree/
 │  ├─ feedback/     toast/ banner/ spinner/ skeleton/ empty-state/

@@ -39,7 +39,7 @@ export const Showcase: StoryObj<typeof meta> = {
         render: skipLink,
         parts: [
           { n: 1, label: 'Element', note: 'span by default; a for a skip link', target: '.ds-visually-hidden', at: 'top-start' },
-          { n: 2, label: 'Text', note: 'children, required', target: '.ds-visually-hidden', at: 'bottom-end' },
+          { n: 2, label: 'Text', note: 'children, required', target: '.ds-visually-hidden', at: 'end' },
         ],
       }}
       specs={[

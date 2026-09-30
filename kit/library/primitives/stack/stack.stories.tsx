@@ -36,15 +36,15 @@ export const Showcase: StoryObj<typeof meta> = {
           </Stack>
         ),
         parts: [
-          { n: 1, label: 'Container', note: 'a flex Box; element chosen by as', target: '.ds-stack', at: 'top-start' },
-          { n: 2, label: 'Items', note: 'children, in DOM order', target: '.ds-stack > :nth-child(2)' },
+          { n: 1, label: 'Container', note: 'a flex Box; element chosen by as', target: '.ds-stack' },
+          { n: 2, label: 'Items', note: 'children, in DOM order', target: '.ds-stack > :nth-child(2)', at: 'top-start' },
           { n: 3, label: 'Gap', note: 'a space step, between items only', target: '.ds-stack > :first-child', at: 'bottom-end' },
         ],
       }}
       specs={[
         { label: 'Defaults', value: 'vertical · gap space.4 · align stretch · justify start · no wrap' },
         { label: 'Order', value: 'No reverse direction; visual order equals DOM order' },
-        { label: 'Element', value: 'div; ul or ol for a list' },
+        { label: 'Element', value: 'div; ul or ol for a list, with no markers and no padding, and role="list"' },
       ]}
       api={[
         { label: 'direction', value: '"vertical" | "horizontal", default "vertical".' },
@@ -52,7 +52,7 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'align', value: '"start" | "center" | "end" | "stretch" | "baseline", default "stretch". Cross axis.' },
         { label: 'justify', value: '"start" | "center" | "end" | "between", default "start". Main axis.' },
         { label: 'wrap', value: 'Let children flow onto a new line. Use it on rows of variable width.' },
-        { label: 'as', value: 'The element to render. "ul" or "ol" for a list.' },
+        { label: 'as', value: 'The element to render. "ul" or "ol" for a list: markers and padding reset, role="list" kept.' },
         { label: '…props', value: 'Every native HTML attribute.' },
       ]}
       states={{

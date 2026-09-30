@@ -10,7 +10,6 @@ import { Select } from '../../components/fields/select/select';
 import { TextField } from '../../components/fields/text-field/text-field';
 import { Banner } from '../../components/feedback/banner/banner';
 import { List, ListItem } from '../../components/data-structures/list/list';
-import { Icon } from '../../primitives/icon/icon';
 import { Stack } from '../../primitives/stack/stack';
 import { Text } from '../../primitives/text/text';
 import { formValidationRules } from './form-validation.rules';
@@ -149,7 +148,8 @@ export function SignUpForm({ initialValues, attempt, initialPhase = 'idle', onSu
         />
         <TextField
           id={id('password')} label="Password" type="password" required autoComplete="new-password"
-          description={passwordMet ? <><Icon glyph="success" size="sm" /> Meets the {PASSWORD_MIN} character rule</> : `Use at least ${PASSWORD_MIN} characters. Paste is allowed.`}
+          description={`Use at least ${PASSWORD_MIN} characters. Paste is allowed.`}
+          success={passwordMet ? `Meets the ${PASSWORD_MIN} character rule` : undefined}
           value={values.password} error={shown('password')}
           onChange={(e) => change('password', e.target.value)} onBlur={() => leave('password')}
         />
@@ -161,12 +161,12 @@ export function SignUpForm({ initialValues, attempt, initialPhase = 'idle', onSu
         <RadioGroup
           id={id('contact')} legend="How should we contact you?" required
           options={CONTACTS} value={values.contact} error={shown('contact')}
-          onValueChange={(value) => change('contact', value)}
+          onValueChange={(value) => change('contact', value)} onBlur={() => leave('contact')}
         />
         <Checkbox
           id={id('terms')} label="I accept the terms of use" required
           checked={values.terms} error={shown('terms')}
-          onChange={(e) => change('terms', e.target.checked)}
+          onChange={(e) => change('terms', e.target.checked)} onBlur={() => leave('terms')}
         />
         <div>
           <Button type="submit" loading={phase === 'submitting'}>Create account</Button>
@@ -215,7 +215,7 @@ export const Showcase: StoryObj = {
           { id: 'some', status: 'designed', label: 'Some (ready to send)', render: <SignUpForm initialValues={FILLED} />, trigger: 'all values valid', note: 'Submit stays enabled at every point.' },
           { id: 'too-many', status: 'designed', label: 'Too many (long values, many errors)', render: <SignUpForm attempt="submit" initialValues={{ name: LONG_NAME, email: LONG_EMAIL }} />, trigger: 'long values, five errors', note: 'Long values wrap or scroll in the field. The summary lists every error, one link each.' },
           { id: 'incorrect', status: 'designed', label: 'Incorrect (after blur)', render: <SignUpForm attempt="blur" initialValues={{ name: 'Ada Lovelace', email: 'ada@' }} />, trigger: 'blur with a bad value', note: 'The message sits under the field. No summary yet: the user has not submitted.' },
-          { id: 'correct', status: 'designed', label: 'Correct (password rule met)', render: <SignUpForm initialValues={{ name: 'Ada Lovelace', email: 'ada@example.com', password: 'analytical-engine' }} />, trigger: 'value meets the rule', note: 'A quiet check appears only where the rule was not obvious.' },
+          { id: 'correct', status: 'designed', label: 'Correct (password rule met)', render: <SignUpForm initialValues={{ name: 'Ada Lovelace', email: 'ada@example.com', password: 'analytical-engine' }} />, trigger: 'value meets the rule', note: 'A quiet check and text appear in a polite live region, only where the rule was not obvious.' },
           { id: 'done', status: 'designed', label: 'Done (saved)', render: <SignUpForm initialValues={FILLED} initialPhase="done" />, trigger: 'onSubmit settled', note: 'A success Banner in a status region, so it is announced. Focus moves to it.' },
         ],
       }}

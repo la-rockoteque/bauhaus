@@ -38,7 +38,7 @@ export const Showcase: StoryObj = {
         parts: [
           { n: 1, label: 'Heading', note: 'EmptyState title, a heading · required', target: '.ds-empty-state__title', at: 'top-start' },
           { n: 2, label: 'Hint', note: 'EmptyState body · optional; state the filters that applied', target: '.ds-empty-state__body', at: 'top-start' },
-          { n: 3, label: 'Action', note: 'EmptyState actions, a secondary Button · required when a filter caused the result', target: '.ds-empty-state__actions', at: 'top-start' },
+          { n: 3, label: 'Action', note: 'EmptyState actions, a secondary Button · required when a filter caused the result', target: '.ds-empty-state__actions' },
           { n: 4, label: 'Status region', note: 'role="status" · required', target: '[role=status]', at: 'top-end' },
         ],
       }}

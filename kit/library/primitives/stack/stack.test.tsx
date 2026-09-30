@@ -33,6 +33,22 @@ describe('Stack', () => {
     expect(within(list).getAllByRole('listitem')).toHaveLength(2);
   });
 
+  it('resets the markers and the padding of a list, and keeps the list role for Safari', () => {
+    render(<><Stack as="ul" aria-label="Bullets"><li>One</li></Stack><Stack as="ol" aria-label="Numbers"><li>One</li></Stack><Stack aria-label="Plain" data-testid="plain" /></>);
+    for (const name of ['Bullets', 'Numbers']) {
+      const list = screen.getByRole('list', { name });
+      expect(list.className).toContain('ds-stack--list');
+      expect(list.getAttribute('role')).toBe('list');
+    }
+    expect(screen.getByTestId('plain').className).not.toContain('ds-stack--list');
+    expect(screen.getByTestId('plain').hasAttribute('role')).toBe(false);
+  });
+
+  it('lets the caller set another role on a list stack', () => {
+    render(<Stack as="ul" role="menu" aria-label="Actions"><li role="none">One</li></Stack>);
+    expect(screen.getByRole('menu', { name: 'Actions' })).toBeTruthy();
+  });
+
   it('has no axe violations', async () => {
     const { container } = render(<Stack as="ul" aria-label="Steps" direction="horizontal" wrap><li>One</li><li>Two</li></Stack>);
     await expectNoAxeViolations(container);

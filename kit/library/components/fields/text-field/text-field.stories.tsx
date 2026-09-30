@@ -41,13 +41,14 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       anatomy={{
-        render: cell(<TextField label="Email address" required description="We send the receipt here." error="Enter an email address, like name@example.com" defaultValue="ada@" />),
+        render: cell(<TextField label="Email address" required clearable description="We send the receipt here." error="Enter an email address, like name@example.com" defaultValue="ada@" />),
         parts: [
-          { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label', at: 'top-start' },
-          { n: 2, label: 'Required marker', note: 'optional, in words', target: '.ds-field__marker', at: 'bottom-end' },
+          { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
+          { n: 2, label: 'Required marker', note: 'optional, in words', target: '.ds-field__marker', at: 'top-end' },
           { n: 3, label: 'Description', note: 'optional', target: '.ds-field__description' },
-          { n: 4, label: 'Input', note: 'native, required', target: '.ds-text-field__input' },
-          { n: 5, label: 'Error', note: 'shown when the value is wrong', target: '.ds-field__error' },
+          { n: 4, label: 'Input', note: 'native, required', target: '.ds-text-field__input', at: 'bottom-start' },
+          { n: 5, label: 'Error', note: 'shown when the value is wrong', target: '.ds-field__error', at: 'end' },
+          { n: 6, label: 'Clear button and trailing slot', note: 'optional, inside the box at its end', target: '.ds-text-field__end', at: 'end' },
         ],
       }}
       specs={[
@@ -63,6 +64,9 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'description', value: 'Help under the label, tied with aria-describedby.' },
         { label: 'error', value: 'The error text. Setting it sets aria-invalid and the error look. Clear it when the value is valid.' },
         { label: 'required · requiredText', value: 'Native required plus the visible word "(required)". requiredText changes the word.' },
+        { label: 'success · successPrefix', value: 'A quiet confirmation in a polite live region (role="status"), styled as success and never as an error. Hidden while error is set. successPrefix is the hidden word before it, default "Correct".' },
+        { label: 'clearable · clearLabel · onClear', value: 'A clear icon button while the field holds text, on by default for type "search". It empties the field, returns focus to the input and calls onClear. clearLabel default "Clear search".' },
+        { label: 'trailing', value: 'Content inside the box at its end: a unit, an icon, a small button. The text stops before it.' },
         { label: 'errorPrefix', value: 'The hidden word read before the error, default "Error".' },
         { label: 'type', value: '"text" | "email" | "tel" | "url" | "password" | "search" | "number", default "text".' },
         { label: '…props', value: 'Every native input attribute, such as disabled, readOnly, autoComplete, value, onChange and ref.' },
@@ -76,7 +80,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'some', status: 'designed', render: cell(<TextField label="Full name" defaultValue="Ada Lovelace" autoComplete="name" />), trigger: 'value', note: 'A value the user typed.' },
           { id: 'too-many', status: 'designed', label: 'Too many (long value)', render: cell(<TextField label="Web address" type="url" defaultValue="https://example.com/a/very/long/path/that/does/not/fit/in/the/box/at/all" />), trigger: 'long value', note: 'The value scrolls inside the box; the box keeps its size.' },
           { id: 'incorrect', status: 'designed', render: cell(<TextField label="Email address" defaultValue="ada@" error="Enter an email address, like name@example.com" />), trigger: 'error', note: 'Icon, word and text say it; the border colour is a third cue. Shown after the user leaves the field.' },
-          { id: 'correct', status: 'designed', render: cell(<TextField label="Email address" description="We send the receipt here." defaultValue="ada@example.com" />), trigger: 'error cleared', note: 'The message goes as soon as the value is valid. The description returns.' },
+          { id: 'correct', status: 'designed', render: cell(<TextField label="Password" type="password" description="Use at least 12 characters." defaultValue="analytical-engine" success="Meets the 12 character rule" />), trigger: 'success', note: 'A check and text in the success colour, in a polite live region. The border stays as it is: it is not an error.' },
           { id: 'done', status: 'n/a', reason: 'Saving belongs to the form. The view announces it with role="status".' },
           { id: 'default', status: 'designed', render: cell(<TextField label="Full name" defaultValue="Ada Lovelace" />), trigger: 'rest' },
           { id: 'hover', status: 'designed', render: cell(<TextField label="Full name" defaultValue="Ada Lovelace" className="doc-force-hover" />), trigger: ':hover', note: 'Forced by .doc-force-hover. The border takes field.border-hover.' },
@@ -84,6 +88,8 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'active', status: 'n/a', reason: 'Typing is the feedback. A text field has no pressed look.' },
           { id: 'disabled', status: 'designed', render: cell(<TextField label="Account number" defaultValue="0012-3456" disabled description="Set when the account opens." />), trigger: 'disabled', note: 'Say why, in the description.' },
           { id: 'selected', status: 'n/a', reason: 'Not selectable. Selected text is the browser own.' },
+          { id: 'clearable', status: 'designed', group: 'interaction', render: cell(<TextField label="Search orders" type="search" defaultValue="Ada" />), trigger: 'type="search" with text', note: 'The clear icon button appears while the field holds text. It empties the field and returns focus.' },
+          { id: 'trailing', status: 'designed', group: 'interaction', render: cell(<TextField label="Weight" type="number" defaultValue="12" trailing={<span aria-hidden="true">kg</span>} />), trigger: 'trailing', note: 'A unit at the end of the box. The text stops before it.' },
           { id: 'read-only', status: 'designed', group: 'interaction', render: cell(<TextField label="Reference" defaultValue="INV-2041" readOnly />), trigger: 'readOnly', note: 'Sunken fill, normal text, still focusable and copyable. Distinct from disabled.' },
           { id: 'invalid', status: 'designed', group: 'interaction', render: cell(<TextField label="Email address" defaultValue="ada@" error="Enter an email address, like name@example.com" className="doc-force-focus" />), trigger: 'error + :focus-visible', note: 'The focus border wins over the invalid border while the field has focus; the ring and the message stay.' },
           { id: 'required', status: 'designed', group: 'interaction', render: cell(<TextField label="Email address" required description="We send the receipt here." />), trigger: 'required', note: 'The marker is the word "(required)", not a bare asterisk.' },
@@ -94,6 +100,7 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Write the error with the field name and the fix: "Enter an email address, like name@example.com".', basis: 'WCAG 3.3.3 (AA)' },
         { text: 'Pick the type and autocomplete token that match the data.', basis: 'WCAG 1.3.5 (AA)' },
         { text: 'Explain the required marker in words.', basis: 'WCAG 3.3.2 (A)' },
+        { text: 'Confirm a rule that was not obvious with a quiet success message, in a live region.', basis: 'Nielsen 5; WCAG 4.1.3 (AA)' },
       ]}
       donts={[
         { text: 'Use the placeholder as the label.', basis: 'WCAG 3.3.2 (A)', rule: 'text-field.visible-label' },

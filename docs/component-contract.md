@@ -10,7 +10,7 @@ Every component in `kit/library` follows this file, `docs/library.md` and the pa
 |---|---|
 | `<name>.tsx` | The component. Named export in PascalCase. Props interface exported as `<Name>Props`. |
 | `<name>.css` | Its styles. Class prefix `ds-<name>`, BEM (`ds-<name>__part`, `ds-<name>--variant`). Semantic tokens and text styles only (`var(--ds-…)`). No raw colour, no px outside `0` and `1px` hairlines, no palette, colors, typeface or font role. |
-| `<name>.stories.tsx` | The showcase: one story `Showcase` rendering `<DocPage …/>` from `fixtures/doc-page/doc-page`. Title from the path (`Fields/Text field`). The story imports `DocPage` from `fixtures/doc-page/doc-page` (`fixtures/` holds the Storybook-only blocks; see `docs/library.md`). Section order: Introduction, Anatomy, Tokens, States. Each anatomy part names a `target` selector inside the rendered component (and an optional `at` corner); give two parts on the same row different `at` points, so their leader lines do not overlap. |
+| `<name>.stories.tsx` | The showcase: one story `Showcase` rendering `<DocPage …/>` from `fixtures/doc-page/doc-page`. Title from the path (`Fields/Text field`). The story imports `DocPage` from `fixtures/doc-page/doc-page` (`fixtures/` holds the Storybook-only blocks; see `docs/library.md`). Section order: Introduction, Anatomy, Tokens, States. Each anatomy part names a `target` selector inside the rendered component (and an optional `at`: `start` by default, `end`, `center` or a corner). `start` puts the anchor just outside the leading edge, vertically centred, so it never covers text; use `center` only for a large box such as an input or a card. Give two parts on the same row different `at` points, so their leader lines do not overlap. |
 | `<name>.mdx` | The guide: exhaustive prose the showcase cannot show. `<Meta of={Stories} />`. Never repeats the showcase's tables. |
 | `<name>.rules.ts` | Rulebook entries, the Button shape. Ids `<name>.<slug>`, permanent. Include `basis` and `covers` (A11Y checklist ids from `fixtures/rulebook/a11y.ts`). |
 | `<name>.test.tsx` | Vitest + Testing Library. Tests the behaviour, the keyboard contract, the ARIA wiring, and `expectNoAxeViolations` (root `expect-no-axe-violations.ts`). |
@@ -35,7 +35,7 @@ A part that cannot stand alone (a dialog header, a field label) stays inside the
 | Family | Slices |
 |---|---|
 | `primitives/` | box, stack, text, heading, icon, visually-hidden, divider |
-| `components/clickables/` | button, icon-button, link, menu-item |
+| `components/clickables/` | button, icon-button, chip, link, menu-item |
 | `components/fields/` | text-field, textarea, select, combobox, checkbox, radio-group, switch |
 | `components/navigation/` | tabs, breadcrumb, pagination |
 | `components/feedback/` | banner, toast, spinner, skeleton, progress, badge, empty-state |
