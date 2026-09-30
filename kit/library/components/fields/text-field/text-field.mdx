@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './text-field.stories';
+
+<Meta of={Stories} />
+
+# Text field
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A text field is a box where you type one line: your name, an email address, a search. A label above it says what to type. If something goes wrong, a message under it says what and how to fix it.
+
+**Precisely:** Component in the fields family. It captures one line of typed text with a native `input`, a visible label, an optional description and an optional error. It does not take several lines (use the textarea) and it does not pick from a list (use the select or the combobox).
+
+**The job.** A text field answers the question "what should I type here?". The label answers it before the user types and stays after. That is why the label is a real `label` element, outside the input, and never a placeholder.
+
+**The layer.** The text field is a component. It reads roles and semantic tokens. The box, the label, the description and the error live in the fields family (`fields/field.tsx` and `field.css`), so every field in the family looks and wires the same way.
+
+**When it exists.** Use a text field for short free text. If the answer comes from a short fixed list, use a select. If the list is long or searchable, use a combobox. If the answer is a yes or no, use a checkbox or a switch.
+
+## 2. Usage
+
+### When to use
+
+- To capture one line the user knows and can type: a name, an email, a code, a search term.
+
+### When not to use, and what to use instead
+
+- **For several lines.** Use the textarea, which grows and resizes.
+- **For a choice from a known list.** Use a select, a radio group or a combobox. Typing invites spelling variants (Nielsen heuristic 5, error prevention).
+- **For a search that filters suggestions.** Use the combobox, which announces the result count and keeps focus in the input.
+
+### How
+
+- **Label.** Always visible, above the input, bound with `for` and `id`. A placeholder disappears when the user types and often fails contrast, so it cannot name the field (WCAG 3.3.2 Labels or Instructions, A; WCAG 1.3.1, A).
+- **Description.** Put format hints between the label and the input. The component ties them to the input with `aria-describedby`, so a screen reader reads them with the field (WCAG 3.3.2, A).
+- **Required.** The input gets the native `required` attribute and the label gets the visible word "(required)". A bare asterisk explains nothing to a person who does not know the convention. Change the word with `requiredText` for another language (WCAG 3.3.2, A).
+- **Error.** Pass `error` as text. The component sets `aria-invalid="true"`, adds the message to `aria-describedby` after the description, shows an error icon and hides the word "Error" for assistive technology. The border colour is a third cue, never the only one (WCAG 3.3.1 Error Identification, A; WCAG 1.4.1 Use of Color, A).
+- **Message content.** Name the field and the fix: "Enter an email address, like name@example.com" (WCAG 3.3.3 Error Suggestion, AA).
+- **When to validate.** On blur, and again on input once an error shows. Do not flag an empty field the user has not left (`knowledge/patterns/forms.md` rules 10 and 11; Nielsen heuristic 5). The component takes the error as a prop, so the view decides when.
+- **Type and autocomplete.** Set `type` and `autoComplete` to match the data: `email`, `tel`, `name`, `postal-code`. The keyboard changes and the browser can fill the field (WCAG 1.3.5 Identify Input Purpose, AA).
+- **Size.** The input is at least 48px high and its text is 16px, so iOS does not zoom on focus and the target clears the 44px house floor (WCAG 2.5.8 AA is 24px; 2.5.5 AAA is 44px).
+- **Paste.** Never block paste (WCAG 3.3.8 Accessible Authentication, AA).
+- **i18n.** Label, description, error, `requiredText` and `errorPrefix` all arrive as props. The component holds no text of its own (`docs/library.md`, isolation rule 4).
+
+## 3. Why the states look as they do
+
+- **Hover** darkens the border to `field.border-hover`, inside `@media (hover: hover)` so a touch does not leave it stuck. The showcase sets the hover cell by hand, because the grid cannot replay a media query.
+- **Focus-visible** changes the border to `field.border-focus` and draws a ring outside it. The border alone can fall under 3:1 next to the fill, so the ring carries the contrast (WCAG 2.4.7, AA; WCAG 1.4.11, AA).
+- **Invalid** changes the border to `field.border-invalid`. The message, icon and `aria-invalid` carry the meaning. When the field also has focus, the focus border wins and the ring stays.
+- **Disabled** uses the native `disabled` attribute and the disabled roles. The attribute removes the field from the tab order and from the form, so the view must say why (Nielsen heuristic 1). The label stays legible.
+- **Read-only** uses the native `readonly` attribute. The field keeps focus and text selection, so a person can copy the value. It gets a sunken fill and normal text, so it never looks disabled.
+- **Too many** scrolls the long value inside the box with an ellipsis at rest. The box keeps its size and the label wraps rather than truncates (WCAG 1.4.10 Reflow, AA).
+- **Correct** is the error removed. The description returns. No success check mark ships: a green tick adds a colour-only cue for little help, and the form owns "saved" as a status message (WCAG 4.1.3, AA).
+- **Loading, none, one, done, active, selected** are n/a. The field holds no collection, has no pressed look, and the view announces a save.
+
+## 4. Pitfalls and don'ts
+
+- **Do not use the placeholder as the label.** It vanishes on typing and fails contrast. (WCAG 3.3.2, A; `text-field.visible-label`)
+- **Do not show an error by border colour alone.** People who cannot tell the colours apart miss it. (WCAG 1.4.1, A; `text-field.error-bound`)
+- **Do not remove the focus outline.** Keyboard users lose their place. (WCAG 2.4.7, AA; `text-field.focus-ring`)
+- **Do not validate on each key.** The user sees an error for a value that is not finished. (Nielsen heuristic 5; `text-field.validate-on-blur`)
+- **Do not ask for personal data without an `autocomplete` token.** (WCAG 1.3.5, AA; `text-field.autocomplete`)
+- **Do not write a colour or px literal in the stylesheet.** The dark theme cannot reach it. (Bauhaus `misfile.raw-value-in-component`; `text-field.no-literal`)

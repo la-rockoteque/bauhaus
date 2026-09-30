@@ -1,0 +1,118 @@
+.ds-progress {
+  display: grid;
+  gap: var(--ds-space-field-gap);
+  inline-size: 100%;
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  line-height: var(--ds-text-body-line-height);
+  color: var(--ds-text-default);
+}
+
+.ds-progress__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ds-space-inline-md);
+}
+
+.ds-progress__label {
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+}
+
+.ds-progress__value {
+  flex: none;
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-code-family);
+  font-size: var(--ds-text-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-progress__bar {
+  appearance: none;
+  display: block;
+  box-sizing: border-box;
+  inline-size: 100%;
+  block-size: var(--ds-space-2);
+  border: 0;
+  border-radius: var(--ds-radius-pill);
+  background-color: var(--ds-progress-track);
+  color: var(--ds-progress-fill);
+  overflow: hidden;
+}
+
+.ds-progress__bar::-webkit-progress-bar {
+  background: var(--ds-progress-track);
+}
+
+.ds-progress__bar::-webkit-progress-value {
+  background: var(--ds-progress-fill);
+  border-radius: var(--ds-radius-pill);
+  transition: inline-size var(--ds-motion-duration-base) linear;
+}
+
+.ds-progress__bar::-moz-progress-bar {
+  background: var(--ds-progress-fill);
+  border-radius: var(--ds-radius-pill);
+}
+
+/* Unknown length: a segment slides along the track, linear. Native indeterminate has no styling hook. */
+.ds-progress__bar:indeterminate {
+  background-image: linear-gradient(90deg, var(--ds-progress-fill), var(--ds-progress-fill));
+  background-repeat: no-repeat;
+  background-size: 40% 100%;
+  background-position: -100% 0;
+  animation: ds-progress-slide calc(var(--ds-motion-duration-deliberate) * 4) linear infinite;
+}
+
+.ds-progress__bar:indeterminate::-webkit-progress-bar {
+  background: transparent;
+}
+
+.ds-progress__bar:indeterminate::-moz-progress-bar {
+  background: transparent;
+}
+
+@keyframes ds-progress-slide {
+  to { background-position: 200% 0; }
+}
+
+.ds-progress--error .ds-progress__bar {
+  color: var(--ds-status-error);
+}
+
+.ds-progress--error .ds-progress__bar::-webkit-progress-value {
+  background: var(--ds-status-error);
+}
+
+.ds-progress--error .ds-progress__bar::-moz-progress-bar {
+  background: var(--ds-status-error);
+}
+
+.ds-progress__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-inline-sm);
+  margin: 0;
+  color: var(--ds-status-error);
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  line-height: var(--ds-text-caption-line-height);
+}
+
+/* No loop: the indeterminate segment stops in the middle of the track. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-progress__bar:indeterminate {
+    animation: none;
+    background-position: 50% 0;
+  }
+
+  .ds-progress__bar::-webkit-progress-value { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .ds-progress__bar { border: var(--ds-size-border-thin) solid CanvasText; }
+  .ds-progress__bar::-webkit-progress-value { background: Highlight; }
+  .ds-progress__bar::-moz-progress-bar { background: Highlight; }
+}

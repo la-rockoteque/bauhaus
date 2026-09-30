@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './menu-item.stories';
+
+<Meta of={Stories} />
+
+# Menu item
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A menu item is one row in a menu: an action you can pick. It can carry an icon, a second line of detail and a hint of the keyboard shortcut.
+
+**Precisely:** Component in the clickables family. It is React Aria's `MenuItem`, styled with tokens, and it is what `Menu` composes. It lives only inside a menu.
+
+**The job.** An item names one action or one choice, and shows whether it is available, highlighted or chosen.
+
+**The layer.** The menu item is a component. It reads roles and semantic tokens. It sits in the clickables family because a user presses it, and it depends on the menu for its context.
+
+## 2. Usage
+
+### When to use
+
+- Inside a `Menu`, for each action or choice.
+
+### When not to use, and what to use instead
+
+- **Outside a menu.** Use a button or a link. An item has no meaning without its menu.
+- **For navigation.** Use a link in a `nav`.
+- **For a setting that stays visible.** Use a switch or a checkbox.
+
+### How
+
+- **Label.** A string. It names the item and feeds the typeahead. Start with a verb and name the object: "Delete project" (WCAG 2.4.6, AA).
+- **Icon.** Optional, from the glyph set. It is hidden from assistive technology because the label names the item (WCAG 1.1.1, A). In a choosing menu the check takes the icon's place.
+- **Description.** Optional. It is wired as the item's accessible description. Use it for a consequence or for the reason an item is disabled.
+- **Shortcut.** Optional `kbd` hint. It is text only. The app binds the key. A shortcut that the app does not bind misleads the user.
+- **Destructive.** Reads in `status.error`, which reaches 4.5:1 on the overlay surface in both themes. The colour is a second signal. The label carries the meaning (WCAG 1.4.1, A).
+- **Target size.** 44px high, the house floor at the WCAG 2.5.5 (AAA) figure.
+- **Wrapping.** The label and the description wrap. Nothing truncates (WCAG 1.4.10, AA).
+- **i18n.** Every text arrives as a prop.
+
+## 3. Why the states look as they do
+
+- **Hover and keyboard focus** share one highlight. In a menu, hover moves the roving focus, so React Aria sets `data-focused` for both. The highlight is `state.hover-layer`.
+- **Focus-visible** adds the ring, drawn inside the item so the menu's edge does not clip it (WCAG 2.4.7, AA).
+- **Pressed** uses `state.pressed-layer`.
+- **Selected** fills with `state.selected` and draws a check. The check is the primary signal, since fill alone is colour alone (WCAG 1.4.1, A).
+- **Disabled** uses `disabled.text` and keeps the item in the list. Arrows skip it. The description can say why.
+- **Loading, incorrect, done** are n/a. The menu closes on action, and the view reports what happened.
+- **Nothing, none, one** are n/a. An item holds no data and no collection.
+- **Too many** wraps the label and the description.
+
+## 4. Pitfalls and don'ts
+
+- **Do not mark a destructive item by red alone.** (WCAG 1.4.1, A; `menu-item.destructive-named`)
+- **Do not let the icon name the item.** (WCAG 1.1.1, A; `menu-item.icon-hidden`)
+- **Do not bind the key from the shortcut prop.** (`menu-item.shortcut-hint`)
+- **Do not make an item shorter than 44px.** (`menu-item.touch-target`)
+- **Do not write a literal in `menu-item.css`.** (Bauhaus `misfile.raw-value-in-component`; `menu-item.no-literal`)

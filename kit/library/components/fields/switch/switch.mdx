@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './switch.stories';
+
+<Meta of={Stories} />
+
+# Switch
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A switch is a light switch on screen. Flip it and the setting changes at once: notifications on, dark mode off. There is no Save button.
+
+**Precisely:** Component in the fields family. It turns one setting on or off with immediate effect. It is a native `input` of type checkbox with `role="switch"` and a visible, clickable label. It is not for a choice that a form saves later (use the checkbox).
+
+**The layer.** A component. The native input is invisible and covers a 44px target. A drawn track and thumb sit under it, so the browser keeps focus, Space, and label clicks.
+
+## 2. Usage
+
+### When to use
+
+- A setting that applies as soon as it changes: notifications, a display option, a feature flag.
+
+### When not to use, and what to use instead
+
+- **For a field that a form saves with a button.** Use the checkbox. A switch that waits for Save misleads (APG Switch).
+- **For one of many.** Use the radio group.
+
+### How
+
+- **Role.** `input type="checkbox" role="switch"` (APG Switch). The screen reader says "switch, on" or "off". Space toggles. Enter may also toggle in some browsers; the component does not add it.
+- **Label.** Names the setting and never changes with the state. "Email alerts", not "Email alerts on". A label that flips makes the announcement contradict itself ("Email alerts on, off") (WCAG 3.2.4 Consistent Identification, AA).
+- **Not colour alone.** The on state moves the thumb to the end and draws a check in it. The off state has the thumb at the start and no check (WCAG 1.4.1, A).
+- **Contrast.** The off track outline reaches 3:1 on the page. The on track fill reaches 3:1, and the thumb reaches 3:1 on it (WCAG 1.4.11, AA).
+- **Target.** The row is at least 44px high and the target column is 44px wide (WCAG 2.5.5 AAA house floor; 2.5.8 AA is 24px).
+- **Failure.** If the change can fail (a network call), put the switch back and say so in a status message (WCAG 4.1.3, AA). Do not leave it in a state that is not true.
+- **Direction.** The thumb slides with a physical `translate`. In a right-to-left layout it would need a mirror; add it when the first RTL product needs it.
+- **i18n.** All text arrives as props.
+
+## 3. Why the states look as they do
+
+- **On** fills the track, moves the thumb and shows the check. **Off** is a hollow track.
+- **Hover** darkens the track outline inside `@media (hover: hover)`. The grid cannot replay a media query, so the hover cell shows rest.
+- **Focus-visible** draws the ring around the track.
+- **Disabled** uses the native attribute and the disabled roles for track, thumb and label, in both on and off.
+- **Motion.** The thumb slides for `motion.duration.base`. Under `prefers-reduced-motion: reduce` it jumps: the state changes and the travel goes (WCAG 2.3.3, AAA).
+- **Incorrect, correct, some, loading, none, one, active, done** are n/a. A switch has two states and acts at once.
+
+## 4. Pitfalls and don'ts
+
+- **Do not use a switch for a field that needs Save.** (APG Switch; `switch.immediate-effect`)
+- **Do not change the label with the state.** (WCAG 3.2.4, AA; `switch.label-stable`)
+- **Do not show on and off by colour alone.** (WCAG 1.4.1, A; `switch.not-colour-alone`)
+- **Do not build it from a `div`.** (APG Switch; WCAG 4.1.2, A; `switch.role`)
+- **Do not write a colour or px literal in the stylesheet.** (Bauhaus `misfile.raw-value-in-component`; `switch.no-literal`)

@@ -1,0 +1,157 @@
+.ds-dialog {
+  inline-size: var(--ds-size-overlay-md);
+  max-inline-size: calc(100vw - var(--ds-space-8));
+  max-block-size: calc(100dvh - var(--ds-space-8));
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ds-text-default);
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(var(--ds-space-4));
+  transition:
+    opacity var(--ds-motion-duration-base) var(--ds-motion-ease-exit),
+    transform var(--ds-motion-duration-base) var(--ds-motion-ease-exit),
+    overlay var(--ds-motion-duration-base) allow-discrete,
+    display var(--ds-motion-duration-base) allow-discrete;
+}
+
+.ds-dialog--sm { inline-size: var(--ds-size-overlay-sm); }
+.ds-dialog--md { inline-size: var(--ds-size-overlay-md); }
+.ds-dialog--lg { inline-size: var(--ds-size-overlay-lg); }
+
+.ds-dialog[open] {
+  opacity: 1;
+  transform: none;
+  transition-timing-function: var(--ds-motion-ease-enter);
+}
+
+@starting-style {
+  .ds-dialog[open] {
+    opacity: 0;
+    transform: translateY(var(--ds-space-4));
+  }
+}
+
+.ds-dialog::backdrop {
+  background: var(--ds-scrim);
+  opacity: 0;
+  transition:
+    opacity var(--ds-motion-duration-base) var(--ds-motion-ease-exit),
+    overlay var(--ds-motion-duration-base) allow-discrete,
+    display var(--ds-motion-duration-base) allow-discrete;
+}
+
+.ds-dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .ds-dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+.ds-dialog:modal {
+  z-index: var(--ds-z-modal);
+}
+
+.ds-dialog__panel {
+  display: flex;
+  flex-direction: column;
+  max-block-size: calc(100dvh - var(--ds-space-8));
+  border: var(--ds-size-border-thin) solid var(--ds-overlay-border);
+  border-radius: var(--ds-radius-overlay);
+  background: var(--ds-overlay-surface);
+  box-shadow: var(--ds-shadow-2);
+  overflow: hidden;
+}
+
+.ds-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ds-space-inline-md);
+  padding: var(--ds-space-inset-lg) var(--ds-space-inset-lg) var(--ds-space-inset-sm);
+}
+
+.ds-dialog__title {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.ds-dialog__title:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+/* The body is the only part that scrolls, so the header and the actions never cover a focused control. */
+.ds-dialog__body {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  padding: var(--ds-space-inset-sm) var(--ds-space-inset-lg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.ds-dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--ds-space-inline-md);
+  padding: var(--ds-space-inset-md) var(--ds-space-inset-lg) var(--ds-space-inset-lg);
+  border-block-start: var(--ds-size-border-thin) solid var(--ds-overlay-border);
+}
+
+html:has(.ds-dialog:modal) {
+  overflow: hidden;
+}
+
+/* Inline: open in the flow of the page, with no scrim, for previews and embedded panels. */
+.ds-dialog--inline {
+  position: static;
+  inset: auto;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  max-inline-size: none;
+  max-block-size: 100%;
+  margin: 0;
+  opacity: 1;
+  transform: none;
+}
+
+.ds-dialog--inline .ds-dialog__panel {
+  max-block-size: 100%;
+  min-block-size: 0;
+}
+
+.ds-dialog--inline.ds-dialog--sm { max-inline-size: var(--ds-size-overlay-sm); }
+.ds-dialog--inline.ds-dialog--md { max-inline-size: var(--ds-size-overlay-md); }
+.ds-dialog--inline.ds-dialog--lg { max-inline-size: var(--ds-size-overlay-lg); }
+
+@media (max-width: 48rem) {
+  .ds-dialog:not(.ds-dialog--inline) {
+    inline-size: 100vw;
+    max-inline-size: 100vw;
+    block-size: 100dvh;
+    max-block-size: 100dvh;
+    margin: 0;
+  }
+
+  .ds-dialog:not(.ds-dialog--inline) .ds-dialog__panel {
+    block-size: 100%;
+    max-block-size: 100dvh;
+    border: 0;
+    border-radius: var(--ds-radius-none);
+  }
+}
+
+/* Reduced motion keeps the fade and drops the travel: transform is no longer transitioned. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-dialog,
+  .ds-dialog[open] {
+    transition-property: opacity, overlay, display;
+    transform: none;
+  }
+}

@@ -1,0 +1,56 @@
+.ds-popover {
+  inline-size: max-content;
+  min-inline-size: 0;
+  max-inline-size: min(var(--ds-size-overlay-md), calc(100vw - var(--ds-space-6)));
+  border: var(--ds-size-border-thin) solid var(--ds-overlay-border);
+  border-radius: var(--ds-radius-overlay);
+  background: var(--ds-overlay-surface);
+  box-shadow: var(--ds-shadow-1);
+  color: var(--ds-text-default);
+  overflow: auto;
+}
+
+.ds-popover--inline {
+  display: inline-block;
+  position: static;
+  box-sizing: border-box;
+  max-block-size: 100%;
+}
+
+.ds-popover[data-entering] {
+  animation: ds-popover-in var(--ds-motion-duration-base) var(--ds-motion-ease-enter);
+}
+
+.ds-popover[data-exiting] {
+  animation: ds-popover-out var(--ds-motion-duration-base) var(--ds-motion-ease-exit) forwards;
+}
+
+/* The content scrolls inside the popover, which the position code keeps inside the viewport. */
+.ds-popover__content {
+  display: block;
+  padding: var(--ds-space-inset-md);
+  outline: none;
+  overflow-wrap: anywhere;
+}
+
+@keyframes ds-popover-in {
+  from { opacity: 0; transform: translateY(calc(var(--ds-space-1) * -1)); }
+}
+
+@keyframes ds-popover-out {
+  to { opacity: 0; transform: translateY(calc(var(--ds-space-1) * -1)); }
+}
+
+/* Reduced motion keeps the fade and drops the travel. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-popover[data-entering] { animation-name: ds-popover-fade-in; }
+  .ds-popover[data-exiting] { animation-name: ds-popover-fade-out; }
+}
+
+@keyframes ds-popover-fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes ds-popover-fade-out {
+  to { opacity: 0; }
+}

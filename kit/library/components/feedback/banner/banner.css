@@ -1,0 +1,58 @@
+.ds-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-inline-md);
+  padding: var(--ds-space-inset-md);
+  border: var(--ds-size-border-thin) solid var(--ds-status-info-border);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-status-info-surface);
+  color: var(--ds-status-info-text);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  font-weight: var(--ds-text-body-weight);
+  line-height: var(--ds-text-body-line-height);
+}
+
+.ds-banner--success { background: var(--ds-status-success-surface); border-color: var(--ds-status-success-border); color: var(--ds-status-success-text); }
+.ds-banner--warning { background: var(--ds-status-warning-surface); border-color: var(--ds-status-warning-border); color: var(--ds-status-warning-text); }
+.ds-banner--error { background: var(--ds-status-error-surface); border-color: var(--ds-status-error-border); color: var(--ds-status-error-text); }
+
+.ds-banner__icon {
+  margin-block-start: var(--ds-space-1);
+}
+
+.ds-banner__content {
+  display: grid;
+  flex: 1;
+  gap: var(--ds-space-stack-xs);
+  min-inline-size: 0;
+}
+
+.ds-banner__title {
+  margin: 0;
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+}
+
+.ds-banner__body {
+  overflow-wrap: anywhere;
+}
+
+.ds-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-inline-sm);
+  margin-block-start: var(--ds-space-stack-xs);
+}
+
+/* The close button sits on the tinted fill; its own text colour follows the message. */
+.ds-banner .ds-button--tertiary {
+  color: inherit;
+}
+
+.ds-banner--info .ds-banner__icon { color: var(--ds-status-info); }
+.ds-banner--success .ds-banner__icon { color: var(--ds-status-success); }
+.ds-banner--warning .ds-banner__icon { color: var(--ds-status-warning); }
+.ds-banner--error .ds-banner__icon { color: var(--ds-status-error); }

@@ -1,0 +1,120 @@
+/* Elevation 0: a border and the raised surface. A card has no shadow; shadows are for floating layers. */
+.ds-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-stack-sm);
+  min-inline-size: 0;
+  padding: var(--ds-space-inset-md);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-raised);
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  font-weight: var(--ds-text-body-weight);
+  line-height: var(--ds-text-body-line-height);
+  overflow-wrap: anywhere;
+}
+
+.ds-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ds-space-inline-md);
+}
+
+.ds-card__title {
+  min-inline-size: 0;
+}
+
+.ds-card__meta {
+  flex: none;
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  font-weight: var(--ds-text-caption-weight);
+  line-height: var(--ds-text-caption-line-height);
+}
+
+.ds-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: var(--ds-space-stack-xs);
+  min-inline-size: 0;
+}
+
+.ds-card__footer {
+  padding-block-start: var(--ds-space-inset-sm);
+  border-block-start: var(--ds-size-border-thin) solid var(--ds-border-default);
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  font-weight: var(--ds-text-caption-weight);
+  line-height: var(--ds-text-caption-line-height);
+}
+
+.ds-card__error {
+  color: var(--ds-status-error);
+}
+
+/* The one link: its ::after stretches over the card, so the whole card is the target. */
+.ds-card__link {
+  color: var(--ds-text-link);
+  text-decoration: none;
+}
+
+.ds-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.ds-card__link:focus-visible {
+  outline-width: 0;
+}
+
+.ds-card--link:has(.ds-card__link:focus-visible) {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.ds-card--link:active {
+  background: var(--ds-state-pressed-layer);
+}
+
+@media (hover: hover) {
+  .ds-card--link:hover {
+    border-color: var(--ds-border-strong);
+  }
+
+  .ds-card--link:hover .ds-card__link {
+    text-decoration: underline;
+  }
+}
+
+/* Loading: two lines, the size of the text they stand for. */
+.ds-card__skeleton {
+  display: block;
+  inline-size: 60%;
+  block-size: var(--ds-text-body-size);
+  border-radius: var(--ds-radius-sm);
+  background: linear-gradient(90deg, var(--ds-skeleton-base), var(--ds-skeleton-highlight), var(--ds-skeleton-base)) var(--ds-skeleton-base);
+  background-size: 200% 100%;
+  animation: ds-card-shimmer calc(var(--ds-motion-duration-deliberate) * 4) linear infinite;
+}
+
+.ds-card__skeleton--long {
+  inline-size: 90%;
+}
+
+@keyframes ds-card-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-card__skeleton { animation: none; }
+}

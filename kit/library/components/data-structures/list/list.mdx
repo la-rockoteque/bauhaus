@@ -1,0 +1,64 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './list.stories';
+
+<Meta of={Stories} />
+
+# List
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A list is a stack of rows, one thing per row. Each row can have a picture on the left, a name, a line of detail, and a value on the right. A whole row can be one link or one button.
+
+**Precisely:** Component in the data-structures family. A semantic `ul` or `ol` of rows with leading, title, description and trailing slots. A row holds at most one control. It is not for comparing many attributes.
+
+**The job.** A list lets people scan a set of like things and open one. The title is what they scan for. The other slots help them choose.
+
+**The layer.** The list is a component. It reads roles and semantic tokens and imports no pattern.
+
+**When it exists.** Use a list when each row has one primary value. Use a table when rows share three or more attributes to compare. Use a card when one entity carries mixed content.
+
+## 2. Usage
+
+### When to use
+
+- To show a set of like items that people scan and open one at a time: files, messages, settings, search results.
+
+### When not to use, and what to use instead
+
+- **Attributes to compare across rows.** Use a table.
+- **A summary of one entity with a header, body and footer.** Use a card.
+- **Site navigation.** Use a nav with a list of links. Navigation has its own landmark and current-page marking.
+
+### How
+
+- **Markup.** `List` renders a `ul`, or an `ol` when `ordered` is set and the order carries meaning. Each `ListItem` is an `li` (WCAG 1.3.1, A). Give the list an accessible name with `aria-label` when nearby text does not name it.
+- **Slots.** `leading` is a picture or icon. `title` names the row. `description` adds a line of detail. `trailing` holds a value, a badge or a chevron. `leading` and `trailing` are static.
+- **One control per row.** Pass `href` for a link, or `onPress` for a button. The title becomes the control's text. The control's `::after` stretches over the row, so the whole row is the target and the row has one tab stop. There are no nested interactive elements, and the trailing slot never holds a button (WCAG 4.1.2, A). For a row with two actions, use a table with an actions column or a menu.
+- **Dividers.** `divided` draws `border.default` between rows. Dividers are opt-in, because whitespace alone often separates rows well enough.
+- **Selected.** A selected link row sets `aria-current="true"`. A selected button row sets `aria-pressed`. The row shows a fill and a bar at its start edge, so the state does not rest on fill alone (WCAG 1.4.1, A).
+- **Target size.** A row is at least 44px high. The house floor is the WCAG 2.5.5 (AAA) figure. The AA minimum is 24px (WCAG 2.5.8).
+- **Focus.** The ring goes around the row, because the row is the target (WCAG 2.4.7, AA).
+- **Keyboard.** Tab moves from row to row. Enter activates a link. Enter and Space activate a button. Both are native.
+- **Link text.** The title is the link text. "Open" and "Details" tell a screen-reader user nothing when links are listed (WCAG 2.4.4, A).
+
+## 3. Why the states look as they do
+
+- **Nothing** renders the `empty` slot with an invitation. **None** renders it with the words for an empty set. The list renders no `ul` in either case, because an empty list is announced as "list, 0 items" and helps nobody.
+- **Loading** shows skeleton rows shaped like the slots. The row keeps its height, so nothing jumps when data arrives. `aria-busy` is set and a hidden phrase says "Loading items" (Nielsen heuristic 1). The shimmer stops under `prefers-reduced-motion`.
+- **One** and **some** are plain rows.
+- **Too many** is a long title. It wraps inside the row, and `min-inline-size: 0` on the body stops it from widening the row (WCAG 1.4.10, AA). Very long sets need paging, which the caller and the pagination component own.
+- **Incorrect** replaces the rows with an alert. The caller adds a retry.
+- **Partial** keeps the rows and adds a status that says what is missing.
+- **Correct** and **done** are n/a. A list takes no input, and the view announces the result of an action on a row.
+- **Hover** and **pressed** use the state layers, only on devices that hover for hover. **Focus-visible** rings the row. **Selected** uses `state.selected` and a bar. **Disabled** uses a native disabled button in `disabled.text`, and the description says why (Nielsen heuristic 1).
+
+## 4. Pitfalls and don'ts
+
+- **Do not put a button in the trailing slot of a linked row.** It nests an interactive element in another. (WCAG 4.1.2, A; `list.one-control-per-row`)
+- **Do not build the list from `div` elements.** Assistive technology loses the count and the position. (WCAG 1.3.1, A; `list.semantic-list`)
+- **Do not mark the selected row by colour alone.** (WCAG 1.4.1, A; `list.selected-not-colour-alone`)
+- **Do not render an empty `ul`.** Use the `empty` slot. (`list.state.none`)
+- **Do not write a colour or px literal in `list.css`.** (Bauhaus `misfile.raw-value-in-component`; `list.no-literal`)
+- **Do not label a link "Open" or "Details".** (WCAG 2.4.4, A; `list.title-names-row`)

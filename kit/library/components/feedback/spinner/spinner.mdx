@@ -1,0 +1,59 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './spinner.stories';
+
+<Meta of={Stories} />
+
+# Spinner
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A spinner is a small turning ring that says "working on it".
+
+**Precisely:** Component in the feedback family. It is an indeterminate loading indicator with `role="status"` and a required text label. It knows nothing about progress.
+
+**The job.** A spinner tells the user that the system has heard them and is busy, when the wait is short and its length is unknown (Nielsen heuristic 1, visibility of system status).
+
+## 2. Usage
+
+### When not to use it
+
+The spinner is the most over-used indicator. Choose from the wait (`knowledge/patterns/loading.md`):
+
+| Wait | Do this |
+|---|---|
+| Under 1 s | **Nothing.** Render the result. A loop for a wait the user never notices is noise. Immediate control feedback (a pressed style) is enough. |
+| 1 to 2 s | A spinner, or a skeleton that mirrors the layout. |
+| 2 to 10 s | A determinate progress bar, a step list or an estimate. |
+| Over 10 s | Percent done, or a background job with a notification. |
+
+Also do not use a spinner:
+
+- **For a whole page or route.** Use a skeleton of the page frame. Never blank a working screen (`spinner.scoped`; Nielsen heuristic 3).
+- **For a button's own action.** Use the button's loading state, which keeps the label and the width.
+- **When progress is known.** Use the progress bar.
+
+### How
+
+- **Delay it.** Mount the spinner about 300 ms after the work starts. If the work ends first, it never shows. Once shown, keep it about 500 ms. This avoids a flicker (`loading.md` rule 3). The component has no timer of its own, because the caller knows what it waits for.
+- **Label.** The `label` prop is required and becomes the text of a `role="status"` region. Say what loads: "Loading orders", not "Loading…" (Nielsen 1). Screen readers announce a status region politely (WCAG 4.1.3 Status Messages, AA). Mount the region with its label together; an empty region that later fills is more reliable, so a caller that swaps content in can keep the wrapper and change only the spinner.
+- **Visible label.** Set `showLabel` when the wait is long enough that the user asks what happens. For a small in-place spinner the hidden label is enough.
+- **Busy region.** Set `aria-busy="true"` on the region that loads (`loading.busy-announced`).
+- **Size.** Match the size to the text next to it: sm beside caption text, md beside body text, lg for a panel.
+
+## 3. Why the states look as they do
+
+- **Loading** is the only live state. Everything else is n/a: a spinner has no data, no input and no controls.
+- **Too many** is a long label. It wraps and never truncates, since the label says what the user waits for (WCAG 1.4.10, AA).
+- **Incorrect and done** are the caller's job. A failed load replaces the spinner with an error in place; a finished load replaces it with the result.
+- **Reduced motion.** A turning ring is a loop, and a loop is sustained peripheral motion (Reason and Brand, 1975; `foundations/motion.md`). Under `prefers-reduced-motion: reduce` the ring stops. It keeps its shape, a track with one bright arc, so it still reads as "working". The label carries the meaning.
+- **Loop length.** A loading indicator is essential to the state it reports, so WCAG 2.2.2 (Pause, Stop, Hide, A) does not apply to it while the work runs. Past 5 s show a progress bar, which also gives an end point.
+
+## 4. Pitfalls and don'ts
+
+- **Do not show a spinner for a wait under one second.** (Nielsen response-time limits; `spinner.min-delay`)
+- **Do not blank the page.** (Nielsen 3; `spinner.scoped`)
+- **Do not ship a spinner with no text.** Assistive technology hears nothing. (WCAG 4.1.3, AA; `spinner.has-text`)
+- **Do not keep the ring turning under reduced motion.** (WCAG 2.3.3, AAA; `spinner.reduced-motion`)
+- **Do not write a literal in `spinner.css`.** (`misfile.raw-value-in-component`; `spinner.no-literal`)

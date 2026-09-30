@@ -1,0 +1,58 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './combobox.stories';
+
+<Meta of={Stories} />
+
+# Combobox
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A combobox is a text box with a list of suggestions. You type a few letters, the list narrows, and you pick one. Use it when the list is too long to scroll.
+
+**Precisely:** Component in the fields family. It picks one option from a long or searchable list. It is a React Aria Components `ComboBox`, styled with tokens through its `data-*` state attributes. Focus stays in the input while the list is open. It is not for a short list (use the select).
+
+**The layer.** A component. It is one of the few that use React Aria Components, because a combobox has no native element: the popup, the `aria-activedescendant` wiring, the filtering and the live announcements are hard to get right by hand (`docs/component-contract.md`, step 3). No default React Aria style ships.
+
+## 2. Usage
+
+### When to use
+
+- A list with dozens of options or more, where typing finds the item faster than scrolling.
+
+### When not to use, and what to use instead
+
+- **For fewer than about 15 options.** Use the select, which is native and needs no script.
+- **For free text with no list.** Use the text field.
+- **For two to five visible options.** Use the radio group.
+
+### How
+
+- **Focus stays in the input.** Down opens the list and moves the active option. Up and Down move it. Enter accepts. Esc closes, then clears. Tab leaves. The active option is exposed with `aria-activedescendant`, so a screen reader hears it while typing continues (APG Combobox; WCAG 2.1.1, 4.1.2, A). A list that steals focus stops the typing.
+- **Result count.** React Aria announces "n options available" in a live region when the list opens or the text changes, without moving focus (WCAG 4.1.3 Status Messages, AA).
+- **No match.** `emptyText` shows in the list. An empty popup looks broken (Nielsen heuristic 1).
+- **Loading.** With `loading`, the list shows `loadingText` and the combobox sets `aria-busy`. Fetch on input and filter on the server: pass the new `options` and keep `inputValue` controlled.
+- **Label, description, error, required.** As the text field. The error slot is tied to the input by React Aria (`aria-describedby`) and the input gets `aria-invalid` (WCAG 3.3.1, 3.3.2, A). Validation uses `aria` mode, so no native browser bubble appears.
+- **Toggle button.** A 44px button at the end of the input opens the list for a pointer user. React Aria names it "Show suggestions" in the user's locale. It is out of the tab order by design, since the keyboard opens the list from the input.
+- **Popup.** Sits on `z.dropdown`, with `overlay.surface`, `overlay.border` and `shadow.1`. It is as wide as the input and scrolls past `size.overlay.md`.
+- **Options.** At least 44px high. The active option has a fill, the selected one has a fill and a check mark, the disabled one is dimmed (WCAG 1.4.1, A).
+- **Motion.** The popup fades for `motion.duration.fast`. Under `prefers-reduced-motion: reduce` the fade and the toggle turn stop.
+- **i18n.** Labels, `emptyText`, `loadingText` and `errorPrefix` arrive as props. React Aria supplies its own announcements in the locale of the page.
+
+## 3. Why the states look as they do
+
+- **Expanded** draws the popup under the input with the toggle turned over. The showcase keeps the popup inside its cell.
+- **Nothing** is an empty input with a label. **Some** shows the chosen label. **Too many** narrows a long list as the user types.
+- **None** and **loading** put their text in the list, so a screen reader can read them.
+- **Focus-visible** on the input follows the text field. The showcase cell shows rest: focus needs the keyboard.
+- **Read-only** keeps the value and blocks typing. **Disabled** dims the input and the toggle.
+- **Active, done** are n/a. **One** is an ordinary list of one option.
+
+## 4. Pitfalls and don'ts
+
+- **Do not move focus into the list.** Typing stops. (APG Combobox; `combobox.focus-stays-in-input`)
+- **Do not leave the empty result blank.** (Nielsen heuristic 1; `combobox.state.none`)
+- **Do not use a combobox for a handful of options.** (APG native first; `combobox.long-list`)
+- **Do not skip the result count.** (WCAG 4.1.3, AA; `combobox.count-announced`)
+- **Do not write a colour or px literal in the stylesheet.** (Bauhaus `misfile.raw-value-in-component`; `combobox.no-literal`)

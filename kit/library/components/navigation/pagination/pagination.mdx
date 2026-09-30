@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './pagination.stories';
+
+<Meta of={Stories} />
+
+# Pagination
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** Pagination cuts a long list into pages and lets you move between them, like the page numbers at the bottom of a search result.
+
+**Precisely:** Component in the navigation family. It is a `nav` landmark with previous and next controls, page controls, a total and a page-size select. The APG has no Pagination pattern, so it uses a `nav` with a list (`knowledge/components/catalog.md`). It is not a stepper for a flow.
+
+**The job.** Pagination answers "how much is there, where am I, and how do I move?". The total answers the first, the current page the second, the controls the third.
+
+## 2. Usage
+
+### Buttons or links
+
+- **Buttons** (default) page in place: a table that keeps its URL. `onPageChange` gets the number.
+- **Links** (`getHref`) give each page a URL. Back, reload and sharing work, and a crawler can follow them. Pass `linkAs` for a router link. `onPageChange` still runs on click, for a client-side route change.
+
+A link goes to a place and a button does an action (navigation rule 14). Pick by whether the page has an address.
+
+### The parts
+
+- **Total.** Pass `total` as text you formatted: "1–25 of 1,342". A pager with no total is a defect (catalog). The component does the arithmetic for nothing, so the app decides number and date formats.
+- **Previous and next.** Text plus a chevron. On page 1, previous is disabled. On the last page, next is disabled. They use `aria-disabled`, not the native attribute, so a keyboard user who presses Next until the end keeps focus in the pager. The current page and the total tell why they are dimmed. In link mode a disabled control is a `span`, because an anchor with no `href` is not a link.
+- **Pages.** The current page is filled, outlined and carries `aria-current="page"`. Each page has an accessible name from `pageLabel` ("Page 3"), which contains the visible number (WCAG 2.5.3, A).
+- **Ellipsis.** With more than `siblings × 2 + 5` pages the range shows the first page, the last page, the current page and `siblings` on each side, with `…` where pages are left out. The gap is `aria-hidden`.
+- **Page size.** `pageSize` renders a native `select` with a visible label. Native first (`docs/component-contract.md`).
+- **Announcement.** Pass `status` ("Page 3 of 12"). It goes into a polite live region, so the change is announced without moving focus (WCAG 4.1.3, AA).
+
+### One page
+
+With one page there is nothing to move through. The page list is hidden. The total and the select stay, since they still tell the user how much there is. With zero results the list has an empty state; the total can say "0 results".
+
+### Bounds
+
+`page` is clamped to 1 through `pageCount`. `pageCount` below 1 counts as 1.
+
+### Text and i18n
+
+Every word arrives as a prop: `label`, `total`, `previousLabel`, `nextLabel`, `pageLabel`, `status` and the select `label`. The defaults are English.
+
+## 3. Why the states look as they do
+
+- **Current page** uses the primary fill with an outline, so two cues beyond hue mark it (WCAG 1.4.1, A). It is not a link or button in effect, so it shows the default cursor.
+- **Hover and pressed** apply to controls that are neither current nor disabled, inside `@media (hover: hover)`.
+- **Disabled** uses the disabled roles and `aria-disabled`.
+- **Too many** collapses the range with gaps, so the pager stays one line on a wide screen and wraps on a narrow one (WCAG 1.4.10, AA).
+- **Loading** is n/a. The list owns it, and the pager keeps its last values.
+- **Nothing, incorrect, correct, done** are n/a. The pager takes no input, and it clamps a bad page.
+
+## 4. Pitfalls and don'ts
+
+- **Do not mark the current page by colour alone.** (WCAG 1.4.1, A; `pagination.current-marked`)
+- **Do not show a pager with no total.** (`pagination.total-shown`)
+- **Do not change the page silently.** (WCAG 4.1.3, AA; `pagination.change-announced`)
+- **Do not build the page-size control from divs.** (`pagination.native-controls`)
+- **Do not use the native `disabled` attribute on the ends.** Focus falls to the page body. (`pagination.boundaries`)
+- **Do not list every page of a long range.** (`pagination.ellipsis-decorative`)
+- **Do not write a colour literal in `pagination.css`.** (`pagination.no-literal`)

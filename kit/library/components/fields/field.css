@@ -1,0 +1,152 @@
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-field-gap);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ds-field__label {
+  padding: 0;
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+}
+
+.ds-field__marker {
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  font-weight: var(--ds-text-caption-weight);
+}
+
+.ds-field__description,
+.ds-field__error {
+  margin: 0;
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  font-weight: var(--ds-text-caption-weight);
+  line-height: var(--ds-text-caption-line-height);
+}
+
+.ds-field__description {
+  color: var(--ds-text-muted);
+}
+
+.ds-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-control-gap);
+  color: var(--ds-status-error);
+}
+
+.ds-field__error .ds-icon {
+  flex-shrink: 0;
+}
+
+/* The box that text field, textarea, select and combobox share. */
+.ds-field__control {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: var(--ds-size-control-md);
+  padding-block: var(--ds-space-inset-sm);
+  padding-inline: var(--ds-space-control-inline);
+  border: var(--ds-size-border-thin) solid var(--ds-field-border);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-field-surface);
+  color: var(--ds-field-text);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  font-weight: var(--ds-text-body-weight);
+  line-height: var(--ds-text-body-line-height);
+}
+
+.ds-field__control::placeholder {
+  color: var(--ds-field-placeholder);
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .ds-field__control:hover:not(:disabled, [readonly], [aria-readonly="true"]) {
+    border-color: var(--ds-field-border-hover);
+  }
+}
+
+.ds-field__control:focus-visible {
+  border-color: var(--ds-field-border-focus);
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.ds-field__control[aria-invalid="true"] {
+  border-color: var(--ds-field-border-invalid);
+}
+
+/* Read-only keeps the value readable and copyable: sunken fill, normal text. Disabled dims everything. */
+.ds-field__control[readonly],
+.ds-field__control[aria-readonly="true"] {
+  background: var(--ds-surface-sunken);
+}
+
+.ds-field__control:disabled {
+  border-color: var(--ds-disabled-border);
+  background: var(--ds-disabled-surface);
+  color: var(--ds-disabled-text);
+  cursor: not-allowed;
+}
+
+/* One row of a checkbox, radio or switch: a 44px target with the drawn control in it, then the label. */
+.ds-field__choice {
+  display: grid;
+  grid-template-columns: var(--ds-size-target-min) 1fr;
+  align-items: start;
+}
+
+.ds-field__choice > .ds-field__description,
+.ds-field__choice > .ds-field__error {
+  grid-column: 2;
+}
+
+.ds-field__choice-target {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--ds-size-target-min);
+}
+
+/* The native input covers the whole target, invisible. It keeps focus, Space, arrows, form value and label clicks. */
+.ds-field__choice-input {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ds-field__choice-input:disabled {
+  cursor: not-allowed;
+}
+
+.ds-field__choice-label {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--ds-size-target-min);
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  font-weight: var(--ds-text-body-weight);
+  line-height: var(--ds-text-body-line-height);
+  cursor: pointer;
+}
+
+.ds-field__choice:has(:disabled) .ds-field__choice-label {
+  color: var(--ds-disabled-text);
+  cursor: not-allowed;
+}

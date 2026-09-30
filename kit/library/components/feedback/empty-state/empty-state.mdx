@@ -1,0 +1,59 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './empty-state.stories';
+
+<Meta of={Stories} />
+
+# Empty state
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** An empty state is what a list or a page shows when there is nothing to show. It says why it is empty, and what to do next.
+
+**Precisely:** Component in the feedback family. It has an optional media slot (illustration or Icon), a title, a body and actions. All text comes from props. The `patterns/empty-results` pattern composes this component for the filtered case; the pattern is not edited here.
+
+**The job.** Users read a blank or silent screen as a broken product. An empty state restores control at once (`knowledge/patterns/empty-and-error.md`, "Why").
+
+## 2. Usage
+
+### The kinds
+
+The same component serves each kind. The copy and the action change. Do not reuse one text for all of them (`empty.kinds-differ`).
+
+| Kind | Lifecycle state | Title example | Action |
+|---|---|---|---|
+| First use | nothing | "No projects yet" | Create the first one |
+| Filter or search found nothing | none | "No orders match these filters" | Clear filters, relax one |
+| Cleared by the user | done | "All caught up" | None needed, or a link onward |
+| Load failed | incorrect | "We could not load projects" | Retry |
+
+A blocked-by-permission list is a fifth kind: "You cannot view this list", with "Request access".
+
+### How
+
+- **Title.** State the fact as a heading. `headingLevel` sets the outline level (default 2); the look is fixed. Pick the level from the page, so the outline has no gap (WCAG 1.3.1 Info and Relationships, A; `empty.heading-level`).
+- **Body.** One or two sentences: the reason and what to do. In the filtered case, name the active filters (Nielsen 1). Follow the message template: what happened, why if known, what to do, in about 25 words.
+- **Actions.** One primary button. For first use it creates the first item. For a filtered result it clears the filters, in one press (Nielsen 3; `empty.filtered-offers-clear`). The actions are your own buttons or links; the component composes nothing.
+- **Media.** An illustration or an Icon supports the title but does not carry it. It is `aria-hidden`, so a screen reader reads the title once (WCAG 1.1.1 Non-text Content, A). Do not use colour alone to mark a failure; the title and the icon shape say it (WCAG 1.4.1, A).
+- **Announcement.** An empty state that appears after a user action, such as typing in a search, must be announced. Put it in a status region in the caller (`role="status"`), as `patterns/empty-results` does (WCAG 4.1.3 Status Messages, AA). The component takes no role itself, since one that is on the page at load needs none.
+- **Text as props.** The component has no default string. Translations arrive through props (`docs/library.md`, isolation rule 4).
+- **Layout.** The block is centred and stops at 30rem, so a line stays readable in a wide panel. Text wraps and never truncates (WCAG 1.4.10 Reflow, AA).
+
+## 3. Why the states look as they do
+
+- **Nothing, none and done** are the three "none" cases. First use invites; filtered explains and offers the way out; cleared rewards. Each has its own media, copy and action.
+- **Incorrect** is the load-failed case, with its own copy and a retry. It is not "No data": a user must tell "nothing exists" from "we could not look" (Nielsen 9).
+- **Too many** is a long title and body. Both wrap.
+- **Focus-visible** belongs to the action button. The block is not a control and takes no focus.
+- **Loading, one, some, correct** are n/a. The empty state exists only after a load ends with no rows, and it disappears when rows appear.
+- **Hover, active, disabled and selected** belong to the buttons inside.
+
+## 4. Pitfalls and don'ts
+
+- **Do not write "No data" and stop.** The user has no next step. (Nielsen 9; `empty.says-next-step`)
+- **Do not leave a filtered result with no exit.** (Nielsen 3; `empty.filtered-offers-clear`)
+- **Do not use one text for every kind.** (`empty.kinds-differ`)
+- **Do not read the illustration aloud.** (WCAG 1.1.1, A; `empty.media-hidden`)
+- **Do not bake a string into the component.** (`docs/library.md`; `empty.text-from-props`)
+- **Do not write a colour literal in `empty-state.css`.** (`misfile.raw-value-in-component`; `empty.no-literal`)

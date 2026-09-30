@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './dialog.stories';
+
+<Meta of={Stories} />
+
+# Dialog
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A dialog is a small window that stops you and asks for a decision or a few details. You answer it or close it, and then you are back where you were.
+
+**Precisely:** Component in the overlays family. It is a native `dialog` opened with `showModal()`. It blocks the page behind it. It does not show a hint, a list of actions or a whole page.
+
+**The job.** A dialog interrupts on purpose. The interruption is worth it only when the user must decide before going on, or when a short task must finish in context. A dialog that interrupts for information is a banner or a toast that took the wrong shape.
+
+**The layer.** The dialog is a component. It reads roles and semantic tokens. The header, the body and the footer are parts inside the slice, not components.
+
+**When it exists.** Use the dialog for a decision or a short task. Use a popover for rich content beside a button, a tooltip for a hint, a menu for actions, and a page for anything long.
+
+## 2. Usage
+
+### When to use
+
+- To confirm an action that cannot be undone (the alert dialog variant).
+- To edit or create one record without leaving the view.
+- To show terms that need a reply.
+
+### When not to use, and what to use instead
+
+- **For a hint.** Use a tooltip (WCAG 1.4.13, AA).
+- **For a list of actions.** Use a menu (APG Menu Button).
+- **For content that sits beside its trigger and leaves the page usable.** Use a popover.
+- **For a long form or a multi-step flow.** Use a page. A dialog has no room for a back button and a progress trail.
+- **For a message that needs no reply.** Use a toast or a banner.
+
+### How
+
+- **Native element.** The component renders `dialog` and opens it with `showModal()`. The platform makes the page behind inert, traps focus, draws the backdrop in the top layer and handles Escape. None of this is re-implemented (APG Dialog (Modal); WCAG 2.1.2 No Keyboard Trap, A).
+- **Name.** `aria-labelledby` points at the title. The title is a level 2 heading (WCAG 4.1.2, A).
+- **Focus in.** On open, focus goes to an element marked `data-autofocus`, else to the first focusable element, else to the title, which takes `tabindex="-1"` for that case (WCAG 2.4.3 Focus Order, A).
+- **Focus out.** On close, focus returns to the element that had it before the dialog opened. If the parent unmounts an open dialog, the same return happens.
+- **Escape.** Escape raises the `cancel` event. The component cancels the native close and calls `onClose`, so the parent owns the state.
+- **Scrim.** A click on the scrim closes the dialog only when `dismissOnScrim` is set. The default is off, so a stray click does not lose typed work (Nielsen heuristic 5, error prevention).
+- **Sizes.** `sm`, `md` and `lg` read `size.overlay.sm`, `md` and `lg`: 20, 30 and 40 rem.
+- **Long content.** The panel is a column. The body scrolls. The title row and the actions stay, so they never cover a focused control (WCAG 2.4.11 Focus Not Obscured (Minimum), AA). The page behind does not scroll.
+- **Narrow screens.** At 768px and narrower the dialog fills the screen (WCAG 1.4.10 Reflow, AA).
+- **Alert dialog.** `ConfirmDialog` sets `role="alertdialog"` and `aria-describedby` on the message. With `destructive`, focus starts on Cancel, the least destructive choice (APG Alert and Message Dialogs). The confirm label names the action and its object: "Delete 3 files". "OK" names nothing, and red alone fails WCAG 1.4.1 (Use of Color, A).
+- **i18n.** The title, the labels and the close label arrive as props. The component holds no text of its own.
+
+## 3. Why the states look as they do
+
+- **Nothing** is n/a. A dialog opens for a decision, so it has content.
+- **Loading** keeps the panel and the size, marks the body `aria-busy` and puts a status message inside (WCAG 4.1.3, AA).
+- **None** says what is missing and offers the next step (Nielsen heuristic 9).
+- **Too many** scrolls the body only. The title row and the actions stay in view.
+- **Incorrect** is a message with an icon and a word, announced with `role="alert"`. The dialog stays open so the user can retry.
+- **Done** is n/a. Success closes the dialog, and the view behind announces it in a status message.
+- **Focus-visible** shows on the controls inside. The title shows a ring when it takes focus as the fallback.
+- **Disabled** applies to an action. The reason sits in the body, next to the action (Nielsen heuristic 1).
+- **Motion.** Enter and exit use `motion.duration.base` with the enter and exit eases. The panel fades and rises 16px. Under `prefers-reduced-motion: reduce`, the fade stays and the rise goes. The exit runs because the stylesheet keeps `display` and the top layer through the transition (`allow-discrete`).
+- **Elevation.** The panel is `shadow.2`, the second rung. The one `scrim` washes the page behind. Dark mode lifts the panel with `overlay.surface`, not with a bigger shadow.
+
+## 4. Pitfalls and don'ts
+
+- **Do not build a dialog from a `div` and a fixed backdrop.** The page behind stays reachable and focus escapes. (APG Dialog (Modal); WCAG 2.1.2, A; `dialog.native-element`)
+- **Do not leave the dialog unnamed.** (WCAG 4.1.2, A; `dialog.labelled`)
+- **Do not open a dialog and leave focus on the page.** (WCAG 2.4.3, A; `dialog.focus-in-and-restore`)
+- **Do not ignore Escape.** (APG Dialog (Modal); `dialog.esc-closes`)
+- **Do not close on a scrim click by default.** (Nielsen heuristic 5; `dialog.scrim-configurable`)
+- **Do not let the whole dialog scroll.** The actions leave the screen. (WCAG 2.4.11, AA; `dialog.footer-stays`)
+- **Do not write "OK" on a destructive action.** (WCAG 2.4.6, AA; `dialog.destructive-named`)
+- **Do not write a literal in `dialog.css`.** (Bauhaus `misfile.raw-value-in-component`; `dialog.no-literal`)
+
+## 5. Notes
+
+- **Inline.** The `inline` prop renders the dialog open, in the flow, with no scrim and no trap. It exists for previews, such as the States grid. Do not use it to build a modal.
+- **Scrollable body.** Browsers make a scroll container focusable by keyboard when it overflows, so a keyboard user can scroll the body. The component adds no `tabindex`.
+- **Nested overlays.** A popover or a menu opened from inside a dialog paints above it (`z.popover` is above `z.modal`). A tooltip paints above both.

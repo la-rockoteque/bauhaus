@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './breadcrumb.stories';
+
+<Meta of={Stories} />
+
+# Breadcrumb
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A breadcrumb shows the path from the top of the site down to the page you are on, like the trail of crumbs in the fairy tale. Each step back up is a link.
+
+**Precisely:** Component in the navigation family. It is a `nav` landmark with an accessible name, holding an ordered list of links. The last item is the current page. It follows the WAI-ARIA APG Breadcrumb pattern. It is not a menu and not a step indicator.
+
+**The job.** A breadcrumb answers "where am I, and how do I go up?". It matters in deep hierarchies (WCAG 2.4.8 Location, AAA). It never replaces the primary navigation. Offer more than one way to find a page (WCAG 2.4.5, AA).
+
+## 2. Usage
+
+### Structure
+
+- `nav` with `aria-label` (the landmark needs a name when a page has more than one).
+- `ol`, because the order is the meaning.
+- Each crumb but the last is a Link. The last carries `aria-current="page"`. It is a link when you pass an `href`, and plain text when you do not.
+- Separators are chevron icons in a `span` with `aria-hidden="true"`. A screen reader hears the list, not the glyphs. They sit outside the link, so the underline does not run through them.
+
+### Keyboard
+
+Tab moves through the links. There is no other key: the APG Breadcrumb pattern adds none. The "…" button opens with Enter or Space, like any button.
+
+### Too many crumbs
+
+When `items.length` exceeds `maxItems` (default 4), the path shows the first crumb, a "…" button and the last `maxItems − 2` crumbs. The button is an IconButton with `aria-label` from `expandLabel` and `aria-expanded="false"`. Pressing it shows the whole path and moves focus to the first revealed crumb, so a keyboard user does not lose their place. The button leaves the page once the path is open. A collapsed path with no way to open it is a defect (catalog).
+
+Below `maxItems` the list wraps onto a new line. It never truncates a crumb (WCAG 1.4.10, AA).
+
+### Content
+
+- Use the page names as the user knows them, not URL slugs.
+- Text arrives as props: `label`, each crumb `label` and `expandLabel`.
+- A router link goes in through `linkAs`. The library imports no router.
+
+## 3. Why the states look as they do
+
+- **Hover, focus and pressed** come from Link. The underline thickens on hover, and the ring shows on `:focus-visible`.
+- **Selected (current)** is the last crumb: darker, heavier and not underlined, with `aria-current="page"`. Weight, not colour alone, tells it apart (WCAG 1.4.1, A).
+- **Disabled** is n/a. A level the user cannot open is text.
+- **One** works but adds nothing. Prefer no breadcrumb.
+- **Nothing, loading, none, incorrect, correct, done** are n/a. The path comes from the route.
+
+## 4. Pitfalls and don'ts
+
+- **Do not leave the current crumb unmarked.** (APG Breadcrumb; `breadcrumb.current-marked`)
+- **Do not let the separators be read aloud.** (`breadcrumb.separator-hidden`)
+- **Do not collapse a path without a way to expand it.** (`breadcrumb.collapse-expandable`)
+- **Do not add a breadcrumb to a flat site.** (WCAG 2.4.8, AAA; `breadcrumb.deep-only`)
+- **Do not write a colour literal in `breadcrumb.css`.** (`breadcrumb.no-literal`)

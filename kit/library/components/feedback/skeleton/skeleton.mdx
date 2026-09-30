@@ -1,0 +1,54 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './skeleton.stories';
+
+<Meta of={Stories} />
+
+# Skeleton
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A skeleton is a grey outline of what is about to appear. It holds the space while content loads.
+
+**Precisely:** Component in the feedback family. `Skeleton` draws one placeholder shape (text line, block or circle). `SkeletonRegion` wraps the placeholders, sets `aria-busy` and adds one polite status line.
+
+**The job.** A skeleton keeps the layout stable and shows that content is on its way. When the content arrives, nothing moves (loading.md, "Layout shift when content arrives").
+
+## 2. Usage
+
+### When to use
+
+- A card, list, table or page frame that loads in about 1 to 2 s.
+- A first route load: skeleton the page frame, not a full-page spinner.
+
+### When not to use, and what to use instead
+
+- **Under 1 s.** Render nothing, then the result.
+- **Over about 2 s.** Use a progress bar. A skeleton gives no end point.
+- **When the shape is not known.** Use a spinner with text. A wrong shape makes the layout jump (`skeleton.mirrors-layout`).
+
+### How
+
+- **Mirror the layout.** Use a circle for an avatar, a text line per line of text, a block for an image. Match the count the user expects. Give a block the width and height of the real image (WCAG 1.3.1 Info and Relationships, A, for the final structure).
+- **Region.** Wrap the placeholders in `SkeletonRegion`. It sets `aria-busy="true"` while loading, so assistive technology waits for the region to settle. It also adds one hidden `role="status"` line with the `label`, so a screen reader user hears "Loading 3 requisitions" once. Write the label as text about the content: "Loading 3 requisitions", not "Loading…" (loading.md rule 10; WCAG 4.1.3 Status Messages, AA).
+- **Hidden shapes.** Each placeholder is `aria-hidden`. Grey boxes carry no information, and a screen reader must not read them.
+- **Size.** `width` and `height` take a token expression, such as `var(--ds-space-12)`. The component holds no pixel value of its own.
+- **Loop length.** A skeleton runs while the work runs. If the wait passes about 5 s, switch to progress (WCAG 2.2.2 Pause, Stop, Hide, A, for a loop beside other content).
+
+## 3. Why the states look as they do
+
+- **Loading** is the placeholder layout, with the shimmer.
+- **Some** is the same region with `loading={false}`. The rest of the state matrix follows from there: content replaces placeholders in the same box.
+- **Too many** repeats the row. Show as many rows as fit the screen, not the full count.
+- **Incorrect, correct, done, none** are n/a. A failure shows an error in place, an empty result shows an empty state, and success shows the content.
+- **Reduced motion.** The sweep is a loop, so it stops. The base fill stays (WCAG 2.3.3 Animation from Interactions, AAA; `loading.md` rule 12).
+- **Forced colors.** The gradient is dropped and the base takes a system colour so the shape stays visible.
+
+## 4. Pitfalls and don'ts
+
+- **Do not draw shapes that differ from the content.** The layout jumps on arrival. (WCAG 1.3.1, A; `skeleton.mirrors-layout`)
+- **Do not leave out `aria-busy`.** (WCAG 4.1.3, AA; `skeleton.aria-busy`)
+- **Do not shimmer under reduced motion.** (WCAG 2.3.3, AAA; `skeleton.reduced-motion`)
+- **Do not use a skeleton for a long wait.** (Nielsen response times; `skeleton.short-wait`)
+- **Do not write a literal in `skeleton.css`.** (`misfile.raw-value-in-component`; `skeleton.no-literal`)

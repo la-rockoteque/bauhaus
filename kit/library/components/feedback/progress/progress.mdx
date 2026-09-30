@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './progress.stories';
+
+<Meta of={Stories} />
+
+# Progress
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A progress bar shows how far a long task has got. It says what the task is and how much is done, in words as well as in the bar.
+
+**Precisely:** Component in the feedback family. It renders a native `<progress>` with a visible `<label>` and a value in text. With `value` it is determinate; without it, indeterminate.
+
+**The job.** From about two seconds of wait, users need an end point (Nielsen response times; loading.md rule 5). A bar gives it.
+
+**When it exists.** Use progress for work: an upload, an import, an export. Use a meter for a measure that is not work (disk use). Use a spinner for a short wait of unknown length. Use a skeleton for content that loads in one to two seconds.
+
+## 2. Usage
+
+### How
+
+- **Native element.** A `<progress>` has the `progressbar` role, and its `value` and `max` reach assistive technology with no ARIA (WCAG 4.1.2 Name, Role, Value, A). The element is named by a visible `<label>`, so sighted and non-sighted users read the same words.
+- **Value in text.** The percent, or your own words in `valueText` ("3 of 12 files"), shows beside the label and is set as `aria-valuetext`. A bar alone gives a shape the user must judge (WCAG 1.4.1 Use of Color, A).
+- **Indeterminate.** Leave `value` out when the length is unknown. The native element then has no value, and the value text is empty. When you learn the length, pass a value: the bar becomes determinate in place.
+- **Honest.** Never park the bar at 99%. Show the true value or switch to indeterminate (loading.md rule 13; Nielsen 1).
+- **Over 10 s.** Show percent done, or move the work to the background and notify on completion (loading.md rule 6).
+- **Completion.** The bar does not announce that it is done. The caller sets a polite status message, such as "Upload complete" (WCAG 4.1.3 Status Messages, AA; `progress.completion-announced`). Announcing every percent would flood the reader.
+- **Failure.** Pass `error`. The message shows as text with an icon, and the bar takes the error colour. The user keeps the retry action next to it (Nielsen 9).
+- **Contrast.** `progress.fill` reaches 3:1 on the track and on the page in both themes (WCAG 1.4.11 Non-text Contrast, AA).
+
+## 3. Why the states look as they do
+
+- **Nothing** is a bar at zero: the work exists and has not started.
+- **Loading** is the indeterminate bar. A segment slides along the track with linear easing (motion.md: progress moves at constant speed, since it stands for a steady process). Under reduced motion the loop stops and the segment rests in the middle. The label still says what waits (WCAG 2.2.2 Pause, Stop, Hide, A, for loops beside other content; WCAG 2.3.3, AAA).
+- **Some** is a partial value with a text value.
+- **Too many** is a long label. It wraps.
+- **Incorrect** keeps the value reached and adds the error text.
+- **Done** is a full bar. The value text can read "Done".
+- **Correct, none, one and all interaction states** are n/a. The bar takes no input.
+
+## 4. Pitfalls and don'ts
+
+- **Do not hide the label.** A bare bar names nothing. (WCAG 4.1.2, A; `progress.value-exposed`)
+- **Do not park at 99%.** (Nielsen 1; `progress.honest`)
+- **Do not ease the fill.** An eased bar suggests a different speed than the work has. (`progress.linear-easing`)
+- **Do not loop under reduced motion.** (WCAG 2.3.3, AAA; `progress.reduced-motion`)
+- **Do not show failure by colour alone.** (WCAG 1.4.1, A; `progress.error-in-text`)

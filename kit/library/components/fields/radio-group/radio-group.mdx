@@ -1,0 +1,56 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './radio-group.stories';
+
+<Meta of={Stories} />
+
+# Radio group
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A radio group is a short list where you choose exactly one, and every choice is visible. Picking one un-picks the other. A question above the list says what you are choosing.
+
+**Precisely:** Component in the fields family. It picks one option from a small visible set. It is a `fieldset` with a `legend` and native radios that share one `name`. It is not for a long list (use the select) or for several choices (use checkboxes).
+
+**The layer.** A component. Each native radio is invisible and covers a 44px target. A drawn circle and dot sit under it. The browser owns focus, arrow keys, the single Tab stop and the form value.
+
+## 2. Usage
+
+### When to use
+
+- One choice from two to five options that fit on screen and that the user should compare.
+
+### When not to use, and what to use instead
+
+- **For a long list.** Use a select or a combobox.
+- **For several answers.** Use checkboxes in a fieldset.
+- **For one yes or no.** Use a single checkbox or a switch.
+
+### How
+
+- **Fieldset and legend.** The legend is the question. A screen reader announces it with each option, so a lone "Express" is heard as "Delivery, Express" (WCAG 1.3.1, A). The fieldset carries `role="radiogroup"`, so `aria-invalid` and `aria-required` are valid on it.
+- **Keyboard.** Native radios sharing a name give the APG Radio Group contract: Tab enters the group at the checked radio (or the first), the arrows move and check, Space checks the focused radio. The component adds no key handling. Do not give each radio a Tab stop (APG Radio Group; WCAG 2.1.1, A).
+- **Default.** Preselect only when one option is the honest default. A chosen radio hides the question, and users skip it (Nielsen heuristic 5). Once a radio is checked, the user cannot return to "none".
+- **Error.** Pass `error`. The message is tied to the group with `aria-describedby`, the group gets `aria-invalid`, and the circles take the invalid outline beside the icon and text (WCAG 3.3.1, A; WCAG 1.4.1, A).
+- **Target.** Each option row is at least 44px high and its target column is 44px wide (WCAG 2.5.5 AAA house floor; 2.5.8 AA is 24px). Rows touch with no gap and none overlaps.
+- **Contrast.** The empty circle outline and the selected fill reach 3:1 on the page (WCAG 1.4.11, AA).
+- **Disabled.** `disabled` on the group disables all options. `disabled` on one option disables it alone. Say why nearby.
+- **i18n.** All text arrives as props.
+
+## 3. Why the states look as they do
+
+- **Selected** fills the circle and draws a dot: fill and shape, not colour alone.
+- **Hover** darkens the outline inside `@media (hover: hover)`. The grid cannot replay a media query, so the hover cell shows rest.
+- **Focus-visible** draws the ring around the drawn circle. Real focus needs the keyboard, so the showcase cell shows the rest look.
+- **Nothing** has no option checked. **Some** has one checked.
+- **Read-only** is n/a. HTML has no read-only radio. Show the chosen answer as text instead.
+- **Loading, none, one, active, done** are n/a.
+
+## 4. Pitfalls and don'ts
+
+- **Do not skip the fieldset and legend.** (WCAG 1.3.1, A; `radio.fieldset-legend`)
+- **Do not make each radio a Tab stop.** (APG Radio Group; `radio.arrow-keys`)
+- **Do not preselect without a reason.** (Nielsen heuristic 5; `radio.preselect`)
+- **Do not show the error by colour alone.** (WCAG 1.4.1, A; `radio.error-bound`)
+- **Do not write a colour or px literal in the stylesheet.** (Bauhaus `misfile.raw-value-in-component`; `radio.no-literal`)

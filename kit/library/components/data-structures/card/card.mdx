@@ -1,0 +1,75 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './card.stories';
+
+<Meta of={Stories} />
+
+# Card
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A card is a bordered box that groups what you know about one thing: a title, some detail, a note at the bottom. The whole card can be one link, or it can just sit there.
+
+**Precisely:** Component in the data-structures family. A bordered container with a header, a body and a footer. It is either static or one link named by its title. It is not selectable.
+
+**The job.** A card summarises one entity so people can recognise it among others and, if it is a link, open it.
+
+**The layer.** The card is a component. It reads roles and semantic tokens and imports no pattern. It composes `Heading`.
+
+**Elevation.** The card sits at level 0 of the elevation foundation: the flat page and its cards. It has a border and the `surface.raised` fill. It has no shadow. Shadows mark layers that float above the page (menus, dialogs). A card does not float (`knowledge/foundations/elevation.md`, rule 1). In the dark theme, `surface.raised` is lighter than the page, and the border keeps the edge.
+
+## 2. Usage
+
+### When to use
+
+- To summarise one entity with mixed content: a project, a person, a product. Cards sit side by side in a grid.
+
+### When not to use, and what to use instead
+
+- **Many like rows that people scan.** Use a list. A wall of cards makes people scan in two dimensions and read every title (Nielsen heuristic 8).
+- **Values to compare across records.** Use a table. A card hides the column alignment that comparison needs.
+- **Content that a dialog or a page should hold.** A card is a summary, not a container for a form.
+- **A choice among options.** Use a checkbox group or a radio group whose items look like cards. They own the state and the name.
+
+### How
+
+- **Structure.** The card is an `article`. The header holds the title as a heading and an optional `meta`. The body holds the children. The footer is optional.
+- **Heading.** `title` is required. `headingLevel` sets the outline level, default 3. Choose it from the page, never for its size (WCAG 1.3.1, A).
+- **Link.** With `href`, the title becomes the one anchor, inside the heading. Its `::after` stretches over the card. The accessible name of the link is the title (WCAG 2.4.4, A). The target is the whole card, which meets the size floors (WCAG 2.5.8, AA). Screen-reader users still find the card by its heading.
+- **One action.** A linked card holds no other link and no button. The footer holds text. If a card needs two actions, make it static and put the actions in the footer, and give the title no link.
+- **Static.** Without `href` the card has no hover and no focus stop. Nothing suggests that it acts.
+- **Selectable: n/a, by decision.** A card does not own selection. Selection needs a checkbox with a name, a keyboard model and a group. Compose a checkbox group whose items look like cards.
+- **Keyboard.** Tab reaches the link. Enter activates it. The ring goes around the whole card (WCAG 2.4.7, AA).
+- **i18n.** All text arrives as props, including the loading label.
+
+## 3. Card, list or table
+
+| You have | Use | Why |
+|---|---|---|
+| One entity with a title, detail and a note | Card | It groups mixed content and gives the entity a face. |
+| Many like items, one main value each | List | People scan one dimension and open one. |
+| Many records with three or more attributes | Table | People compare down a column. |
+| A set of cards to choose from | Checkbox or radio group | The group owns the state and the name. |
+
+Switch shape when the count grows. Six cards read well. Sixty do not. At that size use a list or a table with a filter.
+
+## 4. Why the states look as they do
+
+- **Loading** keeps the header and shows two lines for the body. The card keeps its height, so the grid does not jump (Nielsen heuristic 1). `aria-busy` is set. The shimmer stops under `prefers-reduced-motion`.
+- **None** renders the `empty` slot in the body. The caller supplies the words.
+- **Some** is the normal card.
+- **Too many** is long text. Words and titles wrap inside the card (`overflow-wrap: anywhere`, `min-inline-size: 0`), so a long reference never widens a grid column (WCAG 1.4.10, AA).
+- **Incorrect** replaces the body with an alert. The caller adds a retry.
+- **Nothing, one, correct, done** are n/a. See the States grid for each reason.
+- **Hover** and **pressed** apply to a linked card only. The border strengthens and the title underlines, so hover does not rest on colour alone. Pressed adds the pressed layer. **Focus-visible** rings the whole card.
+- **Disabled** and **selected** are n/a.
+
+## 5. Pitfalls and don'ts
+
+- **Do not put a button or a second link inside a linked card.** The stretched link covers it, or the two nest. (WCAG 4.1.2, A; `card.single-primary-action`)
+- **Do not make the whole card clickable with no name.** (WCAG 2.4.4, A; `card.link-name`)
+- **Do not skip a heading level to get a smaller title.** Use the level for the outline. (WCAG 1.3.1, A; `card.heading-level`)
+- **Do not add a shadow.** (Elevation foundation; `card.bordered-not-shadowed`)
+- **Do not use a card for many like rows or values to compare.** (Nielsen heuristic 8; `card.right-shape`)
+- **Do not write a colour or px literal in `card.css`.** (Bauhaus `misfile.raw-value-in-component`; `card.no-literal`)

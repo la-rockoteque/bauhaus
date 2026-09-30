@@ -1,0 +1,16 @@
+/* The box, label, description and error come from ../field.css. */
+.ds-textarea__input {
+  display: block;
+  resize: vertical;
+}
+
+/* Muted text on the page, 4.5:1. The counter is read on demand through aria-describedby, not announced on each key. */
+.ds-textarea__counter {
+  margin: 0;
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  font-weight: var(--ds-text-caption-weight);
+  line-height: var(--ds-text-caption-line-height);
+  text-align: end;
+}

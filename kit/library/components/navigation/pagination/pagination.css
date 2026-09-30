@@ -1,0 +1,126 @@
+.ds-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-inline-lg);
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  line-height: var(--ds-text-body-line-height);
+}
+
+.ds-pagination__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-inline-lg);
+}
+
+.ds-pagination__size {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-control-gap);
+}
+
+.ds-pagination__size-label {
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+}
+
+/* A native select: the platform list, keyboard and screen reader support come free. */
+.ds-pagination__select {
+  min-block-size: var(--ds-size-target-min);
+  padding-inline: var(--ds-space-control-inline);
+  border: var(--ds-size-border-thin) solid var(--ds-field-border);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-field-surface);
+  color: var(--ds-field-text);
+  font: inherit;
+}
+
+@media (hover: hover) {
+  .ds-pagination__select:hover,
+  .ds-pagination__select.doc-force-hover {
+    border-color: var(--ds-field-border-hover);
+  }
+}
+
+.ds-pagination__select:focus-visible {
+  border-color: var(--ds-field-border-focus);
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.ds-pagination__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-inline-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-pagination__item {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-control-gap);
+  min-block-size: var(--ds-size-target-min);
+  min-inline-size: var(--ds-size-target-min);
+  padding-inline: var(--ds-space-inline-md);
+  border: var(--ds-size-border-thick) solid transparent;
+  border-radius: var(--ds-radius-control);
+  background: transparent;
+  color: var(--ds-text-link);
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .ds-pagination__item:hover:not(.ds-pagination__item--current):not(:disabled):not([aria-disabled]),
+  .ds-pagination__item.doc-force-hover {
+    background: var(--ds-state-hover-layer);
+  }
+}
+
+.ds-pagination__item:active:not(.ds-pagination__item--current):not(:disabled):not([aria-disabled]) {
+  background: var(--ds-state-pressed-layer);
+}
+
+.ds-pagination__item:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+/* The current page is filled and outlined: two cues beyond hue. */
+.ds-pagination__item--current {
+  border-color: var(--ds-border-strong);
+  background: var(--ds-action-primary);
+  color: var(--ds-action-primary-text);
+  cursor: default;
+}
+
+.ds-pagination__item:disabled,
+.ds-pagination__item[aria-disabled] {
+  border-color: var(--ds-disabled-border);
+  background: var(--ds-disabled-surface);
+  color: var(--ds-disabled-text);
+  cursor: not-allowed;
+}
+
+.ds-pagination__gap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--ds-size-target-min);
+  color: var(--ds-text-muted);
+}

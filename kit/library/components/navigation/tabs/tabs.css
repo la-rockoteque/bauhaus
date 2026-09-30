@@ -1,0 +1,125 @@
+.ds-tabs {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.ds-tabs--vertical {
+  flex-direction: row;
+  gap: var(--ds-space-inline-lg);
+}
+
+/* The frame holds the list and the two scroll cues. */
+.ds-tabs__frame {
+  position: relative;
+  min-inline-size: 0;
+}
+
+/* Too many tabs scroll along the list. No tab is cut short: each keeps its full label. */
+.ds-tabs__list {
+  display: flex;
+  overflow-x: auto;
+  border-block-end: var(--ds-size-border-thin) solid var(--ds-border-default);
+}
+
+.ds-tabs--vertical .ds-tabs__list {
+  flex-direction: column;
+  overflow-x: visible;
+  border-block-end: 0;
+  border-inline-end: var(--ds-size-border-thin) solid var(--ds-border-default);
+}
+
+.ds-tabs__tab {
+  flex: none;
+  min-block-size: var(--ds-size-target-min);
+  min-inline-size: var(--ds-size-target-min);
+  padding-block: var(--ds-space-inset-sm);
+  padding-inline: var(--ds-space-inline-lg);
+  border: 0;
+  border-block-end: var(--ds-size-border-thick) solid transparent;
+  background: transparent;
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+  white-space: nowrap;
+  text-align: start;
+  cursor: pointer;
+}
+
+.ds-tabs--vertical .ds-tabs__tab {
+  border-block-end: 0;
+  border-inline-end: var(--ds-size-border-thick) solid transparent;
+}
+
+/* Selected: a fill and a bar. The bar and the darker text are the cue that is not colour hue alone. */
+.ds-tabs__tab[aria-selected='true'] {
+  background: var(--ds-state-selected);
+  border-color: var(--ds-border-strong);
+  color: var(--ds-text-default);
+}
+
+@media (hover: hover) {
+  .ds-tabs__tab:hover:not([aria-selected='true']):not(:disabled),
+  .ds-tabs__tab.doc-force-hover:not([aria-selected='true']) {
+    background: var(--ds-state-hover-layer);
+    color: var(--ds-text-default);
+  }
+}
+
+.ds-tabs__tab:active:not([aria-selected='true']):not(:disabled) {
+  background: var(--ds-state-pressed-layer);
+}
+
+.ds-tabs__tab:focus-visible,
+.ds-tabs__panel:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: calc(var(--ds-focus-ring-offset) * -1);
+}
+
+.ds-tabs__tab:disabled {
+  background: var(--ds-disabled-surface);
+  color: var(--ds-disabled-text);
+  cursor: not-allowed;
+}
+
+/* The cue: a chevron over a fade at the edge that has more tabs behind it. It never takes a click. */
+.ds-tabs__cue {
+  position: absolute;
+  inset-block: 0;
+  display: flex;
+  align-items: center;
+  padding-inline: var(--ds-space-inset-xs);
+  color: var(--ds-text-default);
+  pointer-events: none;
+}
+
+.ds-tabs__cue--start {
+  inset-inline-start: 0;
+  background: linear-gradient(to right, var(--ds-surface-default) 50%, transparent);
+}
+
+.ds-tabs__cue--end {
+  inset-inline-end: 0;
+  background: linear-gradient(to left, var(--ds-surface-default) 50%, transparent);
+}
+
+.ds-tabs__panel {
+  padding-block: var(--ds-space-inset-md);
+  padding-inline: var(--ds-space-inset-xs);
+  min-inline-size: 0;
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  line-height: var(--ds-text-body-line-height);
+}
+
+.ds-tabs--vertical .ds-tabs__panel {
+  padding-block: 0;
+  flex: 1;
+}
+
+.ds-tabs__panel[hidden] {
+  display: none;
+}

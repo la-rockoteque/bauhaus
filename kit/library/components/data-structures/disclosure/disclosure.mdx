@@ -1,0 +1,62 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './disclosure.stories';
+
+<Meta of={Stories} />
+
+# Disclosure
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A disclosure is a heading you can press to show or hide a block of text under it. A group of them stacked together is an accordion, and it can be set so only one stays open.
+
+**Precisely:** Component in the data-structures family. `Disclosure` is a native `details` and `summary`. `Accordion` and `AccordionItem` are a group of buttons in headings that control panels. It hides content the reader may skip.
+
+**The job.** A disclosure keeps a page short. It puts detail behind a title and lets the reader choose to read it.
+
+**The layer.** The disclosure is a component. It reads roles and semantic tokens. It composes `Icon`.
+
+**When it exists.** Use one disclosure for a single block of optional detail. Use an accordion for a set of parallel blocks.
+
+## 2. Usage
+
+### When to use
+
+- Frequently asked questions, advanced options, long help text: content most people do not need first (APG Disclosure and Accordion patterns).
+
+### When not to use, and what to use instead
+
+- **Content people need to compare.** Hidden content cannot be compared. Show it, or use a table (Nielsen heuristic 6).
+- **Peer views of one context.** Use tabs.
+- **Navigation.** Use a nav with a list of links. A disclosure may hold a nav, but it does not replace one.
+- **Content that must not be missed.** Show it.
+
+### How
+
+- **One disclosure.** `Disclosure` renders `details` and `summary`. The browser gives it Enter and Space, the expanded state, find-in-page and the `name` attribute for exclusive groups. Native behaviour is never re-implemented (`docs/component-contract.md`, rule 1). `details` does not put `aria-expanded` on the `summary` in the DOM. Browsers expose the expanded state to assistive technology from the `open` attribute.
+- **Accordion.** Each header is a `button` inside a heading, with `aria-expanded` and `aria-controls`. Its panel has `role="region"` and is named by the button (APG Accordion). Choose `headingLevel` from the page outline. With more than about six panels, the regions become landmark noise, so drop the role from your own use of a long accordion.
+- **Single-open.** `single` closes the other items when one opens. The open item can still be closed, so the group can be fully collapsed. Use it when the panels are long and parallel, so the reader keeps one in view. Leave it off when readers compare panels.
+- **Keyboard.** Enter and Space toggle the focused header, from the native button. Down and Up move focus to the next and previous header and wrap. Home and End move to the first and last. A disabled header is skipped, because a native disabled button leaves the tab order (APG Accordion, optional keys; WCAG 2.1.1, A).
+- **Disabled.** A disabled header is a native disabled button. `disabledReason` prints under its title and is tied with `aria-describedby`. A disabled control that does not explain itself is a dead end (Nielsen heuristic 1).
+- **Target size.** A header is at least 44px high and as wide as the item.
+- **Titles.** The title wraps beside the chevron and is never truncated. The chevron is decoration and is hidden from assistive technology.
+- **i18n.** The title, the reason and the loading label arrive as props.
+
+## 3. Why the states look as they do
+
+- **Closed and open (selected).** The chevron turns 180 degrees and the panel shows. The chevron is a second cue beside the expanded state.
+- **Hover and pressed** use the state layers, and hover is limited to devices that hover. **Focus-visible** draws the ring inside the header, so the item border never clips it.
+- **Loading** shows two lines in the panel and sets `aria-busy`. The header stays. The shimmer stops under `prefers-reduced-motion`.
+- **Too many** is a long title. It wraps and the chevron stays in place (WCAG 1.4.10, AA).
+- **One** is a single `Disclosure`. **Some** is an accordion, whose items share edges and read as one block.
+- **Reduced motion.** The panel fades in and rises by one step. Under `prefers-reduced-motion: reduce` it keeps the fade and drops the rise. The chevron turns at once. The shimmer stops (WCAG 2.3.3, AAA).
+- **Nothing, none, incorrect, correct, done** are n/a. A disclosure with nothing to hide is not rendered. The panel content, including its errors, belongs to the caller.
+
+## 4. Pitfalls and don'ts
+
+- **Do not make the header a `div` with a click handler.** It has no focus, no key handling and no role. (APG Accordion; WCAG 4.1.2, A; `accordion.header-is-button`)
+- **Do not omit `aria-expanded` on an accordion button.** (WCAG 4.1.2, A; `disclosure.expanded-exposed`)
+- **Do not hide content people need to compare.** (Nielsen heuristic 6; `disclosure.content-not-essential`)
+- **Do not keep the rise under reduced motion.** (WCAG 2.3.3, AAA; `disclosure.reduced-motion`)
+- **Do not write a colour or px literal in `disclosure.css`.** (Bauhaus `misfile.raw-value-in-component`; `disclosure.no-literal`)

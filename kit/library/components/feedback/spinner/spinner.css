@@ -1,0 +1,44 @@
+.ds-spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-control-gap);
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  font-weight: var(--ds-text-caption-weight);
+  line-height: var(--ds-text-caption-line-height);
+}
+
+.ds-spinner__ring {
+  flex: none;
+  box-sizing: border-box;
+  inline-size: var(--ds-size-icon-md);
+  block-size: var(--ds-size-icon-md);
+  border: var(--ds-size-border-thick) solid var(--ds-progress-track);
+  border-block-start-color: var(--ds-progress-fill);
+  border-radius: var(--ds-radius-full);
+  animation: ds-spinner-turn var(--ds-motion-duration-deliberate) linear infinite;
+}
+
+.ds-spinner--sm .ds-spinner__ring {
+  inline-size: var(--ds-size-icon-sm);
+  block-size: var(--ds-size-icon-sm);
+}
+
+.ds-spinner--lg .ds-spinner__ring {
+  inline-size: var(--ds-size-icon-lg);
+  block-size: var(--ds-size-icon-lg);
+}
+
+@keyframes ds-spinner-turn {
+  to { transform: rotate(360deg); }
+}
+
+/* A loop is sustained motion. The static arc still reads as "working". */
+@media (prefers-reduced-motion: reduce) {
+  .ds-spinner__ring { animation: none; }
+}
+
+@media (forced-colors: active) {
+  .ds-spinner__ring { border-color: GrayText; border-block-start-color: CanvasText; }
+}

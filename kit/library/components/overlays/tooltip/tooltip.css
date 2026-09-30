@@ -1,0 +1,30 @@
+.ds-tooltip {
+  max-inline-size: min(var(--ds-size-overlay-sm), calc(100vw - var(--ds-space-6)));
+  padding-block: var(--ds-space-inset-xs);
+  padding-inline: var(--ds-space-inset-sm);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface-inverse);
+  box-shadow: var(--ds-shadow-1);
+  color: var(--ds-text-inverse);
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  font-weight: var(--ds-text-caption-weight);
+  line-height: var(--ds-text-caption-line-height);
+  overflow-wrap: anywhere;
+}
+
+.ds-tooltip[data-entering] {
+  animation: ds-tooltip-in var(--ds-motion-duration-fast) var(--ds-motion-ease-enter);
+}
+
+.ds-tooltip[data-exiting] {
+  animation: ds-tooltip-out var(--ds-motion-duration-fast) var(--ds-motion-ease-exit) forwards;
+}
+
+@keyframes ds-tooltip-in {
+  from { opacity: 0; }
+}
+
+@keyframes ds-tooltip-out {
+  to { opacity: 0; }
+}

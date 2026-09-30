@@ -1,0 +1,68 @@
+/* Off: hollow track, thumb at the start. On: filled track, thumb at the end, and a check in the thumb. Position and check carry the state, not colour alone. */
+.ds-switch__track {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  inline-size: var(--ds-space-11);
+  block-size: var(--ds-space-6);
+  padding: var(--ds-space-1);
+  border: var(--ds-size-border-thin) solid var(--ds-field-border);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-field-surface);
+  pointer-events: none;
+}
+
+.ds-switch__thumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ds-size-icon-sm);
+  block-size: var(--ds-size-icon-sm);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-field-border);
+  color: var(--ds-selection-surface);
+  transition: translate var(--ds-motion-duration-base) var(--ds-motion-ease-standard);
+}
+
+.ds-switch__check {
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .ds-switch__input:hover:not(:disabled) + .ds-switch__track {
+    border-color: var(--ds-field-border-hover);
+  }
+}
+
+.ds-switch__input:checked + .ds-switch__track {
+  border-color: var(--ds-selection-surface);
+  background: var(--ds-selection-surface);
+}
+
+.ds-switch__input:checked + .ds-switch__track .ds-switch__thumb {
+  translate: calc(var(--ds-space-4) + var(--ds-size-border-thick)) 0;
+  background: var(--ds-selection-mark);
+}
+
+.ds-switch__input:checked + .ds-switch__track .ds-switch__check {
+  opacity: 1;
+}
+
+.ds-switch__input:focus-visible + .ds-switch__track {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.ds-switch__input:disabled + .ds-switch__track {
+  border-color: var(--ds-disabled-border);
+  background: var(--ds-disabled-surface);
+}
+
+.ds-switch__input:disabled + .ds-switch__track .ds-switch__thumb {
+  background: var(--ds-disabled-text);
+}
+
+/* Reduced motion keeps the state change and drops the slide. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-switch__thumb { transition: none; }
+}

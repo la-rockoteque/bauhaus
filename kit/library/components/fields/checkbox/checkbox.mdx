@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './checkbox.stories';
+
+<Meta of={Stories} />
+
+# Checkbox
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A checkbox is a small box you tick to say yes. It is for one independent choice, like accepting the terms, or for picking rows in a list. Ticking one does not untick another.
+
+**Precisely:** Component in the fields family. It toggles one independent option with a native `input` of type checkbox and a visible, clickable label. It does not act at once (use the switch) and it is not one-of-many (use the radio group).
+
+**The layer.** A component. The native input is invisible and covers a 44px target. A drawn box and check sit under it, so the browser keeps focus, Space, form value and label clicks.
+
+## 2. Usage
+
+### When to use
+
+- One independent yes or no that the user confirms with a form: "Send me the newsletter".
+- Selecting rows in a table or list.
+- A parent box for a group of children that can be partly checked.
+
+### When not to use, and what to use instead
+
+- **For a setting that takes effect at once.** Use the switch (APG Switch).
+- **For one choice out of several.** Use the radio group.
+- **For a group of boxes.** Wrap them in a `fieldset` with a `legend`, as the radio group does.
+
+### How
+
+- **Label.** Visible, to the side of the box, bound with `for`, and inside the target. A click on the label toggles the box (WCAG 3.3.2, A; WCAG 2.5.8, AA).
+- **Keyboard.** Space toggles. The component renders a native checkbox, so this needs no code (APG Checkbox).
+- **Mixed state.** `indeterminate` sets the native property, so assistive technology reads "mixed". It clears when the user toggles the box (WCAG 4.1.2, A).
+- **Error.** For a box that must be ticked, pass `error` and `required`. The message is tied with `aria-describedby`, the input gets `aria-invalid`, and the box outline turns to the invalid colour beside the icon and text (WCAG 3.3.1, A; WCAG 1.4.1, A).
+- **Target.** The row is at least 44px high and the target column is 44px wide (WCAG 2.5.5, AAA house floor; 2.5.8, AA is 24px).
+- **Box contrast.** The empty outline reaches 3:1 on the page. The checked fill reaches 3:1, and the check reaches 3:1 on the fill (WCAG 1.4.11, AA).
+- **i18n.** All text arrives as props.
+
+## 3. Why the states look as they do
+
+- **Checked** fills the box and draws a check. **Mixed** fills the box and draws a minus. The shape tells them apart, not the colour (WCAG 1.4.1, A).
+- **Hover** darkens the outline inside `@media (hover: hover)`. The grid cannot replay a media query, so the hover cell shows the rest look.
+- **Focus-visible** draws the ring around the drawn box, not around the invisible input, so the ring hugs what the eye sees.
+- **Disabled** uses the native attribute and the disabled roles for box and label. Say why nearby.
+- **Some** is the mixed state. **Too many** wraps a long label.
+- **Loading, none, one, active, done** are n/a.
+
+## 4. Pitfalls and don'ts
+
+- **Do not make only the small box clickable.** (WCAG 2.5.8, AA; `checkbox.label-clickable`)
+- **Do not hide the mixed state.** (WCAG 4.1.2, A; `checkbox.mixed-exposed`)
+- **Do not draw an outline under 3:1.** (WCAG 1.4.11, AA; `checkbox.box-contrast`)
+- **Do not use a `div` with a click handler.** (APG Checkbox; WCAG 4.1.2, A; `checkbox.native-element`)
+- **Do not write a colour or px literal in the stylesheet.** (Bauhaus `misfile.raw-value-in-component`; `checkbox.no-literal`)

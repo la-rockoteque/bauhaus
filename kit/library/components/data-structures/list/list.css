@@ -1,0 +1,186 @@
+.ds-list__root {
+  min-inline-size: 0;
+}
+
+.ds-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-list__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-inline-md);
+  min-inline-size: 0;
+  min-block-size: var(--ds-size-target-min);
+  padding-block: var(--ds-space-inset-sm);
+  padding-inline: var(--ds-space-inset-md);
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  font-weight: var(--ds-text-body-weight);
+  line-height: var(--ds-text-body-line-height);
+}
+
+.ds-list--divided > .ds-list__item + .ds-list__item {
+  border-block-start: var(--ds-size-border-thin) solid var(--ds-border-default);
+}
+
+.ds-list__leading,
+.ds-list__trailing {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  color: var(--ds-text-muted);
+}
+
+.ds-list__trailing {
+  margin-inline-start: auto;
+}
+
+/* min-inline-size 0 lets a long title wrap inside the row instead of widening it. */
+.ds-list__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.ds-list__title,
+.ds-list__control {
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+}
+
+.ds-list__description {
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  font-weight: var(--ds-text-caption-weight);
+  line-height: var(--ds-text-caption-line-height);
+}
+
+/* One control per row. Its ::after stretches over the row, so the whole row is the target. */
+.ds-list__control {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ds-text-link);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ds-list__control::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.ds-list__control:focus-visible {
+  outline-width: 0;
+}
+
+/* The ring goes around the row, since the control's target is the row. */
+.ds-list__item:has(.ds-list__control:focus-visible) {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: calc(var(--ds-focus-ring-offset) * -1);
+}
+
+.ds-list__item--interactive:active {
+  background: var(--ds-state-pressed-layer);
+}
+
+@media (hover: hover) {
+  .ds-list__item--interactive:hover {
+    background: var(--ds-state-hover-layer);
+  }
+
+  .ds-list__item--interactive:hover .ds-list__control {
+    text-decoration: underline;
+  }
+}
+
+.ds-list__item--selected,
+.ds-list__item--selected:hover {
+  background: var(--ds-state-selected);
+}
+
+/* Selected also shows a bar, so the state does not rest on fill alone. */
+.ds-list__item--selected::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--ds-size-border-thick);
+  background: var(--ds-selection-surface);
+}
+
+.ds-list__item--disabled .ds-list__control {
+  color: var(--ds-disabled-text);
+  cursor: not-allowed;
+}
+
+.ds-list__item--disabled .ds-list__leading,
+.ds-list__item--disabled .ds-list__trailing {
+  color: var(--ds-disabled-text);
+}
+
+/* Slots: empty, error and partial. */
+.ds-list__slot {
+  padding: var(--ds-space-inset-md);
+}
+
+.ds-list__slot--error {
+  color: var(--ds-status-error);
+}
+
+.ds-list__slot--partial {
+  background: var(--ds-status-warning-surface);
+  color: var(--ds-status-warning-text);
+}
+
+/* Loading: blocks in the slots' own places, so the row keeps its size. */
+.ds-list__skeleton {
+  display: block;
+  border-radius: var(--ds-radius-sm);
+  background: linear-gradient(90deg, var(--ds-skeleton-base), var(--ds-skeleton-highlight), var(--ds-skeleton-base)) var(--ds-skeleton-base);
+  background-size: 200% 100%;
+  animation: ds-list-shimmer calc(var(--ds-motion-duration-deliberate) * 4) linear infinite;
+}
+
+.ds-list__skeleton--leading {
+  flex: none;
+  inline-size: var(--ds-size-icon-lg);
+  block-size: var(--ds-size-icon-lg);
+  border-radius: var(--ds-radius-full);
+}
+
+.ds-list__skeleton--title {
+  inline-size: 60%;
+  block-size: var(--ds-space-4);
+}
+
+.ds-list__skeleton--description {
+  inline-size: 85%;
+  block-size: var(--ds-space-3);
+  margin-block-start: var(--ds-space-1);
+}
+
+@keyframes ds-list-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-list__skeleton { animation: none; }
+}
+
+@media (forced-colors: active) {
+  .ds-list__item--selected::before { background: Highlight; }
+}

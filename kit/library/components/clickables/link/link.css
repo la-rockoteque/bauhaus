@@ -1,0 +1,50 @@
+/* The underline is the cue that is not colour (WCAG 1.4.1). Hover thickens it; it never goes away. */
+.ds-link {
+  color: var(--ds-text-link);
+  font: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--ds-size-border-thin);
+  text-underline-offset: 0.2em;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.ds-link .ds-icon {
+  margin-inline-start: var(--ds-space-inline-xs);
+}
+
+/* A standalone link is a control, so it gets the target floor. Inside a sentence it stays inline (WCAG 2.5.8 inline exception). */
+.ds-link--standalone {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--ds-size-target-min);
+  min-inline-size: var(--ds-size-target-min);
+}
+
+/* Browsers let :visited change the colour only. Muted keeps 4.5:1 and the underline stays. */
+.ds-link:visited,
+.ds-link.doc-force-visited {
+  color: var(--ds-text-muted);
+}
+
+@media (hover: hover) {
+  .ds-link:hover,
+  .ds-link.doc-force-hover {
+    text-decoration-thickness: var(--ds-size-border-thick);
+  }
+}
+
+.ds-link:active {
+  color: var(--ds-text-default);
+}
+
+.ds-link:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+/* The current link is heavier and its underline is thick: two cues beyond colour. */
+.ds-link[aria-current] {
+  font-weight: var(--ds-text-label-weight);
+  text-decoration-thickness: var(--ds-size-border-thick);
+}

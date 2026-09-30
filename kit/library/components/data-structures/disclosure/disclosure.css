@@ -1,0 +1,173 @@
+/* One rule for both forms: the native details/summary and the accordion's button in a heading. */
+.ds-disclosure {
+  min-inline-size: 0;
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-default);
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  font-weight: var(--ds-text-body-weight);
+  line-height: var(--ds-text-body-line-height);
+}
+
+.ds-disclosure__heading {
+  margin: 0;
+}
+
+.ds-disclosure__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-inline-md);
+  inline-size: 100%;
+  min-block-size: var(--ds-size-target-min);
+  padding-block: var(--ds-space-inset-sm);
+  padding-inline: var(--ds-space-inset-md);
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+  text-align: start;
+  list-style: none;
+  cursor: pointer;
+}
+
+.ds-disclosure__trigger::-webkit-details-marker {
+  display: none;
+}
+
+/* A long title wraps beside the chevron. */
+.ds-disclosure__title {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.ds-disclosure__reason {
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-caption-family);
+  font-size: var(--ds-text-caption-size);
+  font-weight: var(--ds-text-caption-weight);
+  line-height: var(--ds-text-caption-line-height);
+}
+
+.ds-disclosure__icon {
+  transition: transform var(--ds-motion-duration-base) var(--ds-motion-ease-standard);
+}
+
+.ds-disclosure[open] > .ds-disclosure__trigger .ds-disclosure__icon,
+.ds-disclosure__trigger[aria-expanded='true'] .ds-disclosure__icon {
+  transform: rotate(180deg);
+}
+
+@media (hover: hover) {
+  .ds-disclosure__trigger:hover {
+    background: var(--ds-state-hover-layer);
+  }
+}
+
+.ds-disclosure__trigger:active {
+  background: var(--ds-state-pressed-layer);
+}
+
+.ds-disclosure__trigger:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: calc(var(--ds-focus-ring-offset) * -1);
+}
+
+.ds-disclosure__trigger:disabled {
+  color: var(--ds-disabled-text);
+  cursor: not-allowed;
+}
+
+.ds-disclosure__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-stack-xs);
+  padding-block: var(--ds-space-inset-sm) var(--ds-space-inset-md);
+  padding-inline: var(--ds-space-inset-md);
+  overflow-wrap: anywhere;
+}
+
+.ds-disclosure__panel[hidden] {
+  display: none;
+}
+
+/* The panel fades in and rises a little. */
+.ds-disclosure[open] > .ds-disclosure__panel,
+.ds-disclosure--accordion > .ds-disclosure__panel:not([hidden]) {
+  animation: ds-disclosure-reveal var(--ds-motion-duration-base) var(--ds-motion-ease-enter);
+}
+
+@keyframes ds-disclosure-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--ds-space-1) * -1));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* An accordion group: items share edges, so the group reads as one block. */
+.ds-disclosure__group {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.ds-disclosure__group > .ds-disclosure {
+  border-radius: 0;
+}
+
+.ds-disclosure__group > .ds-disclosure + .ds-disclosure {
+  margin-block-start: calc(var(--ds-size-border-thin) * -1);
+}
+
+.ds-disclosure__group > .ds-disclosure:first-child {
+  border-start-start-radius: var(--ds-radius-md);
+  border-start-end-radius: var(--ds-radius-md);
+}
+
+.ds-disclosure__group > .ds-disclosure:last-child {
+  border-end-start-radius: var(--ds-radius-md);
+  border-end-end-radius: var(--ds-radius-md);
+}
+
+/* Loading: two lines in the panel. */
+.ds-disclosure__skeleton {
+  display: block;
+  inline-size: 60%;
+  block-size: var(--ds-text-body-size);
+  border-radius: var(--ds-radius-sm);
+  background: linear-gradient(90deg, var(--ds-skeleton-base), var(--ds-skeleton-highlight), var(--ds-skeleton-base)) var(--ds-skeleton-base);
+  background-size: 200% 100%;
+  animation: ds-disclosure-shimmer calc(var(--ds-motion-duration-deliberate) * 4) linear infinite;
+}
+
+.ds-disclosure__skeleton--long {
+  inline-size: 90%;
+}
+
+@keyframes ds-disclosure-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* Reduced motion: keep the fade, drop the rise and the turn; stop the shimmer. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-disclosure__skeleton { animation: none; }
+  .ds-disclosure__icon { transition: none; }
+
+  @keyframes ds-disclosure-reveal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}

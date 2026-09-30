@@ -1,0 +1,32 @@
+.ds-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  line-height: var(--ds-text-body-line-height);
+}
+
+.ds-breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-inline-xs);
+  min-inline-size: 0;
+}
+
+/* The separator is decoration: it is aria-hidden, and it sits outside the link so it is not underlined. */
+.ds-breadcrumb__separator {
+  display: inline-flex;
+  color: var(--ds-text-muted);
+}
+
+/* The last crumb is where you are. It is text or a current link, heavier than the rest. */
+.ds-breadcrumb__current {
+  padding-inline: var(--ds-space-inset-sm);
+  color: var(--ds-text-default);
+  font-weight: var(--ds-text-label-weight);
+  overflow-wrap: anywhere;
+}

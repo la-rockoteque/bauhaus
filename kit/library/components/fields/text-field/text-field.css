@@ -1,0 +1,8 @@
+/* The box, label, description and error come from ../field.css. */
+.ds-text-field__input {
+  text-overflow: ellipsis;
+}
+
+.ds-text-field__input::-webkit-search-cancel-button {
+  appearance: none;
+}

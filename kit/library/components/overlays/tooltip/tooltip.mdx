@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './tooltip.stories';
+
+<Meta of={Stories} />
+
+# Tooltip
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A tooltip is a few words that pop up when you point at a button or tab to it. It adds a detail to something that already has a name. It never holds anything you have to do.
+
+**Precisely:** Component in the overlays family. It is React Aria's `TooltipTrigger` and `Tooltip`, styled with tokens. It describes one control through `aria-describedby`. Its content is a string.
+
+**The job.** A tooltip answers "what does this do, exactly?" for a user who already sees the control. It is a second chance to explain, never the first.
+
+**The layer.** The tooltip is a component. It reads roles and semantic tokens.
+
+## 2. Usage
+
+### When to use
+
+- To add a detail to a control that has a visible or accessible name: a shortcut, a consequence, the full value of a truncated one.
+
+### When not to use, and what to use instead
+
+- **To name an icon button.** Give the icon button its own `label`. A tooltip is not a name (WCAG 4.1.2, A).
+- **To hold a link, a button or a field.** Use a popover. A tooltip is not focusable (APG Tooltip).
+- **To hold an instruction, a rule or an error.** Put the text on the page. A user who cannot hover, or who never focuses the control, never sees it (WCAG 1.4.13, AA).
+- **On a disabled control.** A disabled control takes no focus and no hover, so nothing opens. Say why in visible text near it.
+- **On touch.** A tooltip needs hover or focus. Touch has neither, so no essential information can live there.
+
+### How
+
+- **Focus and hover.** The tooltip opens at once on keyboard focus and after 500ms of hover. The delay stops it from flashing when the pointer crosses the page.
+- **Dismissible.** Escape closes it while the trigger keeps focus (WCAG 1.4.13 Content on Hover or Focus, AA).
+- **Hoverable.** The pointer can move from the trigger onto the bubble without closing it (WCAG 1.4.13, AA).
+- **Persistent.** The bubble stays until the pointer leaves, focus leaves or the user dismisses it (WCAG 1.4.13, AA).
+- **Colour.** The bubble is `text.inverse` on `surface.inverse`, which reaches 4.5:1 in both themes.
+- **Size.** Up to `size.overlay.sm`, and never wider than the screen minus `space.6`. Long text wraps.
+- **Trigger.** Any component that spreads its props onto a native element, such as `Button` or `IconButton`.
+- **i18n.** The content arrives as a string prop.
+
+## 3. Why the states look as they do
+
+- **Default (hidden)** shows only the trigger.
+- **Hover and focus-visible (visible)** show the open bubble. The focus cell also shows the ring on the trigger.
+- **Dismissed** is the trigger with focus and no bubble.
+- **Too many** wraps the text at 20rem. A tooltip that needs more room is a popover.
+- **Disabled** applies to the trigger, and gets no tooltip.
+- **All lifecycle states but too many** are n/a: the tooltip holds one string, loads nothing and reports nothing.
+- **Motion.** The bubble fades in and out in `motion.duration.fast`. There is no travel, so reduced motion needs no change.
+
+## 4. Pitfalls and don'ts
+
+- **Do not open on hover only.** Keyboard users never see it. (WCAG 1.4.13, AA; `tooltip.opens-on-focus`)
+- **Do not put interactive content in the bubble.** (APG Tooltip; `tooltip.no-essential-content`)
+- **Do not rely on the tooltip to name a control.** (WCAG 4.1.2, A; `tooltip.not-a-label`)
+- **Do not write a literal in `tooltip.css`.** (Bauhaus `misfile.raw-value-in-component`; `tooltip.no-literal`)

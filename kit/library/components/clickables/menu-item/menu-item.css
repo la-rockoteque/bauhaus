@@ -1,0 +1,89 @@
+.ds-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-control-gap);
+  min-block-size: var(--ds-size-target-min);
+  padding-block: var(--ds-space-inset-xs);
+  padding-inline: var(--ds-space-control-inline);
+  border-radius: var(--ds-radius-control);
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-text-body-size);
+  font-weight: var(--ds-text-body-weight);
+  line-height: var(--ds-text-body-line-height);
+  cursor: pointer;
+  outline: none;
+}
+
+.ds-menu-item__lead {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ds-size-icon-sm);
+  block-size: var(--ds-size-icon-sm);
+}
+
+.ds-menu-item__text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.ds-menu-item__label {
+  overflow-wrap: anywhere;
+}
+
+.ds-menu-item__description {
+  color: var(--ds-text-muted);
+  font-size: var(--ds-text-caption-size);
+  line-height: var(--ds-text-caption-line-height);
+  overflow-wrap: anywhere;
+}
+
+.ds-menu-item__shortcut {
+  flex: none;
+  padding-inline-start: var(--ds-space-inline-md);
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-code-family);
+  font-size: var(--ds-text-code-size);
+  font-weight: var(--ds-text-code-weight);
+  line-height: var(--ds-text-code-line-height);
+}
+
+.ds-menu-item--destructive {
+  color: var(--ds-status-error);
+}
+
+/* Hover moves the roving focus in a menu, so data-focused is the hover and the arrow-key highlight. */
+.ds-menu-item[data-focused] {
+  background: var(--ds-state-hover-layer);
+}
+
+.ds-menu-item[data-pressed] {
+  background: var(--ds-state-pressed-layer);
+}
+
+.ds-menu-item[data-selected] {
+  background: var(--ds-state-selected);
+}
+
+.ds-menu-item[data-selected][data-focused] {
+  background: var(--ds-state-pressed-layer);
+}
+
+.ds-menu-item[data-focus-visible] {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: calc(var(--ds-focus-ring-width) * -1);
+}
+
+.ds-menu-item[data-disabled] {
+  color: var(--ds-disabled-text);
+  cursor: not-allowed;
+}
+
+.ds-menu-item[data-disabled] .ds-menu-item__description,
+.ds-menu-item[data-disabled] .ds-menu-item__shortcut {
+  color: var(--ds-disabled-text);
+}

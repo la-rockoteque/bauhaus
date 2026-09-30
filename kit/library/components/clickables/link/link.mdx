@@ -1,0 +1,61 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './link.stories';
+
+<Meta of={Stories} />
+
+# Link
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A link takes you somewhere else: another page, another site, another part of the same page. If pressing it does something in place, like saving, it is a button, not a link.
+
+**Precisely:** Component in the clickables family. It renders a native anchor that navigates to a URL. It is not an action and it does not switch views on one URL.
+
+**The job.** A link answers "where can I go?". It keeps what the browser gives for free: Enter follows it, middle-click and "open in new tab" work, the status bar shows the destination, and back and forward keep working.
+
+**When it exists.** Use a link when the destination is a URL. Use a button for an action. Use tabs for views that share one URL.
+
+## 2. Usage
+
+### When to use
+
+- To go to another URL, inside the app or outside it.
+- For a nav item, a breadcrumb crumb or a pagination page, where each destination has its own URL.
+
+### When not to use, and what to use instead
+
+- **To save, send or delete.** Use a button. A link that acts breaks the role (WCAG 4.1.2, A).
+- **To switch views on the same page.** Use tabs, which follow the APG Tabs contract.
+- **For an anchor with no destination.** An `a` with no `href` is not a link and is not focusable. Show text.
+
+### How
+
+- **Text.** Name the destination. Link text must make sense out of context (WCAG 2.4.4, A).
+- **Underline.** The underline stays at rest. Colour alone is not enough for a user who cannot tell the two colours apart (WCAG 1.4.1, A). Hover thickens the line and never removes it.
+- **Router.** Pass `href` for a plain anchor. Pass `as` with your router's link component, which receives every prop. The library never imports a router.
+- **External.** `external` sets `target="_blank"` and `rel="noopener noreferrer"`, draws the external icon and adds a hidden "opens in a new tab" to the accessible name. Pass `externalLabel` in the app language. The warning follows navigation rule 15 (WCAG 3.2.5, AAA).
+- **Current.** `current` sets `aria-current="page"`. The text turns heavier and the underline thicker, so the cue is not colour alone (WCAG 4.1.2, A; 1.4.1, A).
+- **Target size.** A link in a sentence stays inline: WCAG 2.5.8 (AA) exempts it, and a 44px box would break the line. `standalone` gives nav items, crumbs and footer links the 44px house floor.
+- **i18n.** Text arrives as `children` and `externalLabel`. The component holds no other text.
+
+## 3. Why the states look as they do
+
+- **Hover** thickens the underline, inside `@media (hover: hover)`, so a touch screen does not keep a stuck hover.
+- **Focus-visible** draws an outline offset from the text. Mouse presses do not show it.
+- **Active** switches to `text.default` for the moment of the press.
+- **Visited** uses `text.muted`. Browsers let `:visited` change the colour only, so the underline carries the "link" meaning. The design system has no visited role yet, so the muted text role stands in.
+- **Selected (current)** is heavier and more underlined. The weight and the line do the work that colour cannot.
+- **Disabled** is n/a. A link that cannot be followed is text. Say why in the surrounding copy.
+- **Too many** wraps the text, and `overflow-wrap: anywhere` breaks a long URL. Nothing truncates (WCAG 1.4.10, AA).
+- **Nothing, loading, none, one, some, incorrect, correct, done** are n/a. The link holds no data, and the next page owns the progress.
+
+## 4. Pitfalls and don'ts
+
+- **Do not remove the underline.** Colour would be the only cue. (WCAG 1.4.1, A; `link.not-colour-alone`)
+- **Do not use a link as a button.** Space does not activate it and the role lies. (WCAG 4.1.2, A; `link.not-a-button`)
+- **Do not write "Click here".** The text names no destination. (WCAG 2.4.4, A; `link.descriptive-text`)
+- **Do not open a new tab silently.** (WCAG 3.2.5, AAA; `link.external-warned`)
+- **Do not import a router.** Use `as`. (`link.no-router`)
+- **Do not write a colour literal in `link.css`.** (`link.no-literal`)

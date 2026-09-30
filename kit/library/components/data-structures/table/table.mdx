@@ -1,0 +1,82 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './table.stories';
+
+<Meta of={Stories} />
+
+# Table
+
+The Showcase story holds the tokens, the anatomy, the states grid, a live table, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A table lays rows of facts along shared columns, so you can scan down a column and compare. Use it when people look up exact values, sort them and pick some. When each row holds one thing, use a list.
+
+**Precisely:** Component in the data-structures family. A native `table` with a caption, scoped headers, sortable columns, checkbox selection and slots for the lifecycle states. It is not a layout grid and not a spreadsheet.
+
+**The job.** A table answers "how do these records compare?". Sighted users compare along a column. Screen-reader users move by row and column and hear the header of each cell. Both depend on real table markup.
+
+**The layer.** The table is a component. It reads roles and semantic tokens and imports no pattern. The caller sorts, pages, filters and fetches. The table draws the rows it is given and reports what the user asked for.
+
+**When it exists.** Use a table when there are three or more attributes to compare across many records. Use a list for one primary value per row. Use a card for one entity with mixed content. Use a chart when the shape of the data is the point.
+
+## 2. Usage
+
+### When to use
+
+- To compare rows along shared columns, sort them and select some (`knowledge/patterns/data-tables.md`, rule 1).
+
+### When not to use, and what to use instead
+
+- **Rows with one value each.** Use a list.
+- **A summary of one entity.** Use a card.
+- **A layout.** Use CSS. A table used for positioning is wrong markup (WCAG 1.3.1, A).
+- **Editable cells navigated by cell.** That is the APG Grid pattern. A read-only table stays a Table.
+
+### How
+
+- **Markup.** The component renders `table`, `caption`, `thead`, `tbody`, `th scope="col"` and, for the identifier column, `th scope="row"` (WCAG 1.3.1 Info and Relationships, A). The caption is required. It also names the scroll region.
+- **Alignment.** Each column declares `align`. Text is `start`. Figures are `number`: right-aligned, in the mono text style (`text.code`), with tabular figures, so digits line up by place. `end` right-aligns a value that is not a figure. Never centre data.
+- **Row header.** Mark the first, human-readable column with `rowHeader`. A surrogate id is a poor identifier (Nielsen heuristic 2).
+- **Sorting.** A sortable header holds a button. The `th` carries `aria-sort`: `none`, `ascending` or `descending`. The header shows a chevron for the direction. The table asks for the next direction through `onSortChange`. The caller sorts the rows. Each request is announced in a polite live region, for example "Sorted by Total, ascending" (WCAG 4.1.2, A; WCAG 4.1.3 Status Messages, AA).
+- **Selection.** Giving `onSelectionChange` adds a column of native checkboxes. The header box is named "Select all N rows on this page", and it shows the mixed state when some rows are selected. It changes this page only, and it keeps selections made on other pages. A line under the table counts the selection ("1 of 3 rows on this page selected"). This follows rule 14 of the data-tables pattern and Nielsen heuristic 5.
+- **Density.** `comfortable` rows are 44px, the house target size. `compact` trims the padding and keeps every control at 24px or more (WCAG 2.5.8, AA).
+- **Sticky header.** `sticky` keeps the header in view inside the scroll region. Give the root a `max-block-size`. The region sets `scroll-padding-block-start` to the header height, so a focused row is not hidden under it (WCAG 2.4.11 Focus Not Obscured, AA).
+- **Row actions.** Put visible buttons in an `actions` column. Never show them on hover only (WCAG 2.1.1, A). The header of that column stays in the accessibility tree and is hidden from the eye.
+- **Keyboard.** Tab reaches the sort buttons, the checkboxes, the row actions and the scroll region. Space toggles a checkbox. Enter and Space press a sort button. Each is a native element, so this needs no code.
+- **i18n.** The caption, the headers and the cells arrive as props. The few phrases the table speaks come from the `labels` prop, which has English defaults.
+
+## 3. Why the states look as they do
+
+- **Nothing** renders the `empty` slot with an invitation. It does not say "no results", because no query has run.
+- **Loading** shows skeleton rows in the columns' own alignment, so the layout does not jump when data arrives. `aria-busy` is set on the table and a hidden phrase says "Loading rows" (Nielsen heuristic 1; WCAG 4.1.3, AA). The shimmer stops under `prefers-reduced-motion`.
+- **None** renders the same slot with the words for a filtered-empty result. The table never imports the empty-state pattern. The caller passes it in, so the layers stay one-way.
+- **One** and **some** are plain rows. A table with a single row is still a table.
+- **Too many** has two cases. Many columns make the region scroll sideways inside its own box. The root and the region set `min-inline-size: 0`, so a table in a flex or grid parent does not stretch the page. The region is focusable, so a keyboard user can scroll it. Many rows call for paging, which is the caller's job and the pagination component's.
+- **Incorrect** replaces the rows with one spanning row that holds an alert and, in the caller's content, a retry. The message is text. Colour is only a reinforcement (WCAG 1.4.1, A).
+- **Partial** keeps the loaded rows and adds a status row that says what is missing. The user keeps what they have and learns what they lack.
+- **Correct** and **done** are n/a. A table takes no input, and the view announces the result of a bulk action.
+- **Hover** fills the row with `table.row-hover`, only on devices that hover. **Selected** fills with `table.row-selected` and shows a checked box, so the state does not rest on fill alone. Selected wins over hover.
+- **Focus-visible** draws a ring on the sort button, on the checkbox and on the scroll region.
+- **Disabled** is n/a for the table. Rows are data. A control inside a cell disables itself.
+
+## 4. The card stack
+
+At 768px and below the same `table` is laid out again. It is not a second component.
+
+- `thead` stays in the tree. Its cells that do not sort are clipped from view but not removed, so assistive technology keeps the column names. The select-all box and the sort buttons stay visible as a bar above the cards. Sorting and selecting-all therefore remain reachable (`resp.reach`).
+- Each row becomes a bordered card on `surface.raised`. Each cell becomes a line with its name on the left and its value on the right. The name comes from the `data-label` attribute, printed with `::before { content: attr(data-label) }`.
+- Every value cell carries `data-label`. The actions cell does not, because a button names itself.
+- The row header is the first line of the card, with its label like any other cell.
+- The `table`, `tr` and `td` elements carry explicit roles. Some browsers drop table semantics when `display` changes. The roles keep them (`knowledge/patterns/responsive.md`). Test with a screen reader before you rely on this.
+- The sticky header is turned off in the stack. The bar scrolls with the page.
+- The breakpoint is written as a literal in the media condition, because a custom property cannot sit there. One boundary is used across the library: 768px.
+
+## 5. Pitfalls and don'ts
+
+- **Do not build a data table from `div` elements.** The row and column relationships vanish. (WCAG 1.3.1, A; `table.native-markup`)
+- **Do not omit `scope`, or `aria-sort` on a sortable header.** (WCAG 1.3.1, A; WCAG 4.1.2, A; `table.header-scope`, `table.sort-exposed`)
+- **Do not sort silently.** A screen-reader user cannot see the rows move. (WCAG 4.1.3, AA; `table.sort-announced`)
+- **Do not let select all reach other pages without saying so.** (Nielsen heuristic 5; `table.select-all-scope`)
+- **Do not scroll a phone sideways.** Use the card stack. (WCAG 1.4.10, AA; `table.card-stack-narrow`)
+- **Do not show row actions on hover only.** (WCAG 2.1.1, A; `table.row-actions-visible`)
+- **Do not write a colour or px literal in `table.css`.** (Bauhaus `misfile.raw-value-in-component`; `table.no-literal`)

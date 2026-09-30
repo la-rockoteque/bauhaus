@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './popover.stories';
+
+<Meta of={Stories} />
+
+# Popover
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A popover is a small panel that appears next to the button you pressed. It holds a bit more than a hint: a few options, a short form, some detail. Press outside or Escape and it goes away.
+
+**Precisely:** Component in the overlays family. It is React Aria's `DialogTrigger` and `Popover`, styled with tokens. It anchors to its trigger, flips at the viewport edge, and is non-modal by default. It is not a one-line hint and not a list of actions.
+
+**The job.** A popover keeps the user in context. The panel sits beside its trigger, so the user sees both.
+
+**The layer.** The popover is a component. It reads roles and semantic tokens and owns no colour or size.
+
+**When it exists.** Use the popover for rich or interactive content tied to one control. Use a tooltip for a short hint, a menu for actions, a dialog for a decision that blocks the page.
+
+## 2. Usage
+
+### When to use
+
+- Filters, a share panel, a date summary, a short inline form.
+
+### When not to use, and what to use instead
+
+- **For a one-line hint.** Use a tooltip.
+- **For a list of actions.** Use a menu.
+- **For a decision that must block the page.** Use a dialog.
+- **For content the user must see at all times.** Put it in the page. A popover hides it until pressed.
+
+### How
+
+- **Semantics.** The trigger gets `aria-expanded` and `aria-haspopup`. The content is a `dialog` named by `label` (WCAG 4.1.2, A).
+- **Non-modal by default.** The page behind stays reachable. Moving focus outside closes the popover. Escape closes it and returns focus to the trigger (APG Dialog; WCAG 2.4.3, A).
+- **Modal.** `modal` makes the page behind inert and adds an invisible underlay, so an outside press closes the popover. Use it when the popover holds a task that must finish first. There is no scrim: a popover is not a dialog.
+- **Position.** The panel opens 8px from the trigger. It flips to the opposite side when it does not fit, and shifts to stay inside the viewport.
+- **Never off screen.** The width is the smaller of `size.overlay.md` and the screen minus `space.6`. The height is what the viewport leaves, and the content scrolls inside. It holds at 320px (WCAG 1.4.10 Reflow, AA).
+- **Close from inside.** Pass a function as `children` to receive `close`. Use it on the action that finishes the task.
+- **Contained.** `portalContainer` mounts the open popover in a given element. Omit `trigger` to draw the open panel in the flow.
+- **i18n.** The label and the content arrive as props.
+
+## 3. Why the states look as they do
+
+- **Nothing** says what is missing and how to fill it.
+- **Loading** keeps the panel and names the wait in a status message.
+- **None, one** are n/a. A popover holds no collection.
+- **Too many** scrolls inside the panel. The panel never grows past the viewport.
+- **Incorrect** is a message with an icon and a word, announced with `role="alert"`. The panel stays open.
+- **Done** is n/a. A finished task closes the panel, and the view announces the result.
+- **Focus-visible** shows on the controls inside. The panel itself takes focus on open and shows no ring.
+- **Disabled** applies to the trigger. A disabled trigger does not open. Say why, next to it.
+- **Motion.** The panel fades and rises 4px in `motion.duration.base`. Reduced motion keeps the fade.
+- **Elevation.** The panel is `shadow.1`, the first rung, like a menu and a tooltip.
+
+## 4. Pitfalls and don'ts
+
+- **Do not position the panel by hand.** It runs off screen at 320px. (WCAG 1.4.10, AA; `popover.fits-viewport`)
+- **Do not leave the panel unnamed.** (WCAG 4.1.2, A; `popover.labelled`)
+- **Do not trap the user in a non-modal popover.** (WCAG 2.1.2, A; `popover.esc-closes`)
+- **Do not use a popover for a one-line hint.** (`popover.not-for-hints`)
+- **Do not write a literal in `popover.css`.** (Bauhaus `misfile.raw-value-in-component`; `popover.no-literal`)

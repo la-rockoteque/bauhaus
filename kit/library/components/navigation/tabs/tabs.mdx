@@ -1,0 +1,75 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './tabs.stories';
+
+<Meta of={Stories} />
+
+# Tabs
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** Tabs let you flip between a few views of the same thing without leaving the page, like the tabs of a folder. Only one view shows at a time.
+
+**Precisely:** Component in the navigation family. It is a hand-written WAI-ARIA Tabs widget: a tab list with one tab stop, and one panel per tab. It switches peer views on one URL. It does not move between pages.
+
+**The job.** Tabs answer "what other views of this can I see?". They keep the user's context: the header, the record and the scroll position stay.
+
+**Tabs or links.** When each view has its own URL, use a list of links with `aria-current`. That gives back, reload and sharing for free. Use tabs only when the views share one URL (`knowledge/patterns/navigation.md`).
+
+## 2. Usage
+
+### The keyboard contract
+
+The component follows the APG Tabs keyboard table, and its tests cover every key.
+
+| Key | Effect |
+|---|---|
+| Tab | Enters the list at the selected tab. The next Tab goes to the panel, not to the next tab. |
+| Right, Left | Move focus to the next or previous tab and wrap. Horizontal tabs only. |
+| Down, Up | The same for vertical tabs. |
+| Home, End | Move focus to the first or last enabled tab. |
+| Enter, Space | Select the focused tab in manual mode. |
+
+The list has one tab stop, by roving `tabindex`. The hook `use-roving-focus.ts` sits beside the component. Disabled tabs are skipped.
+
+### Automatic or manual
+
+- **Automatic** (default) selects a tab as soon as it takes focus. Use it when panels show at once.
+- **Manual** moves focus first and selects on Enter or Space. Use it when a panel loads slowly, so a run of arrow presses does not fire a run of requests (APG Tabs).
+
+### Wiring
+
+Each tab is a `button` with `role="tab"`, `aria-selected` and `aria-controls`. Each panel has `role="tabpanel"` and `aria-labelledby`. All panels stay in the page and the unselected ones are `hidden`, so every `aria-controls` points at a real element. The panel has `tabindex="0"`, because a panel with no focusable content must still be reachable (APG Tabs).
+
+### Orientation
+
+`orientation="vertical"` sets `aria-orientation` and swaps the arrows to Up and Down. The bar of the selected tab moves to the inline end.
+
+### Too many tabs
+
+The list scrolls along its axis. A chevron over a fade shows the side that hides more tabs, and it takes no click: the user scrolls, or arrows to the hidden tab, which scrolls into view on focus. No label is truncated (WCAG 1.4.10 Reflow, AA). The vertical list grows with the page and has no cue.
+
+### Content
+
+- Keep labels short: one or two words.
+- Pass `disabledReason` whenever you set `disabled`. The reason shows as a tooltip and is read after the label.
+- i18n: labels and reasons arrive as props. The component holds no text.
+
+## 3. Why the states look as they do
+
+- **Selected** has three cues: a fill (`state.selected`), a bar (`border.strong`) and darker text. Hue alone never carries it (WCAG 1.4.1, A). The bar reaches 3:1 on the page (WCAG 1.4.11, AA).
+- **Hover and pressed** apply to unselected tabs only, inside `@media (hover: hover)`.
+- **Focus-visible** draws the ring inside the tab (negative offset), so the overflow container does not clip it (WCAG 2.4.7, AA; 2.4.11, AA).
+- **Disabled** uses the native attribute, the disabled tokens and a reason. The tab leaves the tab order and the arrow cycle.
+- **One** works but is a heading in disguise.
+- **Too many** scrolls. **Nothing, loading, none, incorrect, correct, done** are n/a: tabs hold views, not data or input.
+
+## 4. Pitfalls and don'ts
+
+- **Do not move between tabs with the Tab key.** That gives a Tab stop per tab and the panel is far away. (APG Tabs; `tabs.single-tab-stop`)
+- **Do not use tabs for pages.** Use links with `aria-current`. (`tabs.not-navigation`)
+- **Do not truncate a label.** Scroll instead. (WCAG 1.4.10, AA; `tabs.overflow-scrolls`)
+- **Do not show the selected tab by colour alone.** (WCAG 1.4.1, A; `tabs.selected-not-colour-alone`)
+- **Do not disable a tab with no reason.** (Nielsen 1; `tabs.state.disabled`)
+- **Do not remove unselected panels from the page.** `aria-controls` would point at nothing. (`tabs.panel-linked`)

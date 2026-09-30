@@ -1,0 +1,33 @@
+/* The box, label, description and error come from ../field.css. */
+.ds-select__wrapper {
+  position: relative;
+  display: flex;
+}
+
+.ds-select__input {
+  appearance: none;
+  padding-inline-end: calc(var(--ds-space-control-inline) + var(--ds-size-icon-md) + var(--ds-space-control-gap));
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.ds-select__input:disabled {
+  cursor: not-allowed;
+}
+
+.ds-select__input[aria-readonly="true"] {
+  cursor: default;
+}
+
+.ds-select__chevron {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--ds-space-control-inline);
+  translate: 0 -50%;
+  color: var(--ds-field-text);
+  pointer-events: none;
+}
+
+.ds-select__input:disabled + .ds-select__chevron {
+  color: var(--ds-disabled-text);
+}

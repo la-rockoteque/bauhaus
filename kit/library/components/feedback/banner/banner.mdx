@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './banner.stories';
+
+<Meta of={Stories} />
+
+# Banner
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A banner is a note that stays on the page until the problem is gone or you close it. It tells you something about the page or the system.
+
+**Precisely:** Component in the feedback family. It shows a persistent status message with an icon, text, optional actions and an optional close button. It is not a toast, and it is not a field error.
+
+**The job.** A banner answers "what should I know about this page right now?". It stays until the cause ends or the user closes it, so the user can read it again.
+
+**When it exists.** Use a banner for a message about a whole page or system. Use a toast for a short confirmation of an action. Use the field's own message for a field error. Use an empty state when a list has nothing to show.
+
+## 2. Usage
+
+### When to use
+
+- Maintenance windows, expiring plans, failed background work, offline mode.
+- A result the user must be able to reread: a page-level save error with a retry.
+
+### When not to use, and what to use instead
+
+- **For a confirmation that fades.** Use a toast (`toast.not-sole-error`).
+- **For an error on one field.** Bind text to the field with `aria-describedby` (WCAG 3.3.1, A).
+- **For a decision that blocks work.** Use a dialog.
+
+### How
+
+- **Status.** Pick info, success, warning or error for the meaning. Colour is never the only cue: the icon has a different shape per status and a spoken name, and the text says what happened (WCAG 1.4.1 Use of Color, A).
+- **Role.** The banner has `role="status"`, a polite live region. Set `urgent` on an error that blocks the user to get `role="alert"`. An alert interrupts speech, so a calm message must not use it (WCAG 4.1.3 Status Messages, AA; APG Alert pattern). A banner that is on the page at load is read as page content, not announced.
+- **Close.** Pass `onDismiss` and `dismissLabel` together. The close button is an icon button, 44px, with the label as its name (WCAG 4.1.2, A). The parent removes the banner.
+- **Actions.** Put the next step in the banner as a button or link. Message and action together end the dead end (Nielsen 9).
+- **Content.** Write in the user's words, in about 25 words (`patterns/empty-and-error.md` message template).
+- **Layout.** The banner fills its container and wraps its text. Do not truncate it (WCAG 1.4.10 Reflow, AA).
+
+## 3. Why the states look as they do
+
+- **Some** shows the full anatomy. Title, body and one action.
+- **Too many** has two cases. A long message wraps. Several banners stack in the flow with the stack gap. A page that needs more than a few has a design problem; group or prioritise them.
+- **Incorrect and correct** are the error and success statuses. Only an urgent error uses role alert.
+- **Done** is the dismissed state: the banner leaves the tree. The parent decides where focus goes, because the close button that held it is gone.
+- **Focus-visible** belongs to the actions. The banner is not a control and never takes focus.
+- **Nothing, loading, none, one, hover, active, disabled, selected** are n/a. The banner holds finished text, so waiting states belong to other components.
+
+## 4. Pitfalls and don'ts
+
+- **Do not rely on colour.** A red box with no icon or word fails colour-blind users. (WCAG 1.4.1, A; `banner.status-not-colour-alone`)
+- **Do not put `role="alert"` on calm content.** Each alert interrupts the screen reader. (WCAG 4.1.3, AA; `banner.role-matches-urgency`)
+- **Do not ship an unnamed close button.** (WCAG 4.1.2, A; `banner.dismiss-labelled`)
+- **Do not write a colour literal in `banner.css`.** The dark theme cannot reach it. (`misfile.raw-value-in-component`; `banner.no-literal`)
+- **Do not cover content.** A banner sits in the flow. (WCAG 1.4.10, AA; `banner.no-blocking`)
