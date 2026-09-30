@@ -62,4 +62,21 @@ describe('Popover', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Filters' }));
     await expectNoAxeViolations(document.body);
   });
+
+  it('without a trigger, draws a named dialog in the flow with its content', () => {
+    render(<Popover label="Filters"><p>Preview content</p></Popover>);
+    const dialog = screen.getByRole('dialog', { name: 'Filters' });
+    expect(dialog.textContent).toBe('Preview content');
+    expect(screen.queryByRole('button')).toBeNull();
+  });
+
+  it('without a trigger, a function child still renders, its close doing nothing', () => {
+    render(
+      <Popover label="Filters">
+        {({ close }) => <Button onClick={close}>Apply filters</Button>}
+      </Popover>,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Apply filters' }));
+    expect(screen.getByRole('dialog', { name: 'Filters' })).toBeTruthy();
+  });
 });

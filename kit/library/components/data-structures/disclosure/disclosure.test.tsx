@@ -184,3 +184,19 @@ describe('Accordion', () => {
     await expectNoAxeViolations(container);
   });
 });
+
+describe('Accordion keydown handler', () => {
+  it('passes every key press to the onKeyDown prop, while keeping arrow navigation', () => {
+    const onKeyDown = vi.fn();
+    render(
+      <Accordion onKeyDown={onKeyDown}>
+        <AccordionItem value="a" title="Shipping">Shipping panel</AccordionItem>
+        <AccordionItem value="b" title="Returns">Returns panel</AccordionItem>
+      </Accordion>,
+    );
+    trigger('Shipping').focus();
+    fireEvent.keyDown(trigger('Shipping'), { key: 'ArrowDown' });
+    expect(onKeyDown).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(trigger('Returns'));
+  });
+});

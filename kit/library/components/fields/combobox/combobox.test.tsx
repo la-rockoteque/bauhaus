@@ -121,4 +121,47 @@ describe('Combobox', () => {
     expect(picture.querySelector('[data-focused]')?.textContent).toBe('Canada');
     expect(picture.querySelector('[data-selected]')?.textContent).toBe('Chile');
   });
+
+  it('reports null when the selection is cleared', async () => {
+    const onSelectionChange = vi.fn();
+    render(<Combobox label="Country" options={OPTIONS} defaultSelectedKey="ca" onSelectionChange={onSelectionChange} />);
+    await userEvent.clear(screen.getByRole('combobox'));
+    await userEvent.tab();
+    expect(onSelectionChange).toHaveBeenCalledWith(null);
+  });
+
+  it('in a showcase, says "No results" in the picture when the text matches nothing, and the loading text while loading', () => {
+    const { rerender } = render(
+      <ForceOpenContext value>
+        <Combobox label="Country" options={OPTIONS} inputValue="zzz" />
+      </ForceOpenContext>,
+    );
+    const picture = () => document.querySelector('.ds-combobox__popover--inline')!;
+    expect(picture().querySelector('.ds-combobox__empty')?.textContent).toBe('No results');
+    expect(picture().querySelectorAll('.ds-combobox__option')).toHaveLength(0);
+    rerender(
+      <ForceOpenContext value>
+        <Combobox label="Country" options={OPTIONS} inputValue="zzz" loading />
+      </ForceOpenContext>,
+    );
+    expect(picture().querySelector('.ds-combobox__empty')?.textContent).toBe('Loading');
+  });
+
+  it('in a showcase, lists every option while no text is set', () => {
+    render(
+      <ForceOpenContext value>
+        <Combobox label="Country" options={OPTIONS} />
+      </ForceOpenContext>,
+    );
+    expect(document.querySelectorAll('.ds-combobox__popover--inline .ds-combobox__option')).toHaveLength(OPTIONS.length);
+  });
+
+  it('in a showcase, the picture follows a controlled input value', () => {
+    render(
+      <ForceOpenContext value>
+        <Combobox label="Country" options={OPTIONS} inputValue="Fr" />
+      </ForceOpenContext>,
+    );
+    expect([...document.querySelectorAll('.ds-combobox__popover--inline .ds-combobox__label')].map((l) => l.textContent)).toEqual(['France']);
+  });
 });

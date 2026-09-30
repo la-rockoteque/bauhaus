@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Chip } from './chip';
@@ -129,5 +129,44 @@ describe('Chip', () => {
       </ul>,
     );
     await expectNoAxeViolations(container);
+  });
+
+  it('re-measures a label when its box is resized, and stops watching on unmount', async () => {
+    const long = 'Customer: Maria del Carmen Guadalupe de los Santos Fernandez-Villalobos';
+    let notify: () => void = () => undefined;
+    const disconnect = vi.fn();
+    vi.stubGlobal('ResizeObserver', class {
+      constructor(callback: () => void) { notify = callback; }
+      observe() {}
+      disconnect = disconnect;
+    });
+    const width = vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(100);
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(200);
+    const { unmount } = render(<Chip>{long}</Chip>);
+    expect(screen.getByText(long).getAttribute('role')).toBeNull();
+    width.mockReturnValue(400);
+    act(() => notify());
+    expect(screen.getByRole('img', { name: long })).toBeTruthy();
+    unmount();
+    expect(disconnect).toHaveBeenCalled();
+    vi.unstubAllGlobals();
+  });
+
+  it('selectable: calls the caller onClick as well as toggling', async () => {
+    const onClick = vi.fn();
+    render(<Chip variant="selectable" onClick={onClick}>Only returns</Chip>);
+    await userEvent.click(screen.getByRole('button'));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('button').getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('selectable: a label cut short opens a tooltip with the whole text', async () => {
+    const long = 'Customer: Maria del Carmen Guadalupe de los Santos Fernandez-Villalobos';
+    vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(400);
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(200);
+    render(<Chip variant="selectable">{long}</Chip>);
+    await userEvent.tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: long }));
+    expect((await screen.findByRole('tooltip', undefined, { timeout: 2000 })).textContent).toBe(long);
   });
 });

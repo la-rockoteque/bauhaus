@@ -169,3 +169,30 @@ describe('ConfirmDialog', () => {
   });
 });
 
+
+describe('Dialog native close and non-element opener', () => {
+  it('reports onClose when the browser closes an open dialog on its own', () => {
+    const onClose = vi.fn();
+    render(<Dialog open onClose={onClose} title="Edit address">Body</Dialog>);
+    fireEvent(dialogEl(), new Event('close'));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not report onClose for a close event while the dialog is not open', () => {
+    const onClose = vi.fn();
+    render(<Dialog open={false} onClose={onClose} title="Edit address">Body</Dialog>);
+    fireEvent(dialogEl(), new Event('close'));
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it('opens and closes when focus sat on a non-HTML element such as an SVG', () => {
+    const { rerender } = render(<svg tabIndex={0} aria-label="Chart" data-testid="chart" />);
+    const chart = screen.getByTestId('chart');
+    chart.focus();
+    expect(document.activeElement).toBe(chart);
+    rerender(<><svg tabIndex={0} aria-label="Chart" data-testid="chart" /><Dialog open onClose={() => undefined} title="Edit address">Body</Dialog></>);
+    expect(dialogEl().hasAttribute('open')).toBe(true);
+    rerender(<><svg tabIndex={0} aria-label="Chart" data-testid="chart" /><Dialog open={false} onClose={() => undefined} title="Edit address">Body</Dialog></>);
+    expect(dialogEl().hasAttribute('open')).toBe(false);
+  });
+});

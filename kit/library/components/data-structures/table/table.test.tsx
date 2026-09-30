@@ -218,3 +218,24 @@ describe('Table', () => {
     await expectNoAxeViolations(container);
   });
 });
+
+describe('Table loading with selection', () => {
+  it('draws a skeleton check cell per row when selectable and announces loading once', () => {
+    const { container } = render(
+      <Table caption="Open requisitions" columns={COLUMNS} rows={[]} getRowId={(row) => row.id} loading skeletonRows={2} selectedIds={[]} onSelectionChange={() => undefined} />,
+    );
+    expect(screen.getByRole('table').getAttribute('aria-busy')).toBe('true');
+    expect(container.querySelectorAll('.ds-table__row--skeleton')).toHaveLength(2);
+    expect(container.querySelectorAll('td.ds-table__cell--select')).toHaveLength(2);
+    expect(screen.getAllByText('Loading rows')).toHaveLength(1);
+    expect(container.querySelectorAll('tbody input[type="checkbox"]')).toHaveLength(0);
+  });
+});
+
+describe('Table hidden caption', () => {
+  it('keeps the caption as the table name but hides it visually', () => {
+    render(<Table caption="Open requisitions" hideCaption columns={COLUMNS} rows={ROWS} getRowId={(row) => row.id} />);
+    expect(screen.getByRole('table', { name: 'Open requisitions' })).toBeTruthy();
+    expect(screen.getByText('Open requisitions').className).toContain('ds-table__caption--hidden');
+  });
+});

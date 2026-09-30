@@ -208,3 +208,11 @@ describe('Tabs accessibility', () => {
     await expectNoAxeViolations(container);
   });
 });
+
+describe('Tabs unknown value', () => {
+  it('falls back to the first enabled tab when the value matches no enabled tab', () => {
+    render(<Tabs label="Sections" tabs={[{ id: 'a', label: 'Overview', panel: 'Overview panel', disabled: true }, ...TABS.slice(1)]} value="a" />);
+    expect(selectedName()).toBe('Activity');
+    expect(screen.getByRole('tabpanel').textContent).toBe('Activity panel');
+  });
+});

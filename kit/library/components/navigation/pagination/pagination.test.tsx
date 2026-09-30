@@ -198,3 +198,11 @@ describe('Pagination accessibility', () => {
     await expectNoAxeViolations(container);
   });
 });
+
+describe('Pagination page class', () => {
+  it('adds the class from pageClassName to that page control only', () => {
+    setup({ pageClassName: (page) => (page === 2 ? 'is-forced' : undefined) });
+    expect(screen.getByRole('button', { name: 'Page 2' }).classList.contains('is-forced')).toBe(true);
+    expect(screen.getByRole('button', { name: 'Page 1' }).classList.contains('is-forced')).toBe(false);
+  });
+});
