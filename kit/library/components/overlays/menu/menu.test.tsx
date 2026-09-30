@@ -130,3 +130,17 @@ describe('Menu', () => {
     await expectNoAxeViolations(document.body);
   });
 });
+
+describe('Menu without a trigger', () => {
+  it('draws the open menu in the flow, named by its label, with no popover', () => {
+    render(
+      <Menu label="Actions">
+        <MenuItem id="rename">Rename</MenuItem>
+        <MenuItem id="duplicate">Duplicate</MenuItem>
+      </Menu>,
+    );
+    expect(screen.getByRole('menu', { name: 'Actions' })).toBeTruthy();
+    expect(items().map((item) => item.textContent)).toEqual(['Rename', 'Duplicate']);
+    expect(screen.queryByRole('button')).toBeNull();
+  });
+});

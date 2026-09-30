@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { TextField } from './text-field';
+import { Field } from '../field';
+import type { FieldIds } from '../use-field-ids';
 import { expectNoAxeViolations } from '../../../expect-no-axe-violations';
 
 describe('TextField', () => {
@@ -168,5 +170,51 @@ describe('TextField', () => {
       </>,
     );
     await expectNoAxeViolations(container);
+  });
+
+  describe('Field success without a kept live region', () => {
+    const ids = { id: 'f', descriptionId: undefined, errorId: undefined, successId: 'f-success', describedBy: undefined, invalid: false } as unknown as FieldIds;
+
+    it('shows a success message when one is given, and none when an error is set', () => {
+      const { rerender } = render(<Field ids={ids} label="Code" success="Looks good"><input id="f" /></Field>);
+      expect(screen.getByRole('status').textContent).toContain('Looks good');
+      rerender(<Field ids={ids} label="Code" success="Looks good" error="Wrong"><input id="f" /></Field>);
+      expect(screen.queryByRole('status')).toBeNull();
+    });
+
+    it('draws no live region without a success message', () => {
+      render(<Field ids={ids} label="Code"><input id="f" /></Field>);
+      expect(screen.queryByRole('status')).toBeNull();
+    });
+  });
+
+  describe('resize watching', () => {
+    it('re-measures the trailing slot on resize and stops watching on unmount', () => {
+      let notify: () => void = () => undefined;
+      const disconnect = vi.fn();
+      vi.stubGlobal('ResizeObserver', class {
+        constructor(callback: () => void) { notify = callback; }
+        observe() {}
+        disconnect = disconnect;
+      });
+      const offset = vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(40);
+      const { unmount } = render(<TextField label="Amount" trailing={<span>EUR</span>} />);
+      expect((screen.getByLabelText('Amount') as HTMLInputElement).style.paddingInlineEnd).toContain('40px');
+      offset.mockReturnValue(80);
+      act(() => notify());
+      expect((screen.getByLabelText('Amount') as HTMLInputElement).style.paddingInlineEnd).toContain('80px');
+      unmount();
+      expect(disconnect).toHaveBeenCalled();
+      offset.mockRestore();
+      vi.unstubAllGlobals();
+    });
+  });
+
+  it('hands its input to a function ref and to an object ref', () => {
+    const fn = vi.fn();
+    const object = createRef<HTMLInputElement>();
+    render(<><TextField label="A" ref={fn} /><TextField label="B" ref={object} /></>);
+    expect(fn).toHaveBeenCalledWith(screen.getByLabelText('A'));
+    expect(object.current).toBe(screen.getByLabelText('B'));
   });
 });

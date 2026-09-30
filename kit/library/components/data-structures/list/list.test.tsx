@@ -105,3 +105,12 @@ describe('List', () => {
     await expectNoAxeViolations(container);
   });
 });
+
+describe('ListItem disabled link', () => {
+  it('a disabled row with an href is a disabled button, not a link', () => {
+    render(<List><ListItem title="Invoice 12" href="/invoices/12" disabled description="Locked until approval" /></List>);
+    const control = screen.getByRole('button', { name: 'Invoice 12' }) as HTMLButtonElement;
+    expect(control.disabled).toBe(true);
+    expect(screen.queryByRole('link')).toBeNull();
+  });
+});

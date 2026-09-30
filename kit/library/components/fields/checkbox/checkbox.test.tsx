@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { Checkbox } from './checkbox';
 import { expectNoAxeViolations } from '../../../expect-no-axe-violations';
@@ -69,5 +70,13 @@ describe('Checkbox', () => {
       </>,
     );
     await expectNoAxeViolations(container);
+  });
+
+  it('hands its input to a function ref and to an object ref', () => {
+    const fn = vi.fn();
+    const object = createRef<HTMLInputElement>();
+    render(<><Checkbox label="A" ref={fn} /><Checkbox label="B" ref={object} /></>);
+    expect(fn).toHaveBeenCalledWith(screen.getByRole('checkbox', { name: 'A' }));
+    expect(object.current).toBe(screen.getByRole('checkbox', { name: 'B' }));
   });
 });

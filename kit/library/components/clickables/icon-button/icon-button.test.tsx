@@ -28,4 +28,13 @@ describe('IconButton', () => {
     const { container } = render(<IconButton label="Close dialog" icon={<svg />} />);
     await expectNoAxeViolations(container);
   });
+
+  it('takes another variant and keeps a caller class beside its own', () => {
+    render(<IconButton label="Close" icon="x" variant="subtle" className="extra" />);
+    const classes = screen.getByRole('button', { name: 'Close' }).className.split(' ');
+    expect(classes).toContain('ds-button--subtle');
+    expect(classes).not.toContain('ds-button--tertiary');
+    expect(classes).toContain('ds-icon-button');
+    expect(classes).toContain('extra');
+  });
 });
