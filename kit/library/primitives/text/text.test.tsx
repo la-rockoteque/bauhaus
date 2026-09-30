@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Text } from './text';
+import { expectNoAxeViolations } from '../../expect-no-axe-violations';
 
 describe('Text', () => {
   it('renders a paragraph for body, a span for caption and h2 for heading', () => {
@@ -24,5 +25,10 @@ describe('Text', () => {
   it('passes native attributes through, such as id and aria-describedby targets', () => {
     render(<Text id="hint">Hint</Text>);
     expect(screen.getByText('Hint').id).toBe('hint');
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(<><Text variant="heading" as="h1">Title</Text><Text>Body</Text><Text variant="caption" tone="muted">Hint</Text></>);
+    await expectNoAxeViolations(container);
   });
 });

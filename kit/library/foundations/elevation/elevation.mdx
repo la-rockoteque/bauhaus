@@ -1,0 +1,59 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './elevation.stories';
+
+<Meta of={Stories} />
+
+# Elevation
+
+The Showcase story holds the rungs, the scrim, the stacking order, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** Elevation says how far a surface floats above the page. A menu floats above a card, and a dialog floats above the menu. The library keeps only two levels, so each one keeps its meaning.
+
+**Precisely:** Foundation. Two shadow rungs (`shadow.1`, `shadow.2`), one scrim, and a written stacking order (`z.*`). Elevation is an idea (how high). A shadow and a z-index number are two ways to show it, and they are separate tokens.
+
+**The job.** Depth tells users what sits on top and what they can dismiss. Few rungs keep that message clear. A third rung "in between" dilutes the two that already have a job.
+
+**The layer.** A foundation. `shadow.*` and `scrim` are theme roles, so each theme defines them. `z.*` are plain tokens, the same in both themes. Overlay components read them.
+
+## 2. Usage
+
+### When to use
+
+- Use a rung only for a surface that floats over the page: menu, dropdown, popover, tooltip, dialog, drawer, toast.
+- Use `scrim` for the wash behind a modal.
+- Use `z.*` for the paint order of every positioned layer.
+
+### When not to use, and what to use instead
+
+- **For cards and panels in the flow.** Give them a border (`border.default`). A shadow on every card leaves nothing for the menu to mean.
+- **For emphasis.** Use size, weight or a surface change.
+- **For a border.** A border is shape, not elevation (`shape`).
+
+### How
+
+- **Rung 1** (`shadow.1`): menu, dropdown, popover, tooltip. **Rung 2** (`shadow.2`): dialog, drawer, toast.
+- **Two layers.** Each shadow has a tight layer for the contact edge and a wide, lighter layer for the ambient spread. Both use translucent ink (`colors.ink.*`), a tint of the darkest gray, not pure black.
+- **Dark theme.** A higher surface has a lighter fill. `overlay.surface` is `neutral.700` on a `neutral.800` page. Shadows are hard to see on dark surfaces, so they are re-derived at 32 to 64% opacity and act as a second cue.
+- **Scrim.** One role. Ink at 32% in light and 64% in dark. A second scrim would give a second answer to "how far back is the page".
+- **Stacking order.** `z.base` 0, `dropdown` 10, `sticky` 20, `overlay` 30 (the scrim), `modal` 40, `popover` 50 (a popover can open from a modal), `toast` 60, `tooltip` 70. Steps of ten leave room for a new role.
+- **Local contexts.** Use `isolation: isolate` on a component that needs its own stacking context. Do not raise a global number to fix a local overlap.
+- **Forced colors.** Forced-colors mode removes `box-shadow`. Every floating surface keeps `overlay.border` so its edge stays visible.
+- **Focus.** A sticky or fixed element must not hide the focused element. Set `scroll-padding-block-start` and `scroll-padding-block-end` to the height of the sticky elements (WCAG 2.4.11 Focus Not Obscured, Minimum, AA). Trap focus in a modal and make the page behind it inert.
+- **Motion.** A surface entering uses `motion.ease.enter` and one of the `motion.duration.*` tokens.
+
+## 3. Why the states look as they do
+
+Elevation is not interactive. It gives components the tokens for three moments: resting (level 0, or `shadow.1` for a floating surface), open (a rung with its `z.*` role, and the scrim for a dialog) and forced colors (the border replaces the shadow).
+
+A hover lift for an interactive card, or a dragged state, would move one rung up. The library has no such component yet, so it defines no token for it. The rule stands: lift by one rung, never by a new shadow.
+
+## 4. Pitfalls and don'ts
+
+- **Do not write a one-off `box-shadow` or a bare `z-index: 9999`.** It starts an arms race. (`elevation.rungs`, `elevation.z-token`)
+- **Do not add a third rung.** The meaning of the two blurs. (`elevation.rungs`)
+- **Do not reuse the light shadow in dark.** Elevation disappears. (`elevation.dark-derived`)
+- **Do not define a second scrim.** (`elevation.single-scrim`)
+- **Do not let a sticky header cover the focused row.** (WCAG 2.4.11, AA; `elevation.focus-not-obscured`)
+- **Do not rely on a shadow for a floating edge.** Forced-colors mode removes it. (`elevation.forced-colors-border`)

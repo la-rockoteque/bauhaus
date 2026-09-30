@@ -175,6 +175,27 @@
       "900": {
         "$value": "#121416"
       }
+    },
+    "ink": {
+      "$description": "Translucent tint of the darkest gray (#121416). Read by shadow and scrim roles only; a for alpha, in percent.",
+      "a06": {
+        "$value": "#1214160f"
+      },
+      "a10": {
+        "$value": "#1214161a"
+      },
+      "a16": {
+        "$value": "#12141629"
+      },
+      "a32": {
+        "$value": "#12141652"
+      },
+      "a48": {
+        "$value": "#1214167a"
+      },
+      "a64": {
+        "$value": "#121416a3"
+      }
     }
   }
 }

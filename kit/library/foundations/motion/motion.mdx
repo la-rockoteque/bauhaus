@@ -13,7 +13,7 @@ The Showcase story holds replayable motion swatches with a reduced-motion switch
 
 **Precisely:** Foundation. Three durations, capped at 400ms. It governs transitions and the spinner.
 
-**Three steps, three roles.** Tier 1 holds the three durations. Tier 2 names the jobs: fast (hover, press), base (small enter and exit), deliberate (the ceiling, one spinner turn). Easing is not tokenised in this template. The spinner uses `linear`.
+**Three steps, three roles.** Tier 1 holds the three durations. Tier 2 names the jobs: fast (hover, press), base (small enter and exit), deliberate (the ceiling, one spinner turn). Three easing curves sit beside the durations: `motion.ease.standard` (stays on screen), `motion.ease.enter` (arrives) and `motion.ease.exit` (leaves). The spinner uses `linear`, because a turn must not speed up and slow down.
 
 ## 2. Usage
 

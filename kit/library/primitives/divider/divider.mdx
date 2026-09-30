@@ -1,0 +1,50 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './divider.stories';
+
+<Meta of={Stories} />
+
+# Divider
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A divider is a thin line that separates two groups of content. It can run across the page or, between items in a row, up and down.
+
+**Precisely:** Primitive component. A native `hr` in a horizontal or vertical orientation. It is either a separator that assistive technology announces, or decoration that assistive technology skips.
+
+**The job.** A line is often only visual polish, and sometimes it marks a real change of topic. Divider makes that choice explicit with `decorative`, so a screen reader user hears a separator only where one exists.
+
+**The layer.** A primitive. Menus, cards, toolbars and lists place a Divider between groups.
+
+## 2. Usage
+
+### When to use
+
+- Between two groups of related content that a gap alone does not separate well.
+- Between items in a horizontal toolbar, with `orientation="vertical"`.
+
+### When not to use, and what to use instead
+
+- **To label a section.** Use a heading. A line has no name (WCAG 1.3.1 Info and Relationships, A).
+- **To draw a table rule.** The table draws its own borders from `table.border`.
+- **For the border of a box.** Use the border on the box.
+
+### How
+
+- **Semantic (default).** `<Divider />` is an `hr` with the separator role and its orientation. Use it when the line marks a change of topic. Back the change with a heading, because a line alone tells non-visual users little.
+- **Decorative.** `<Divider decorative />` sets `role="none"`. Use it for a line that only tidies the layout, such as a rule between menu groups whose labels already separate them.
+- **Vertical.** It stretches to the height of its row. Put it inside a horizontal Stack with `align="stretch"`.
+- **Colour.** The line reads `border.default`, a quiet divider colour. A line that must be found on its own belongs to `border.strong`, and then it is a boundary, not a divider (WCAG 1.4.11, AA).
+- **i18n.** Divider holds no text.
+
+## 3. Why the states look as they do
+
+A divider is not interactive. It has no hover, focus, active, disabled or selected look, and no loading or error form. The thickness stays at one hairline in every state, so the line never looks like a control.
+
+## 4. Pitfalls and don'ts
+
+- **Do not use a `div` with a border for a semantic separator.** It has no role. (WCAG 4.1.2, A; `divider.native-element`)
+- **Do not leave a purely decorative line announced.** Set `decorative`. (WCAG 1.3.1, A; `divider.decorative-hidden`)
+- **Do not use a line as the only sign of a new section.** Add a heading. (WCAG 1.3.1, A; `divider.meaning-not-line-alone`)
+- **Do not write a colour or a px width.** (Project decision; `divider.border-token`)

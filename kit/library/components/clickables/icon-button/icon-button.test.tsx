@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { IconButton } from './icon-button';
+import { expectNoAxeViolations } from '../../../expect-no-axe-violations';
 
 describe('IconButton', () => {
   it('names the button from its label and hides the icon', () => {
@@ -21,5 +22,10 @@ describe('IconButton', () => {
     rerender(<IconButton label="Refresh" icon="r" onClick={onClick} loading />);
     fireEvent.click(screen.getByRole('button'));
     expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('has no axe violations', async () => {
+    const { container } = render(<IconButton label="Close dialog" icon={<svg />} />);
+    await expectNoAxeViolations(container);
   });
 });

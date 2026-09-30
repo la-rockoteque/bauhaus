@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './box.stories';
+
+<Meta of={Stories} />
+
+# Box
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A box is an empty container with padding and a gap that you pick from a fixed list of sizes. It draws nothing until you ask for a background.
+
+**Precisely:** Primitive component. It renders one element, applies padding, gap and a surface from tokens, and adds no role.
+
+**The job.** Layout code is where raw pixel values sneak in. Box closes that door: the only spacing a caller can write is a step of the space scale, so a change to the scale reaches every box.
+
+**The layer.** A primitive. Stack builds on it. Components and patterns use Box for their inner layout instead of writing spacing rules.
+
+## 2. Usage
+
+### When to use
+
+- To give a region padding, a gap between children or a surface, when no component already does so.
+
+### When not to use, and what to use instead
+
+- **To stack children in a line or a column.** Use Stack. It sets direction, alignment and wrapping.
+- **For anything the user presses.** Use a button or a link. A Box has no role, no focus and no key handling (WCAG 4.1.2 Name, Role, Value, A).
+- **For a value off the scale.** Pick the nearest step. If no step fits, the scale is wrong, and the fix belongs to the spacing foundation.
+
+### How
+
+- **Element.** Pass `as` for structure: `section`, `nav`, `ul`, `article`. A `section` or `form` becomes a landmark only when it has an accessible name (WCAG 1.3.1, A).
+- **Padding.** `padding` sets all sides. `paddingInline` and `paddingBlock` win over it because their classes come later in the stylesheet. The properties are logical, so right-to-left text needs no change.
+- **Gap.** `gap` has an effect only with `display="flex"` or `display="grid"`. On a block Box the class is inert.
+- **Surface.** `surface` reads `surface.default`, `surface.raised` or `surface.sunken`. Text on each reaches 4.5:1 in both themes.
+- **i18n.** Box holds no text.
+
+## 3. Why the states look as they do
+
+A Box is not interactive, so it has no hover, focus, active, disabled or selected look. Adding one would make a container look like a control that has no keyboard path.
+
+It has no loading, error or data states. It renders what it receives. Long content wraps, because a Box sets no width and no overflow rule.
+
+## 4. Pitfalls and don'ts
+
+- **Do not write `padding: 13px` in a stylesheet.** It leaves the scale and the dark or dense theme cannot reach it. (Project decision; `box.no-literal`)
+- **Do not put `onClick` on a Box.** It has no role, no focus and no Space or Enter. (APG Button; WCAG 4.1.2, A; `box.not-interactive`)
+- **Do not use `div` for a list or a navigation.** Pass `as="ul"` or `as="nav"` so assistive technology can find them. (WCAG 1.3.1, A; `box.element-by-structure`)
+- **Do not expect `gap` to work on a block Box.** Set `display` first.

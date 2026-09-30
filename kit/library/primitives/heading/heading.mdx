@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './heading.stories';
+
+<Meta of={Stories} />
+
+# Heading
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A heading is a title for the part of the page below it. Screen reader users jump from heading to heading to find their way, so the order of the titles matters more than their size.
+
+**Precisely:** Primitive component. It renders h1 to h6 from a `level` prop and takes its look from a separate `size` prop.
+
+**The job.** HTML ties a heading's rank to its default size. Design often wants a small h2 or a large h4. Heading splits the two: `level` sets the rank in the outline, `size` sets the look. The outline stays correct whatever the design asks for (WCAG 1.3.1 Info and Relationships, A).
+
+**The layer.** A primitive. `Text` with `variant="heading"` stays for a single heading style. Use Heading when the level matters.
+
+## 2. Usage
+
+### When to use
+
+- For every title of a page, section or region.
+
+### When not to use, and what to use instead
+
+- **For bold text that is not a title.** Use `Text`. A heading promises a section that follows.
+- **For the label of a field.** Use the field's own label part (WCAG 1.3.1, A).
+- **For a caption or a kicker above a title.** Use `Text` with `variant="caption"`.
+
+### How
+
+- **Level.** Take it from the outline. The page has one h1. Below it, go down one level at a time: h2, then h3. Going back up any number of levels is fine. Do not skip a level to get a smaller size (WCAG 1.3.1, A; 2.4.6, AA).
+- **Size.** Leave it out to get the size that suits the level: display for h1, heading for h2, subheading for h3, label for h4 to h6. Pass it to break that link on purpose: `<Heading level={2} size="label">`.
+- **Wrapping.** Headings wrap and use balanced line breaks. They never truncate (WCAG 1.4.10 Reflow, AA).
+- **Content.** Name the section that follows (WCAG 2.4.6, AA).
+- **i18n.** The text arrives as `children`.
+
+## 3. Why the states look as they do
+
+A heading is not interactive. It has no hover, focus, active, disabled or selected look. If a heading must act, put a button inside it, as the disclosure pattern does.
+
+A heading with no text is a defect, not a state. Assistive technology announces an empty heading and the outline gains a dead entry, so the caller renders nothing instead.
+
+## 4. Pitfalls and don'ts
+
+- **Do not skip from h2 to h4 to get a smaller size.** Use `size`. (WCAG 1.3.1, A; `heading.no-skipped-level`)
+- **Do not style a `div` or a `Text` as a heading.** Screen reader users cannot navigate to it. (WCAG 1.3.1, A; `heading.level-sets-element`)
+- **Do not tie the level to the size in the design.** Pick the level from the outline first. (WCAG 1.3.1, A; `heading.size-decoupled`)
+- **Do not use two h1 elements on a page.** (WCAG 2.4.6, AA; `heading.one-h1`)
+- **Do not write a font size at the call site.** Use a size. (Project decision; `heading.size-from-text-style`)

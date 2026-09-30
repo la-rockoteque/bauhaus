@@ -1,0 +1,43 @@
+// Rulebook entries for Box. Shape: knowledge/governance/rulebook.md. Ids are permanent.
+export const boxRules = [
+  {
+    id: 'box.no-literal',
+    component: 'Box',
+    rubric: 'tokens',
+    severity: 'MEDIUM',
+    expectation: 'Every padding and gap class reads a space step, and the stylesheet holds no px literal.',
+    expected: '--ds-space-N',
+    verify: 'auto',
+    basis: 'Project decision: tokens are the only source of a value (misfile.raw-value-in-component)',
+  },
+  {
+    id: 'box.space-closed',
+    component: 'Box',
+    rubric: 'tokens',
+    severity: 'MEDIUM',
+    expectation: 'The Space prop type lists the thirteen steps of the scale and nothing else, so no arbitrary value compiles.',
+    expected: '0 to 12',
+    verify: 'auto',
+    basis: 'Project decision: a closed scale (spacing.scale-closed)',
+  },
+  {
+    id: 'box.element-by-structure',
+    component: 'Box',
+    rubric: 'semantics',
+    severity: 'MEDIUM',
+    expectation: 'The element follows the document structure, chosen with as. A Box adds no role of its own.',
+    verify: 'review',
+    covers: ['headings'],
+    basis: 'WCAG 1.3.1 Info and Relationships (A)',
+  },
+  {
+    id: 'box.not-interactive',
+    component: 'Box',
+    rubric: 'semantics',
+    severity: 'HIGH',
+    expectation: 'A Box that must be pressed is a button or a link. A Box never carries a click handler.',
+    verify: 'review',
+    covers: ['name-role-value', 'keyboard'],
+    basis: 'WAI-ARIA APG Button pattern; WCAG 4.1.2 Name, Role, Value (A); 2.1.1 Keyboard (A)',
+  },
+] as const;

@@ -27,7 +27,14 @@ export const Showcase: StoryObj = {
           { name: 'surface.*', tier: 'role', use: 'default, raised, sunken', swatch: '--ds-surface-sunken' },
           { name: 'border.*', tier: 'role', use: 'default (decorative divider), strong (control boundary)', swatch: '--ds-border-strong' },
           { name: 'action.*', tier: 'role', use: 'primary and secondary fills, with hover, pressed and text', swatch: '--ds-action-primary' },
-          { name: 'status.*', tier: 'role', use: 'error, success, warning, info, each with a surface', swatch: '--ds-status-error' },
+          { name: 'colors.ink  .a06 … a64', tier: '1', use: 'Translucent ink (alpha 6 to 64%). Read by shadow and scrim roles only', swatch: '--ds-colors-ink-a32' },
+          { name: 'surface.inverse', tier: 'role', use: 'Fill of a tooltip or toast; text.inverse sits on it', swatch: '--ds-surface-inverse' },
+          { name: 'status.*', tier: 'role', use: 'error, success, warning, info, each with -surface, -text and -border', swatch: '--ds-status-error' },
+          { name: 'field.*', tier: 'role', use: 'surface, text, placeholder and four border states of a text field, textarea, select', swatch: '--ds-field-border' },
+          { name: 'selection.*', tier: 'role', use: 'surface, text and mark of a checked checkbox, radio, switch', swatch: '--ds-selection-surface' },
+          { name: 'overlay.* · scrim · shadow.*', tier: 'role', use: 'Floating surface, its soft edge, the wash behind a modal and the two shadow rungs (see Elevation)', swatch: '--ds-overlay-surface' },
+          { name: 'table.* · skeleton.* · progress.*', tier: 'role', use: 'Table header, row states and rules; skeleton base and shimmer; progress track and fill', swatch: '--ds-table-header-surface' },
+          { name: 'badge.<neutral|info|success|warning|error> · -text', tier: 'role', use: 'Solid fill of a badge and the text on it', swatch: '--ds-badge-info' },
           { name: 'focus.ring.color · disabled.* · state.*', tier: 'role', use: 'Focus ring, disabled text, surface and border, hover and pressed layers, selected', swatch: '--ds-focus-ring-color' },
         ],
       }}
@@ -40,7 +47,7 @@ export const Showcase: StoryObj = {
       specs={[
         { label: 'Steps', value: 'palette, then colors, then roles per theme' },
         { label: 'Hues', value: 'six, with nine grades each' },
-        { label: 'Role scales', value: 'seven; primary is dark-blue, secondary teal, error scarlet, success green, warning amber, info dark-blue, neutral gray' },
+        { label: 'Role scales', value: 'seven, plus ink (translucent, for shadows and scrims); primary is dark-blue, secondary teal, error scarlet, success green, warning amber, info dark-blue, neutral gray' },
         { label: 'Contrast', value: 'text 4.5:1 · borders, action fills and focus ring 3:1 · measured below in the selected theme' },
       ]}
       states={{

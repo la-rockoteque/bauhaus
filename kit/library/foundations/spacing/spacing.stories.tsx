@@ -30,13 +30,19 @@ export const Showcase: StoryObj = {
       usedFor="Between and inside every block."
       tokens={{
         mode: 'defined',
-        note: 'CSS names: --ds-space-4, --ds-space-stack-md, --ds-size-target-min.',
+        note: 'CSS names: --ds-space-4, --ds-space-stack-md, --ds-size-target-min, --ds-size-control-md.',
         rows: [
           { name: 'space.0 … space.12', tier: '1', use: 'The scale. Step n is n × 4px.' },
           { name: 'space.inset.xs … xl', tier: '2', use: 'Padding inside a container' },
           { name: 'space.stack.xs … xl', tier: '2', use: 'Vertical gap between siblings' },
           { name: 'space.inline.xs … xl', tier: '2', use: 'Horizontal gap between siblings' },
+          { name: 'space.control.inline · space.control.gap', tier: '2', use: 'Horizontal padding inside a field; gap between a control icon and its label' },
+          { name: 'space.field.gap · space.group.gap', tier: '2', use: 'Gap between label, hint, control and message of one field; gap between the fields of a group' },
           { name: 'size.target.min', tier: '2', use: '44px; the smallest pointer target. Spacing must not shrink it.' },
+          { name: 'size.control.sm · md · lg', tier: '2', use: 'Heights of buttons and fields: 44, 48, 56 px. Never below the target floor' },
+          { name: 'size.icon.sm · md · lg', tier: '2', use: 'Side of an icon box: 16, 20, 24 px' },
+          { name: 'size.border.thin · thick', tier: '2', use: 'Border widths: 1px hairline, and the focus ring width for emphasis' },
+          { name: 'size.overlay.sm · md · lg', tier: '2', use: 'Maximum inline size of a floating surface: 20, 30, 40 rem' },
         ],
       }}
       specimens={<SpacingScale />}

@@ -1,6 +1,19 @@
 // The public API. The app imports from here and never from a slice folder.
 export { Text } from './primitives/text/text';
 export type { TextProps, TextVariant } from './primitives/text/text';
+export { Box } from './primitives/box/box';
+export type { BoxProps, Space } from './primitives/box/box';
+export { Stack } from './primitives/stack/stack';
+export type { StackProps } from './primitives/stack/stack';
+export { Heading } from './primitives/heading/heading';
+export type { HeadingLevel, HeadingProps, HeadingSize } from './primitives/heading/heading';
+export { Icon } from './primitives/icon/icon';
+export type { IconGlyph, IconProps, IconSize } from './primitives/icon/icon';
+export { GLYPH_NAMES } from './primitives/icon/glyphs';
+export { VisuallyHidden } from './primitives/visually-hidden/visually-hidden';
+export type { VisuallyHiddenProps } from './primitives/visually-hidden/visually-hidden';
+export { Divider } from './primitives/divider/divider';
+export type { DividerProps } from './primitives/divider/divider';
 export { Button } from './components/clickables/button/button';
 export type { ButtonProps, ButtonVariant } from './components/clickables/button/button';
 export { IconButton } from './components/clickables/icon-button/icon-button';

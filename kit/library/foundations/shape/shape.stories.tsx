@@ -21,11 +21,13 @@ export const Showcase: StoryObj = {
         rows: [
           { name: 'radius.none · sm · md · lg · full', tier: '1', use: '0, 2, 4, 8, 9999 px; full makes a pill or a circle' },
           { name: 'radius.control', tier: '2', use: '{radius.md}; buttons and fields' },
+          { name: 'radius.pill', tier: '2', use: '{radius.full}; badge and tag' },
+          { name: 'radius.overlay', tier: '2', use: '{radius.lg}; dialog, popover, menu, toast' },
         ],
       }}
       specimens={<RadiusTiles />}
       specs={[
-        { label: 'Steps', value: 'five, and one role' },
+        { label: 'Steps', value: 'five, and three roles' },
         { label: 'Control', value: 'radius.control, one shape for everything the user presses or types into' },
       ]}
       states={{

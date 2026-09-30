@@ -1,16 +1,61 @@
 {
   "duration": {
     "$type": "duration",
-    "150": { "$value": "150ms" },
-    "200": { "$value": "200ms" },
-    "400": { "$value": "400ms" }
+    "150": {
+      "$value": "150ms"
+    },
+    "200": {
+      "$value": "200ms"
+    },
+    "400": {
+      "$value": "400ms"
+    }
   },
   "motion": {
     "duration": {
       "$type": "duration",
-      "fast": { "$value": "{duration.150}", "$description": "Hover and press feedback." },
-      "base": { "$value": "{duration.200}", "$description": "Small enter and exit." },
-      "deliberate": { "$value": "{duration.400}", "$description": "The ceiling (house.maxDurationMs). Also one turn of a spinner." }
+      "fast": {
+        "$value": "{duration.150}",
+        "$description": "Hover and press feedback."
+      },
+      "base": {
+        "$value": "{duration.200}",
+        "$description": "Small enter and exit."
+      },
+      "deliberate": {
+        "$value": "{duration.400}",
+        "$description": "The ceiling (house.maxDurationMs). Also one turn of a spinner."
+      }
+    },
+    "ease": {
+      "$type": "cubicBezier",
+      "standard": {
+        "$value": [
+          0.2,
+          0,
+          0,
+          1
+        ],
+        "$description": "Movement that stays on screen."
+      },
+      "enter": {
+        "$value": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "$description": "An element arrives: fast start, soft landing."
+      },
+      "exit": {
+        "$value": [
+          0.4,
+          0,
+          1,
+          1
+        ],
+        "$description": "An element leaves: soft start, fast end."
+      }
     }
   }
 }

@@ -24,6 +24,9 @@
     },
     "sunken": {
       "$value": "{colors.neutral.900}"
+    },
+    "inverse": {
+      "$value": "{colors.neutral.200}"
     }
   },
   "border": {
@@ -87,6 +90,30 @@
     },
     "info-surface": {
       "$value": "{colors.info.900}"
+    },
+    "error-text": {
+      "$value": "{colors.error.200}"
+    },
+    "error-border": {
+      "$value": "{colors.error.400}"
+    },
+    "success-text": {
+      "$value": "{colors.success.200}"
+    },
+    "success-border": {
+      "$value": "{colors.success.400}"
+    },
+    "warning-text": {
+      "$value": "{colors.warning.200}"
+    },
+    "warning-border": {
+      "$value": "{colors.warning.400}"
+    },
+    "info-text": {
+      "$value": "{colors.info.200}"
+    },
+    "info-border": {
+      "$value": "{colors.info.400}"
     }
   },
   "focus": {
@@ -119,6 +146,160 @@
     },
     "selected": {
       "$value": "{colors.primary.800}"
+    }
+  },
+  "field": {
+    "$type": "color",
+    "surface": {
+      "$value": "{colors.neutral.900}"
+    },
+    "border": {
+      "$value": "{colors.neutral.400}"
+    },
+    "border-hover": {
+      "$value": "{colors.neutral.300}"
+    },
+    "border-focus": {
+      "$value": "{colors.primary.300}"
+    },
+    "border-invalid": {
+      "$value": "{colors.error.300}"
+    },
+    "text": {
+      "$value": "{colors.neutral.100}"
+    },
+    "placeholder": {
+      "$value": "{colors.neutral.300}"
+    }
+  },
+  "selection": {
+    "$type": "color",
+    "surface": {
+      "$value": "{colors.primary.400}"
+    },
+    "text": {
+      "$value": "{colors.neutral.900}"
+    },
+    "mark": {
+      "$value": "{colors.neutral.900}"
+    }
+  },
+  "overlay": {
+    "$type": "color",
+    "surface": {
+      "$value": "{colors.neutral.700}"
+    },
+    "border": {
+      "$value": "{colors.neutral.600}"
+    }
+  },
+  "scrim": {
+    "$type": "color",
+    "$value": "{colors.ink.a64}"
+  },
+  "table": {
+    "$type": "color",
+    "header-surface": {
+      "$value": "{colors.neutral.700}"
+    },
+    "row-hover": {
+      "$value": "{colors.primary.900}"
+    },
+    "row-selected": {
+      "$value": "{colors.primary.800}"
+    },
+    "border": {
+      "$value": "{colors.neutral.600}"
+    }
+  },
+  "skeleton": {
+    "$type": "color",
+    "base": {
+      "$value": "{colors.neutral.700}"
+    },
+    "highlight": {
+      "$value": "{colors.neutral.600}"
+    }
+  },
+  "progress": {
+    "$type": "color",
+    "track": {
+      "$value": "{colors.neutral.700}"
+    },
+    "fill": {
+      "$value": "{colors.primary.400}"
+    }
+  },
+  "badge": {
+    "$type": "color",
+    "neutral": {
+      "$value": "{colors.neutral.300}"
+    },
+    "neutral-text": {
+      "$value": "{colors.neutral.900}"
+    },
+    "info": {
+      "$value": "{colors.info.300}"
+    },
+    "info-text": {
+      "$value": "{colors.neutral.900}"
+    },
+    "success": {
+      "$value": "{colors.success.300}"
+    },
+    "success-text": {
+      "$value": "{colors.neutral.900}"
+    },
+    "warning": {
+      "$value": "{colors.warning.300}"
+    },
+    "warning-text": {
+      "$value": "{colors.neutral.900}"
+    },
+    "error": {
+      "$value": "{colors.error.300}"
+    },
+    "error-text": {
+      "$value": "{colors.neutral.900}"
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "1": {
+      "$value": [
+        {
+          "color": "{colors.ink.a48}",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "2px",
+          "spread": "0px"
+        },
+        {
+          "color": "{colors.ink.a32}",
+          "offsetX": "0px",
+          "offsetY": "2px",
+          "blur": "6px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "2": {
+      "$value": [
+        {
+          "color": "{colors.ink.a48}",
+          "offsetX": "0px",
+          "offsetY": "2px",
+          "blur": "6px",
+          "spread": "0px"
+        },
+        {
+          "color": "{colors.ink.a64}",
+          "offsetX": "0px",
+          "offsetY": "8px",
+          "blur": "24px",
+          "spread": "0px"
+        }
+      ]
     }
   }
 }

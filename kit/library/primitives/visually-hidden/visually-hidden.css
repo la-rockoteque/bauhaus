@@ -1,0 +1,41 @@
+/* The clip pattern: the element leaves the layout and the eye but stays in the accessibility tree.
+   display: none and visibility: hidden would remove it from the tree too. */
+.ds-visually-hidden {
+  position: absolute;
+  inline-size: calc(var(--ds-space-1) / 4);
+  block-size: calc(var(--ds-space-1) / 4);
+  margin: calc(var(--ds-space-1) / -4);
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A focusable element (a skip link) shows itself, above every other layer, while it holds focus. */
+.ds-visually-hidden--focusable:focus-visible {
+  position: fixed;
+  inset-block-start: var(--ds-space-2);
+  inset-inline-start: var(--ds-space-2);
+  z-index: var(--ds-z-tooltip);
+  inline-size: auto;
+  block-size: auto;
+  margin: 0;
+  padding: var(--ds-space-inset-sm) var(--ds-space-inline-lg);
+  overflow: visible;
+  clip: auto;
+  clip-path: none;
+  white-space: normal;
+  background: var(--ds-surface-default);
+  border: var(--ds-size-border-thin) solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-control);
+  box-shadow: var(--ds-shadow-1);
+  color: var(--ds-text-link);
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}

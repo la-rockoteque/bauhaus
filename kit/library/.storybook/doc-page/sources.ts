@@ -4,10 +4,10 @@ import { forcedStateCss, parseCss, type CssRule } from './css';
  * The library's own source files, as text, for the live rulebook and the forced-state styles.
  *
  * Read with Vite's `?raw`, so the page grades the code as it stands. Tests and stories are left
- * out, except a pattern's story: a pattern has no component file, so its recipe lives there.
+ * out, except a pattern's story (a pattern has no component file, so its recipe lives there) and the icon glyph set.
  */
 const files = import.meta.glob(
-  ['../../{foundations,themes,primitives,components,patterns}/**/*.{css,tsx}', '!../../**/*.test.tsx', '!../../**/*.stories.tsx'],
+  ['../../{foundations,themes,primitives,components,patterns}/**/*.{css,tsx}', '../../primitives/icon/glyphs.ts', '!../../**/*.test.tsx', '!../../**/*.stories.tsx'],
   { query: '?raw', import: 'default', eager: true },
 ) as Record<string, string>;
 

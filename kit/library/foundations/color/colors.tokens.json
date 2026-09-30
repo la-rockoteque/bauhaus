@@ -211,6 +211,27 @@
         "$value": "{palette.gray.900}"
       },
       "$description": "Text, surfaces and borders."
+    },
+    "ink": {
+      "$description": "Translucent ink over any surface. The only colors scale that carries alpha; for shadows and scrims.",
+      "a06": {
+        "$value": "{palette.ink.a06}"
+      },
+      "a10": {
+        "$value": "{palette.ink.a10}"
+      },
+      "a16": {
+        "$value": "{palette.ink.a16}"
+      },
+      "a32": {
+        "$value": "{palette.ink.a32}"
+      },
+      "a48": {
+        "$value": "{palette.ink.a48}"
+      },
+      "a64": {
+        "$value": "{palette.ink.a64}"
+      }
     }
   }
 }

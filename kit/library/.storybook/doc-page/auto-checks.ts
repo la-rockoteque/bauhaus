@@ -15,6 +15,12 @@ export type Check = () => string | null;
 const BUTTON = 'components/clickables/button/button';
 const ICON_BUTTON = 'components/clickables/icon-button/icon-button';
 const TEXT = 'primitives/text/text';
+const BOX = 'primitives/box/box';
+const STACK = 'primitives/stack/stack';
+const HEADING = 'primitives/heading/heading';
+const ICON = 'primitives/icon/icon';
+const VISUALLY_HIDDEN = 'primitives/visually-hidden/visually-hidden';
+const DIVIDER = 'primitives/divider/divider';
 const CALL_SITE = /^(?:primitives|components|patterns)\//;
 
 const px = (value: string | undefined): number | null => {
@@ -191,6 +197,56 @@ const noPatternStyle: Check = () => {
   return own.length ? `${own.join(', ')} exists` : null;
 };
 
+/** Every box-shadow in a call-site stylesheet is a shadow rung or none. */
+const shadowRungsOnly: Check = () => {
+  const bad = CSS_PATHS.filter((p) => CALL_SITE.test(p)).flatMap((path) =>
+    rulesOf(path)
+      .filter((rule) => rule.declarations['box-shadow'] !== undefined && !/^(?:none|var\(--ds-shadow-[12]\))$/.test(rule.declarations['box-shadow']))
+      .map((rule) => `${path} ${rule.selector}`),
+  );
+  return bad.length ? `box-shadow is not a rung in ${bad.join(', ')}` : null;
+};
+
+/** Every z-index in a call-site stylesheet is a z token, or a single-digit local step. */
+const zIndexFromTokens: Check = () => {
+  const bad = CSS_PATHS.filter((p) => CALL_SITE.test(p)).flatMap((path) =>
+    rulesOf(path)
+      .filter((rule) => rule.declarations['z-index'] !== undefined && !/^(?:var\(--ds-z-[a-z]+\)|-?\d)$/.test(rule.declarations['z-index']))
+      .map((rule) => `${path} ${rule.selector} z-index: ${rule.declarations['z-index']}`),
+  );
+  return bad.length ? bad.join(' · ') : null;
+};
+
+const Z_ORDER = ['base', 'dropdown', 'sticky', 'overlay', 'modal', 'popover', 'toast', 'tooltip'];
+
+const zOrder: Check = () => {
+  const values = Z_ORDER.map((role) => Number(resolve(THEMES[0] ?? 'light', `--ds-z-${role}`)));
+  const at = values.findIndex((value, i) => !Number.isFinite(value) || (i > 0 && value <= values[i - 1]));
+  return at < 0 ? null : `z.${Z_ORDER[at]} does not rise above the role before it`;
+};
+
+const zSingleSource: Check = () => {
+  const hit = CSS_PATHS.flatMap((path) => rulesOf(path).filter((rule) => Object.keys(rule.declarations).some((name) => name.startsWith('--ds-z-'))).map(() => path))[0];
+  return hit ? `${hit} declares a --ds-z-* token` : null;
+};
+
+const singleScrim: Check = eachTheme((theme) => {
+  const scrims = Object.keys(themeTokens(theme)).filter((name) => name.startsWith('--ds-scrim'));
+  return scrims.length === 1 ? null : `${scrims.length} scrim tokens: ${scrims.join(', ')}`;
+});
+
+/** No declaration of the stylesheet uses `display: none` or `visibility: hidden`. */
+const neverRemovedFromTree = (path: string): Check => () => {
+  const bad = rulesOf(path).filter((rule) => /^(?:none)$/.test(rule.declarations.display ?? '') || /^hidden$/.test(rule.declarations.visibility ?? ''));
+  return bad.length ? `${path} removes ${bad.map((rule) => rule.selector).join(', ')} from the tree` : null;
+};
+
+const glyphCount = (expected: number): Check => () => {
+  const text = sourceOf('primitives/icon/glyphs.ts');
+  if (text === undefined) return 'glyphs.ts not found';
+  return (text.match(/^ {2}'?[a-z-]+'?: '/gm) ?? []).length === expected ? null : `glyphs.ts does not hold ${expected} glyphs`;
+};
+
 export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'button.native-element': sourceMatches(`${BUTTON}.tsx`, /<button[\s>]/, 'button.tsx does not render a native <button>'),
   'button.focus-ring': all(uses(`${BUTTON}.css`, '.ds-button:focus-visible', 'outline', '--ds-focus-ring-color'), uses(`${BUTTON}.css`, '.ds-button:focus-visible', 'outline-offset', '--ds-focus-ring-offset')),
@@ -246,6 +302,49 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
 
   'motion.duration-ceiling': durationCeiling,
   'motion.reduced-motion': reducedMotion,
+
+  'box.no-literal': all(noLiteral(`${BOX}.css`), ...[0, 4, 12].map((n) => uses(`${BOX}.css`, `.ds-box--p-${n}`, 'padding', `--ds-space-${n}`)), uses(`${BOX}.css`, '.ds-box--gap-3', 'gap', '--ds-space-3')),
+  'box.space-closed': sourceMatches(`${BOX}.tsx`, /export type Space = 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 \| 9 \| 10 \| 11 \| 12;/, 'Space is not the closed union 0 to 12'),
+
+  'stack.gap-from-space': all(noLiteral(`${STACK}.css`), sourceMatches(`${STACK}.tsx`, /gap=\{gap\}/, 'the gap is not passed to Box as a space step')),
+  'stack.no-reverse': () => (/reverse/.test(`${sourceOf(`${STACK}.tsx`) ?? ''}${sourceOf(`${STACK}.css`) ?? ''}`) ? 'the stack offers a reversed direction' : null),
+
+  'heading.level-sets-element': sourceMatches(`${HEADING}.tsx`, /`h\$\{level\}`/, 'the element is not built from the level'),
+  'heading.size-decoupled': sourceMatches(`${HEADING}.tsx`, /`ds-heading--\$\{size\}`/, 'the class does not come from the size prop'),
+  'heading.size-from-text-style': all(
+    noLiteral(`${HEADING}.css`),
+    ...['display', 'heading', 'label'].map((role) => uses(`${HEADING}.css`, `.ds-heading--${role}`, 'font-size', `--ds-text-${role}-size`)),
+    uses(`${HEADING}.css`, '.ds-heading--subheading', 'font-size', '--ds-font-size-lg'),
+  ),
+
+  'icon.hidden-by-default': sourceMatches(`${ICON}.tsx`, /'aria-hidden': true/, 'the icon is not aria-hidden without a label'),
+  'icon.label-names-it': sourceMatches(`${ICON}.tsx`, /role: 'img', 'aria-label': label/, 'a label does not become role img with aria-label'),
+  'icon.size-from-token': all(noLiteral(`${ICON}.css`), ...['sm', 'md', 'lg'].map((size) => uses(`${ICON}.css`, `.ds-icon--${size}`, 'inline-size', `--ds-size-icon-${size}`))),
+  'icon.current-color': uses(`${ICON}.css`, '.ds-icon', 'stroke', 'currentColor'),
+  'icon.glyph-set-closed': glyphCount(16),
+
+  'visually-hidden.clip-pattern': all(
+    uses(`${VISUALLY_HIDDEN}.css`, '.ds-visually-hidden', 'position', 'absolute'),
+    uses(`${VISUALLY_HIDDEN}.css`, '.ds-visually-hidden', 'overflow', 'hidden'),
+    uses(`${VISUALLY_HIDDEN}.css`, '.ds-visually-hidden', 'clip-path', 'inset(50%)'),
+  ),
+  'visually-hidden.stays-in-tree': neverRemovedFromTree(`${VISUALLY_HIDDEN}.css`),
+  'visually-hidden.focusable-shows': all(
+    uses(`${VISUALLY_HIDDEN}.css`, '.ds-visually-hidden--focusable:focus-visible', 'outline', '--ds-focus-ring-color'),
+    uses(`${VISUALLY_HIDDEN}.css`, '.ds-visually-hidden--focusable:focus-visible', 'z-index', '--ds-z-tooltip'),
+  ),
+  'visually-hidden.no-literal': noLiteral(`${VISUALLY_HIDDEN}.css`),
+
+  'divider.native-element': sourceMatches(`${DIVIDER}.tsx`, /<hr[\s>]/, 'divider.tsx does not render a native <hr>'),
+  'divider.decorative-hidden': sourceMatches(`${DIVIDER}.tsx`, /\{ role: 'none' \}/, 'a decorative divider does not get role none'),
+  'divider.orientation-exposed': sourceMatches(`${DIVIDER}.tsx`, /'aria-orientation': orientation/, 'the orientation is not exposed'),
+  'divider.border-token': all(noLiteral(`${DIVIDER}.css`), uses(`${DIVIDER}.css`, '.ds-divider', 'color', '--ds-border-default'), uses(`${DIVIDER}.css`, '.ds-divider--horizontal', 'border-block-start', '--ds-size-border-thin')),
+
+  'elevation.rungs': shadowRungsOnly,
+  'elevation.z-token': zIndexFromTokens,
+  'elevation.z-order': zOrder,
+  'elevation.z-single-source': zSingleSource,
+  'elevation.single-scrim': singleScrim,
 
   'empty-results.no-own-style': noPatternStyle,
   'empty-results.announced': sourceMatches('patterns/empty-results/empty-results.stories.tsx', /role="status"/, 'the recipe has no role="status" region'),

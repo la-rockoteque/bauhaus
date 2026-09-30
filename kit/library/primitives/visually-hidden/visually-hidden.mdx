@@ -1,0 +1,56 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './visually-hidden.stories';
+
+<Meta of={Stories} />
+
+# Visually hidden
+
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** Some text is for screen readers only, such as "opens in a new tab" or "Close" next to an icon. Visually hidden keeps that text out of sight and in the page for assistive technology.
+
+**Precisely:** Primitive component. It applies the clip pattern: the element shrinks to a point and is clipped, but stays in the layout tree of the accessibility API. The `focusable` variant shows itself while it has keyboard focus, which suits a skip link.
+
+**The job.** `display: none` and `visibility: hidden` remove text from assistive technology too. The clip pattern does not. It gives a name to a control that shows only an icon, and it adds context that sighted users get from layout.
+
+**The layer.** A primitive. The icon button, the skip link and the status parts of other components use it.
+
+## 2. Usage
+
+### When to use
+
+- To add a name or context that sighted users get from the layout.
+- For a skip link at the top of the page, with `focusable` (WCAG 2.4.1 Bypass Blocks, A).
+- For a live-region message that must be announced but not shown.
+
+### When not to use, and what to use instead
+
+- **To hide content from everyone.** Use the `hidden` attribute.
+- **To hide decoration from assistive technology.** Use `aria-hidden="true"`.
+- **For a visible label.** If sighted users benefit from the text, show it. Hiding a label removes the hint and the click target (WCAG 3.3.2 Labels or Instructions, A).
+
+### How
+
+- **Element.** The default is a `span`. Pass `as="a"` and `href` for a skip link. Pass `as="p"` or `as="div"` for a block of text.
+- **Skip link.** Put it first in the page with `focusable`. On keyboard focus it appears at the top-left corner, above every other layer (`z.tooltip`), with the focus ring. Point it at the main region, and give that region `tabIndex={-1}` so focus can move there (WCAG 2.4.1, A; 2.4.7, AA; 2.4.11, AA).
+- **Focusable controls.** A control that can take focus and is hidden must be `focusable`, or a keyboard user lands on something they cannot see (WCAG 2.4.7, AA).
+- **Text.** Write it as a full phrase. Do not repeat what the visible text says.
+- **i18n.** The text arrives as `children`.
+
+## 3. Why the states look as they do
+
+The element is not visible in its default state, so the states grid shows it with its clip lifted by the focusable variant. Hover, active, disabled and selected do not apply: a hidden element cannot be pointed at, and a disabled or selected look would belong to the control that holds it.
+
+The focus state is the one designed state. The element takes the surface, the border, the label text style and the focus ring, so it reads as a real control.
+
+In forced-colors mode the border and outline use system colours through the same tokens.
+
+## 4. Pitfalls and don'ts
+
+- **Do not use `display: none` for screen reader text.** The text disappears for assistive technology. (WCAG 1.3.1, A; `visually-hidden.stays-in-tree`)
+- **Do not hide a focusable control without `focusable`.** Keyboard users lose sight of focus. (WCAG 2.4.7, AA; `visually-hidden.not-a-control-hider`)
+- **Do not hide a field label this way.** Show it. (WCAG 3.3.2, A)
+- **Do not put a skip link behind a sticky header.** It uses `z.tooltip` so nothing covers it. (WCAG 2.4.11, AA; `visually-hidden.focusable-shows`)
+- **Do not write a colour or px literal in the stylesheet.** (Project decision; `visually-hidden.no-literal`)

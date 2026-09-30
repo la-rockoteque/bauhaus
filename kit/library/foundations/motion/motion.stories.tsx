@@ -18,12 +18,15 @@ export const Showcase: StoryObj = {
       usedFor="Hover and press feedback, small enters and exits, the spinner."
       tokens={{
         mode: 'defined',
-        note: 'Easing is not tokenised in this template; the spinner uses linear.',
+        note: 'The spinner uses linear, the one place easing would hurt: a turn must not speed up and slow down.',
         rows: [
           { name: 'duration.150 · 200 · 400', tier: '1', use: '150, 200, 400 ms' },
           { name: 'motion.duration.fast', tier: '2', use: '{duration.150}; hover and press' },
           { name: 'motion.duration.base', tier: '2', use: '{duration.200}; small enter and exit' },
           { name: 'motion.duration.deliberate', tier: '2', use: '{duration.400}; the ceiling; one spinner turn' },
+          { name: 'motion.ease.standard', tier: '2', use: 'cubic-bezier(0.2, 0, 0, 1); movement that stays on screen' },
+          { name: 'motion.ease.enter', tier: '2', use: 'cubic-bezier(0, 0, 0, 1); an element arrives, fast start and soft landing' },
+          { name: 'motion.ease.exit', tier: '2', use: 'cubic-bezier(0.4, 0, 1, 1); an element leaves, soft start and fast end' },
         ],
       }}
       specimens={<MotionSwatches />}

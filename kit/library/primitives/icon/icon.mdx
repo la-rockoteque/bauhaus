@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './icon.stories';
+
+<Meta of={Stories} />
+
+# Icon
+
+The Showcase story holds the tokens, the anatomy, the glyph gallery, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** An icon is a small picture that stands for an action or a state, such as a check, a magnifying glass or a warning triangle. It sits beside words or inside a button. It does not replace them.
+
+**Precisely:** Primitive component. An inline SVG drawn from a built-in set of sixteen glyphs. It has three sizes from tokens. It is hidden from assistive technology unless it has a label.
+
+**The job.** Icons are drawn from path data in `glyphs.ts`, so the library needs no sprite file, no icon font and no network request. Each glyph is a stroke on a 16 by 16 grid. The stroke uses `currentColor`, so the icon takes the text colour of its context and works in every theme.
+
+**The layer.** A primitive. Buttons, fields, banners and menus place an Icon inside their own markup.
+
+## 2. Usage
+
+### When to use
+
+- Beside a visible text label, to speed recognition.
+- Inside an icon button, whose `label` names the action.
+- For a status mark next to status text: success, warning, error, info.
+
+### When not to use, and what to use instead
+
+- **As the only carrier of meaning.** Add text, or pass `label`. Shape and colour alone fail users who cannot see them (WCAG 1.4.1 Use of Color, A; 1.1.1 Non-text Content, A).
+- **As a control.** Icon is not focusable and has no press handling. Use the icon button.
+- **For a picture or a logo.** Use an `img` with alt text.
+
+### How
+
+- **Decorative by default.** Without `label`, the SVG gets `aria-hidden="true"` and `focusable="false"`. The text next to it does the naming.
+- **Meaningful.** With `label`, the SVG gets `role="img"` and `aria-label`. Use this when the icon says something the nearby text does not.
+- **Size.** `sm`, `md` (default) and `lg` read `size.icon.sm|md|lg`. The icon scales with the token, not with the font size.
+- **Colour.** Set `color` on the parent. Non-text contrast of 3:1 against the surface applies (WCAG 1.4.11, AA).
+- **Adding a glyph.** Draw it on the 16 by 16 grid as strokes, add it to `glyphs.ts`, and add a test line. Do not draw one at a call site.
+- **i18n.** The `label` arrives as a prop.
+
+## 3. Why the states look as they do
+
+An icon is not interactive, so it has no hover, focus, active, disabled or selected look. The control that holds it owns those states. In a disabled button the icon follows the disabled text colour through `currentColor`.
+
+Long content, lists and data do not apply. An icon draws one glyph in a fixed box.
+
+In forced-colors mode the stroke uses the system text colour, so the glyph stays visible when the user replaces the palette.
+
+## 4. Pitfalls and don'ts
+
+- **Do not give a decorative icon a label.** Screen readers then read a name that the text already gives. (WCAG 1.1.1, A; `icon.hidden-by-default`)
+- **Do not use an icon alone to say "error".** Add the word. (WCAG 1.4.1, A; `icon.not-sole-cue`)
+- **Do not set a fixed colour on the SVG.** It ignores the theme. (WCAG 1.4.11, AA; `icon.current-color`)
+- **Do not set a width in px.** Use a size. (Project decision; `icon.size-from-token`)
+- **Do not draw a one-off SVG at a call site.** Add the glyph to the set. (Nielsen heuristic 4; `icon.glyph-set-closed`)

@@ -56,6 +56,7 @@ const roleGroups = (theme: string): [string, string[]][] => {
   const groups = new Map<string, string[]>();
   for (const name of roleNames(theme)) {
     const [group] = name.replace('--ds-', '').split('-');
+    if (group === 'shadow') continue; // A shadow is drawn on the elevation page; a colour chip would show nothing.
     groups.set(group, [...(groups.get(group) ?? []), name]);
   }
   return [...groups];
@@ -151,7 +152,7 @@ export function SpacingScale() {
 export function RadiusTiles() {
   return (
     <div className="spec-tiles">
-      {['none', 'sm', 'md', 'lg', 'full', 'control'].map((step) => (
+      {['none', 'sm', 'md', 'lg', 'full', 'control', 'pill', 'overlay'].map((step) => (
         <div key={step} className="spec-tile">
           <span className="spec-radius" style={{ borderRadius: `var(--ds-radius-${step})` }} />
           <code>{`radius.${step}`}</code>

@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { Button } from './button';
+import { expectNoAxeViolations } from '../../../expect-no-axe-violations';
 
 describe('Button', () => {
   it('is a native button of type button, so it does not submit a form by accident', () => {
@@ -41,5 +42,10 @@ describe('Button', () => {
   it('keeps the button focusable while loading, so keyboard focus is not lost', () => {
     render(<Button loading>Save changes</Button>);
     expect(screen.getByRole('button').hasAttribute('disabled')).toBe(false);
+  });
+
+  it('has no axe violations in its default, disabled and loading states', async () => {
+    const { container } = render(<><Button>Save changes</Button><Button disabled>Save</Button><Button loading>Send</Button></>);
+    await expectNoAxeViolations(container);
   });
 });

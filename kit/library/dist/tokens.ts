@@ -77,6 +77,14 @@ export const tokens = {
       "700": "#434649",
       "800": "#2a2c2f",
       "900": "#121416"
+    },
+    "ink": {
+      "a06": "#1214160f",
+      "a10": "#1214161a",
+      "a16": "#12141629",
+      "a32": "#12141652",
+      "a48": "#1214167a",
+      "a64": "#121416a3"
     }
   },
   "palette": {
@@ -145,7 +153,25 @@ export const tokens = {
       "700": "#434649",
       "800": "#2a2c2f",
       "900": "#121416"
+    },
+    "ink": {
+      "a06": "#1214160f",
+      "a10": "#1214161a",
+      "a16": "#12141629",
+      "a32": "#12141652",
+      "a48": "#1214167a",
+      "a64": "#121416a3"
     }
+  },
+  "z": {
+    "base": 0,
+    "dropdown": 10,
+    "sticky": 20,
+    "overlay": 30,
+    "modal": 40,
+    "popover": 50,
+    "toast": 60,
+    "tooltip": 70
   },
   "focus": {
     "ring": {
@@ -164,6 +190,11 @@ export const tokens = {
       "fast": "150ms",
       "base": "200ms",
       "deliberate": "400ms"
+    },
+    "ease": {
+      "standard": "cubic-bezier(0.2, 0, 0, 1)",
+      "enter": "cubic-bezier(0, 0, 0, 1)",
+      "exit": "cubic-bezier(0.4, 0, 1, 1)"
     }
   },
   "radius": {
@@ -172,7 +203,9 @@ export const tokens = {
     "md": "4px",
     "lg": "8px",
     "full": "9999px",
-    "control": "4px"
+    "control": "4px",
+    "pill": "9999px",
+    "overlay": "8px"
   },
   "space": {
     "0": "0px",
@@ -208,11 +241,40 @@ export const tokens = {
       "md": "12px",
       "lg": "16px",
       "xl": "24px"
+    },
+    "control": {
+      "inline": "12px",
+      "gap": "8px"
+    },
+    "field": {
+      "gap": "4px"
+    },
+    "group": {
+      "gap": "16px"
     }
   },
   "size": {
     "target": {
       "min": "44px"
+    },
+    "control": {
+      "sm": "44px",
+      "md": "48px",
+      "lg": "56px"
+    },
+    "icon": {
+      "sm": "16px",
+      "md": "20px",
+      "lg": "24px"
+    },
+    "border": {
+      "thin": "1px",
+      "thick": "2px"
+    },
+    "overlay": {
+      "sm": "20rem",
+      "md": "30rem",
+      "lg": "40rem"
     }
   },
   "font": {
@@ -311,7 +373,8 @@ export const tokens = {
   "surface": {
     "default": "#ffffff",
     "raised": "#ffffff",
-    "sunken": "#f5f8fb"
+    "sunken": "#f5f8fb",
+    "inverse": "#121416"
   },
   "border": {
     "default": "#dfe2e6",
@@ -335,7 +398,15 @@ export const tokens = {
     "warning": "#8a5d05",
     "warning-surface": "#fef5e9",
     "info": "#2461c7",
-    "info-surface": "#f1f6ff"
+    "info-surface": "#f1f6ff",
+    "error-text": "#a1091a",
+    "error-border": "#ef4244",
+    "success-text": "#015c27",
+    "success-border": "#1f964a",
+    "warning-text": "#6c4703",
+    "warning-border": "#b17703",
+    "info-text": "#0f4aa7",
+    "info-border": "#4681e4"
   },
   "disabled": {
     "text": "#adafb3",
@@ -346,6 +417,55 @@ export const tokens = {
     "hover-layer": "#f1f6ff",
     "pressed-layer": "#d9e7fe",
     "selected": "#d9e7fe"
+  },
+  "field": {
+    "surface": "#ffffff",
+    "border": "#7f8185",
+    "border-hover": "#434649",
+    "border-focus": "#2461c7",
+    "border-invalid": "#cb0d23",
+    "text": "#121416",
+    "placeholder": "#5f6165"
+  },
+  "selection": {
+    "surface": "#2461c7",
+    "text": "#ffffff",
+    "mark": "#ffffff"
+  },
+  "overlay": {
+    "surface": "#ffffff",
+    "border": "#dfe2e6"
+  },
+  "scrim": "#12141652",
+  "table": {
+    "header-surface": "#f5f8fb",
+    "row-hover": "#f1f6ff",
+    "row-selected": "#d9e7fe",
+    "border": "#dfe2e6"
+  },
+  "skeleton": {
+    "base": "#dfe2e6",
+    "highlight": "#f5f8fb"
+  },
+  "progress": {
+    "track": "#dfe2e6",
+    "fill": "#2461c7"
+  },
+  "badge": {
+    "neutral": "#434649",
+    "neutral-text": "#ffffff",
+    "info": "#0f4aa7",
+    "info-text": "#ffffff",
+    "success": "#015c27",
+    "success-text": "#ffffff",
+    "warning": "#6c4703",
+    "warning-text": "#ffffff",
+    "error": "#a1091a",
+    "error-text": "#ffffff"
+  },
+  "shadow": {
+    "1": "0px 1px 2px 0px #1214161a, 0px 2px 6px 0px #1214160f",
+    "2": "0px 2px 6px 0px #12141629, 0px 8px 24px 0px #1214161a"
   }
 } as const;
 

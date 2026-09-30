@@ -1,0 +1,41 @@
+// Rulebook entries for Stack. Shape: knowledge/governance/rulebook.md. Ids are permanent.
+export const stackRules = [
+  {
+    id: 'stack.gap-from-space',
+    component: 'Stack',
+    rubric: 'tokens',
+    severity: 'MEDIUM',
+    expectation: 'The gap is a space step passed to Box. The stylesheet holds no px literal.',
+    expected: '--ds-space-N',
+    verify: 'auto',
+    basis: 'Project decision: tokens are the only source of a value (misfile.raw-value-in-component)',
+  },
+  {
+    id: 'stack.no-reverse',
+    component: 'Stack',
+    rubric: 'semantics',
+    severity: 'HIGH',
+    expectation: 'The stack offers no reversed direction, so the visual order always equals the DOM order.',
+    verify: 'auto',
+    basis: 'WCAG 1.3.2 Meaningful Sequence (A); 2.4.3 Focus Order (A)',
+  },
+  {
+    id: 'stack.wraps',
+    component: 'Stack',
+    rubric: 'reflow',
+    severity: 'MEDIUM',
+    expectation: 'A horizontal stack of variable content sets wrap, so it reflows at 320 CSS px without a second scroll axis.',
+    verify: 'review',
+    covers: ['reflow'],
+    basis: 'WCAG 1.4.10 Reflow (AA)',
+  },
+  {
+    id: 'stack.list-semantics',
+    component: 'Stack',
+    rubric: 'semantics',
+    severity: 'MEDIUM',
+    expectation: 'A stack of like items renders as ul or ol with li children.',
+    verify: 'review',
+    basis: 'WCAG 1.3.1 Info and Relationships (A)',
+  },
+] as const;

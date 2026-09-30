@@ -91,6 +91,28 @@
       "xl": {
         "$value": "{space.6}"
       }
+    },
+    "control": {
+      "inline": {
+        "$value": "{space.3}",
+        "$description": "Horizontal padding inside a field or select."
+      },
+      "gap": {
+        "$value": "{space.2}",
+        "$description": "Gap between an icon and its label in a control."
+      }
+    },
+    "field": {
+      "gap": {
+        "$value": "{space.1}",
+        "$description": "Gap between label, hint, control and message of one field."
+      }
+    },
+    "group": {
+      "gap": {
+        "$value": "{space.4}",
+        "$description": "Gap between the fields of a form or the items of a group."
+      }
     }
   },
   "size": {
@@ -99,6 +121,56 @@
       "min": {
         "$value": "44px",
         "$description": "Smallest pointer target. WCAG 2.5.8 (AA) asks 24px; 44px is the house floor at the WCAG 2.5.5 (AAA) figure."
+      }
+    },
+    "control": {
+      "$description": "Heights of pressable and typeable controls. Never below the 44px target floor.",
+      "sm": {
+        "$value": "{size.target.min}"
+      },
+      "md": {
+        "$value": "{space.12}"
+      },
+      "lg": {
+        "$value": "56px"
+      }
+    },
+    "icon": {
+      "$description": "Icon box sides.",
+      "sm": {
+        "$value": "{space.4}"
+      },
+      "md": {
+        "$value": "{space.5}"
+      },
+      "lg": {
+        "$value": "{space.6}"
+      }
+    },
+    "border": {
+      "$description": "Border widths.",
+      "thin": {
+        "$value": "1px",
+        "$description": "Hairline of fields, cards and table rules."
+      },
+      "thick": {
+        "$value": "{focus.ring.width}",
+        "$description": "Emphasis border: selected card, focused field."
+      }
+    },
+    "overlay": {
+      "$description": "Maximum inline sizes of floating surfaces.",
+      "sm": {
+        "$value": "20rem",
+        "$description": "Toast, tooltip, popover."
+      },
+      "md": {
+        "$value": "30rem",
+        "$description": "Menu, small dialog."
+      },
+      "lg": {
+        "$value": "40rem",
+        "$description": "Large dialog."
       }
     }
   }

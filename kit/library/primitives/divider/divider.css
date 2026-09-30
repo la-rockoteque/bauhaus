@@ -1,0 +1,21 @@
+.ds-divider {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  flex: none;
+  color: var(--ds-border-default);
+}
+
+.ds-divider--horizontal {
+  inline-size: 100%;
+  block-size: 0;
+  border-block-start: var(--ds-size-border-thin) solid currentColor;
+}
+
+/* In a row (a horizontal stack) the line stretches to the height of its siblings. */
+.ds-divider--vertical {
+  inline-size: 0;
+  block-size: auto;
+  align-self: stretch;
+  border-inline-start: var(--ds-size-border-thin) solid currentColor;
+}

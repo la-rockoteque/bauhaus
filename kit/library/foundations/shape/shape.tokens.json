@@ -19,6 +19,14 @@
     "control": {
       "$value": "{radius.md}",
       "$description": "Corner radius of buttons and fields."
+    },
+    "pill": {
+      "$value": "{radius.full}",
+      "$description": "Badge and tag."
+    },
+    "overlay": {
+      "$value": "{radius.lg}",
+      "$description": "Dialog, popover, menu, toast."
     }
   }
 }

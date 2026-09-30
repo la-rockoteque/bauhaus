@@ -1,0 +1,38 @@
+{
+  "z": {
+    "$type": "number",
+    "$description": "Paint order, lowest to highest. Tens leave room for a new role. Never write a bare z-index.",
+    "base": {
+      "$value": 0,
+      "$description": "The page flow."
+    },
+    "dropdown": {
+      "$value": 10,
+      "$description": "Select list, combobox list, menu."
+    },
+    "sticky": {
+      "$value": 20,
+      "$description": "Sticky header, sticky table header."
+    },
+    "overlay": {
+      "$value": 30,
+      "$description": "The scrim behind a modal."
+    },
+    "modal": {
+      "$value": 40,
+      "$description": "Dialog and drawer."
+    },
+    "popover": {
+      "$value": 50,
+      "$description": "Popover; above a modal that opened it."
+    },
+    "toast": {
+      "$value": 60,
+      "$description": "Toast region."
+    },
+    "tooltip": {
+      "$value": 70,
+      "$description": "Tooltip; above everything."
+    }
+  }
+}

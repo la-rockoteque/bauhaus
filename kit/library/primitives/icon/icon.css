@@ -1,0 +1,30 @@
+.ds-icon {
+  display: inline-block;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+}
+
+.ds-icon--sm {
+  inline-size: var(--ds-size-icon-sm);
+  block-size: var(--ds-size-icon-sm);
+}
+
+.ds-icon--md {
+  inline-size: var(--ds-size-icon-md);
+  block-size: var(--ds-size-icon-md);
+}
+
+.ds-icon--lg {
+  inline-size: var(--ds-size-icon-lg);
+  block-size: var(--ds-size-icon-lg);
+}
+
+/* Forced colors repaint currentColor with the system text colour, so the stroke stays visible. */
+@media (forced-colors: active) {
+  .ds-icon { stroke: CanvasText; }
+}
