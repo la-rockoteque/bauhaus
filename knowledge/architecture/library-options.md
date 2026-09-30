@@ -27,7 +27,7 @@ Bauhaus default: **option 2**, one package inside the app's repository. The cont
 1. Start with option 2 unless a rule below forces another. (YAGNI: each extra package adds a build, a version and a release step that nobody uses yet.)
 2. Count consumers, not wishes. Move up only when a second consumer exists or is scheduled. (A boundary paid for early costs maintenance with no return.)
 3. Match the packaging to the team structure. The design system's boundaries end up copying the communication lines of the teams that own it. (Conway 1968.)
-4. Keep the layer order in every option: foundation, token, component, pattern. Packaging changes where the layers live, not what they are. (Bauhaus architecture contract.)
+4. Keep the layer order in every option: foundation, component, pattern. Packaging changes where the layers live, not what they are. (Bauhaus architecture contract.)
 5. Keep isolation rules 1 to 6 of `docs/library.md` in every option. They do not depend on the number of packages. (A library that imports its app is not isolated in any layout.)
 6. Ship tokens as CSS custom properties in every option. A non-React consumer then takes tokens without any component code. (Custom properties work in any stack.)
 7. Choose web components only when at least two stacks must render the same components. One stack does not justify the cost. (See option 4 costs.)
@@ -172,5 +172,5 @@ Use these as illustrations of packaging, not as endorsements.
 
 - [folder-structure.md](folder-structure.md) — the tree inside the package
 - [extraction.md](extraction.md) — how to move an existing app's design system in
-- [../taxonomy/layers.md](../taxonomy/layers.md) — the four layers
+- [../taxonomy/layers.md](../taxonomy/layers.md) — the three layers
 - [../../docs/library.md](../../docs/library.md) — the contract

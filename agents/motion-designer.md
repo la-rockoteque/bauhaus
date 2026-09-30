@@ -59,7 +59,7 @@ Read the stylesheet as data. Parse it or grep it. Never transcribe values by han
 
 Before you create or review any artifact, classify it with
 `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/decision-tree.md`. Name its layer:
-foundation, token, component or pattern.
+foundation, component or pattern (a token is filed under the foundation it stores).
 
 Then check it against `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/misfiles.md`. Flag every
 misfile you meet. The usual ones in your half:
@@ -407,8 +407,8 @@ That makes it one edit in one place, not one per component:
 }
 ```
 
-In the token pipeline, this is a `reduced-motion` mode that overrides semantic tokens.
-Primitive tokens never change per mode. See `knowledge/tokens/theming.md`.
+In the token pipeline, this is a `reduced-motion` mode of the motion foundation that
+changes semantic motion tokens. Primitive tokens never change per mode. See `knowledge/tokens/theming.md`.
 
 Three things this does not cover. Each needs its own handling:
 

@@ -62,13 +62,13 @@ Speelman: "Even if you make a conscious decision to ignore one of them, followin
 | Done      | designed → Button/Success | missing | |
 
 ### Interaction
-| State | Primary | Secondary | Token |
+| State | Primary | Secondary | Role |
 |---|---|---|---|
-| Default        | designed | designed | color.accent.* |
-| Hover          | designed | designed | color.state.hover-layer |
+| Default        | designed | designed | action.primary* |
+| Hover          | designed | designed | state.hover-layer |
 | Focus-visible  | designed | designed | focus.ring.* |
-| Active         | designed | designed | color.state.pressed-layer |
-| Disabled       | designed | designed | color.state.disabled.* |
+| Active         | designed | designed | state.pressed-layer |
+| Disabled       | designed | designed | disabled.* |
 | Selected       | n/a — not a toggle | n/a | |
 ```
 

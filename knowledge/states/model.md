@@ -95,8 +95,8 @@ States are not a layer. They attach to the layer they are a state **of**. See `.
 
 | State kind | Owned by | Styled with | Example |
 |---|---|---|---|
-| Interaction state of a control | The **component** | Semantic **state tokens** (`color.state.hover-layer`, `color.action.primary.hover`, `focus.ring.color`, `color.state.disabled.text`; grammar in `../tokens/naming.md` § State tokens) | Button hover, Checkbox indeterminate |
-| The values state tokens take | The **foundation** (colour, elevation, motion) | Primitive tokens | "Hover darkens by one step on the ramp"; "state changes run at `duration.fast`" |
+| Interaction state of a control | The **component** | State **roles** (`state.hover-layer`, `action.primary-hover`, `focus.ring.color`, `disabled.text`; grammar in `../tokens/naming.md` § State roles) | Button hover, Checkbox indeterminate |
+| The values state tokens take | The **foundation** (colour, elevation, motion) | `palette` and `colors` (never read by the component) | "Hover darkens by one grade on the scale"; "state changes run at `duration.fast`" |
 | Lifecycle state of a data-bearing component | The **component** | Semantic tokens | Field incorrect, Select none, Table loading |
 | Lifecycle state of a screen or flow | The **pattern** | Composes components, no new token | Empty-results pattern using the EmptyState component |
 | Transition between two states | **Motion** foundation + the component | Motion tokens | Toast enter at `motion.duration.slow` |

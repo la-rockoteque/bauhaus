@@ -35,7 +35,7 @@ sources:
 |---|---|---|
 | Remove a token | **Major** | Consumers reference the name. |
 | Rename a token | **Major** (unless aliased; see below) | Same as remove plus add. |
-| Change what a token means (`color.text.muted` becomes a different job) | **Major** | Silent break. |
+| Change what a token means (`text.muted` becomes a different job) | **Major** | Silent break. |
 | Change a token's value slightly (a shade) | Minor or patch | Look shifts; names hold. State it in the changelog. |
 | Change a token's value so a contrast pair fails | **Fix**, and treat it as a bug | Breaks WCAG (1.4.3 or 1.4.11, AA). |
 | Change a foundation's scale (add or remove a step, change the ratio) | **Major** | Every token on the scale moves. |
@@ -70,25 +70,22 @@ Suggested window: at least one full minor release cycle, and at least the time t
 
 ```markdown
 ### Deprecated
-- `color.legacy.brand` → use `color.action.primary`. Removed in 3.0.0. Alias in place until then.
+- `action.brand` → use `action.primary`. Removed in 3.0.0. Alias in place until then.
   Codemod: `npx <your-codemod> rename-color-brand`.
 ```
 
 ## Aliases during migration
 
-When a token is renamed, keep the old name as an alias of the new one. Tokens in DTCG can alias by reference (`{color.action.primary}`).
+When a token is renamed, keep the old name as an alias of the new one. Tokens in DTCG can alias by reference (`{action.primary}`).
 
 ```json
 {
-  "color": {
-    "action": {
-      "primary": { "$type": "color", "$value": "{color.blue.600}",
-        "$description": "Main call-to-action fill." }
-    },
-    "legacy": {
-      "brand": { "$type": "color", "$value": "{color.action.primary}",
-        "$description": "Deprecated in 2.4.0. Use color.action.primary. Removed in 3.0.0." }
-    }
+  "action": {
+    "$type": "color",
+    "primary": { "$value": "{colors.primary.600}",
+      "$description": "Main call-to-action fill." },
+    "brand": { "$value": "{action.primary}",
+      "$description": "Deprecated in 2.4.0. Use action.primary. Removed in 3.0.0." }
   }
 }
 ```
@@ -114,10 +111,10 @@ A codemod:
 
 Do not write a codemod for a judgement change. Write a migration note instead.
 
-Simple case: a token rename can be a scripted replace. The pattern must not match longer names that share the prefix (`--ds-color-brand-600`). This example uses a negative lookahead. It was tested on a fixture.
+Simple case: a token rename can be a scripted replace. The pattern must not match longer names that share the prefix (`--ds-brand-600`). This example uses a negative lookahead. It was tested on a fixture.
 
 ```sh
-grep -rl -- '--ds-color-brand' src | xargs perl -pi.bak -e 's/--ds-color-brand(?![\w-])/--ds-color-action-primary/g'
+grep -rl -- '--ds-brand' src | xargs perl -pi.bak -e 's/--ds-brand(?![\w-])/--ds-action-primary/g'
 ```
 
 Review the diff before you commit. Remove the `.bak` files.
@@ -129,11 +126,11 @@ Follow Keep a Changelog. Headings per release, grouped: Added, Changed, Deprecat
 ```markdown
 ## [2.4.0] - 2026-03-02
 ### Added
-- Token `color.status.info`.
+- Role `status.info`, in every theme.
 ### Deprecated
-- `color.legacy.brand` in favour of `color.action.primary`. Removed in 3.0.0.
+- `action.brand` in favour of `action.primary`. Removed in 3.0.0.
 ### Fixed
-- `Button` focus ring now meets 3:1 against `color.surface.default` (WCAG 1.4.11, AA).
+- `Button` focus ring now meets 3:1 against `surface.default` (WCAG 1.4.11, AA).
 ```
 
 Write entries for consumers, not for the team. "Renamed X to Y" beats "refactored tokens".

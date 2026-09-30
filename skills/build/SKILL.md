@@ -20,12 +20,12 @@ Builds the system in six stages. The order is fixed. Each stage ends at a checkp
 
 ## Hard rules
 
-1. **Order.** Principles, foundations, tokens, components, patterns, docs. Do not start a stage before the checkpoint of the previous one.
+1. **Order.** Principles, foundations, their tokens, components, patterns, docs. Do not start a stage before the checkpoint of the previous one.
 2. **Classify first.** Before you create any artifact, run the decision tree. Name its layer.
 3. **Refuse misfiles.** Do not put a raw value in a pattern. Do not put a flow in a component. Cite the id from `misfiles.md` and send the work to the right layer.
 4. **Propose before you populate.** A foundation is a decision. Put it to the user with `AskUserQuestion`: one focused question, 2-4 options, cost stated. Populate only after the answer.
 5. **Four artifacts.** A foundation or component is done when tokens, styleguide section, Storybook page and rulebook entries ship together.
-6. **State matrix.** A component or pattern is not done without its matrix (`/bauhaus:states`). Each of the four artifacts carries the states: state tokens, matrix table, one story per state, rules `<component>.state.<state>`.
+6. **State matrix.** A component or pattern is not done without its matrix (`/bauhaus:states`). Each of the four artifacts carries the states: state roles, matrix table, one story per state, rules `<component>.state.<state>`.
 7. **Page contract.** Every page has six sections in order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Every Usage rule and Pitfall names a basis (`knowledge/governance/page-contract.md`).
 8. **Slop check.** For each Usage and Pitfall line ask: "What is the basis?" and "Would this line be true of any design system?" No basis or generic: rewrite or cut.
 
@@ -54,17 +54,18 @@ For each foundation:
 6. **Checkpoint B.n** after each foundation. One line: artifacts written, checks passed.
 
 ### c. Tokens, tiered
-1. Primitive token tier: raw scales from the accepted foundations. No intent in the name.
-2. Semantic tier: intents that alias primitive tokens (`color.text.muted`). Call sites use only this tier.
+Tokens are the storage of the accepted foundations, not a layer. This stage writes them down.
+1. Primitive token tier: raw scales from the accepted foundations. No intent in the name. Colour: `palette.tokens.json` (named hues, grades 100 to 900) and `colors.tokens.json` (primary, secondary, error, success, warning, info, neutral, aliasing the palette).
+2. Semantic tier: intents that alias primitive tokens (`space.inset.md`). Colour: the roles in `themes/light` (default) and `themes/dark` (`text.muted`, `surface.raised`, `action.primary`). Call sites use only this tier. Both themes define the same roles.
 3. Component tier: only when a component needs one scoped decision. Optional.
 4. Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build` and `... check`. Both must pass.
-5. **Checkpoint C.** Show the tier counts and any alias chain deeper than two.
+5. **Checkpoint C.** Show the tier counts, the theme parity result and any alias chain deeper than three.
 
 ### d. Components — the smallest viable set
 1. Ask what screens exist. List candidate components from `knowledge/components/catalog.md`.
 2. Keep only those that pass the justification test (see `/bauhaus:component`): at least two places, structural, one job. On a new system the "two places" test applies to planned screens.
 3. Typical start: Button, Field (label, input, hint, error), Link, and one container. Add more only on demand.
-4. Build each with `/bauhaus:component`. Each consumes semantic tokens only.
+4. Build each with `/bauhaus:component`. Each consumes semantic tokens only (colour: roles, never `palette.*` or `colors.*`).
 5. Dispatch `bauhaus:ux-designer` per component for keyboard and ARIA. Run `/bauhaus:states` per component for the interaction matrix.
 6. **Checkpoint D.** List components, matrix status per component (designed, n/a, missing), open advisories.
 
@@ -97,7 +98,7 @@ For each foundation:
 ```
 Bauhaus build — <name>
 Stage:     a b c d e f (done: <list>)
-Layers:    <n foundations> · <n tokens: p/s/c> · <n components> · <n patterns>
+Layers:    <n foundations> · <n components> · <n patterns>   (tokens stored: <n> p/s/c · themes: <n> · parity: pass|fail)
 Artifacts: <n of 4> complete per foundation and component
 States:    <designed> designed · <n/a> n/a · <missing> missing
 Pages:     <n>/<total> meet the page contract

@@ -93,9 +93,10 @@ Also record: font families (count and role), weights in use, and line-height val
 2. Merge colours into clusters. Two colours join a cluster when ΔE (CIE76, Euclidean distance in L*a*b*) is 2.3 or less. (Sharma: about 2.3 is a just-noticeable difference. Below it, most viewers see one colour.)
 3. Pick the cluster's keeper: the highest-count value, or the on-ramp value when two tie. State the delta of every merged value.
 4. Split neutrals from chromatic colours. A colour is neutral when its chroma is below about 5 in L*a*b* (C*ab). (House threshold. Grey scales carry most of a UI and deserve their own ramp.)
-5. Group chromatic clusters by hue angle into hue families (blue, green, red, amber…). Order each family by lightness. Each ordered family is a ramp candidate.
+5. Group chromatic clusters by hue angle into hue families (blue, green, red, amber…). Order each family by lightness. Each ordered family is a palette hue candidate (`palette.<hue>.100…900`).
 6. Check the ramp. Lightness steps should be roughly even. Gaps show missing steps. Bunching shows duplicates. (OKLCH lightness is perceptually even: `knowledge/foundations/color.md` rule 2.)
 7. Mark status colours (error, success, warning) from context: what they style, not their hue.
+8. Propose the `colors` mapping: which hue plays primary, secondary, error, success, warning, info and neutral. Then list the roles (text, surface, border, action, status) each used pair implies, for `themes/light`. Do not propose `themes/dark` values from the inventory: derive them later. (`knowledge/foundations/color.md` rule 4.)
 
 **Contrast.** For each text and background pair used together, compute the ratio with `scripts/contrast.mjs`. Report any pair below 4.5:1 for normal text or 3:1 for large text. (WCAG 1.4.3, AA.) A snap that lowers a pair below the threshold is a regression: refuse it or pick the other keeper.
 

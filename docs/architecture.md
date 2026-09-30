@@ -20,16 +20,19 @@ docs/                  plugin docs
 bauhaus.config.schema.json
 ```
 
-## The four layers — never mix them
+## The three layers — never mix them
 
 | Layer | Question it answers | Lives in | Example |
 |---|---|---|---|
-| **Foundation** | Which families of values exist, and on what scale? | `foundations/<name>/` in the library | "Spacing runs on a 4px grid, 12 steps." |
-| **Token** | What is this one named decision's value? | `<slice>/<name>.tokens.json` (DTCG), generated outputs | `space.3 = 12px`, `color.text.muted → gray.600` |
-| **Component** | Which reusable block does one job, and can stand alone? | `primitives/<name>/` or `components/<family>/<name>/` in the library | Button, Text field, Dialog; primitives: Box, Text, Icon |
-| **Pattern** | How do components compose to answer a recurring need? | `patterns/<name>/` in the library | Filtering, empty state, wizard |
+| **Foundation** | Which families of values exist, and on what scale? | `foundations/<name>/` in the library | "Spacing runs on a 4px grid, 12 steps." Colour: palette, colors, roles. |
+| **Component** | Which reusable block does one job, and can stand alone? | `primitives/<name>/` or `components/<family>/<name>/` | Button, Text field, Dialog; primitives: Box, Text, Icon |
+| **Pattern** | How do components compose to answer a recurring need? | `patterns/<name>/` | Filtering, empty state, wizard |
 
-A foundation is a family and its scale. A token is one member of it. A component consumes semantic tokens. A primitive is a component other components are built from, not a layer. A pattern composes components and never introduces its own token or its own raw value. `knowledge/taxonomy/` holds the decision tree and the catalogue of misclassifications. Every agent and skill that creates or reviews an artifact classifies it first.
+**Tokens are not a layer.** A token is the stored form of one decision (DTCG JSON). Foundations store their scales as tokens, and a component may store component tokens. This follows Atlassian ("Design tokens are the new way to apply visual foundations"), Material 3 (design tokens sit under Foundations) and the DTCG format 2025.10. Evidence: `docs/research/tokens-vs-foundations.md`.
+
+Token tiers live inside the format: **primitive** (raw values: the palette, `space.1`) → **semantic** (intent: roles such as `action.primary`, `space.inset.md`) → **component** (optional: `button.radius`). Colour adds one step, the role scales in `colors`: palette → colors → roles (per theme) → component.
+
+A component consumes semantic tokens only. A primitive is a component other components are built from, not a layer. A pattern composes components and never introduces its own token or raw value. `knowledge/taxonomy/` holds the decision tree and the misfile catalogue. Every agent and skill classifies an artifact before it builds or reviews it.
 
 ## The library
 

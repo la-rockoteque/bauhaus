@@ -57,13 +57,13 @@ This file gives seven levels (0 to 6), the signals that show each one in a repo,
 
 **Meaning:** values are shared, but they carry no intent, so a rebrand or dark mode means a search and replace.
 
-**Next step:** adopt the tier model. Write a token source in DTCG JSON with tier-1 scale values and tier-2 semantic names. Start with colour and spacing. Read [../tokens/architecture.md](../tokens/architecture.md).
+**Next step:** adopt the tier model. Write a token source in DTCG JSON with tier-1 scale values and tier-2 semantic names (for colour: palette, colors, roles). Start with colour and spacing. Read [../tokens/architecture.md](../tokens/architecture.md).
 
 ## Level 2 — Tokens exist
 
 **Signals**
 - A token source exists (DTCG JSON or equivalent), often with a build step that outputs CSS custom properties.
-- Semantic names exist (`color.text.muted`).
+- Semantic names exist (`text.muted`).
 - Token coverage is partial: `grep` still finds raw hex or px in components. See [metrics.md](metrics.md).
 - There is no single owner for each foundation. Scales have gaps.
 

@@ -30,7 +30,7 @@ Start here, then follow the question:
 
 1. **Read the config** if present, for project facts (prefix, stack, house standards). Absent: answer from the knowledge base and say the answer is generic.
 2. **Restate the question** in one line. If it hides two questions, split them.
-3. **Name the layer.** Say "This is a question about the token layer." Use the decision tree in `knowledge/taxonomy/decision-tree.md` when the layer is unclear. A question that spans layers gets one paragraph per layer.
+3. **Name the layer.** Say "This is a question about the colour foundation (stored as tokens)." Use the decision tree in `knowledge/taxonomy/decision-tree.md` when the layer is unclear. A question that spans layers gets one paragraph per layer.
 4. **Detect the audience.** Read the wording:
    - Designer: talks of hierarchy, feel, brand.
    - Developer: talks of code, props, CSS, build.
@@ -48,7 +48,7 @@ Start here, then follow the question:
 ## Output format
 
 ```
-Layer: <foundation | token | component | pattern | cross-cutting>
+Layer: <foundation | component | pattern | cross-cutting>  (tokens: note "foundation, stored as <tier> tokens")
 Audience: <detected | both>
 
 In plain words

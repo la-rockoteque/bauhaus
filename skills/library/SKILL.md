@@ -20,8 +20,8 @@ Usage: `/bauhaus:library <options|init|place|move <component>|check>`. No subcom
 ## Hard rules
 
 1. **Read config first.** Read `bauhaus.config.json`. Missing: say so, infer paths from the repo, suggest `/bauhaus:init`.
-2. **Classify first.** Before you place a thing, name its layer. Foundation, token, component or pattern.
-3. **Layers stay four.** "Primitive" means the primitive-token tier or the `primitives/` folder. Never call it a layer.
+2. **Classify first.** Before you place a thing, name its layer. Foundation, component or pattern. A token is filed under its foundation.
+3. **Layers stay three.** "Primitive" means the primitive-token tier or the `primitives/` folder. Never call it a layer. Tokens are not a layer either: no root `tokens/` folder (`misfile.token-as-layer`). Themes are siblings under `themes/` (`light`, `dark`).
 4. **No forbidden folders.** Never create `hooks/`, `utils/`, `helpers/`, `lib/`, `common/`, `shared/`, `misc/`, `types/`, `constants/`, `styles/`, `stories/`, `assets/`, `core/`.
 5. **Nothing from the app.** The library never imports the app. App concerns become props.
 6. **One batch at a time.** `move` handles one component. Show the plan. Wait for a yes.
@@ -87,7 +87,7 @@ Extract one component into its slice. Follow `extraction.md` § One batch.
 Report findings on the package.
 
 1. Run: `node ${CLAUDE_PLUGIN_ROOT}/scripts/structure.mjs check <package-dir>`. It checks naming, slice completeness, forbidden folders, import direction and app imports.
-2. Map each finding to its id: `misfile.folder-by-file-type`, `misfile.story-far-from-component`, `misfile.primitive-as-layer`, `misfile.library-imports-app`, or `structure.*` / `extraction.*` ids from the knowledge files.
+2. Map each finding to its id: `misfile.folder-by-file-type`, `misfile.story-far-from-component`, `misfile.primitive-as-layer`, `misfile.token-as-layer`, `misfile.library-imports-app`, or `structure.*` / `extraction.*` ids from the knowledge files.
 3. Sort by severity, HIGH first. Cap at ten.
 4. Each finding: one line, why it matters, smallest next step, rule id, basis, files, effort S/M/L.
 5. Read the hit before you report it. Grep-style signals find candidates, not proof.

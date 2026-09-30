@@ -1,11 +1,11 @@
 ---
 name: tokens
-description: Author, rename, deprecate or build design tokens (DTCG JSON), with tier and naming checks. Use when the user says "add a token", "rename this token", "deprecate a token", "build the tokens", "check the tokens", "token naming", "alias this value", "tokens are out of date", or "generate css variables from tokens".
+description: Author, rename, deprecate or build design tokens (DTCG JSON: the storage of foundation decisions, including palette, colors and theme roles), with tier and naming checks. Use when the user says "add a token", "rename this token", "deprecate a token", "build the tokens", "check the tokens", "token naming", "alias this value", "tokens are out of date", or "generate css variables from tokens".
 ---
 
 # /bauhaus:tokens — author and build tokens
 
-Tokens are named decisions in DTCG JSON. They are the only place a raw value may appear. Lead agent: `bauhaus:design-system-architect`. Value questions go to `bauhaus:ui-designer` (or `bauhaus:motion-designer` for durations and easing).
+Tokens are the DTCG storage and delivery of foundation (and component) decisions. They are not a layer. They are the only place a raw value may appear. Lead agent: `bauhaus:design-system-architect`. Value questions go to `bauhaus:ui-designer` (or `bauhaus:motion-designer` for durations and easing).
 
 ## Loads
 
@@ -16,7 +16,7 @@ Tokens are named decisions in DTCG JSON. They are the only place a raw value may
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/foundations/<family>.md` — the family the token belongs to.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/versioning.md` — for rename and deprecation.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md` — the token group page.
-- `${CLAUDE_PLUGIN_ROOT}/knowledge/states/interaction-states.md` — state tokens (`hover`, `disabled`, `focus`).
+- `${CLAUDE_PLUGIN_ROOT}/knowledge/states/interaction-states.md` — state roles (`hover`, `disabled`, `focus`).
 
 ## Modes
 
@@ -26,12 +26,12 @@ Ask with `AskUserQuestion` if unclear: add, rename, deprecate, build-and-check.
 
 1. **Read the config.** Get `tokens.source`, `tokens.outputs`, `prefix`. Missing: run `/bauhaus:init`.
 2. **Classify.** Which tier?
-   - Primitive token: a raw step on a scale. Name has no intent.
-   - Semantic: an intent that aliases a primitive token. Call sites use it.
+   - Primitive token: a raw step on a scale. Name has no intent. Colour: `palette.<hue>.<grade>`, and the `colors.<role>.<grade>` aliases of it.
+   - Semantic: an intent that aliases a primitive token. Call sites use it. Colour: a role in every theme (`text.muted`, `action.primary`).
    - Component: one scoped decision for one component. Add only when a semantic token would be too broad.
 3. **Check the family.** A new value inside an existing scale is a token. A new family or a new scale is a foundation change: stop, run `/bauhaus:foundation`.
 4. **Name it** by the grammar in `naming.md`. Reject names that carry the value (`blue-dark`), the component (in the semantic tier), or the theme.
-5. **Write it** in the right file with `$value`, `$type`, `$description`. Aliases use `{color.gray.600}`. Semantic tokens alias primitive tokens, never literals.
+5. **Write it** in the right file with `$value`, `$type`, `$description`. Aliases use `{palette.gray.600}` or `{colors.neutral.600}`. Semantic tokens alias primitive tokens, never literals. A new role goes into every theme, with the same name.
 6. **Contrast.** For a colour pair, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/contrast.mjs <fg> <bg>`. Report the ratio and the AA/AAA verdict against `house.contrast`.
 7. Go to **Build and check**.
 
@@ -58,12 +58,12 @@ node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check [--config bauhaus.config.jso
 ```
 
 - `build` writes every output in `config.tokens.outputs` (css, scss, js, ts, json, tailwind), with themes.
-- `check` validates types, dangling aliases, cycles and naming. It also fails (exit 1) when outputs drift from the source.
+- `check` validates types, dangling aliases, cycles and naming. It asserts theme parity (the same role names in every theme) and warns when a component reads `palette.*` or `colors.*` directly. It also fails (exit 1) when outputs drift from the source.
 - On failure: read the message, fix the source, rebuild. Do not edit generated outputs by hand.
 
-## State tokens
+## State roles
 
-Interaction states (hover, active, disabled, selected, focus-visible) are semantic tokens, not raw values in a rule. Use the two families in `${CLAUDE_PLUGIN_ROOT}/knowledge/tokens/naming.md` § State tokens: layers and shared colours (`color.state.hover-layer`, `color.state.pressed-layer`, `color.state.selected`, `color.state.disabled.{text,surface,border}`), and per-role colours (`color.action.<role>.<state>`, for example `color.action.primary.hover`). Focus is `focus.ring.{color,width,offset}`. Every new colour token that a control uses needs its state siblings, or a written reason it has none. Each state pair passes `contrast.mjs`. The token group page lists the states it provides tokens for.
+Interaction states (hover, active, disabled, selected, focus-visible) are roles, not raw values in a rule. Use the two families in `${CLAUDE_PLUGIN_ROOT}/knowledge/tokens/naming.md` § State roles: layers and shared colours (`state.hover-layer`, `state.pressed-layer`, `state.selected`, `disabled.{text,surface,border}`), and per-action colours (`action.<name>-<state>`, for example `action.primary-hover`). Focus is `focus.ring.color`, `focus.ring.width`, `focus.ring.offset`. Every new role that a control uses needs its state siblings, or a written reason it has none, and it exists in every theme. Each state pair passes `contrast.mjs`. The token group page lists the states it provides tokens for.
 
 ## Token group page
 
@@ -72,8 +72,9 @@ A token group has a page in the styleguide and in Storybook, to the page contrac
 ## Tier checks (run on every change)
 
 - No literal in the semantic tier.
-- No call site references a primitive token.
-- No alias chain deeper than two hops.
+- No call site references a primitive token. For colour: no component or pattern reads `palette.*` or `colors.*`.
+- Every theme defines the same role names.
+- No alias chain deeper than three hops.
 - Every semantic token has a `$description` that states intent.
 - Names follow the grammar. No synonyms for existing tokens.
 
@@ -88,7 +89,7 @@ A token group has a page in the styleguide and in Storybook, to the page contrac
 ```
 Tokens — <mode>
 Changed:  <n added · n renamed · n deprecated>
-Tier:     <primitive token|semantic|component> for each new token
+Tier:     <primitive token|semantic|component> for each new token, with its foundation
 Contrast: <pair> <ratio> <AA|AAA verdict>   (colour only)
 Build:    pass | fail
 Check:    pass | fail (<message>)

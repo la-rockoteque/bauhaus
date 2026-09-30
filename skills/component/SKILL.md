@@ -34,7 +34,7 @@ A component is a reusable block that does one job and consumes semantic tokens. 
 6. **Design the look.** Dispatch `bauhaus:ui-designer`: which semantic tokens it uses. Missing a token? Stop. Run `/bauhaus:tokens` first. Never write a raw value in the component. Check contrast of every state with `node ${CLAUDE_PLUGIN_ROOT}/scripts/contrast.mjs <fg> <bg>`.
 7. **Propose before you populate.** Show anatomy, variants and states to the user with `AskUserQuestion` (2-4 options). Populate after the answer.
 8. **Land the four artifacts in one pass.**
-   1. **Styles and tokens.** The stylesheet or component CSS, using `--<prefix>-*` semantic tokens only. Component tokens only if a semantic token is too broad.
+   1. **Styles and tokens.** The stylesheet or component CSS, using `--<prefix>-*` semantic tokens only (colour: roles, never `palette.*` or `colors.*`). Component tokens only if a semantic token is too broad.
    2. **Styleguide section.** In `<config.guide>` §Components, to the page contract, six sections in order: 1 Introduction (what, job, layer, plain words first), 2 Tokens (consumed, with intent), 3 Anatomy (parts, required or optional), 4 States (the matrix), 5 Usage (when, when not and the alternative, how: variants, composition, content, responsive, accessibility), 6 Pitfalls and don'ts (each with why).
    3. **Storybook page.** `Components/<Name>` with the same six sections, and one story per state.
    4. **Rulebook entries.** Rules with permanent ids (`<component>.<rule>`), verify mode `auto` or `review`, severity, expectation. Add the stylesheet to the graded list if the project has one.

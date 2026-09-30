@@ -154,7 +154,7 @@ WCAG's own text says that changes of colour, opacity and blur are not motion ani
 
 > Under `reduce`: keep the transient, remove the displacement. Same event, same timing class, zero travel.
 
-Handle it once, in the token layer:
+Handle it once, in the motion tokens:
 
 ```css
 @media (prefers-reduced-motion: reduce) {

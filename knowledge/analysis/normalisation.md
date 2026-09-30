@@ -23,7 +23,7 @@ Phase 8 of the analyser (`normalise.mjs plan`) turns the artifacts of phases 3 t
 1. Give every value, component and pattern exactly one action from the list of nine. (§ Actions. An item with no action is a hidden decision.)
 2. State the delta of every `snap`, `alias` and `merge`: pixels, ΔE or call sites. (`docs/analysis.md` § Rules.)
 3. Rank by usage × severity ÷ effort. (§ Prioritisation.)
-4. Batch by layer first, then by folder. Order the layers foundation, token, component, pattern, docs. (`workflow.md` § Why this order.)
+4. Batch by layer first, then by folder. Order the work foundation (tokens first), component, pattern, docs. (`workflow.md` § Why this order.)
 5. Keep a batch reviewable: about 400 changed lines or 20 files, whichever comes first. Split larger ones. (House size. A reviewer cannot judge more in one pass. `contribution.md` rule 8: one change, one layer.)
 6. Deprecate before you delete. Keep an alias for one release cycle at least. (`knowledge/governance/versioning.md`.)
 7. Pair every batch with a ratchet on its debt count. (`knowledge/governance/rulebook.md` § Ratchets.)
@@ -90,7 +90,7 @@ priority = usage × severity ÷ effort
 Rules for the score:
 
 1. A `HIGH` severity item (breaks WCAG A or AA, blocks a user) goes first, whatever its score. (Access before tidiness.)
-2. Break ties by layer order: foundation before token before component before pattern.
+2. Break ties by layer order: foundation before component before pattern.
 3. Show the score in the plan next to the inputs. A score with no inputs cannot be checked.
 
 ## Batching
@@ -106,8 +106,8 @@ Suggested batch skeleton:
 | Batch | Layer | Skill | Content |
 |---|---|---|---|
 | b1 | foundation | `/bauhaus:foundation` | Accept the scales. Publish each foundation page |
-| b2 | token | `/bauhaus:tokens` | Write the token source. Alias old custom properties |
-| b3 to bn | token → component | `/bauhaus:tokens`, `/bauhaus:component` | Snap literals by folder. Merge duplicates one group at a time |
+| b2 | foundation (tokens) | `/bauhaus:tokens` | Write the token source. Alias old custom properties |
+| b3 to bn | foundation → component | `/bauhaus:tokens`, `/bauhaus:component` | Snap literals by folder. Merge duplicates one group at a time |
 | next | component | `/bauhaus:states` | Fill missing state cells |
 | next | pattern | `/bauhaus:pattern` | Document and align patterns |
 | last | docs | `/bauhaus:styleguide`, `/bauhaus:storybook` | Resync the prose. Add the pages |
@@ -163,7 +163,7 @@ Template for one finding:
 ```
 Plain:   We use 14 shades of grey where 6 would do. Picking 6 makes the product look calmer
          and makes future changes cheaper. People will not see a difference at a glance.
-Precise: 14 grey literals cluster into 6 (ΔE ≤ 2.3). Snap to color.gray.100 to .900.
+Precise: 14 grey literals cluster into 6 (ΔE ≤ 2.3). Snap to palette.gray.100 to .900.
          212 uses, 41 files, 3 batches. Effort M. Risk low. Basis: none needed for the merge;
          contrast pairs stay at or above WCAG 1.4.3 (AA).
 ```

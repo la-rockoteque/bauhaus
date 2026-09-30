@@ -37,8 +37,8 @@ sources:
 |---|---|---|---|
 | One decision | Token with `$value` and `$type` | Variable | Token |
 | Group | Nested object | Variable group (slash in name) | Token group |
-| Alias | `{color.gray.600}` | Variable alias | `{color.gray.600}` reference |
-| Theme or mode | Separate file or `$extensions` | Mode in a collection | Token set and theme |
+| Alias | `{colors.neutral.600}` | Variable alias | `{colors.neutral.600}` reference |
+| Theme or mode | Sibling file per theme (or the Resolver module) | Mode in a collection: light and dark | Token set and theme |
 | Description | `$description` | Variable description | Description |
 | Types | `color`, `dimension`, `duration`, `fontFamily`, `fontWeight`, `cubicBezier`, `number`, more | `COLOR`, `FLOAT`, `STRING`, `BOOLEAN` | Token type per set |
 | Composite (shadow, typography) | Composite `$type` | Effect style, text style | Composite token |

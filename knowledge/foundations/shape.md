@@ -48,17 +48,17 @@ sources:
 }
 
 .ds-input {
-  border: var(--ds-border-width-hairline) solid var(--ds-color-border-strong);
+  border: var(--ds-border-width-hairline) solid var(--ds-border-strong);
   border-radius: var(--ds-radius-md);
 }
 
 .ds-card {
-  border: var(--ds-border-width-hairline) solid var(--ds-color-border-default);
+  border: var(--ds-border-width-hairline) solid var(--ds-border-default);
   border-radius: var(--ds-radius-lg);
 }
 
 .ds-input:focus-visible {
-  outline: var(--ds-border-width-medium) solid var(--ds-color-border-focus);
+  outline: var(--ds-border-width-medium) solid var(--ds-focus-ring-color);
   outline-offset: 2px;
 }
 ```
@@ -78,7 +78,7 @@ A shape page carries these six sections. (Order: `docs/architecture.md` § Page 
 
 ### 3. Anatomy
 - A radius scale: 3 to 6 steps plus one full-round value, each mapped to an element kind.
-- A border: width, style, colour. Colour comes from `color.border.*`. Width and style come from here.
+- A border: width, style, colour. Colour comes from the `border.*` roles. Width and style come from here.
 - A focus ring: outline width, offset, colour. Show it on a light and a dark surface.
 
 ### 4. States
@@ -119,7 +119,7 @@ A shape page carries these six sections. (Order: `docs/architecture.md` § Page 
 
 - A drop shadow is elevation, not shape. (`elevation.md`)
 - Icon stroke width is `iconography.md`.
-- The colour of a border is a semantic colour token. (`color.md`)
+- The colour of a border is a role (`border.*`). (`color.md`)
 - A "card" with its own padding, radius and border is a component. (`taxonomy/layers.md`)
 
 ## See also

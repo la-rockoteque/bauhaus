@@ -5,7 +5,7 @@ description: Add or evolve a pattern (filtering, empty state, wizard, data table
 
 # /bauhaus:pattern — add or evolve a pattern
 
-A pattern composes existing components to answer a recurring need. It introduces no token and no raw value. If it needs one, that is a foundation or token change first. Lead: `bauhaus:design-system-architect`. Supports: `bauhaus:ux-designer` (flow, states, copy, keyboard), `bauhaus:ui-designer` (spacing between parts), `bauhaus:motion-designer` (transitions), `bauhaus:responsive-reviewer` (phone floor).
+A pattern composes existing components to answer a recurring need. It introduces no token and no raw value. If it needs one, that is a foundation change first (its tokens are stored with it). Lead: `bauhaus:design-system-architect`. Supports: `bauhaus:ux-designer` (flow, states, copy, keyboard), `bauhaus:ui-designer` (spacing between parts), `bauhaus:motion-designer` (transitions), `bauhaus:responsive-reviewer` (phone floor).
 
 ## Loads
 

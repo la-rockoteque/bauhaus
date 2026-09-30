@@ -9,18 +9,19 @@ Bauhaus helps agents build, extract, audit, evolve and advise on a design system
 
 ## What Bauhaus is, in plain words
 
-A design system is a shared kitchen. Foundations are the pantry: which ingredients exist. Tokens are the labelled jars: each has one name and one amount. Components are the tools: knife, pan, whisk. Patterns are the recipes: they combine tools and jars, and they add no new ingredient.
+A design system is a shared kitchen. Foundations are the pantry: which ingredients exist, each written on a labelled jar with one name and one amount (those labels are the tokens). Components are the tools: knife, pan, whisk. Patterns are the recipes: they combine tools and jars, and they add no new ingredient.
 
-## The four layers
+## The three layers
 
 Never mix them. Terms come from `${CLAUDE_PLUGIN_ROOT}/UBIQUITOUS-LANGUAGE.md`.
 
 | Layer | Question it answers | Example |
 |---|---|---|
-| Foundation | Which families of values exist, and on what scale? | Spacing runs on a 4px grid. |
-| Token | What is this one named decision's value? | `space.3 = 12px` |
+| Foundation | Which families of values exist, and on what scale? | Spacing runs on a 4px grid. Colour: palette, colors, roles. |
 | Component | Which reusable block does one job? | Button, Field, Dialog |
 | Pattern | How do components compose to answer a recurring need? | Filtering, empty state |
+
+Tokens are not a layer. They are the DTCG storage and delivery of foundation (and component) decisions: `space.3 = 12px`.
 
 Plus the four artifacts that make a foundation or a component real: tokens, styleguide section, Storybook page, rulebook entries.
 
@@ -60,7 +61,7 @@ Plus the four artifacts that make a foundation or a component real: tokens, styl
 | Add or evolve a component | `/bauhaus:component` |
 | Add or evolve a pattern | `/bauhaus:pattern` |
 | Author or complete the states of a component, pattern or screen (empty, loading, hover, disabled, edge cases) | `/bauhaus:states` |
-| Add a theme (dark, brand, high contrast, density) | `/bauhaus:theme` |
+| Add a sibling theme (dark, high contrast, brand) | `/bauhaus:theme` |
 | Write or resync the prose styleguide | `/bauhaus:styleguide` |
 | Install or adapt Storybook | `/bauhaus:storybook` |
 

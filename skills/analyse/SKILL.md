@@ -33,7 +33,7 @@ In plain words: a builder inherits a house with no plans. She measures every wal
 4. **Every merge or snap states its delta:** pixels, ΔE or call sites.
 5. **One gate per decision.** One `AskUserQuestion`, one focused question, 2 to 4 options, cost stated. Recommended option first.
 6. **Two registers.** Say the plain line first, then the precise line.
-7. **Classify first.** Use the four layers. Never mix them.
+7. **Classify first.** Use the three layers (foundation, component, pattern). Tokens are how a foundation is stored, not a layer. Never mix them.
 8. **Every report** carries a `## Decisions` section and a `## States` summary.
 
 ## Steps
@@ -82,12 +82,12 @@ In plain words: a builder inherits a house with no plans. She measures every wal
 
 ### 4. Tokens
 
-- **Goal:** name the scale steps and intents as DTCG tokens.
+- **Goal:** write the accepted foundation decisions as DTCG tokens: scale steps and intents. Colour is emitted as three parts: `palette.tokens.json` (named hues with grades, primitive), `colors.tokens.json` (primary, secondary, error, success, warning, info, neutral, aliasing the palette) and the roles of `themes/light` (the default). `themes/dark` follows in phase 9 as a sibling, with the same role names.
 - **Command:** `node ${CLAUDE_PLUGIN_ROOT}/scripts/normalise.mjs tokens --foundations .bauhaus/analysis/03-foundations.json --out .bauhaus/analysis/04-tokens`
 - **Agents:** `bauhaus:design-system-architect` checks tiers and names. `bauhaus:ui-designer` checks values and contrast pairs.
 - **Knowledge:** `tokens/architecture.md`, `tokens/naming.md`, `analysis/scale-inference.md` § Colour.
-- **Writes:** `04-tokens/` (tiered DTCG), `04-tokens.md`. Validate the draft with `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check`.
-- **Gate:** "Accept these `<p>` primitive token and `<s>` semantic tokens and their names?" Options: accept; rename first; drop a family. State the count.
+- **Writes:** `04-tokens/` (tiered DTCG: `foundations/color/palette.tokens.json`, `colors.tokens.json`, `themes/light/light.tokens.json`, and the other foundations' files), `04-tokens.md`. Validate the draft with `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check`.
+- **Gate:** "Accept these `<p>` primitive token and `<s>` semantic tokens (colour: `<h>` hues, `<r>` roles) and their names?" Options: accept; rename first; drop a family. State the count.
 - **Say:** "Each accepted value gets one name. Screens will use the name, not the number."
 
 ### 5. Components
@@ -113,10 +113,10 @@ In plain words: a builder inherits a house with no plans. She measures every wal
 ### 7. Classification
 
 - **Goal:** put every finding in one layer and flag misfiles.
-- **Command:** none. Use the logic of `/bauhaus:classify` (decision tree, five questions, `misfiles.md` ids) across all four layers on the outputs of phases 2 to 6.
+- **Command:** none. Use the logic of `/bauhaus:classify` (decision tree, five questions, `misfiles.md` ids) across the three layers on the outputs of phases 2 to 6.
 - **Agent:** `bauhaus:design-system-architect`.
 - **Knowledge:** `taxonomy/decision-tree.md`, `taxonomy/misfiles.md`, `states/model.md`.
-- **Writes:** `07-classification.md`: one row per finding (layer, tier, where it lives, fits, misfile id). "Unlisted" when no id fits. Never invent an id.
+- **Writes:** `07-classification.md`: one row per finding (layer, stored-as tier if any, where it lives, fits, misfile id). "Unlisted" when no id fits. Never invent an id.
 - **Gate:** none.
 - **Say:** "`<n>` items are filed in the wrong place. Most are colours written straight into components."
 
@@ -134,7 +134,7 @@ In plain words: a builder inherits a house with no plans. She measures every wal
 - **Writes:** `08-normalisation.json` and `08-plan.md`. The plan holds:
   1. **Findings** by severity, capped at ten per layer. Say how many were cut.
   2. **Normalisation advice** per layer, in two registers: plain, then precise.
-  3. **Batch plan:** id, layer, title, items, files, risk, effort, skill. Ordered foundation, token, component, pattern, docs.
+  3. **Batch plan:** id, layer, title, items, files, risk, effort, skill. Ordered foundation (its tokens first), component, pattern, docs.
   4. **Maturity before and after:** name the level with evidence, and the level the plan reaches.
   5. **States summary:** designed, n/a, missing.
   6. **Page-contract gaps:** which of the six sections each existing page lacks.
@@ -146,7 +146,7 @@ In plain words: a builder inherits a house with no plans. She measures every wal
 
 - **Goal:** apply the plan, one batch at a time.
 - **First, the library.** Run `/bauhaus:library options` if the project has not chosen where the DS lives, then `/bauhaus:library init`. Every later batch writes into the library, never into the app (`docs/library.md`).
-- **Hand each batch, in order, to the existing skill:** `/bauhaus:init` (config, first), `/bauhaus:foundation`, `/bauhaus:tokens`, `/bauhaus:component` with `/bauhaus:library move` for each component, `/bauhaus:states`, `/bauhaus:pattern`, `/bauhaus:styleguide`, `/bauhaus:storybook`. The order never changes: foundations, tokens, components, patterns, docs.
+- **Hand each batch, in order, to the existing skill:** `/bauhaus:init` (config, first), `/bauhaus:foundation`, `/bauhaus:tokens`, `/bauhaus:component` with `/bauhaus:library move` for each component, `/bauhaus:states`, `/bauhaus:pattern`, `/bauhaus:styleguide`, `/bauhaus:storybook`. The order never changes: foundations, their tokens, components, patterns, docs.
 - **Before each batch:** snapshot the affected screens (`knowledge/tooling/visual-regression.md`) and set the ratchet number. Use a codemod when 10 or more places change.
 - **After each batch:** run the checks (`tokens.mjs check`, `structure.mjs check <library>`, the tests, the snapshot compare). Compare the visual diff with the stated delta.
 - **Writes:** `09-build.md`: batch id, skill, result (`applied`, `skipped`, `reverted`), delta as measured, ratchet number, revert reference.
@@ -160,11 +160,11 @@ In plain words: a builder inherits a house with no plans. She measures every wal
 Bauhaus analyse — <dir> (scope: <dir>)
 Phase:      <n> of 9 (done: <list>)
 Scanned:    <n files> · <n distinct values> · <n custom properties>
-Foundations: spacing <base> (fit <x>) · type <ratio> (fit <x>) · colour <n ramps> · other <n>
-Tokens:     <n primitive token> · <n semantic> accepted
+Foundations: spacing <base> (fit <x>) · type <ratio> (fit <x>) · colour <n hues> · other <n>
+Tokens:     <n primitive token> · <n semantic> accepted (colour: palette · colors · roles per theme)
 Components: <n> found · <n component cand.> · <n groups> · <n merges accepted>
 Patterns:   <n> candidates · <n> accepted · <n> missing patterns
-Layers:     <n foundation> · <n token> · <n component> · <n pattern> · <n not-DS>
+Layers:     <n foundation> · <n component> · <n pattern> · <n not-DS>   (foundations stored as <n> primitive · <n> semantic tokens)
 Misfiles:   <ids>
 States:     <designed> designed · <n/a> n/a · <missing> missing
 Maturity:   <level> → <level after plan> — <evidence>
@@ -184,6 +184,6 @@ Next:       <one step>
 - One-offs are never promoted to a step, a token, a component or a pattern.
 - Every merge or snap states its delta.
 - A pattern never introduces a value. Send it back to phase 3 or 4.
-- Never skip the order of phase 9: foundations, tokens, components, patterns, docs.
+- Never skip the order of phase 9: foundations, their tokens, components, patterns, docs.
 - Sort findings by severity descending. Cap at ten per layer.
 - Never invent a misfile id or a citation.

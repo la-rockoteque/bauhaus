@@ -8,10 +8,10 @@ The name comes from the Bauhaus school (Weimar 1919, Dessau 1925, Berlin 1932–
 
 ## What it gives you
 
-- **Four layers, never mixed.** Foundation, token, component, pattern. Every agent classifies an artifact before it builds or reviews it, and flags anything filed in the wrong layer (`knowledge/taxonomy/`).
+- **Three layers, never mixed.** Foundation, component, pattern. Tokens are not a layer: they are the DTCG storage of foundation and component decisions. Every agent classifies an artifact before it builds or reviews it, and flags anything filed in the wrong layer (`knowledge/taxonomy/`).
 - **States as a core concept.** Every component, pattern and screen has a state matrix: Speelman's nine lifecycle states and the interaction states (`knowledge/states/`).
 - **One page contract.** Every DSM page has an introduction, tokens, anatomy, states, a full usage guide, and pitfalls and don'ts. Every rule names its basis: a WCAG criterion with its level, an APG pattern, a heuristic, a published system or a research result (`knowledge/governance/page-contract.md`).
-- **Tech-agnostic tokens.** DTCG JSON is the source. `scripts/tokens.mjs` builds CSS, SCSS, JS, TS, JSON and a Tailwind preset.
+- **Tech-agnostic tokens.** DTCG JSON is the source. Colour is stored as a palette (named hues), colors (role scales that alias it: the rebrand point) and roles per theme (`themes/light`, the default, and `themes/dark`, siblings that define the same role names). Components use roles only. `scripts/tokens.mjs` builds CSS, SCSS, JS, TS, JSON and a Tailwind preset.
 - **Plain words first.** Advice comes in two registers: plain for anyone, then precise for the implementer (`knowledge/taxonomy/plain-language.md`).
 - **A knowledge base** the agents read and cite (`knowledge/README.md`).
 
@@ -31,7 +31,7 @@ claude plugin install bauhaus@bauhaus
 | `/bauhaus:init` | Opt a project in: write `bauhaus.config.json` and seed tokens. |
 | `/bauhaus:build` | Build a DSM from scratch, layer by layer. |
 | `/bauhaus:extract` | Extract tokens from an existing codebase (phases 2–4 of analyse). |
-| `/bauhaus:classify` | Sort artifacts into the four layers and flag misfiles. |
+| `/bauhaus:classify` | Sort artifacts into the three layers and flag misfiles. |
 | `/bauhaus:advise` | Ask any design-system question. Get a plain answer, then a precise one. |
 | `/bauhaus:audit` | Grade a component, a page or the working changes. |
 | `/bauhaus:states` | Author or audit a state matrix. |
@@ -40,7 +40,7 @@ claude plugin install bauhaus@bauhaus
 | `/bauhaus:foundation` | Add or evolve a foundation. |
 | `/bauhaus:component` | Add or evolve a component. |
 | `/bauhaus:pattern` | Add or evolve a pattern. |
-| `/bauhaus:theme` | Add a theme: dark, brand, high contrast, density. |
+| `/bauhaus:theme` | Add a sibling theme (dark, high contrast, brand) with a full set of roles and a parity check. |
 | `/bauhaus:styleguide` | Write or resync the prose styleguide. |
 | `/bauhaus:storybook` | Install the Storybook kit. |
 
@@ -48,8 +48,8 @@ claude plugin install bauhaus@bauhaus
 
 | Agent | Owns |
 |---|---|
-| `design-system-architect` | The layers, the state model, the page contract, building, extraction, token architecture, governance, plain-language advice. |
-| `ui-designer` | The measurable look: tokens, contrast, spacing, radius, elevation, typography, interaction-state visuals. |
+| `design-system-architect` | The layers, the state model, the page contract, building, extraction, token architecture and theme structure, governance, plain-language advice. |
+| `ui-designer` | The measurable look: palette, colors and roles, contrast per theme, spacing, radius, elevation, typography, interaction-state visuals. |
 | `ux-designer` | Flow, lifecycle states, copy, keyboard, ARIA, data shape, filtering. |
 | `motion-designer` | Time: durations, easing, transitions between states, reduced motion. |
 | `responsive-reviewer` | The phone floor. Scores the working changes out of 100. |

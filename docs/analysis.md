@@ -11,7 +11,7 @@ The workflow has no state file. `scripts/analyse.mjs status` derives progress fr
 | 1 | Scope | `analyse.mjs init <dir>` | architect | `01-scope.json`, `01-scope.md` | Confirm scope and users |
 | 2 | Values | `extract.mjs <dir> --out .bauhaus/analysis/02-values` | — | `02-values/{inventory,custom-properties,tokens.draft}.json`, `report.md` | — |
 | 3 | Foundations | `foundations.mjs` | ui-designer, motion-designer | `03-foundations.json`, `03-foundations.md` | One question per foundation: accept the inferred scale |
-| 4 | Tokens | `normalise.mjs tokens` | architect, ui-designer | `04-tokens/` (DTCG, tiered), `04-tokens.md` | Accept token set and names |
+| 4 | Tokens | `normalise.mjs tokens` | architect, ui-designer | `04-tokens/` (DTCG, tiered; colour as palette, colors and the roles of the light theme), `04-tokens.md` | Accept token set and names |
 | 5 | Components | `components.mjs <dir>` | architect, ux-designer | `05-components.json`, `05-components.md` | Accept component candidates and merges |
 | 6 | Patterns | `patterns.mjs` | architect, ux-designer | `06-patterns.json`, `06-patterns.md` | Accept pattern candidates |
 | 7 | Classification | — | architect | `07-classification.md` | — |
@@ -80,7 +80,7 @@ All JSON is UTF-8, 2-space indented, keys in the order shown. File references ar
 ```json
 { "values": [
     { "literal": "#333", "family": "color", "uses": 12, "files": ["…"],
-      "target": "color.gray.800", "delta": "ΔE 1.2", "action": "snap" } ],
+      "target": "palette.gray.800", "delta": "ΔE 1.2", "action": "snap" } ],
   "components": [
     { "group": "group.button", "keep": "Button", "merge": ["Btn", "SubmitButton"],
       "callSites": 17, "action": "merge" } ],
@@ -98,4 +98,4 @@ All JSON is UTF-8, 2-space indented, keys in the order shown. File references ar
 - A component is a component candidate only if it is used in 2 or more folders, is structural, and has one job (`knowledge/governance/contribution.md`).
 - A co-occurrence set is a pattern candidate only if its support is 2 or more.
 - Every merge or snap states its delta: pixels, ΔE, or call sites changed.
-- Every report carries a `## States` summary and uses the four layers.
+- Every report carries a `## States` summary and uses the three layers (foundation, component, pattern; tokens are the foundation's stored form).

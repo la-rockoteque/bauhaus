@@ -98,7 +98,7 @@ reinvents one is itself a finding. Typical patterns to look for:
 
 Before you review any artifact, classify it with
 `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/decision-tree.md`. Name its layer:
-foundation, token, component or pattern. Then check
+foundation, component or pattern (a token is filed under the foundation it stores). Then check
 `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/misfiles.md`. The usual misfiles in your half:
 
 - A breakpoint literal hardcoded in a component. Breakpoints are a foundation. Read them

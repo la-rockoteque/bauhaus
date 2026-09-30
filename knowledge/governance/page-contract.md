@@ -6,7 +6,7 @@ layer: cross-cutting
 owner: design-system-architect
 tags: [documentation, page-contract, styleguide, storybook, anti-slop, basis]
 sources:
-  - Bauhaus architecture contract — docs/architecture.md (four layers, knowledge-base format)
+  - Bauhaus architecture contract — docs/architecture.md (three layers, knowledge-base format)
   - WCAG 2.2 — https://www.w3.org/TR/WCAG22/
   - WAI-ARIA Authoring Practices Guide, Button pattern — https://www.w3.org/WAI/ARIA/apg/patterns/button/
   - Nielsen, "10 Usability Heuristics for User Interface Design" (1994; NN/g) — https://www.nngroup.com/articles/ten-usability-heuristics/
@@ -19,7 +19,7 @@ sources:
 
 > Every page in the design system, in the styleguide and in Storybook, answers six questions in the same order. What is this? Which values does it use? What are its parts? What conditions can it be in? When do I use it, and when not? What goes wrong? A reader who knows one page knows them all. A writer who cannot fill a section has found a gap in the design.
 
-The contract applies to a foundation, a token group, a component and a pattern. The sections are fixed. The content differs by layer.
+The contract applies to a foundation, a token group, a component and a pattern. The sections are fixed. The content differs by layer. A token group is a kind of page, not a layer: it documents the stored tokens of one foundation (or of one component).
 
 ## Rules
 
@@ -38,7 +38,7 @@ The contract applies to a foundation, a token group, a component and a pattern. 
 | Section | Foundation | Token group | Component | Pattern |
 |---|---|---|---|---|
 | **1 Introduction** | What family, the job it does for users, the layer, plain words first | What decisions the group names, its tiers, plain words first | What the part is, its one job, the layer, plain words first | The user need, the recipe in one line, the layer, plain words first |
-| **2 Tokens** | **Defined**: the scale's tier-1 tokens and the semantic tokens that name intents | **Defined**: every token with tier, value or alias, and description | **Consumed**: semantic tokens read, optional component tokens | **Consumed**: layout and spacing tokens, through the components it composes; no token of its own |
+| **2 Tokens** | **Defined**: the scale's tier-1 tokens and the semantic tokens that name intents (colour: palette, colors, roles per theme) | **Defined**: every token with tier, value or alias, and description | **Consumed**: semantic tokens read, optional component tokens | **Consumed**: layout and spacing tokens, through the components it composes; no token of its own |
 | **3 Anatomy** | The scale and its structure: steps, growth rule, limits, closed set | The tiers and the alias chains | Named parts, each marked required or optional, with slots | The components it composes and how they are arranged |
 | **4 States** | The states it supplies tokens for (hover layer, focus ring, disabled) | Same, per token | The full state matrix: lifecycle and interaction | The lifecycle states of the recipe (nothing, loading, none, too many, incorrect, done) |
 | **5 Usage** | When to use each step; when not, and what instead; how to combine, contrast and a11y constraints | Which token for which job; when not, and what instead | When to use; when not and what instead; how: variants, composition, content, responsive, accessibility | When to use; when not and what instead; how: content, order, responsive, accessibility |
@@ -86,10 +86,10 @@ Save, send, delete. If pressing it takes you somewhere else, it is a link, not a
 ## 2. Tokens (consumed)
 | Token | Tier | Use |
 |---|---|---|
-| `color.action.primary` | 2 | Fill of the primary variant |
-| `color.text.on-action` | 2 | Label on the fill; pair must reach 4.5:1 |
-| `color.state.hover-layer` | 2 | Hover overlay (state layer) |
-| `color.action.primary.hover` | 2 | Hover colour of the primary fill (per-role state token) |
+| `action.primary` | 2 | Fill of the primary variant |
+| `action.primary-text` | 2 | Label on the fill; pair must reach 4.5:1 |
+| `state.hover-layer` | 2 | Hover overlay (state layer) |
+| `action.primary-hover` | 2 | Hover colour of the primary fill (state role) |
 | `focus.ring.*` | 2 | Focus indicator |
 | `radius.control` | 2 | Corner radius |
 | `size.target.min` | 2 | Minimum height and width |

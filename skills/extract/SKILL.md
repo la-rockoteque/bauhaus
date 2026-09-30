@@ -34,7 +34,7 @@ Lead agent: `bauhaus:design-system-architect`. Supports: `bauhaus:ui-designer` (
    ```
    node ${CLAUDE_PLUGIN_ROOT}/scripts/normalise.mjs tokens --foundations .bauhaus/analysis/03-foundations.json --out .bauhaus/analysis/04-tokens
    ```
-   Show the primitive token tier and the semantic tier. Ask once: accept the set and names, rename first, or drop a family.
+   Show the primitive token tier and the semantic tier. Colour comes as palette (named hues), colors (role scales) and roles for the light theme. Ask once: accept the set and names, rename first, or drop a family.
 5. **Write the source.** Save the accepted tokens into `<config.tokens.source>`. Do not edit call sites.
 6. **Verify.** Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build` then `check`.
 7. **Route.** Say what this run did not do: components, patterns, the plan. Offer `/bauhaus:analyse` to continue.
@@ -50,7 +50,7 @@ Lead agent: `bauhaus:design-system-architect`. Supports: `bauhaus:ui-designer` (
 Bauhaus extract — <dir>
 Scanned:     <n files> · <n distinct values> · <n custom properties>
 Foundations: spacing <base> (fit <x>) · type <ratio> (fit <x>) · colour <n ramps> · radius <n> · duration <n>
-Tokens:      <n primitive token> · <n semantic> accepted
+Tokens:      <n primitive token> · <n semantic> accepted (colour: palette · colors · roles)
 Outliers:    <n> values with one use, not promoted
 Next:        /bauhaus:analyse — components, patterns and the plan
 ```

@@ -70,7 +70,7 @@ send new code to the wired one. Say that converging them is its own story, and m
 
 Before you create or review any artifact, classify it with
 `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/decision-tree.md`. Name its layer:
-foundation, token, component or pattern.
+foundation, component or pattern (a token is filed under the foundation it stores).
 
 Then check it against `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/misfiles.md`. Flag every
 misfile you meet. The usual ones in your half:

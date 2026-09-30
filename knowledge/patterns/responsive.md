@@ -46,8 +46,8 @@ Same `<table>`, re-laid-out at the narrow breakpoint.
 @media (max-width: 768px) {
   .ds-table thead { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }
   .ds-table, .ds-table tbody, .ds-table tr, .ds-table td { display: block; }
-  .ds-table tr { border: 1px solid var(--ds-color-border-default); border-radius: var(--ds-radius-md); margin-block-end: var(--ds-space-3); }
-  .ds-table td[data-label]::before { content: attr(data-label); display: block; color: var(--ds-color-text-muted); }
+  .ds-table tr { border: 1px solid var(--ds-border-default); border-radius: var(--ds-radius-md); margin-block-end: var(--ds-space-3); }
+  .ds-table td[data-label]::before { content: attr(data-label); display: block; color: var(--ds-text-muted); }
 }
 ```
 

@@ -41,7 +41,7 @@ The rule set is [docs/library.md](../../docs/library.md). This file gives the re
 | Folder tells you | The tooling in use | What the system contains |
 | Failure mode | Orphans: a story or style outlives its component | Duplication of small helpers, fixed by the ancestor rule |
 
-Bauhaus uses package by feature inside a small set of layer-named roots. The roots are the four layers plus `themes/`. They are Bauhaus vocabulary, not file kinds.
+Bauhaus uses package by feature inside a small set of layer-named roots. The roots are the three layers (`foundations/`, `components/` with `primitives/`, `patterns/`) plus `themes/`. There is no `tokens/` root: tokens are stored inside the foundation slice, and component tokens inside the component slice. Roots are Bauhaus vocabulary, not file kinds.
 
 ## The Bauhaus tree
 
@@ -49,7 +49,7 @@ Bauhaus uses package by feature inside a small set of layer-named roots. The roo
 packages/design-system/
 ├─ package.json          index.ts          .storybook/
 ├─ foundations/          color/ spacing/ typography/ motion/ elevation/ shape/ iconography/ density/ focus/
-├─ themes/               dark/
+├─ themes/               light/ dark/
 ├─ primitives/           box/ text/ icon/ visually-hidden/
 ├─ components/
 │  ├─ clickables/        button/ icon-button/ link/ menu-item/
@@ -60,6 +60,27 @@ packages/design-system/
 │  └─ navigation/        tabs/ breadcrumb/ pager/
 └─ patterns/             filtering/ empty-results/
 ```
+
+## The colour slice and the themes
+
+Colour is the one foundation with more than one tokens file, and its roles live in `themes/`.
+
+```
+foundations/color/
+├─ palette.tokens.json   named hues with grades: palette.scarlet.100…900, palette.dark-blue.*, palette.teal.*, palette.gray.*
+├─ colors.tokens.json    role scales aliasing the palette: colors.primary.*, secondary, error, success, warning, info, neutral
+├─ color.mdx             the page contract
+├─ color.stories.tsx     palette, colors and roles side by side
+└─ color.rules.ts        rulebook entries
+themes/
+├─ light/                light.tokens.json · light.mdx · light.stories.tsx   (the default, also :root)
+└─ dark/                 dark.tokens.json · dark.mdx · dark.stories.tsx
+```
+
+- `palette.tokens.json` is primitive. Only `colors.tokens.json` reads it. No component or pattern does.
+- `colors.tokens.json` is the rebrand point: it says which hue plays primary, secondary, error, success, warning, info and neutral.
+- Each `themes/<name>/<name>.tokens.json` holds flat roles (`text.*`, `surface.*`, `border.*`, `action.*`, `status.*`, `focus.ring.*`, `disabled.*`, `state.*`), each aliasing `colors.*`. Every theme file defines the same role names. Themes are siblings, never overrides of one another.
+- Carbon splits `@carbon/colors` (palette) from `@carbon/themes`; Primer splits `base` from `functional/themes`. The split is the same; Bauhaus adds `colors` between them so a rebrand is one file.
 
 ## The slice and its files
 
@@ -85,9 +106,9 @@ components/clickables/button/
 | `.mdx` | every slice | Page contract, `knowledge/governance/page-contract.md` |
 | `.rules.ts` | every slice | Rulebook, `knowledge/governance/rulebook.md` |
 | `.test.tsx` | component, primitive | Behaviour and accessibility |
-| `.tokens.json` | foundation, theme; component only with component tokens | Tokens tier rules, `knowledge/tokens/architecture.md` |
+| `.tokens.json` | foundation, theme; component only with component tokens. Colour has `palette.tokens.json` and `colors.tokens.json`. | Tokens tier rules, `knowledge/tokens/architecture.md` |
 
-A foundation slice has no `.tsx`. A pattern slice has no `.css` and no `.tokens.json`: a pattern owns no styles and no tokens (`docs/library.md`, layer table).
+A foundation slice has no `.tsx`. A pattern slice has no `.css` and no `.tokens.json`: a pattern owns no styles and no tokens (`docs/library.md`, layers table).
 
 ## Naming and shared code
 
@@ -193,7 +214,9 @@ Where a stack keeps styles inside the component file, keep the `.css` rule "sema
 
 - `misfile.folder-by-file-type`: folders such as `styles/`, `stories/`, `hooks/`. Move each file into the slice it serves.
 - `misfile.story-far-from-component`: a story or `.mdx` outside its slice. Move it beside its component and rename after it.
-- `misfile.primitive-as-layer`: `primitives/` treated as a fifth layer, or a raw-value token stored in `primitives/`. Tokens belong in the foundation slice; `primitives/` holds components.
+- `misfile.primitive-as-layer`: `primitives/` treated as a layer, or a raw-value token stored in `primitives/`. Tokens belong in the foundation slice; `primitives/` holds components.
+- `misfile.token-as-layer`: a root `tokens/` folder beside `foundations/`. Move each file into its foundation slice.
+- `misfile.theme-not-sibling`: a theme that lists part of the roles, or rewrites palette values.
 - `misfile.library-imports-app`: the package imports app code (router, store, i18n, path alias). Cut it into props. See [extraction.md](extraction.md).
 
 These ids are defined in [../taxonomy/misfiles.md](../taxonomy/misfiles.md).
@@ -202,6 +225,6 @@ These ids are defined in [../taxonomy/misfiles.md](../taxonomy/misfiles.md).
 
 - [library-options.md](library-options.md) — where the package lives
 - [extraction.md](extraction.md) — moving code into slices
-- [../taxonomy/layers.md](../taxonomy/layers.md) — the four layers
+- [../taxonomy/layers.md](../taxonomy/layers.md) — the three layers
 - [../governance/page-contract.md](../governance/page-contract.md) — the `.mdx` page
 - [../../docs/library.md](../../docs/library.md) — the contract

@@ -21,7 +21,7 @@ sources:
 3. Keep one stroke width per size. Scale stroke with size in steps. Do not scale a 24px icon to 16px and keep the same stroke visually thick. Use optical sizes when the family offers them.
 4. Publish icon sizes as a short scale that aligns with the type scale: `sm` 16px, `md` 20px, `lg` 24px. An icon beside text matches that text's line height. (Aligned sizes keep icon and label on one baseline rhythm. See `typography.md`.)
 5. Size icons in `em` or `rem` so they follow text zoom. Use `1em` for inline icons. (WCAG 1.4.4 Resize Text, AA: icons paired with text should scale with it.)
-6. Colour icons with `currentColor`. Do not hardcode fills. The icon then inherits the semantic text or accent token and follows the theme. (See `color.md`.)
+6. Colour icons with `currentColor`. Do not hardcode fills. The icon then inherits the text or action role and follows the theme. (See `color.md`.)
 7. An icon that carries information needs at least 3:1 contrast against its background. (WCAG 1.4.11 Non-text Contrast, AA)
 8. An icon-only control needs an accessible name. Use visible text hidden with a visually-hidden class, `aria-label`, or `aria-labelledby`. Do not use `title` alone. (WCAG 4.1.2 Name, Role, Value, A)
 9. Name the action, not the picture. Write "Delete row", not "Trash can". (The name states what the control does.)

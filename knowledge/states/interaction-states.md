@@ -77,22 +77,22 @@ Recommended order, strongest first:
 4. **Selected** stays visible while hovered: hover modifies it, it does not replace it.
 5. **Hover** and **active** are the lightest layers.
 
-Material 3 models hover, focus, pressed and dragged as a **state layer**: a translucent overlay of the content colour at a fixed opacity, on top of the container. It keeps contrast predictable across every colour role, because the state is a delta, not a new colour. Bauhaus recommends this model for themed systems (`../tokens/theming.md`).
+Material 3 models hover, focus, pressed and dragged as a **state layer**: a translucent overlay of the content colour at a fixed opacity, on top of the container. It keeps contrast predictable across every colour role, because the state is a delta, not a new colour. Bauhaus keeps the model but stores each layer as an opaque tint role (`state.hover-layer`), because a DTCG alias cannot carry an alpha (`../tokens/theming.md`).
 
-## Tokens
+## Roles and tokens
 
-State visuals come from semantic tokens in two families (grammar: `../tokens/naming.md` § State tokens). Suggested set (prefix `--ds-`):
+State visuals come from roles in two families (grammar: `../tokens/naming.md` § State roles). Each role is defined in every theme. Suggested set (prefix `--ds-`):
 
 ```
-color.state.hover-layer         opacity or colour delta for hover
-color.state.pressed-layer
-color.state.selected            container colour for selected
-color.state.disabled.text       disabled text colour
-color.state.disabled.surface
-color.state.disabled.border
-color.action.<role>.<state>     per-role colour, e.g. color.action.primary.hover
+state.hover-layer               opacity or colour delta for hover
+state.pressed-layer
+state.selected                  container colour for selected
+disabled.text                   disabled text colour
+disabled.surface
+disabled.border
+action.<name>-<state>           per-action colour, e.g. action.primary-hover
 focus.ring.color  focus.ring.width  focus.ring.offset
-color.status.error.*  color.status.success.*
+status.error*  status.success*
 motion.duration.fast            hover / focus colour changes
 motion.duration.instant         press acknowledgement
 ```
@@ -142,7 +142,7 @@ Owned by `motion-designer` (`../foundations/motion.md`):
 
 - `<c>.state.focus-visible` · auto · HIGH · "`:focus-visible` declares the house ring from `focus.ring.*`; no `outline: none` without it." (2.4.7 AA)
 - `<c>.states.hover-guarded` · auto · LOW · "Hover styles sit inside `@media (hover: hover)`."
-- `<c>.states.tokens` · auto · MEDIUM · "Every state declaration uses a `color.state.*`, `color.action.*` or status token, no literal."
+- `<c>.states.tokens` · auto · MEDIUM · "Every state declaration uses a `state.*`, `disabled.*`, `action.*` or `status.*` role, no literal."
 - `<c>.states.disabled-explains` · review · MEDIUM · "A disabled control says why and what unlocks it."
 - `<c>.states.not-colour-alone` · review · HIGH · "Every state differs by more than colour." (1.4.1 A)
 - `<c>.states.loading-no-shift` · review · MEDIUM · "Loading keeps the control's size and blocks re-submission."

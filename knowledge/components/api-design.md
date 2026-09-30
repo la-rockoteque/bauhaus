@@ -57,13 +57,13 @@ Guidance: do not hand-write the behaviour of Dialog, Combobox, Menu, Tabs or Too
 
 ## Attribute and token contract
 
-- A styled component reads semantic tokens only, such as `var(--ds-color-text-muted)`. It never holds a raw value. (Basis: `taxonomy/layers.md`.)
+- A styled component reads semantic tokens only (roles for colour, never `palette.*` or `colors.*`), such as `var(--ds-text-muted)`. It never holds a raw value. (Basis: `taxonomy/layers.md`.)
 - Component tokens (`--ds-button-radius`) are optional and alias a semantic token.
 - A component exposes state as attributes: `data-state="open"`, `aria-expanded`, `aria-disabled`. CSS selects on them. (Basis: one source of truth for state.)
 
 ```css
-.ds-button[aria-disabled='true'] { color: var(--ds-color-text-disabled); }
-.ds-button:focus-visible { outline: var(--ds-focus-ring); outline-offset: var(--ds-focus-offset); }
+.ds-button[aria-disabled='true'] { color: var(--ds-disabled-text); }
+.ds-button:focus-visible { outline: var(--ds-focus-ring-color); outline-offset: var(--ds-focus-ring-offset); }
 ```
 
 ## When a new component is justified

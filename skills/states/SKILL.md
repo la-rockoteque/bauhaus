@@ -45,7 +45,7 @@ Ask with `AskUserQuestion` when unclear: author (new matrix), audit (grade an ex
    - `bauhaus:motion-designer` — transitions between states: durations, easing, reduced-motion behaviour.
 6. **Propose before you populate.** For each `missing` cell, put the design to the user with `AskUserQuestion` (2-4 options, cost stated). Batch trivial cells. Populate only after the answer.
 7. **Land the four artifacts** for the matrix:
-   - **Tokens.** New state tokens (`color.action.primary.hover`) go through `/bauhaus:tokens`. No raw value in a state rule.
+   - **Tokens.** New state roles (`action.primary-hover`, added to every theme) go through `/bauhaus:tokens`. No raw value in a state rule.
    - **Styleguide.** Write the matrix table into section 4 (States) of the page of the component or pattern in `<config.guide>`. Rows = states, columns = variants, cell = designed, n/a with reason, or missing. Keep the six-section page order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Add state-specific Usage rules and Pitfalls, each with a basis.
    - **Storybook.** In the States section of the page, one story per state, named after the state. Use forced-state helpers where the state cannot be reached by hand (hover, focus-visible). Follow `knowledge/tooling/storybook.md`.
    - **Rulebook.** One rule per designed state, id `<component>.state.<state>` (for example `button.state.disabled`). Verify mode `auto` when code or CSS settles it (a `:focus-visible` rule exists), `review` otherwise. Other state rules use `<component>.states.<slug>` (for example `button.states.tokens`); see `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/rulebook.md` § Rule id shapes. Ids are permanent.

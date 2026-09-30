@@ -19,7 +19,7 @@ sources:
 ## Rules
 
 1. Give every foundation, component and pattern one Storybook page. A component without a page is unfinished. (Basis: four artifacts; `UBIQUITOUS-LANGUAGE.md`.)
-2. Group pages by layer, in reading order: Principles, Foundations, Components, Patterns. (Basis: `docs/architecture.md` § The four layers.)
+2. Group pages by layer, in reading order: Principles, Foundations, Components, Patterns. (Basis: `docs/architecture.md` § The three layers.)
 3. File a page by what it documents, not by what it is made of. Legacy pages sit beside their modern counterpart. (Basis: one place to look.)
 4. Build every doc page from one template so each page has the same sections: summary, anatomy, states, rules, do and don't. (Basis: Nielsen 4 Consistency and standards.)
 5. Show all required states on the component page, in every theme. (Basis: `states/state-matrix.md`.)

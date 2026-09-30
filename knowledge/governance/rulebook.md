@@ -118,7 +118,7 @@ Be exact about levels. WCAG 2.5.8 Target Size (Minimum) is 24 by 24 CSS px at AA
       "rubric": "focus",
       "severity": "HIGH",
       "expectation": "The button shows a visible focus ring on keyboard focus.",
-      "expected": "--ds-focus-ring",
+      "expected": "--ds-focus-ring-color",
       "verify": "auto",
       "covers": ["focus-visible"],
       "basis": "WCAG 2.4.7 Focus Visible (AA)"

@@ -2,67 +2,75 @@
 id: tokens/architecture
 title: Token architecture
 shelf: tokens
-layer: token
+layer: foundation
 owner: ui-designer
-tags: [tokens, dtcg, tiers, aliasing, composite, extensions]
+tags: [tokens, dtcg, tiers, aliasing, composite, extensions, palette, colors, roles]
 sources:
   - Design Tokens Community Group, Design Tokens Format Module — https://www.designtokens.org/
   - W3C Design Tokens Community Group — https://www.w3.org/community/design-tokens/
   - Atlassian, Carbon, Primer, Polaris token documentation — see references/systems.md
+  - Evidence: `docs/research/tokens-vs-foundations.md` (Atlassian: "Design tokens are the new way to apply visual foundations"; Material 3 lists design tokens inside Foundations; Primer: base tokens "should never be used directly in code"; DTCG 2025.10 is stable)
 ---
 
 # Token architecture
 
-> A token is a named design decision with one value. "Muted text colour" is a decision. `#5a6b80` is only its current value. Tokens come in three tiers. Tier 1 holds raw values on a scale. Tier 2 gives each value a job. Tier 3 is optional and pins a job to one component. Screens and components read the job names, so a theme can swap the values without touching any screen.
+> Tokens are how a foundation is written down. They are not a fourth kind of thing next to foundations, components and patterns. A token is a named design decision with one value. "Muted text colour" is a decision. `#5a6b80` is only its current value. Tokens come in three tiers. Tier 1 holds raw values on a scale. Tier 2 gives each value a job. Tier 3 is optional and pins a job to one component. Screens and components read the job names, so a theme can swap the values without touching any screen.
 
 ## Rules
 
-1. Store every design decision as a token in DTCG JSON. It is the only place a raw value may appear. (`UBIQUITOUS-LANGUAGE.md` § Token)
+1. Store every foundation decision, and every optional component decision, as a token in DTCG JSON. Tokens are the storage and delivery format, not a layer. It is the only place a raw value may appear. (`UBIQUITOUS-LANGUAGE.md` § Token)
 2. Use three tiers and no more:
-   - **Primitive token (tier 1):** a raw value on a scale, such as `color.blue.600` or `duration.150`.
-   - **Semantic (tier 2):** an intent that aliases a primitive token or another semantic token, such as `color.text.muted`.
+   - **Primitive token (tier 1):** a raw value on a scale, such as `palette.dark-blue.600` or `duration.150`.
+   - **Semantic (tier 2):** an intent that aliases a primitive token or another semantic token, such as `space.inset.md` or the role `text.muted`.
    - **Component (tier 3, optional):** a semantic token scoped to one component, such as `button.radius`.
    (Two tiers cannot express themes cleanly. A fourth tier adds indirection with no new decision.)
-3. Call sites use semantic tokens only. A call site is any stylesheet rule, template or component that is not itself a token file. Call sites never use primitive tokens. (Themes override semantic tokens. A component at a call site cannot follow a theme. See `theming.md`.)
+3. Call sites use semantic tokens only. For colour, that means roles: `palette.*` and `colors.*` are never used by a component or a pattern. (Primer: base colour tokens "should never be used directly in code or design".) A call site is any stylesheet rule, template or component that is not itself a token file. Call sites never use primitive tokens. (Themes override semantic tokens. A component at a call site cannot follow a theme. See `theming.md`.)
 4. A component may use its own component tokens. A component token must alias a semantic token, not a primitive token. (The alias chain stays theme-aware.)
 5. Create a component token only when a component has a decision that no semantic token expresses, or when several variants of one component need to be tuned together. Otherwise use semantic tokens directly. (Optional tier: every extra token is a maintenance cost.)
 6. A semantic token aliases a primitive token or another semantic token. A primitive token holds a literal value and never aliases. (One direction of flow.)
 7. Keep alias chains short. Three hops from component to primitive token is a soft limit. (Long chains hide the real value.)
 8. Never create a cycle. Build tools reject them. A build that resolves aliases must fail on a cycle or on a reference that does not exist. (DTCG: aliases must resolve.)
-9. Themes override semantic tokens only. Primitive tokens never change per theme. (`UBIQUITOUS-LANGUAGE.md` § Theme)
+9. Themes are sibling files that each define every role. The palette and the colors never change per theme. (`UBIQUITOUS-LANGUAGE.md` § Theme)
 10. Add a token when a value appears in two or more places with the same intent. Do not add a token for a single use. (Governance: the two-occurrence rule, `governance/contribution.md`.)
 11. Give every token a `$description` that states its intent in one sentence. A token with no stated intent is a value in disguise. (DTCG `$description`.)
 12. Describe deprecation in the token file, not in a chat message. Keep a deprecated token as an alias to its replacement until the last caller moves. (See `governance/versioning.md`.)
 
-## Tier example
+## The colour chain
+
+Colour has one step more than the other foundations: palette → colors → roles (per theme) → component. Three files hold it.
+
+| File | Holds | Tier | Who uses it |
+|---|---|---|---|
+| `foundations/color/palette.tokens.json` | Named hues with grades: `palette.scarlet.100…900`, `palette.dark-blue.*`, `palette.teal.*`, `palette.gray.*`. Raw values. | primitive | `colors` only. Never a component. |
+| `foundations/color/colors.tokens.json` | Role scales: `colors.primary.100…900 → {palette.dark-blue.*}`; secondary, error, success, warning, info, neutral. | primitive (aliases) | Themes; charts that need a scale. A rebrand edits this file only. |
+| `themes/<name>/<name>.tokens.json` | Flat roles by purpose: `text.*`, `surface.*`, `border.*`, `action.*`, `status.*`, `focus.ring.*`, `disabled.*`, `state.*`, top level with no `color.` prefix. Each aliases `colors.*`. | semantic | Components. |
+
+The word **colors** needs care. In Carbon, `@carbon/colors` holds the palette. Here, palette holds the hues and colors holds the role scales. Every doc in this plugin uses these two words as defined here. Scales of 100 to 900 live in palette and colors; roles are flat and named by purpose (`docs/research/tokens-vs-foundations.md` § 2).
 
 ```json
-{
-  "color": {
-    "$type": "color",
-    "gray": {
-      "600": { "$value": "#5a6b80", "$description": "Mid gray. Primitive token." },
-      "900": { "$value": "#213547" }
-    },
-    "blue": {
-      "600": { "$value": "#244b7b" }
-    },
-    "text": {
-      "primary": { "$value": "{color.gray.900}", "$description": "Headings and primary text." },
-      "muted":   { "$value": "{color.gray.600}", "$description": "Labels and secondary text." }
-    },
-    "accent": {
-      "default": { "$value": "{color.blue.600}", "$description": "Primary actions and active states." }
-    }
-  },
-  "button": {
-    "$type": "color",
-    "background": { "$value": "{color.accent.default}", "$description": "Component token. Aliases a semantic token." }
-  }
-}
+// foundations/color/palette.tokens.json
+{ "palette": { "$type": "color",
+    "dark-blue": { "600": { "$value": "#244b7b", "$description": "Primitive. Never used by a component." } },
+    "gray": { "600": { "$value": "#5a6b80" }, "900": { "$value": "#213547" } } } }
+
+// foundations/color/colors.tokens.json
+{ "colors": { "$type": "color",
+    "primary": { "600": { "$value": "{palette.dark-blue.600}", "$description": "Which hue plays primary. The rebrand point." } },
+    "neutral": { "600": { "$value": "{palette.gray.600}" }, "900": { "$value": "{palette.gray.900}" } } } }
+
+// themes/light/light.tokens.json  (themes/dark/dark.tokens.json defines the same names)
+{ "text":   { "$type": "color",
+    "default": { "$value": "{colors.neutral.900}", "$description": "Headings and body text." },
+    "muted":   { "$value": "{colors.neutral.600}", "$description": "Labels and secondary text." } },
+  "action": { "$type": "color",
+    "primary":       { "$value": "{colors.primary.600}", "$description": "Fill of the primary action." },
+    "primary-hover": { "$value": "{colors.primary.700}", "$description": "Hover fill of the primary action." } } }
+
+// button.tokens.json  (optional component token, aliases a role)
+{ "button": { "$type": "color", "background": { "$value": "{action.primary}" } } }
 ```
 
-Tier 1 is `color.gray.*` and `color.blue.*`. Tier 2 is `color.text.*` and `color.accent.*`. Tier 3 is `button.background`.
+The chain for one component: `button.background` → `action.primary` → `colors.primary.600` → `palette.dark-blue.600` → `#244b7b`. Three alias hops from component token to palette, then the raw value. That is the soft limit of rule 7. Do not add a fourth hop.
 
 ## DTCG format
 
@@ -111,7 +119,7 @@ A composite token bundles values that always travel together. A field may be an 
     "1": {
       "$type": "shadow",
       "$value": {
-        "color": "{color.shadow.ambient}",
+        "color": "{palette.gray.900}",
         "offsetX": "0px",
         "offsetY": "2px",
         "blur": "6px",
@@ -144,12 +152,11 @@ Use `$extensions` for data the format does not define, such as design-tool scope
 
 ```json
 {
-  "color": {
-    "text": {
-      "muted": {
-        "$value": "{color.gray.600}",
-        "$extensions": { "com.example.ds": { "figmaScopes": ["TEXT_FILL"] } }
-      }
+  "text": {
+    "muted": {
+      "$type": "color",
+      "$value": "{colors.neutral.600}",
+      "$extensions": { "com.example.ds": { "figmaScopes": ["TEXT_FILL"] } }
     }
   }
 }
@@ -160,8 +167,8 @@ Use `$extensions` for data the format does not define, such as design-tool scope
 A token-architecture page carries these six sections. (Order: `docs/architecture.md` § Page contract.)
 
 ### 1. Introduction
-- Say what a token is, in plain words: one named decision with one value. Layer: token. (`taxonomy/layers.md`)
-- Show the three tiers as one chain: `button.background` to `color.accent.default` to `color.blue.600` to `#244b7b`.
+- Say what a token is, in plain words: the written-down form of one foundation decision, with one value. Not a layer. (`taxonomy/layers.md`)
+- Show the colour chain: `button.background` to `action.primary` to `colors.primary.600` to `palette.dark-blue.600` to `#244b7b`.
 
 ### 2. Tokens
 - The token groups the system defines, one table per foundation: name, tier, `$type`, value, `$description`.
@@ -173,7 +180,7 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 - An alias: `"{group.token}"`. It resolves to another token's value.
 
 ### 4. States
-- Tokens provide state through the name, not through a new tier. A state is a name segment on a semantic or component token: `color.accent.hover`, `button.background.disabled`. Vocabulary is in `naming.md`.
+- Tokens provide state through the name, not through a new tier. A state is a name suffix on a role or a component token: `action.primary-hover`, `button.background-disabled`. Vocabulary is in `naming.md`.
 - The states a token set must cover per interactive family: default, hover, pressed, focus-visible, disabled, selected, error, success. (`states/interaction-states.md`)
 - A theme changes the value of a state token. It does not add or remove states. (`theming.md`)
 - Show each state row with its resolved value per theme.
@@ -182,11 +189,11 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 - When to add a token: the value recurs with one intent. (Two-occurrence rule, `governance/contribution.md`)
 - When not to: a one-off value inside one component. Keep it local and comment it.
 - How: primitive token first, then the semantic alias, then a component token only if needed. Write `$description`. Run the build and the drift check. (`pipelines.md`)
-- Accessibility: contrast is checked on semantic pairs, per theme. (WCAG 1.4.3, AA; 1.4.11, AA)
+- Accessibility: contrast is checked on role pairs, per theme. (WCAG 1.4.3, AA; 1.4.11, AA)
 
 ### 6. Pitfalls and don'ts
-- A primitive token at a call site cannot follow a theme. (Tier rule, `theming.md`)
-- A component token aliasing a primitive token skips the semantic layer and breaks dark mode.
+- A primitive token (`palette.*`, `colors.*`) at a call site cannot follow a theme. (`misfile.palette-at-call-site`, `theming.md`)
+- A component token aliasing a primitive token skips the roles and breaks dark mode.
 - A token named for its value (`--ds-blue-light`) lies after the first retune. (`naming.md`)
 - A cycle or a missing alias target breaks every output. (DTCG: aliases must resolve.)
 - A token with no `$description` cannot be audited for intent.
@@ -195,7 +202,8 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 ## Why
 
 - Tiers separate what a value is from what it is for. Themes then need to change only tier 2.
-- Aliasing keeps one source per value. Retuning `gray.600` moves every text role that points at it.
+- Palette, colors and roles separate three decisions: which hues exist, which hue plays which part, and which part serves which purpose in a theme. Carbon splits palette (`@carbon/colors`) from themes (`@carbon/themes`); Primer splits base from functional tokens; Material 3 splits tonal palette from role.
+- Aliasing keeps one source per value. Retuning `palette.gray.600` moves every role that points at it.
 - DTCG gives one JSON format that design tools and build tools can share. That is why the plugin's core is DTCG and not a tool's private format.
 - Atlassian, Carbon, Primer and Polaris all publish tiered or role-named tokens. The tier names vary. The split between raw values and roles does not.
 
@@ -203,6 +211,8 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 
 - `token.no-raw-value` · auto · MEDIUM · Raw colour, size and time values appear only in token files.
 - `token.call-site-semantic` · auto · MEDIUM · Call sites reference semantic or component tokens, never primitive tokens.
+- `token.palette-direct` · auto · HIGH · No component or pattern reads `palette.*` or `colors.*`; roles only.
+- `token.theme-parity` · auto · HIGH · Every theme defines the same role names.
 - `token.component-aliases-semantic` · auto · MEDIUM · Component tokens alias semantic tokens.
 - `token.alias-resolves` · auto · HIGH · Every alias resolves and none is circular.
 - `token.description` · auto · LOW · Every semantic token has a `$description`.
@@ -212,10 +222,10 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 
 ## Misfiles
 
-- A scale (which values exist) is a foundation. A token is one member of it. (`taxonomy/layers.md`)
+- A scale (which values exist) is a foundation. A token is one member of it, and tokens are not a layer. (`taxonomy/layers.md`, `misfile.token-as-layer`)
 - A style rule such as `.ds-btn { ... }` is a component, not a token.
 - A Figma style or a Sass mixin is an output or a tool feature, not a token.
-- The value of a token, such as the exact blue, belongs to the foundation file. (`foundations/color.md`)
+- The value of a token, such as the exact blue, belongs to the foundation. (`foundations/color.md`)
 
 ## See also
 

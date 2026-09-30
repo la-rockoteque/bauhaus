@@ -7,8 +7,8 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 ## bauhaus/ — why the plugin thinks the way it does
 - `bauhaus/principles.md` — the Bauhaus school and movement, mapped to design-system principles (form follows function, the Vorkurs as the foundation layer, the workshops as components, the Gesamtkunstwerk as the system).
 
-## taxonomy/ — the four layers, and telling them apart
-- `taxonomy/layers.md` — foundation, token, component, pattern: definitions, boundaries, dependencies.
+## taxonomy/ — the three layers, and telling them apart
+- `taxonomy/layers.md` — foundation, component, pattern: definitions, boundaries, dependencies. Tokens are how foundations are stored, not a layer.
 - `taxonomy/decision-tree.md` — classify any artifact in five questions.
 - `taxonomy/misfiles.md` — the catalogue of wrong-layer artifacts, how to spot each, where it belongs.
 - `taxonomy/plain-language.md` — analogies, glossary and templates for explaining the system to non-designers.
@@ -20,7 +20,7 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 - `states/state-matrix.md` — the per-component matrix, how to author, test and grade it.
 
 ## foundations/ — the value families
-- `foundations/color.md`
+- `foundations/color.md` — palette, colors, roles.
 - `foundations/typography.md`
 - `foundations/spacing-layout.md` — spacing scale, grid, layout, breakpoints.
 - `foundations/shape.md` — radius, border widths, strokes.
@@ -29,10 +29,10 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 - `foundations/iconography.md`
 - `foundations/density.md` — compact / comfortable, target size.
 
-## tokens/ — storing decisions
-- `tokens/architecture.md` — tiers (primitive token, semantic, component), aliasing, DTCG format.
-- `tokens/naming.md` — naming grammar, prefixes, anti-patterns.
-- `tokens/theming.md` — modes: light/dark, brand, high contrast, density; what changes per theme.
+## tokens/ — how foundation decisions are stored
+- `tokens/architecture.md` — tiers (primitive token, semantic, component), aliasing, DTCG format, the colour chain.
+- `tokens/naming.md` — naming grammar (palette by hue, colors by role, roles by purpose), prefixes, anti-patterns.
+- `tokens/theming.md` — sibling themes (light default, dark): parity, contrast per theme, what changes per theme.
 - `tokens/pipelines.md` — DTCG → platforms, Style Dictionary, Tokens Studio, Figma variables, `scripts/tokens.mjs`.
 
 ## accessibility/

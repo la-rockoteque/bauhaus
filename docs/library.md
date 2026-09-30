@@ -13,10 +13,11 @@ packages/design-system/                 one package, one version, one public ent
 ├─ index.ts                             the public API; the app never deep-imports
 ├─ .storybook/                          main.ts globs ../**/*.stories.tsx and ../**/*.mdx
 ├─ foundations/
-│  ├─ color/        color.tokens.json · color.mdx · color.stories.tsx · color.rules.ts
+│  ├─ color/        palette.tokens.json · colors.tokens.json · color.mdx · color.stories.tsx · color.rules.ts
 │  ├─ spacing/      spacing.tokens.json · spacing.mdx · spacing.stories.tsx · spacing.rules.ts
 │  └─ typography/ motion/ elevation/ shape/ iconography/ density/ focus/
-├─ themes/
+├─ themes/                              siblings: every theme defines the same roles
+│  ├─ light/        light.tokens.json · light.mdx · light.stories.tsx   (the default)
 │  └─ dark/         dark.tokens.json · dark.mdx · dark.stories.tsx
 ├─ primitives/                          base building blocks other components are built from
 │  ├─ box/  text/  icon/  visually-hidden/
@@ -35,14 +36,23 @@ packages/design-system/                 one package, one version, one public ent
 
 ## The layers and where they live
 
-The layers are **foundation · token · component · pattern**. Folders follow them.
+The layers are **foundation · component · pattern**. Tokens are not a layer: they are the stored form of foundation and component decisions (`docs/architecture.md`).
 
-| Layer | Lives in | Notes |
+| Layer | Lives in | Its tokens |
 |---|---|---|
-| Foundation | `foundations/<name>/` | The slice holds the scale's page, stories, rules and **all tiers of its tokens**. |
-| Token | `<slice>/<name>.tokens.json` | Primitive and semantic tokens in the foundation slice. Component tokens, if any, in the component slice. Theme overrides in `themes/<name>/`. |
-| Component | `primitives/<name>/` or `components/<family>/<name>/` | A primitive is a component other components are built from. It is not a separate layer. |
-| Pattern | `patterns/<name>/` | Composes components. Has no tokens and no styles of its own. |
+| Foundation | `foundations/<name>/` | `<name>.tokens.json`: the primitive and semantic tiers of that family. |
+| Component | `primitives/<name>/` or `components/<family>/<name>/` | Optional `<name>.tokens.json` for component tokens, aliasing roles. |
+| Pattern | `patterns/<name>/` | None. A pattern has no tokens and no styles of its own. |
+
+### Colour: palette, colors, roles
+
+| File | Holds | Tier | Who uses it |
+|---|---|---|---|
+| `foundations/color/palette.tokens.json` | Named hues with grades: `palette.scarlet.100…900`, `palette.dark-blue.*`, `palette.teal.*`, `palette.gray.*`. Raw values. | primitive | `colors` only. Never a component. |
+| `foundations/color/colors.tokens.json` | Role scales: `colors.primary.100…900 → {palette.dark-blue.*}`, `colors.secondary.*`, `colors.error.*`, `colors.success.*`, `colors.warning.*`, `colors.info.*`, `colors.neutral.*`. | primitive (aliases) | Themes; charts and illustrations that need a scale. A rebrand edits this file only. |
+| `themes/<name>/<name>.tokens.json` | Flat roles by purpose: `text.default`, `text.muted`, `surface.default`, `surface.raised`, `border.default`, `action.primary`, `action.primary-hover`, `status.error`… each aliasing `colors.*`. | semantic | Components. |
+
+Every theme file defines the same role names (Carbon: "Color token names and roles are the same across themes, only the assigned value will change"). `light` is the default and also renders as `:root`. Palette and colors never change per theme.
 
 "Primitive" means only two things: the **primitive-token** tier, and the `primitives/` folder of base building blocks.
 

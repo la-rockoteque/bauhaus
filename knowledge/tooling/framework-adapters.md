@@ -20,7 +20,7 @@ sources:
 ## Rules
 
 1. Build tokens once from DTCG JSON. Emit CSS custom properties for the web and native formats for the rest. (Basis: `tokens/pipelines.md`.)
-2. Let a component read semantic tokens as CSS custom properties: `var(--ds-color-text-muted)`. It works in every web framework. (Basis: CSS custom properties are inherited and framework-neutral.)
+2. Let a component read semantic tokens as CSS custom properties: `var(--ds-text-muted)`. It works in every web framework. (Basis: CSS custom properties are inherited and framework-neutral.)
 3. Keep the rulebook and the styleguide framework-neutral. Only the components and the Storybook page are per framework. (Basis: `docs/architecture.md`.)
 4. Port behaviour, not markup. Wrap a headless library in each framework for Dialog, Combobox, Menu, Tabs and Tooltip. (Basis: `components/api-design.md`; APG keyboard contracts are long.)
 5. Give each adapter the same prop names and the same variant enums. (Basis: Nielsen 4; one vocabulary.)
@@ -61,7 +61,7 @@ sources:
 
 ## CSS-in-JS
 
-- Prefer CSS variables inside styled code: `color: var(--ds-color-text-muted)`. Themes then switch without a re-render.
+- Prefer CSS variables inside styled code: `color: var(--ds-text-muted)`. Themes then switch without a re-render.
 - If a theme object is required, generate it from tokens. Never hand-write values.
 - Zero-runtime libraries fit server rendering better than runtime ones.
 

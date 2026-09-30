@@ -2,7 +2,7 @@
 id: tokens/pipelines
 title: Token pipelines
 shelf: tokens
-layer: token
+layer: cross-cutting
 owner: ui-designer
 tags: [dtcg, style-dictionary, tokens-studio, figma, build, ci, drift]
 sources:
@@ -28,9 +28,10 @@ sources:
 7. Fail the build on an unresolved alias, a cycle, a missing `$type` or a duplicate path. (`token.alias-resolves`, `architecture.md`)
 8. Resolve aliases in each output only when the platform can keep them. CSS custom properties can reference each other with `var()`. Swift and Kotlin usually get resolved values. (A platform that cannot alias gets the value.)
 9. Give each output one job and one path. Do not let two outputs write the same file. (Overwrites are silent.)
-10. Run the contrast matrix on the built output for every theme. (`theming.md`; WCAG 1.4.3, AA; 1.4.11, AA)
-11. Treat the token folder as an API. A rename or removal is a breaking change. (`governance/versioning.md`)
-12. Keep the pipeline in the repo, run it from one command, and keep it reproducible offline where possible. (A pipeline that only one person can run is a single point of failure.)
+10. Run `tokens.mjs check` in CI. It asserts theme parity (the same role names in every theme) and warns when a component reads `palette.*` or `colors.*` directly. (`theming.md`; `misfile.palette-at-call-site`)
+11. Run the contrast matrix on the built output for every theme. (`theming.md`; WCAG 1.4.3, AA; 1.4.11, AA)
+12. Treat the token folder as an API. A rename or removal is a breaking change. (`governance/versioning.md`)
+13. Keep the pipeline in the repo, run it from one command, and keep it reproducible offline where possible. (A pipeline that only one person can run is a single point of failure.)
 
 ## Targets
 
@@ -93,10 +94,10 @@ The script reads `bauhaus.config.json`:
 
 | Field | Meaning |
 |---|---|
-| `tokens.source` | Folder of `*.tokens.json` files. It also holds the default theme. |
-| `tokens.themes` | Theme name to a folder of semantic overrides. |
+| `tokens.source` | Folder of `*.tokens.json` files: foundations (`palette`, `colors`, spacing…) and the default theme. |
+| `tokens.themes` | Theme name to its folder. Each theme is a full set of roles. |
 | `tokens.outputs` | List of `{ format, path }`. Formats: `css`, `scss`, `js`, `ts`, `json`, `tailwind`. |
-| `prefix` | Prefix for CSS custom properties: `ds` gives `--ds-color-text`. |
+| `prefix` | Prefix for CSS custom properties: `ds` gives `--ds-text-default`. |
 
 The mapping from token path to CSS name is in `naming.md`.
 
@@ -147,7 +148,7 @@ The step fails when a committed output does not match a fresh build. Add a secon
 A pipelines page carries these six sections. (Order: `docs/architecture.md` § Page contract.)
 
 ### 1. Introduction
-- Say what a pipeline does: it turns one token source into every platform's format. Layer: token. (`taxonomy/layers.md`)
+- Say what a pipeline does: it turns the stored foundation decisions into every platform's format. (`taxonomy/layers.md`)
 - Lead with a diagram: DTCG source, build, outputs, CI check.
 
 ### 2. Tokens

@@ -31,7 +31,7 @@ Writes `bauhaus.config.json` (validated against the schema), creates the token s
    - Always allowed: `json` for design tools.
    Ask for each output path. Default the folder to `src/styles/tokens/` or the nearest existing styles folder.
 6. **Ask the token source folder.** Default `design/tokens`. Create it.
-7. **Seed the tokens.** Copy `${CLAUDE_PLUGIN_ROOT}/kit/tokens/*.tokens.json` into the folder. Replace nothing that already exists. Tell the user the seed values are a starting point. `/bauhaus:foundation` proposes real ones.
+7. **Seed the tokens.** Copy `${CLAUDE_PLUGIN_ROOT}/kit/tokens/` into the folder, including `themes/light` and `themes/dark`: `palette.tokens.json` (named hues), `colors.tokens.json` (role scales) and one roles file per sibling theme. Register the themes in `tokens.themes` and set `tokens.defaultTheme` to `light`. Replace nothing that already exists. Tell the user the seed values are a starting point. `/bauhaus:foundation` proposes real ones.
 8. **Set language and house values.** Ask one question only if the repo has no clear signal: UI language. Default `en` for code, ui and reports. Leave `house` unset unless the user names a standard (AAA contrast, 44px targets).
 9. **Write the config.** Include `"$schema": "<path to bauhaus.config.schema.json>"` so editors validate it. Use only keys the schema allows. `additionalProperties` is false everywhere.
 10. **Validate.**
@@ -49,6 +49,8 @@ Writes `bauhaus.config.json` (validated against the schema), creates the token s
   "prefix": "ac",
   "tokens": {
     "source": "design/tokens",
+    "themes": { "light": "design/tokens/themes/light", "dark": "design/tokens/themes/dark" },
+    "defaultTheme": "light",
     "outputs": [
       { "format": "css", "path": "src/styles/tokens.css" },
       { "format": "ts", "path": "src/styles/tokens.ts" }

@@ -43,23 +43,21 @@ Example:
 ```
 Plain:   The grey text on this card is too pale. Some people cannot read it, even
          on a good screen. Make it a bit darker.
-Precise: `color.text.muted` on `color.surface.soft` measures 3.8:1. WCAG 1.4.3 (AA)
-         needs 4.5:1 for body text. Point the token at `color.gray.700`.
+Precise: `text.muted` on `surface.sunken` measures 3.8:1 in the light theme. WCAG 1.4.3 (AA)
+         needs 4.5:1 for body text. Point the role at `colors.neutral.700`.
 ```
 
-## Analogies for the four layers
+## Analogies for the three layers
 
 | Layer | Plain picture | Where it fits | Where it stops |
 |---|---|---|---|
-| **Foundation** | The grammar of a language. Or the measuring system of a city: metres, not "about this long". | It sets what is allowed and why, before any word is said. | Grammar has no single value; a foundation does have a scale. |
-| **Token** | A word in the dictionary. Or a paint swatch with a name on the tin: "Harbour Blue". | One name, one meaning, used everywhere. Change the tin and every wall changes. | A word has no "value". A swatch has one. |
+| **Foundation** | The grammar of a language. Or the measuring system of a city: metres, not "about this long". Its values are written down as tokens: the labelled paint swatches and the numbered ruler marks. | It sets what is allowed and why, before any word is said. The written-down values are the same rules in a form a machine can read. | Grammar has no single value; a foundation does have a scale. |
 | **Component** | A LEGO brick. Or a kitchen utensil: a whisk whisks. | One job, a known shape, reusable, fits with others. | A brick has no states; a component has hover, focus and disabled. |
 | **Pattern** | A recipe. Or a floor plan for a common room, such as a kitchen. | It says which bricks to use, and in what order, for a known need. | A recipe adds no new ingredient. That is the rule: a pattern adds no new value. |
 
 One sentence per layer for a mixed audience:
 
-- Foundation: "The rules of the game: which sizes, colours and steps exist, and why."
-- Token: "A named choice, like 'main text colour'. Written once. Used everywhere."
+- Foundation: "The rules of the game: which sizes, colours and steps exist, and why. Each choice is written down once, with a name, like 'main text colour'."
 - Component: "A small part that does one job, like a button."
 - Pattern: "A tested way to combine parts for a common need, like a list with a search box."
 
@@ -68,10 +66,14 @@ One sentence per layer for a mixed audience:
 | Term | Plain picture | Notes |
 |---|---|---|
 | **Design system** | The whole kitchen: tools, recipes, the labelled shelves and the house rules. | Not only the tools. |
+| **Token** | The written-down form of a foundation choice: a named swatch, stored once. | Not a fourth kind of thing. It is how the foundation is stored. |
+| **Palette** | The shelf of paint tins, each named by its colour: scarlet, dark blue, teal. | Nobody paints from the shelf. |
+| **Colors** | The plan that says which tin plays "main", which plays "warning". | Repaint the plan, and the whole house changes. |
+| **Role** | The label on the wall plan: "living-room wall". | Says what it is for. Each theme picks the tin. |
 | **Primitive token** | The paint tin with its raw colour. | Nobody paints from an unlabelled tin. |
 | **Semantic token** | The label on the wall plan: "living-room wall". | Says what it is for. The tin behind it can change. |
 | **Alias** | A forwarding address. "Main text colour" forwards to "grey 700". | Change the target; every sender still arrives. |
-| **Theme** | A different lamp in the same room. The furniture stays. The mood changes. | Dark mode is a theme. |
+| **Theme** | A different lamp in the same room. The furniture stays. The mood changes. | Light and dark are two lamps of equal standing. Each answers every question the room asks. |
 | **Scale** | The steps of a staircase. Equal, few, and no half-steps hidden behind the door. | A scale with holes is not a scale. |
 | **Rulebook** | The exam paper for each part, with a fixed number per question. | Each question keeps its number. |
 | **Rule** | One question on the paper: "Does the button show focus?" | Answered yes or no, or graded by a person. |
@@ -108,12 +110,15 @@ See [../states/model.md](../states/model.md) for the full state model.
 |---|---|
 | Design system (DSM) | The shared set of parts, rules and guides that keeps a product looking and acting the same. |
 | Foundation | A family of values with a scale and a reason: colour, spacing, type. |
-| Token | A named choice, stored once. |
+| Token | The written-down form of a foundation choice, stored once with a name. Not a layer. |
+| Palette | The named hues, with a scale of grades for each. Never used by a part directly. |
+| Colors | Which hue plays main, warning, error and so on. Change it to rebrand. |
+| Role | What a colour is for, like "main text". Each theme gives it a value. |
 | Primitive token | A raw value on a scale, like "blue 600". |
 | Semantic token | A token that says what the value is for, like "main text colour". |
 | Component token | A token used by one part only. |
 | Alias | A token that points to another token. |
-| Theme | A swap of some semantic tokens, for example dark mode. |
+| Theme | A full set of role values, for example light or dark. Every theme answers the same roles. |
 | Component | A small reusable part with one job. |
 | Pattern | A recipe that combines parts for a common need. |
 | Variant | A look you choose for a part, like "primary" or "secondary". |
@@ -125,7 +130,7 @@ See [../states/model.md](../states/model.md) for the full state model.
 | Slot | A place inside a part where you can put your own content. |
 | Prop | A setting you pass to a part. |
 | Scale | A fixed set of steps for one kind of value. |
-| Ramp | A scale of one colour from light to dark. |
+| Ramp | A scale of one hue from light to dark, as in the palette. |
 | Contrast ratio | How different the text is from its background. Higher is easier to read. |
 | Focus ring | The outline that shows where the keyboard is. |
 | Target size | How big the clickable area is. |
@@ -192,7 +197,7 @@ Example:
 ```
 Finding:  misfile.raw-value-in-component — `#244b7b` in Card.css line 14
 Where:    src/components/Card/Card.css
-Fix:      replace with var(--ds-color-action-primary); token exists
+Fix:      replace with var(--ds-action-primary); role exists
 Basis:    tokens are the only place a raw value may appear (layers.md rule 3)
 ```
 
@@ -221,7 +226,7 @@ Ask:       Approve two sprints to move the five most used screens onto shared pa
 **Good:**
 
 > Plain: The button uses a raw paint colour instead of the labelled one. If we change the brand colour, this button will not follow.
-> Precise: `Button.css` reads `--ds-color-blue-600` (tier 1). Use `--ds-color-action-primary` (tier 2). Rule: `misfile.primitive-token-at-call-site`.
+> Precise: `Button.css` reads `--ds-palette-dark-blue-600` (palette). Use `--ds-action-primary` (role). Rule: `misfile.palette-at-call-site`.
 
 **Bad** — analogy replaces the basis:
 
@@ -230,7 +235,7 @@ Ask:       Approve two sprints to move the five most used screens onto shared pa
 **Good:**
 
 > Plain: The pale grey label is hard to read. Think of small print on a grey background.
-> Precise: 3.8:1 against `color.surface.soft`. WCAG 1.4.3 (AA) needs 4.5:1.
+> Precise: 3.8:1 against `surface.sunken`. WCAG 1.4.3 (AA) needs 4.5:1.
 
 **Bad** — vague:
 
@@ -272,7 +277,7 @@ Short version of ASD-STE100 for a finding or an answer.
 ## Misfiles
 
 - Vulgarisation used as a substitute for a basis. See rule 10.
-- Analogies that name a layer wrongly. "A token is a component" mixes layers; see [layers.md](layers.md).
+- Analogies that name a layer wrongly. "A token is a component" mixes layers; "tokens are the fourth layer" is `misfile.token-as-layer`. See [layers.md](layers.md).
 - Glossary entries that use a banned synonym ("atom", "skin", "checklist"). Use the ubiquitous-language term.
 
 ## See also

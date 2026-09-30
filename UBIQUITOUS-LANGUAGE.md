@@ -5,12 +5,16 @@ One term per concept. Agents, skills, knowledge files and reports use these word
 | Term | Meaning | Not |
 |---|---|---|
 | **Design system (DSM)** | Everything a product uses to stay visually and behaviourally coherent: tokens, components, patterns, styleguide, Storybook, rulebook. | "UI kit", "component library" (those are parts of it) |
-| **Foundation** | A system-wide value family: colour, typography, spacing, radius, border, elevation, z-index, motion, iconography, density, breakpoints. | "base styles" |
-| **Token** | A named design decision, stored as DTCG JSON. The only place a raw value may appear. | "variable" (a variable is one output of a token) |
+| **Layer** | One of the three kinds of design-system artifact: **foundation**, **component**, **pattern**. Tokens are not a layer. | |
+| **Foundation** | A system-wide value family and its scale: colour, typography, spacing, radius, border, elevation, z-index, motion, iconography, density, breakpoints. Its decisions are stored as tokens. | "base styles" |
+| **Token** | A named design decision, stored as DTCG JSON: the storage and delivery format of foundation and component decisions, not a layer. The only place a raw value may appear. | "variable" (a variable is one output of a token) |
+| **Palette** | The colour foundation's primitive tokens: named hues with grades, `palette.scarlet.600`. File `palette.tokens.json`. Never used by a component. | "colors" (in this system, colors is the role scales) |
+| **Colors** | The role scales: `colors.primary.600 → {palette.dark-blue.600}`. File `colors.tokens.json`. The rebrand point: which hue plays primary, secondary, error… | "brand palette" |
+| **Role** | A flat semantic colour named by purpose, defined per theme: `action.primary`, `text.default`, `surface.raised`. What components use. | "semantic colour" |
 | **Primitive token** | Tier 1. A raw value on a scale: `color.blue.600`, `duration.150`. Never used by a call site. | "global token" |
 | **Semantic token** | Tier 2. An intent that aliases a primitive: `color.text.muted`, `motion.duration.fast`. What call sites use. | "alias token" |
 | **Component token** | Tier 3. A semantic token scoped to one component: `button.radius`. Optional. | |
-| **Theme** | A set of semantic-token overrides selected at runtime: light, dark, brand, high-contrast, density. Primitive tokens never change per theme. | "skin" |
+| **Theme** | A full set of role values, one file per theme, siblings (`themes/light`, `themes/dark`). Every theme defines the same role names; only the values change. Palette and colors never change per theme. | "skin", "dark override" |
 | **Component** | A reusable UI block owned by the design system that can stand alone: Button, Text field, Dialog. Lives in `primitives/` or `components/<family>/`. | "atom", "widget", "primitive" as a layer |
 | **Primitive** | A base building-block component other components are built from: Box, Text, Icon, Visually hidden. Lives in `primitives/`. A kind of component, not a layer. Also the first word of *primitive token*. | |
 | **Family** | A role group of components under `components/`: clickables, fields, data-structures, feedback, overlays, navigation. Exists from 2 members. | "category" |

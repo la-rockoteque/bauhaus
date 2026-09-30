@@ -66,7 +66,7 @@ sources:
 - Use a sequential ramp for ordered data, a diverging ramp only around a real midpoint, and a categorical set for unordered series.
 - Use at most five categorical hues. Beyond that, group or filter.
 - Add a second cue: line dash, marker shape, direct label.
-- Take the series colours from the data-visualisation tokens, for example `--ds-dataviz-1` to `--ds-dataviz-5`. Never a raw value at the call site. (Basis: `foundations/color.md`.)
+- Take the series colours from the `data` roles, for example `--ds-data-1` to `--ds-data-5`, or from a `colors` scale for sequential data. Never a raw value at the call site. (Basis: `foundations/color.md`.)
 
 ## Why
 

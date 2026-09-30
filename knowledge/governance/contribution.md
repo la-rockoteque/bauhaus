@@ -119,7 +119,7 @@ Separate the authoring pass from the review pass. The author does not approve th
 
 | Agent | Owns | Reads | Hands off to |
 |---|---|---|---|
-| **design-system-architect** | The four layers, classification, the foundations' structure, versioning, the rulebook shape, maturity, metrics | `taxonomy/*`, `governance/*`, `tokens/*` | The specialists below for the measurable and the judgemental halves |
+| **design-system-architect** | The three layers, classification, the foundations' structure, versioning, the rulebook shape, maturity, metrics | `taxonomy/*`, `governance/*`, `tokens/*` | The specialists below for the measurable and the judgemental halves |
 | **ui-designer** | The measurable half: tokens, components, typography, spacing, radius, elevation, colour and contrast, focus appearance, iconography, density. Writes the `auto` rules | `foundations/*`, `components/*`, `accessibility/wcag-map.md` | ux-designer for flow and wording; motion-designer for motion |
 | **ux-designer** | The judgement half: flows, states, wording, keyboard journeys, whether a data shape wants a table. Grades `review` rules | `patterns/*`, `accessibility/apg-patterns.md` | ui-designer for a token or a look |
 | **motion-designer** | Durations, easing, choreography, reduced motion | `foundations/motion.md` | ui-designer for tokens; ux-designer for whether the motion helps |

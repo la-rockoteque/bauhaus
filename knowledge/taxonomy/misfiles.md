@@ -4,11 +4,12 @@ title: Misfiles — wrong-layer artifacts
 shelf: taxonomy
 layer: cross-cutting
 owner: design-system-architect
-tags: [audit, misclassification, grep, foundation, token, component, pattern, state, theme]
+tags: [audit, misclassification, grep, foundation, token, component, pattern, state, theme, palette]
 sources:
-  - Bauhaus architecture contract — docs/architecture.md § The four layers
+  - Bauhaus architecture contract — docs/architecture.md § The three layers
   - W3C Design Tokens Community Group, Design Tokens Format Module — https://www.w3.org/community/design-tokens/
   - WCAG 2.2 1.4.1 (A), 1.4.11 (AA), 2.4.7 (AA) — https://www.w3.org/TR/WCAG22/
+  - Atlassian, Design tokens — https://atlassian.design/foundations/design-tokens/ ("Design tokens are the new way to apply visual foundations"); Material 3 Foundations — https://m3.material.io/foundations (design tokens sit inside Foundations); Primer, Color usage — https://primer.style/product/getting-started/foundations/color-usage/ (base colour tokens "should never be used directly in code or design"); Carbon, Color overview — https://carbondesignsystem.com/elements/color/overview/ ("Color token names and roles are the same across themes")
   - Robert C. Martin, "Screaming Architecture", 2011
   - Jimmy Bogard, "Vertical Slice Architecture", 2018
 ---
@@ -33,26 +34,26 @@ The grep patterns assume this naming. Adapt them to the project's grammar in `ba
 
 | Tier | Example custom property |
 |---|---|
-| Primitive token | `--ds-color-blue-600`, `--ds-space-3` |
-| Semantic token | `--ds-color-text-muted`, `--ds-space-inline-gap` |
+| Primitive token | `--ds-palette-dark-blue-600`, `--ds-colors-primary-600`, `--ds-space-3` |
+| Semantic token (colour: a role) | `--ds-text-muted`, `--ds-action-primary`, `--ds-space-inline-gap` |
 | Component token | `--ds-button-radius` |
 
-Call sites are everything outside the token source and outside the semantic-token layer (components, pages, stories, styleguide examples).
+Call sites are everything outside the token source and outside the semantic tokens (components, pages, stories, styleguide examples).
 
-## Values leaked below the token layer
+## Values leaked outside the token source
 
 ### misfile.raw-value-in-component
 - **Symptom:** A component stylesheet holds `#244b7b`, `12px` or `150ms`.
 - **Detect:** `grep -rEn '#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(' <components>` excluding the token source. Same for lengths `[0-9]+px` on colour, radius, shadow and font properties.
 - **Why it hurts:** A theme cannot change it. A contrast audit cannot see it. A rename does not reach it.
-- **Belongs:** The token layer, as a semantic token that aliases a tier-1 value.
+- **Belongs:** The token source, as a semantic token that aliases a tier-1 value (for colour, a role).
 - **Smallest fix:** Find the exact token. If none, add a semantic token first. Then replace the literal. Never add a one-off token.
 
 ### misfile.magic-z-index
 - **Symptom:** `z-index: 9999` or any bare integer at a call site.
 - **Detect:** `grep -rEn 'z-index:\s*[0-9]+' <components>`
 - **Why it hurts:** Stacking wars. Nobody knows which layer wins. Elevation is meaning; z-index is implementation
-- **Belongs:** The z-index foundation: named layers as tokens (`--ds-z-modal`).
+- **Belongs:** The z-index foundation: named layers stored as tokens (`--ds-z-modal`).
 - **Smallest fix:** Replace the integer with the nearest named layer. If none fits, propose a layer in the foundation.
 
 ### misfile.media-query-literal
@@ -66,16 +67,16 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Symptom:** A state rule holds a literal: `.btn:hover { background: #1a3a5c }`, `:disabled { opacity: .4 }`.
 - **Detect:** `grep -rEn ':(hover|active|focus|focus-visible|disabled)[^{]*\{[^}]*(#[0-9a-fA-F]{3,8}|rgba?\()' <components>`
 - **Why it hurts:** The state cannot be themed. A dark theme keeps the light colour. Focus indicators can fall below 3:1 (WCAG 1.4.11, AA) and nobody sees it.
-- **Belongs:** A semantic state token (`--ds-color-action-primary-hover`, `--ds-color-state-disabled-text`).
-- **Smallest fix:** Add the state token, aliasing a tier-1 value. Reference it in the state rule. See [../states/interaction-states.md](../states/interaction-states.md).
+- **Belongs:** A state role (`--ds-action-primary-hover`, `--ds-disabled-text`).
+- **Smallest fix:** Add the state role to every theme, aliasing `colors.*`. Reference it in the state rule. See [../states/interaction-states.md](../states/interaction-states.md).
 
-## Tier confusion inside the token layer
+## Tier confusion inside the stored tokens
 
 ### misfile.primitive-token-at-call-site
-- **Symptom:** A component uses `var(--ds-color-blue-600)`.
+- **Symptom:** A component uses `var(--ds-space-3)` where `--ds-space-inset-md` exists, or (for colour) `var(--ds-palette-dark-blue-600)`. Colour has its own id: `misfile.palette-at-call-site`.
 - **Detect:** `grep -rEn 'var\(--ds-[a-z]+-[a-z]+-[0-9]{1,3}\)' <components>` (tier-1 names end in a scale step).
 - **Why it hurts:** The name carries no intent. A theme cannot remap it. Changing "primary" means editing every component.
-- **Belongs:** A semantic token in between (`--ds-color-action-primary`).
+- **Belongs:** A semantic token in between (`--ds-space-inset-md`; for colour, `--ds-action-primary`).
 - **Smallest fix:** Add the semantic token. Point the call site at it.
 
 ### misfile.component-token-as-semantic
@@ -87,37 +88,44 @@ Call sites are everything outside the token source and outside the semantic-toke
 
 ### misfile.semantic-holds-raw-value
 - **Symptom:** A tier-2 token has `$value: "#5a6b80"` instead of an alias.
-- **Detect:** In the tokens JSON, a token under `color.text.*`, `space.*` (semantic groups) whose `$value` is not `{...}`.
+- **Detect:** In the tokens JSON, a token under `text.*`, `surface.*`, `action.*`, `space.inset.*` (semantic groups) whose `$value` is not `{...}`.
 - **Why it hurts:** The tier-1 scale is bypassed. The value exists twice or never in the scale.
 - **Belongs:** Tier 1 holds the value. Tier 2 aliases it.
 - **Smallest fix:** Add the value to the scale (or reuse a step). Replace the raw value with the alias.
 
 ### misfile.primitive-token-aliases-upward
-- **Symptom:** `color.blue.600` aliases `{color.action.primary}`.
+- **Symptom:** `palette.dark-blue.600` aliases `{action.primary}`.
 - **Detect:** A tier-1 token whose `$value` is an alias into a semantic group.
 - **Why it hurts:** A cycle in intent. A theme change can rewrite the palette.
 - **Belongs:** Aliases point down: component → semantic → primitive token.
 - **Smallest fix:** Give the tier-1 token its raw value. Move the intent to a semantic token.
 
+### misfile.palette-at-call-site
+- **Symptom:** A component or pattern uses `palette.*` or `colors.*` instead of a role: `var(--ds-palette-dark-blue-600)`, `var(--ds-colors-primary-600)`.
+- **Detect:** `grep -rEn 'var\(--ds-(palette|colors)-' <components> <patterns>`. In tokens JSON, a component token whose `$value` starts with `{palette.` or `{colors.`.
+- **Why it hurts:** The palette does not respect themes. The dark theme cannot remap it, so the component keeps its light colour. Primer: base colour tokens "should never be used directly in code or design". Material 3: component tokens "should point to a system or reference token" through roles. Contrast is checked on role pairs, so a direct reference escapes the check (WCAG 1.4.3, AA; 1.4.11, AA).
+- **Belongs:** A role (`action.primary`, `text.muted`, `status.error`). Charts that need a scale may read `colors.*` in the chart foundation's own slice, not in a component.
+- **Smallest fix:** Find the role with the same job. If none exists, add it to every theme, aliasing `colors.*`. Point the call site at the role.
+
 ### misfile.token-named-after-value
 - **Symptom:** `--ds-blue`, `--ds-space-12px`, `--ds-red-text` at tier 2.
 - **Detect:** `grep -rEn -- '--ds-(red|green|blue|amber|gray|grey|black|white)\b|--ds-[a-z-]*-[0-9]+px' <tokens>` at semantic level.
 - **Why it hurts:** In a dark theme "blue" may be white. The name lies. Renaming later is a breaking change.
-- **Belongs:** A semantic name that states the job (`color.action.primary`, `space.inline.gap`). A tier-1 name may carry a hue and step (`blue.600`), never a raw value.
+- **Belongs:** A semantic name that states the job (`action.primary`, `space.inline.gap`). A tier-1 name may carry a hue and grade (`dark-blue.600`), never a raw value.
 - **Smallest fix:** Add the intent-named token. Keep the old name as a deprecated alias for one window (see [../governance/versioning.md](../governance/versioning.md)).
 
 ### misfile.token-named-after-business
 - **Symptom:** `--ds-shipment-late-red`, `--ds-checkout-cta`.
 - **Detect:** Token names holding a feature or domain noun.
 - **Why it hurts:** Ties the system to one feature. Not reusable. Dies when the feature does.
-- **Belongs:** A status intent (`color.status.error`) used by the feature.
+- **Belongs:** A status role (`status.error`) used by the feature.
 - **Smallest fix:** Rename by intent. The feature maps its domain word to the status.
 
 ### misfile.token-without-foundation
 - **Symptom:** A token for a family that has no scale or page: `--ds-magic-offset-7`.
 - **Detect:** A token group with no matching foundation page in the styleguide.
 - **Why it hurts:** An arbitrary number with no rule. Others copy it. The scale grows holes.
-- **Belongs:** A foundation, proposed first (rationale, scale, limits), then populated.
+- **Belongs:** A foundation, proposed first (rationale, scale, limits), then stored as tokens.
 - **Smallest fix:** Write the foundation section. Or fold the value into an existing scale step and delete the token.
 
 ## Foundation confusion
@@ -126,29 +134,36 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Symptom:** The "Colours" page is a swatch table with no reasoning.
 - **Detect:** A foundation section that has no rationale, no usage rule and no constraint. Only a generated table.
 - **Why it hurts:** People pick a swatch by look. Contrast pairs and limits go unwritten. The scale cannot be defended.
-- **Belongs:** The foundation holds the scale, the reason and the rules. The table is a generated view of tokens.
+- **Belongs:** The foundation holds the scale, the reason and the rules. The table is a generated view of its tokens.
 - **Smallest fix:** Add three paragraphs: why this scale, which steps mean what, which pairs must pass (WCAG 1.4.3, AA).
 
 ### misfile.colors-page-lists-component-states
 - **Symptom:** The "Colours" page lists "button hover", "input error border", "tab active".
 - **Detect:** Foundation pages that name components.
 - **Why it hurts:** The foundation now changes whenever a component does. The family loses its shape.
-- **Belongs:** Component states live in the component's state matrix, styled by semantic state tokens. The colour page shows the ramp and the status set.
+- **Belongs:** Component states live in the component's state matrix, styled by state roles. The colour page shows the ramp and the status set.
 - **Smallest fix:** Move each row into the component's page. Leave a link.
 
 ### misfile.theme-as-foundation
 - **Symptom:** "Dark mode" is a foundation page with its own scale.
 - **Detect:** A foundations list containing a mode name (dark, brand, high contrast).
 - **Why it hurts:** A theme has no scale. It remaps intents. Filing it as a family invites a parallel token tree.
-- **Belongs:** Theming, over semantic tokens (see [../tokens/theming.md](../tokens/theming.md)).
-- **Smallest fix:** Rename the section "Themes". Keep one token tree with per-theme overrides.
+- **Belongs:** A sibling theme that defines every role (see [../tokens/theming.md](../tokens/theming.md)).
+- **Smallest fix:** Rename the section "Themes". Keep one palette and one colors file, and one roles file per theme.
 
 ### misfile.theme-overrides-primitive-tokens
-- **Symptom:** The dark theme edits `Button` styles, or redefines `color.blue.600`.
-- **Detect:** A theme file that holds selectors, or overrides tier-1 or tier-3 tokens.
+- **Symptom:** The dark theme edits `Button` styles, or redefines `palette.dark-blue.600`.
+- **Detect:** A theme file that holds selectors, or defines palette, colors or component tokens.
 - **Why it hurts:** Themes multiply components. The same blue now means two things.
-- **Belongs:** A theme overrides semantic tokens only.
-- **Smallest fix:** Move the override up to the semantic token. Delete the override on the primitive token.
+- **Belongs:** A theme holds roles only.
+- **Smallest fix:** Move the override up to a role. Delete the palette or component override.
+
+### misfile.theme-not-sibling
+- **Symptom:** `themes/dark` lists only the roles that differ from light, or rewrites palette or colors values. Roles exist in one theme and not in another.
+- **Detect:** Compare the role names of every `themes/*/*.tokens.json`: the sets must be equal (`scripts/tokens.mjs check`). A theme file that defines `palette.*` or `colors.*`.
+- **Why it hurts:** A missing role has no colour in that theme, or inherits one nobody tested. A rewritten palette makes one hue mean two things. Carbon: "Color token names and roles are the same across themes, only the assigned value will change".
+- **Belongs:** A sibling theme: a full set of role values, same names as every other theme. `light` is the default.
+- **Smallest fix:** Copy the missing roles into the theme with their own values. Move palette rewrites into a role that picks a different `colors` grade.
 
 ### misfile.value-only-in-docs
 - **Symptom:** A value appears in the styleguide prose (`spacing is 12px`) but not in tokens.
@@ -223,8 +238,8 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Symptom:** `<Button variant="disabled">`, `variant="loading"`, `variant="selected"`.
 - **Detect:** `grep -rEn 'variant[=:]\s*["'"'"']?(disabled|loading|selected|active|error|hover|focus)' <components>` and union types holding state names.
 - **Why it hurts:** A variant is chosen by a designer. A state is imposed by the user or the data. Modelled as a variant, it skips ARIA (`aria-disabled`, `aria-busy`, `aria-selected`) and cannot combine (a disabled secondary button).
-- **Belongs:** A state of the component: a prop (`disabled`, `loading`) or a pseudo-class, styled by state tokens.
-- **Smallest fix:** Turn the variant into a boolean prop. Map it to the attribute and the state token. Keep a deprecated alias for one window.
+- **Belongs:** A state of the component: a prop (`disabled`, `loading`) or a pseudo-class, styled by state roles.
+- **Smallest fix:** Turn the variant into a boolean prop. Map it to the attribute and the state role. Keep a deprecated alias for one window.
 
 ### misfile.state-only-happy-path
 - **Symptom:** A component or pattern documents and tests only the ideal state. No empty, loading, error, too-many, disabled or focus story.
@@ -238,9 +253,16 @@ Call sites are everything outside the token source and outside the semantic-toke
 ### misfile.primitive-as-layer
 - **Symptom:** A doc, a folder tree or a Storybook sidebar treats "primitives" as a layer next to components.
 - **Detect:** `grep -rniE 'primitives? (layer|tier)|layers?:.*primitive' docs <library>` and a root `primitives/` listed beside `foundations/`, `components/` and `patterns/` as its own layer.
-- **Why it hurts:** The four layers blur into five. "Is it a primitive or a component?" has no answer, and the gates apply twice.
+- **Why it hurts:** The three layers blur into four. "Is it a primitive or a component?" has no answer, and the gates apply twice.
 - **Belongs:** A component kind. A base building block that other components are built from (`Box`, `Text`, `Icon`) lives in `primitives/` and is a component. "Primitive" otherwise names only the tier-1 primitive token.
-- **Smallest fix:** Rewrite the doc to say four layers. Keep `primitives/` as a folder of base components. Do not add a fifth layer.
+- **Smallest fix:** Rewrite the doc to say three layers. Keep `primitives/` as a folder of base components. Do not add a fourth layer.
+
+### misfile.token-as-layer
+- **Symptom:** A doc, a folder tree or a Storybook sidebar lists "Tokens" as a layer next to foundations and components: `tokens/` beside `foundations/`, a layer list that reads "foundation, token, component, pattern".
+- **Detect:** `grep -rniE 'token layer|layers?:.*token' docs <library>`; a root `tokens/` folder next to `foundations/`, `components/` and `patterns/`.
+- **Why it hurts:** Tokens carry foundation decisions. A second home for the same decision splits colour into a "colour" page and a "colour tokens" tree that drift. Atlassian: "Design tokens are the new way to apply visual foundations". Material 3 files design tokens under Foundations. DTCG defines a token as a name/value pair, a format and not a layer.
+- **Belongs:** Inside the foundation slice (`foundations/<name>/<name>.tokens.json`); component tokens inside the component slice. Tiers (primitive, semantic, component) stay as an attribute of a token.
+- **Smallest fix:** Move each token file into its foundation slice. Rewrite the doc to say three layers.
 
 ### misfile.folder-by-file-type
 - **Symptom:** Folders named `hooks/`, `utils/`, `helpers/`, `common/`, `shared/`, `types/`, `constants/`, `styles/` or `stories/`.
@@ -279,6 +301,9 @@ Call sites are everything outside the token source and outside the semantic-toke
 - `misfile.media-query-literal` · auto · MEDIUM · No literal breakpoint in a media query.
 - `misfile.state-colour-literal` · auto · HIGH · No literal in a state rule.
 - `misfile.primitive-token-at-call-site` · auto · MEDIUM · Call sites use semantic tokens only.
+- `misfile.palette-at-call-site` · auto · HIGH · No component or pattern reads `palette.*` or `colors.*`; roles only.
+- `misfile.theme-not-sibling` · auto · HIGH · Every theme defines the same role names and no palette or colors value.
+- `misfile.token-as-layer` · review · MEDIUM · Tokens are not filed or documented as a layer next to foundations.
 - `misfile.component-token-as-semantic` · auto · MEDIUM · A component token is read by its own component only.
 - `misfile.semantic-holds-raw-value` · auto · MEDIUM · Tier-2 tokens are aliases.
 - `misfile.token-named-after-value` · auto · MEDIUM · Semantic names carry no colour word or raw value.

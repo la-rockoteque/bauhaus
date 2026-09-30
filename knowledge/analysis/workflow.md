@@ -20,7 +20,7 @@ sources:
 
 ## Rules
 
-1. Run the phases in order. Never start a phase before the artifacts of the phase before it exist. (Each phase reads the previous one: tokens need a scale, components need tokens, patterns need components. See § Why this order.)
+1. Run the phases in order. Never start a phase before the artifacts of the phase before it exist. (Each phase reads the previous one: tokens need a scale, components need roles, patterns need components. See § Why this order.)
 2. Read and infer in phases 1 to 8. Edit source in phase 9 only. (A wrong inference costs nothing until code changes.)
 3. Put one gate after every phase that makes a decision: 1, 3, 4, 5, 6, 8 and each batch of 9. Ask one focused question with 2 to 4 options and state the cost. (`knowledge/governance/contribution.md`: propose before you populate.)
 4. Let scripts count and agents judge. An agent never counts by eye what a script can count. A script never decides a name or a merge. (Counts are reproducible. Judgement needs the user's product context.)
@@ -29,7 +29,7 @@ sources:
 7. Weight every inference by usage. A value used 40 times outranks a value used once. (`knowledge/analysis/scale-inference.md`.)
 8. Promote nothing that occurs once. One-offs are outliers. (`knowledge/governance/contribution.md`: two or more occurrences.)
 9. State the delta for every merge or snap: pixels, ΔE or call sites. (A silent merge changes the product's look with no record.)
-10. Every report carries a `## States` summary and uses the four layers. (`docs/analysis.md` § Rules.)
+10. Every report carries a `## States` summary and uses the three layers. (`docs/analysis.md` § Rules.)
 11. Write plain words first, precise words second, at every gate. (`knowledge/taxonomy/plain-language.md`.)
 
 ## The nine phases
@@ -39,12 +39,12 @@ sources:
 | 1 | Scope | none | `01-scope.json` and `01-scope.md` exist. The user confirmed the root folder, the stack and who uses the product. | Confirm scope and users |
 | 2 | Values | foundation (raw) | `02-values/` holds the inventory, the custom properties and the draft tokens. The totals are stated. | none |
 | 3 | Foundations | foundation | `03-foundations.json` and `.md` exist. Every family has an accepted scale or an explicit "hand-tuned". | One question per foundation |
-| 4 | Tokens | token | `04-tokens/` builds and passes `tokens.mjs check`. Names are accepted. | Accept token set and names |
+| 4 | Tokens | foundation (stored as tokens) | `04-tokens/` builds and passes `tokens.mjs check`. It holds `palette`, `colors` and the roles of each theme (light, dark), plus the other foundations' tokens. Names are accepted. | Accept token set and names |
 | 5 | Components | component | `05-components.json` and `.md` exist. Every group has a keeper or a "keep both" reason. | Accept component candidates and merges |
 | 6 | Patterns | pattern | `06-patterns.json` and `.md` exist. Every accepted candidate names its user need. | Accept pattern candidates |
-| 7 | Classification | all four | `07-classification.md` classifies every finding and lists misfiles by id. | none |
-| 8 | Normalisation | all four | `08-normalisation.json` and `08-plan.md` exist. The plan has batches, each of reviewable size. | Accept the plan and its first batch |
-| 9 | Build-up | all four | `09-build.md` logs each batch as applied, skipped or rolled back. | One gate per batch |
+| 7 | Classification | all three | `07-classification.md` classifies every finding and lists misfiles by id. | none |
+| 8 | Normalisation | all three | `08-normalisation.json` and `08-plan.md` exist. The plan has batches, each of reviewable size. | Accept the plan and its first batch |
+| 9 | Build-up | all three | `09-build.md` logs each batch as applied, skipped or rolled back. | One gate per batch |
 
 ### What "done" means per phase
 
@@ -63,7 +63,7 @@ sources:
 The order is not a preference. Each layer consumes the one before it. (`knowledge/taxonomy/layers.md`.)
 
 1. **Foundations first.** A token is one member of a scale. With no scale, a token is an arbitrary number. (`knowledge/governance/contribution.md`: a token with no scale is an arbitrary number.)
-2. **Tokens second.** A component uses semantic tokens. With no tokens, a merged Button would carry raw values again. (`knowledge/tokens/architecture.md`.)
+2. **Tokens second.** A component uses semantic tokens (roles for colour). Phase 4 writes the accepted foundation decisions as tokens. With no tokens, a merged Button would carry raw values again. (`knowledge/tokens/architecture.md`.)
 3. **Components third.** A pattern composes components. With no components, a pattern is a page. (`knowledge/taxonomy/decision-tree.md`, Q4.)
 4. **Patterns fourth.** A pattern adds no value of its own. It needs the three layers below to exist. (`misfile.pattern-own-style`, `misfile.pattern-own-spacing`.)
 5. **Docs last.** A page documents what exists. (`knowledge/governance/page-contract.md`.)
@@ -119,7 +119,7 @@ A scope is right when phase 8 gives a plan of 3 to 8 batches. More means the sco
 
 ## Why
 
-- Foundations before tokens before components follows the dependency of the layers in `knowledge/taxonomy/layers.md`. Reversing it makes each later layer carry the earlier layer's missing decisions as raw values.
+- Foundations, then their stored tokens, then components follows the dependency of the layers in `knowledge/taxonomy/layers.md`. Reversing it makes each later layer carry the earlier layer's missing decisions as raw values.
 - Read-only phases make a wrong guess free. Phase 9 is where risk starts, so it is the only phase with one gate per batch.
 - No state file means resume cannot lie. Progress is what exists.
 - A small first scope gives a finished loop. A finished loop teaches the team the process before the whole repo depends on it.
