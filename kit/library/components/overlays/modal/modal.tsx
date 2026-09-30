@@ -3,11 +3,11 @@ import type { DialogHTMLAttributes, ReactNode } from 'react';
 import { Icon } from '../../../primitives/icon/icon';
 import { Heading } from '../../../primitives/heading/heading';
 import { IconButton } from '../../clickables/icon-button/icon-button';
-import './dialog.css';
+import './modal.css';
 
-export type DialogSize = 'sm' | 'md' | 'lg';
+export type ModalSize = 'sm' | 'md' | 'lg';
 
-export interface DialogProps extends Omit<DialogHTMLAttributes<HTMLDialogElement>, 'title' | 'open' | 'onClose' | 'role'> {
+export interface ModalProps extends Omit<DialogHTMLAttributes<HTMLDialogElement>, 'title' | 'open' | 'onClose' | 'role'> {
   /** Whether the dialog is shown. The parent owns this state. */
   open: boolean;
   /** Called on Escape, on a scrim click (when allowed), and on the close button. Set `open` to false in response. */
@@ -17,8 +17,8 @@ export interface DialogProps extends Omit<DialogHTMLAttributes<HTMLDialogElement
   /** The actions row. It stays in view while the body scrolls. */
   footer?: ReactNode;
   /** Maximum inline size, from size.overlay.*. */
-  size?: DialogSize;
-  /** `alertdialog` for a message that needs a response (confirm, destructive). */
+  size?: ModalSize;
+  /** `alertdialog` for a message that needs a response. AlertDialog and ConfirmationDialog set it. */
   role?: 'dialog' | 'alertdialog';
   /** Close on a click on the scrim. Off by default, so a stray click never loses typed work. */
   dismissOnScrim?: boolean;
@@ -31,9 +31,9 @@ export interface DialogProps extends Omit<DialogHTMLAttributes<HTMLDialogElement
 }
 
 /** Native dialog. Focus enters on open (a `data-autofocus` element first, else the first focusable, else the title) and returns to the opener on close. */
-export function Dialog({
+export function Modal({
   open, onClose, title, footer, size = 'md', role = 'dialog', dismissOnScrim = false, closeLabel, busy = false, inline = false, className, children, ...rest
-}: DialogProps) {
+}: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLElement | null>(null);
   const titleId = useId();
@@ -46,7 +46,7 @@ export function Dialog({
       el.showModal();
       const preferred = el.querySelector<HTMLElement>('[data-autofocus]');
       if (preferred) preferred.focus();
-      else if (!el.contains(document.activeElement) || document.activeElement === el) el.querySelector<HTMLElement>('.ds-dialog__title')?.focus();
+      else if (!el.contains(document.activeElement) || document.activeElement === el) el.querySelector<HTMLElement>('.ds-modal__title')?.focus();
     } else if (!open && el.open) {
       el.close();
       opener.current?.focus();
@@ -57,7 +57,7 @@ export function Dialog({
   // A parent that unmounts an open dialog still gets its focus back.
   useEffect(() => () => opener.current?.focus(), []);
 
-  const classes = ['ds-dialog', `ds-dialog--${size}`, inline && 'ds-dialog--inline', className];
+  const classes = ['ds-modal', `ds-modal--${size}`, inline && 'ds-modal--inline', className];
   return (
     <dialog
       {...rest}
@@ -77,13 +77,13 @@ export function Dialog({
         if (dismissOnScrim && event.target === event.currentTarget) onClose();
       }}
     >
-      <div className="ds-dialog__panel">
-        <div className="ds-dialog__header">
-          <Heading level={2} size="heading" id={titleId} tabIndex={-1} className="ds-dialog__title">{title}</Heading>
+      <div className="ds-modal__panel">
+        <div className="ds-modal__header">
+          <Heading level={2} size="heading" id={titleId} tabIndex={-1} className="ds-modal__title">{title}</Heading>
           {closeLabel && <IconButton label={closeLabel} icon={<Icon glyph="close" />} onClick={onClose} />}
         </div>
-        <div className="ds-dialog__body" aria-busy={busy || undefined}>{children}</div>
-        {footer && <div className="ds-dialog__footer">{footer}</div>}
+        <div className="ds-modal__body" aria-busy={busy || undefined}>{children}</div>
+        {footer && <div className="ds-modal__footer">{footer}</div>}
       </div>
     </dialog>
   );

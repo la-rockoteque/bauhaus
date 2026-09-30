@@ -65,10 +65,12 @@ export type { BadgeProps, BadgeStatus } from './components/feedback/badge/badge'
 export { EmptyState } from './components/feedback/empty-state/empty-state';
 export type { EmptyStateProps } from './components/feedback/empty-state/empty-state';
 // Overlays
-export { Dialog } from './components/overlays/dialog/dialog';
-export type { DialogProps, DialogSize } from './components/overlays/dialog/dialog';
-export { ConfirmDialog } from './components/overlays/dialog/confirm-dialog';
-export type { ConfirmDialogProps } from './components/overlays/dialog/confirm-dialog';
+export { Modal } from './components/overlays/modal/modal';
+export type { ModalProps, ModalSize } from './components/overlays/modal/modal';
+export { AlertDialog } from './components/overlays/alert-dialog/alert-dialog';
+export type { AlertDialogProps } from './components/overlays/alert-dialog/alert-dialog';
+export { ConfirmationDialog } from './components/overlays/confirmation-dialog/confirmation-dialog';
+export type { ConfirmationDialogProps } from './components/overlays/confirmation-dialog/confirmation-dialog';
 export { Popover } from './components/overlays/popover/popover';
 export type { PopoverProps } from './components/overlays/popover/popover';
 export { Tooltip } from './components/overlays/tooltip/tooltip';

@@ -6,8 +6,9 @@ import { rulesOf } from './sources';
  * ./auto-checks (uses, sourceMatches, all, eachTheme, ratioAtLeast, pxAtLeast, noLiteral, textRole).
  * all-checks.ts merges this map into the registry the rulebook table grades against.
  */
-const DIALOG = 'components/overlays/dialog/dialog';
-const CONFIRM = 'components/overlays/dialog/confirm-dialog';
+const MODAL = 'components/overlays/modal/modal';
+const ALERT = 'components/overlays/alert-dialog/alert-dialog';
+const CONFIRM = 'components/overlays/confirmation-dialog/confirmation-dialog';
 const POPOVER = 'components/overlays/popover/popover';
 const TOOLTIP = 'components/overlays/tooltip/tooltip';
 const MENU = 'components/overlays/menu/menu';
@@ -32,45 +33,51 @@ const surface = (path: string, selector: string, shadow: 1 | 2): Check =>
 const capsToViewport = (path: string, selector: string): Check => uses(path, selector, 'max-inline-size', '100vw');
 
 export const CHECKS: Readonly<Record<string, Check>> = {
-  'dialog.native-element': all(sourceMatches(`${DIALOG}.tsx`, /<dialog[\s>]/, 'dialog.tsx does not render a native <dialog>'), sourceMatches(`${DIALOG}.tsx`, /\.showModal\(\)/, 'dialog.tsx does not open with showModal()')),
-  'dialog.labelled': sourceMatches(`${DIALOG}.tsx`, /aria-labelledby=\{titleId\}/, 'the dialog is not labelled by its title'),
-  'dialog.focus-in-and-restore': all(
-    sourceMatches(`${DIALOG}.tsx`, /data-autofocus/, 'dialog.tsx does not honour a data-autofocus element'),
-    sourceMatches(`${DIALOG}.tsx`, /ds-dialog__title'\)\?\.focus\(\)/, 'dialog.tsx does not fall back to the title'),
-    sourceMatches(`${DIALOG}.tsx`, /opener\.current\?\.focus\(\)/, 'dialog.tsx does not return focus to the opener'),
+  'modal.native-element': all(sourceMatches(`${MODAL}.tsx`, /<dialog[\s>]/, 'modal.tsx does not render a native <dialog>'), sourceMatches(`${MODAL}.tsx`, /\.showModal\(\)/, 'modal.tsx does not open with showModal()')),
+  'modal.labelled': sourceMatches(`${MODAL}.tsx`, /aria-labelledby=\{titleId\}/, 'the dialog is not labelled by its title'),
+  'modal.focus-in-and-restore': all(
+    sourceMatches(`${MODAL}.tsx`, /data-autofocus/, 'modal.tsx does not honour a data-autofocus element'),
+    sourceMatches(`${MODAL}.tsx`, /ds-modal__title'\)\?\.focus\(\)/, 'modal.tsx does not fall back to the title'),
+    sourceMatches(`${MODAL}.tsx`, /opener\.current\?\.focus\(\)/, 'modal.tsx does not return focus to the opener'),
   ),
-  'dialog.esc-closes': sourceMatches(`${DIALOG}.tsx`, /onCancel=\{\(event\) => \{\s*event\.preventDefault\(\);\s*onClose\(\);/, 'the cancel event does not call onClose'),
-  'dialog.scrim-configurable': all(
-    sourceMatches(`${DIALOG}.tsx`, /dismissOnScrim = false/, 'dismissOnScrim does not default to false'),
-    sourceMatches(`${DIALOG}.tsx`, /dismissOnScrim && event\.target === event\.currentTarget/, 'a scrim click does not depend on dismissOnScrim'),
+  'modal.esc-closes': sourceMatches(`${MODAL}.tsx`, /onCancel=\{\(event\) => \{\s*event\.preventDefault\(\);\s*onClose\(\);/, 'the cancel event does not call onClose'),
+  'modal.scrim-configurable': all(
+    sourceMatches(`${MODAL}.tsx`, /dismissOnScrim = false/, 'dismissOnScrim does not default to false'),
+    sourceMatches(`${MODAL}.tsx`, /dismissOnScrim && event\.target === event\.currentTarget/, 'a scrim click does not depend on dismissOnScrim'),
   ),
-  'dialog.footer-stays': all(
-    uses(`${DIALOG}.css`, '.ds-dialog__panel', 'display', 'flex'),
-    uses(`${DIALOG}.css`, '.ds-dialog__panel', 'flex-direction', 'column'),
-    uses(`${DIALOG}.css`, '.ds-dialog__panel', 'max-block-size', '100dvh'),
-    uses(`${DIALOG}.css`, '.ds-dialog__body', 'overflow-y', 'auto'),
-    uses(`${DIALOG}.css`, '.ds-dialog__body', 'min-block-size', '0'),
+  'modal.footer-stays': all(
+    uses(`${MODAL}.css`, '.ds-modal__panel', 'display', 'flex'),
+    uses(`${MODAL}.css`, '.ds-modal__panel', 'flex-direction', 'column'),
+    uses(`${MODAL}.css`, '.ds-modal__panel', 'max-block-size', '100dvh'),
+    uses(`${MODAL}.css`, '.ds-modal__body', 'overflow-y', 'auto'),
+    uses(`${MODAL}.css`, '.ds-modal__body', 'min-block-size', '0'),
   ),
-  'dialog.full-screen-narrow': all(
-    inMedia(`${DIALOG}.css`, /max-width/, /^\.ds-dialog:not\(\.ds-dialog--inline\)$/, 'inline-size', '100vw'),
-    inMedia(`${DIALOG}.css`, /max-width/, /^\.ds-dialog:not\(\.ds-dialog--inline\)$/, 'block-size', '100dvh'),
+  'modal.full-screen-narrow': all(
+    inMedia(`${MODAL}.css`, /max-width/, /^\.ds-modal:not\(\.ds-modal--inline\)$/, 'inline-size', '100vw'),
+    inMedia(`${MODAL}.css`, /max-width/, /^\.ds-modal:not\(\.ds-modal--inline\)$/, 'block-size', '100dvh'),
   ),
-  'dialog.size-from-tokens': all(...['sm', 'md', 'lg'].map((size) => uses(`${DIALOG}.css`, `.ds-dialog--${size}`, 'inline-size', `--ds-size-overlay-${size}`))),
-  'dialog.motion': all(
-    uses(`${DIALOG}.css`, '.ds-dialog', 'transition', '--ds-motion-duration-base'),
-    uses(`${DIALOG}.css`, '.ds-dialog', 'transition', '--ds-motion-ease-exit'),
-    uses(`${DIALOG}.css`, '.ds-dialog[open]', 'transition-timing-function', '--ds-motion-ease-enter'),
-    inMedia(`${DIALOG}.css`, REDUCED, /^\.ds-dialog\[open\]$/, 'transition-property', 'opacity'),
-    inMedia(`${DIALOG}.css`, REDUCED, /^\.ds-dialog\[open\]$/, 'transform', 'none'),
+  'modal.size-from-tokens': all(...['sm', 'md', 'lg'].map((size) => uses(`${MODAL}.css`, `.ds-modal--${size}`, 'inline-size', `--ds-size-overlay-${size}`))),
+  'modal.motion': all(
+    uses(`${MODAL}.css`, '.ds-modal', 'transition', '--ds-motion-duration-base'),
+    uses(`${MODAL}.css`, '.ds-modal', 'transition', '--ds-motion-ease-exit'),
+    uses(`${MODAL}.css`, '.ds-modal[open]', 'transition-timing-function', '--ds-motion-ease-enter'),
+    inMedia(`${MODAL}.css`, REDUCED, /^\.ds-modal\[open\]$/, 'transition-property', 'opacity'),
+    inMedia(`${MODAL}.css`, REDUCED, /^\.ds-modal\[open\]$/, 'transform', 'none'),
   ),
-  'dialog.elevation': all(surface(`${DIALOG}.css`, '.ds-dialog__panel', 2), uses(`${DIALOG}.css`, '.ds-dialog::backdrop', 'background', '--ds-scrim')),
-  'dialog.alert-role': all(
-    sourceMatches(`${CONFIRM}.tsx`, /role="alertdialog"/, 'confirm-dialog.tsx does not set role alertdialog'),
-    sourceMatches(`${CONFIRM}.tsx`, /aria-describedby=\{descriptionId\}/, 'the message does not describe the alert dialog'),
-    sourceMatches(`${CONFIRM}.tsx`, /data-autofocus=\{destructive \|\| undefined\}/, 'Cancel does not take focus when destructive'),
+  'modal.elevation': all(surface(`${MODAL}.css`, '.ds-modal__panel', 2), uses(`${MODAL}.css`, '.ds-modal::backdrop', 'background', '--ds-scrim')),
+  'confirmation-dialog.alert-role': all(
+    sourceMatches(`${CONFIRM}.tsx`, /role="alertdialog"/, 'confirmation-dialog.tsx does not set role alertdialog'),
+    sourceMatches(`${CONFIRM}.tsx`, /aria-describedby=\{descriptionId\}/, 'the message does not describe the confirmation dialog'),
   ),
-  'dialog.state.loading': sourceMatches(`${DIALOG}.tsx`, /aria-busy=\{busy \|\| undefined\}/, 'the body does not set aria-busy while busy'),
-  'dialog.no-literal': noLiteral(`${DIALOG}.css`),
+  'confirmation-dialog.destructive-focus': sourceMatches(`${CONFIRM}.tsx`, /onClick=\{onClose\} data-autofocus=\{destructive \|\| undefined\}/, 'Cancel does not take focus when the action is destructive'),
+  'confirmation-dialog.built-on-modal': sourceMatches(`${CONFIRM}.tsx`, /<Modal\b/, 'confirmation-dialog.tsx does not render through Modal'),
+  'alert-dialog.alert-role': all(
+    sourceMatches(`${ALERT}.tsx`, /role="alertdialog"/, 'alert-dialog.tsx does not set role alertdialog'),
+    sourceMatches(`${ALERT}.tsx`, /aria-describedby=\{descriptionId\}/, 'the message does not describe the alert dialog'),
+  ),
+  'alert-dialog.one-action': sourceMatches(`${ALERT}.tsx`, /footer=\{<Button [^>]*data-autofocus>\{actionLabel\}<\/Button>\}/, 'the footer is not one autofocused action'),
+  'modal.state.loading': sourceMatches(`${MODAL}.tsx`, /aria-busy=\{busy \|\| undefined\}/, 'the body does not set aria-busy while busy'),
+  'modal.no-literal': noLiteral(`${MODAL}.css`),
 
   'popover.built-on-aria': all(
     sourceMatches(`${POPOVER}.tsx`, /DialogTrigger/, 'popover.tsx does not use DialogTrigger'),

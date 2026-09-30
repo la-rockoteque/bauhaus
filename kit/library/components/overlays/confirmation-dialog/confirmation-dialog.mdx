@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './confirmation-dialog.stories';
+
+<Meta of={Stories} />
+
+# Confirmation dialog
+
+The Showcase story holds the tokens, the stage and the state matrix. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A confirmation dialog asks one yes-or-no question before an action goes ahead. You confirm it or cancel it.
+
+**Precisely:** Component in the overlays family. It is an alert dialog with a cancel and a confirm action, built on Modal. It is not a message (Alert dialog) and not a task (Modal).
+
+**The job.** The dialog puts a pause in front of an action with a cost. The pause is worth it only when the action cannot be undone, or when undoing it is expensive.
+
+**The layer.** The confirmation dialog is a component. It renders through Modal and Button, so it has no stylesheet and no tokens of its own.
+
+## 2. Usage
+
+### When to use
+
+- Before an action that cannot be undone: delete, discard unsaved changes.
+- Before an action that reaches other people: publish, send to a list.
+
+### When not to use, and what to use instead
+
+- **For an action that can be undone.** Do it, then offer Undo in a toast. A dialog in front of every action trains people to confirm without reading (Nielsen heuristic 3, user control and freedom).
+- **For a message with one answer.** Use Alert dialog.
+- **For a task with fields.** Use Modal.
+
+### How
+
+- **Role.** The dialog sets `role="alertdialog"` and `aria-describedby` on the message, so the question and its cost are read out on open (APG Alert and Message Dialogs; WCAG 4.1.2, A).
+- **Focus.** With `destructive`, focus starts on Cancel, the least destructive choice. Otherwise it starts on the confirm action (APG Alert and Message Dialogs).
+- **Labels.** The title asks the question. The confirm label names the action and its object: "Delete project". "OK" names nothing. Red alone fails WCAG 1.4.1 (Use of Color, A).
+- **Escape** calls `onClose`, the same as Cancel. The scrim does not close the dialog.
+- **Everything else** comes from Modal: the native `dialog`, the focus return, the sizes, the narrow full screen and the motion.
+
+## 3. Why the states look as they do
+
+- **Some** is the question with its two answers.
+- **Too many** is a long message. It wraps, and the body scrolls when it runs out of room, as in Modal.
+- **Destructive** is a variant, not a state: focus starts on Cancel and the label names what goes.
+- **Loading** and **Incorrect** are n/a. The dialog asks before the action runs. The view reports progress and failure.
+
+## 4. Pitfalls and don'ts
+
+- **Do not label the destructive action "OK".** (WCAG 2.4.6, AA; `confirmation-dialog.destructive-named`)
+- **Do not start focus on a destructive action.** An Enter pressed out of habit deletes. (APG Alert and Message Dialogs; `confirmation-dialog.destructive-focus`)
+- **Do not build a confirmation from a Modal with its own buttons.** The role, the description and the focus rule get lost. (Nielsen heuristic 4; `confirmation-dialog.built-on-modal`)

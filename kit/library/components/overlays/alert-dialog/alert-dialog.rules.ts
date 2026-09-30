@@ -1,0 +1,41 @@
+// Rulebook entries for Alert dialog. Shape: knowledge/governance/rulebook.md. Ids are permanent.
+export const alertDialogRules = [
+  {
+    id: 'alert-dialog.alert-role',
+    component: 'AlertDialog',
+    rubric: 'semantics',
+    severity: 'HIGH',
+    expectation: 'The dialog has role alertdialog and is described by its message, so the message is read out on open.',
+    verify: 'auto',
+    covers: ['name-role-value'],
+    basis: 'APG Alert and Message Dialogs; WCAG 4.1.2 Name, Role, Value (A)',
+  },
+  {
+    id: 'alert-dialog.one-action',
+    component: 'AlertDialog',
+    rubric: 'usage',
+    severity: 'MEDIUM',
+    expectation: 'The dialog has exactly one action and focus starts on it. A second choice makes it a confirmation dialog.',
+    verify: 'auto',
+    covers: ['keyboard'],
+    basis: 'APG Alert and Message Dialogs; Nielsen heuristic 4, consistency and standards',
+  },
+  {
+    id: 'alert-dialog.action-named',
+    component: 'AlertDialog',
+    rubric: 'content',
+    severity: 'MEDIUM',
+    expectation: 'The action says what happens next ("Sign in again"). The message says what happened and what the user keeps.',
+    verify: 'review',
+    basis: 'WCAG 2.4.6 Headings and Labels (AA); Nielsen heuristic 9, help users recover from errors',
+  },
+  {
+    id: 'alert-dialog.not-for-info',
+    component: 'AlertDialog',
+    rubric: 'usage',
+    severity: 'MEDIUM',
+    expectation: 'The dialog appears only when the user must acknowledge before going on. A message that needs no answer is a toast or a banner.',
+    verify: 'review',
+    basis: 'Nielsen heuristic 8, aesthetic and minimalist design; WCAG 2.2.4 Interruptions (AAA)',
+  },
+] as const;

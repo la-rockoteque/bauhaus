@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './alert-dialog.stories';
+
+<Meta of={Stories} />
+
+# Alert dialog
+
+The Showcase story holds the tokens, the stage and the state matrix. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** An alert dialog stops you to tell you something you must know before you go on. It has one button, and pressing it says you have read it.
+
+**Precisely:** Component in the overlays family. It is an alert dialog with one action, built on Modal. It is not a choice (Confirmation dialog) and not a message that needs no answer (Toast, Banner).
+
+**The job.** The dialog makes sure a message is read before the work goes on. It interrupts, so the message must change what the user does next.
+
+**The layer.** The alert dialog is a component. It renders through Modal and Button, so it has no stylesheet and no tokens of its own.
+
+## 2. Usage
+
+### When to use
+
+- The session expired and the user must sign in again.
+- The connection is lost and the work cannot go on as before.
+- A limit is reached and the next action will fail.
+
+### When not to use, and what to use instead
+
+- **For a message that needs no answer.** Use a toast or a banner. An interruption that changes nothing costs attention (Nielsen heuristic 8; WCAG 2.2.4 Interruptions, AAA).
+- **For a choice.** Use Confirmation dialog.
+- **For a task with fields.** Use Modal.
+
+### How
+
+- **Role.** The dialog sets `role="alertdialog"` and `aria-describedby` on the message, so the message is read out on open (APG Alert and Message Dialogs; WCAG 4.1.2, A).
+- **One action.** The footer holds one button and focus starts on it. Escape does what the button does. A second button makes it a confirmation dialog.
+- **Words.** The title says what happened. The message says what it means and what the user keeps. The action says what happens next: "Sign in again" (Nielsen heuristic 9, help users recover from errors).
+- **Everything else** comes from Modal: the native `dialog`, the focus return, the sizes, the narrow full screen and the motion.
+
+## 3. Why the states look as they do
+
+- **Some** is a message and its one action.
+- **Too many** is a long message. It wraps, and the body scrolls when it runs out of room, as in Modal.
+- **Incorrect** is the common case: a system error. The message says what failed, what is kept, and what the user can do.
+- **Disabled** is n/a. The one answer is always available, or the user is trapped.
+
+## 4. Pitfalls and don'ts
+
+- **Do not add a second button.** A choice is a confirmation dialog. (APG Alert and Message Dialogs; `alert-dialog.one-action`)
+- **Do not interrupt for news.** Use a toast or a banner. (Nielsen heuristic 8; `alert-dialog.not-for-info`)
+- **Do not write "OK" when a verb fits.** "Sign in again" says what happens. (WCAG 2.4.6, AA; `alert-dialog.action-named`)

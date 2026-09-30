@@ -159,14 +159,29 @@ Each entry lists: job, anatomy (`?` = optional), required states, APG pattern, k
 
 ## Overlays
 
-### Dialog
-- **Job:** ask for a decision or input that blocks the page.
+### Modal
+- **Job:** ask for input that blocks the page: a short task in context.
 - **Anatomy:** scrim, container, title, close, body, actions.
 - **Required states:** lifecycle: nothing, loading, incorrect, done. Interaction: focus-visible, disabled (action).
 - **APG:** Dialog (Modal); native `<dialog>`.
 - **WCAG:** 2.4.3 (A), 2.1.2 (A), 4.1.2 (A), 2.4.11 (AA).
 - **Defects:** focus not moved in or restored; no Esc; background still reachable.
-- **Seeds:** `dialog.focus-in-and-restore`, `dialog.esc-closes`, `dialog.labelled`, `dialog.full-screen-narrow`.
+- **Seeds:** `modal.focus-in-and-restore`, `modal.esc-closes`, `modal.labelled`, `modal.full-screen-narrow`.
+
+### Alert dialog
+- **Job:** a message the user must acknowledge before going on. One action.
+- **Anatomy:** title, message, one action. Built on Modal.
+- **APG:** Alert and Message Dialogs (`role="alertdialog"`, `aria-describedby` on the message).
+- **Defects:** a second button; used for news that needs no answer; "OK" where a verb fits.
+- **Seeds:** `alert-dialog.alert-role`, `alert-dialog.one-action`, `alert-dialog.not-for-info`.
+
+### Confirmation dialog
+- **Job:** a yes-or-no question before an action with a cost. Cancel and confirm.
+- **Anatomy:** title (the question), message (the cost), cancel, confirm. Built on Modal.
+- **APG:** Alert and Message Dialogs. Focus starts on Cancel when the action is destructive.
+- **WCAG:** 1.4.1 (A), 2.4.6 (AA), 4.1.2 (A).
+- **Defects:** "OK" on a destructive action; focus on the destructive action; a confirmation where undo would do.
+- **Seeds:** `confirmation-dialog.destructive-named`, `confirmation-dialog.destructive-focus`.
 
 ### Tooltip
 - **Job:** add a short hint to a control that already has a name.

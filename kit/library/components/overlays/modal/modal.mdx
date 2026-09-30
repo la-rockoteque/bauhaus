@@ -1,29 +1,28 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import * as Stories from './dialog.stories';
+import * as Stories from './modal.stories';
 
 <Meta of={Stories} />
 
-# Dialog
+# Modal
 
 The Showcase story holds the tokens, the stage and the state matrix. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
 
 ## 1. Introduction
 
-**In plain words:** A dialog is a small window that stops you and asks for a decision or a few details. You answer it or close it, and then you are back where you were.
+**In plain words:** A modal is a small window that stops you and asks for a few details. You finish the task or close it, and then you are back where you were.
 
 **Precisely:** Component in the overlays family. It is a native `dialog` opened with `showModal()`. It blocks the page behind it. It does not show a hint, a list of actions or a whole page.
 
-**The job.** A dialog interrupts on purpose. The interruption is worth it only when the user must decide before going on, or when a short task must finish in context. A dialog that interrupts for information is a banner or a toast that took the wrong shape.
+**The job.** A modal interrupts on purpose. The interruption is worth it only when the user must decide before going on, or when a short task must finish in context. A dialog that interrupts for information is a banner or a toast that took the wrong shape.
 
-**The layer.** The dialog is a component. It reads roles and semantic tokens. The header, the body and the footer are parts inside the slice, not components.
+**The layer.** The modal is a component. Alert dialog and Confirmation dialog are components built on it. It reads roles and semantic tokens. The header, the body and the footer are parts inside the slice, not components.
 
-**When it exists.** Use the dialog for a decision or a short task. Use a popover for rich content beside a button, a tooltip for a hint, a menu for actions, and a page for anything long.
+**When it exists.** Use the modal for a short task. Use an alert dialog for a message the user must acknowledge, and a confirmation dialog for a yes-or-no question. Use a popover for rich content beside a button, a tooltip for a hint, a menu for actions, and a page for anything long.
 
 ## 2. Usage
 
 ### When to use
 
-- To confirm an action that cannot be undone (the alert dialog variant).
 - To edit or create one record without leaving the view.
 - To show terms that need a reply.
 
@@ -34,6 +33,8 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **For content that sits beside its trigger and leaves the page usable.** Use a popover.
 - **For a long form or a multi-step flow.** Use a page. A dialog has no room for a back button and a progress trail.
 - **For a message that needs no reply.** Use a toast or a banner.
+- **For a message the user must acknowledge.** Use Alert dialog.
+- **For a yes-or-no question, such as a destructive action.** Use Confirmation dialog.
 
 ### How
 
@@ -46,7 +47,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **Sizes.** `sm`, `md` and `lg` read `size.overlay.sm`, `md` and `lg`: 20, 30 and 40 rem.
 - **Long content.** The panel is a column. The body scrolls. The title row and the actions stay, so they never cover a focused control (WCAG 2.4.11 Focus Not Obscured (Minimum), AA). The page behind does not scroll.
 - **Narrow screens.** At 768px and narrower the dialog fills the screen (WCAG 1.4.10 Reflow, AA).
-- **Alert dialog.** `ConfirmDialog` sets `role="alertdialog"` and `aria-describedby` on the message. With `destructive`, focus starts on Cancel, the least destructive choice (APG Alert and Message Dialogs). The confirm label names the action and its object: "Delete 3 files". "OK" names nothing, and red alone fails WCAG 1.4.1 (Use of Color, A).
+- **Alert dialogs.** `role="alertdialog"` is the only difference the modal knows. Alert dialog and Confirmation dialog set it, with `aria-describedby` on their message. Their rules live on their own pages.
 - **i18n.** The title, the labels and the close label arrive as props. The component holds no text of its own.
 
 ## 3. Why the states look as they do
@@ -64,14 +65,13 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 
 ## 4. Pitfalls and don'ts
 
-- **Do not build a dialog from a `div` and a fixed backdrop.** The page behind stays reachable and focus escapes. (APG Dialog (Modal); WCAG 2.1.2, A; `dialog.native-element`)
-- **Do not leave the dialog unnamed.** (WCAG 4.1.2, A; `dialog.labelled`)
-- **Do not open a dialog and leave focus on the page.** (WCAG 2.4.3, A; `dialog.focus-in-and-restore`)
-- **Do not ignore Escape.** (APG Dialog (Modal); `dialog.esc-closes`)
-- **Do not close on a scrim click by default.** (Nielsen heuristic 5; `dialog.scrim-configurable`)
-- **Do not let the whole dialog scroll.** The actions leave the screen. (WCAG 2.4.11, AA; `dialog.footer-stays`)
-- **Do not write "OK" on a destructive action.** (WCAG 2.4.6, AA; `dialog.destructive-named`)
-- **Do not write a literal in `dialog.css`.** (Bauhaus `misfile.raw-value-in-component`; `dialog.no-literal`)
+- **Do not build a dialog from a `div` and a fixed backdrop.** The page behind stays reachable and focus escapes. (APG Dialog (Modal); WCAG 2.1.2, A; `modal.native-element`)
+- **Do not leave the dialog unnamed.** (WCAG 4.1.2, A; `modal.labelled`)
+- **Do not open a dialog and leave focus on the page.** (WCAG 2.4.3, A; `modal.focus-in-and-restore`)
+- **Do not ignore Escape.** (APG Dialog (Modal); `modal.esc-closes`)
+- **Do not close on a scrim click by default.** (Nielsen heuristic 5; `modal.scrim-configurable`)
+- **Do not let the whole dialog scroll.** The actions leave the screen. (WCAG 2.4.11, AA; `modal.footer-stays`)
+- **Do not write a literal in `modal.css`.** (Bauhaus `misfile.raw-value-in-component`; `modal.no-literal`)
 
 ## 5. Notes
 
