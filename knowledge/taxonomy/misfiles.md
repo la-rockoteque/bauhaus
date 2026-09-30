@@ -243,10 +243,10 @@ Call sites are everything outside the token source and outside the semantic toke
 
 ### misfile.state-only-happy-path
 - **Symptom:** A component or pattern documents and tests only the ideal state. No empty, loading, error, too-many, disabled or focus story.
-- **Detect:** A showcase whose States grid shows only the default. A state matrix with empty cells. Data-bearing components with no empty or error branch.
+- **Detect:** A showcase whose state matrix shows only the default. A state matrix with empty cells. Data-bearing components with no empty or error branch.
 - **Why it hurts:** Users meet the other states daily. Focus and error states carry WCAG duties (2.4.7 AA, 1.4.1 A).
 - **Belongs:** The state matrix of each component and the lifecycle states of each pattern. See [../states/state-matrix.md](../states/state-matrix.md), [../states/lifecycle-states.md](../states/lifecycle-states.md).
-- **Smallest fix:** Fill the matrix. Mark each non-applicable cell "n/a" with a reason. Add a States grid cell per state.
+- **Smallest fix:** Fill the matrix. Mark each non-applicable cell "n/a" with a reason. Add a state matrix cell per state.
 
 ## Structure confusion
 

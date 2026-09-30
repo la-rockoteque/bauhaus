@@ -4,7 +4,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Badge } from './badge';
 import { badgeRules } from './badge.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Feedback/Badge', component: Badge, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Badge>;
 
 export default meta;

@@ -6,7 +6,7 @@ import { Button } from '../../clickables/button/button';
 import { EmptyState } from './empty-state';
 import { emptyStateRules } from './empty-state.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Feedback/Empty state', parameters: { layout: 'fullscreen' } } satisfies Meta;
 
 export default meta;

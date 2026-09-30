@@ -72,7 +72,7 @@ Ask with `AskUserQuestion` when unclear: author (new matrix), audit (grade an ex
 ## Writes
 
 - Styleguide matrix in `<config.guide>`.
-- The showcase in `<config.storybook.stories>`, one States-grid cell per state.
+- The showcase in `<config.storybook.stories>`, one state-matrix cell per state.
 - Rules in `<config.rulebook.rules>`, ids `<component>.state.<state>`.
 - Advisories in `<config.rulebook.advisories>` for open `missing` cells.
 

@@ -3,7 +3,7 @@ import config from '../../bauhaus.config.json';
 import './doc-page.css';
 import { StageSection, DosAndDonts, GuideLink, Introduction, Section, Tokens } from './sections';
 import { ThemeSwitch } from '../theme-switch/theme-switch';
-import { DEFAULT_EXPECT, States } from '../states-grid/states-grid';
+import { DEFAULT_EXPECT, States } from '../state-matrix/state-matrix';
 import type { DocPageProps, Layer } from './types';
 
 export type { DocPageProps } from './types';
@@ -43,7 +43,7 @@ export function DocPage(props: DocPageProps) {
       <Introduction plain={props.plain} precise={props.precise} usedFor={props.usedFor} />
       <StageSection stage={props.stage} specimens={props.specimens} specs={props.specs} api={props.api} tokens={props.tokens} />
       <Tokens tokens={props.tokens} />
-      <States states={states} defaultExpect={defaultExpect} />
+      <States states={states} defaultExpect={defaultExpect} name={name} />
       {extra.map((section) => (
         <Section key={section.title} title={section.title} kicker={section.kicker}>
           {section.content}

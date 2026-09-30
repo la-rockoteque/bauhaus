@@ -10,7 +10,7 @@ import { IconButton } from '../../clickables/icon-button/icon-button';
 import { Tooltip } from './tooltip';
 import { tooltipRules } from './tooltip.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Overlays/Tooltip', parameters: { layout: 'fullscreen' } } satisfies Meta;
 
 export default meta;

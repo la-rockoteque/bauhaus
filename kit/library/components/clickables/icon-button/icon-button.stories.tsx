@@ -11,7 +11,7 @@ const Cross = () => (
   </svg>
 );
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Clickables/Icon button', component: IconButton, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof IconButton>;
 
 export default meta;

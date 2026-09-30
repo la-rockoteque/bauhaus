@@ -6,7 +6,7 @@ import { Button } from '../../clickables/button/button';
 import { Banner } from './banner';
 import { bannerRules } from './banner.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Feedback/Banner', component: Banner, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Banner>;
 
 export default meta;

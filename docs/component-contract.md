@@ -27,7 +27,7 @@ A part that cannot stand alone (a dialog header, a field label) stays inside the
 6. **Text as props.** No i18n, router, data fetching. Links take `href` or an `as`/render prop.
 7. **Composition over configuration.** Compose `Text`, `Icon`, `VisuallyHidden`, `Stack`, `Button`. A component never imports a pattern.
 8. **Public API.** Do not edit `index.ts`; list the exports in the report. The lead adds them.
-9. **Hover styles** sit in `@media (hover: hover)`. Focus uses `:focus-visible` and the focus ring tokens. The states grid replays `:hover`, `:focus-visible`, `:active` and `:visited` from the stylesheet itself: `fixtures/states-grid` lifts the rules out of `@media (hover: hover)` and `(any-hover: hover)` into `.doc-force-*` classes. A story adds the class to the element and writes no hover style of its own. Other queries (reduced motion, width) are never lifted. Reduced motion: keep the fade, drop the travel.
+9. **Hover styles** sit in `@media (hover: hover)`. Focus uses `:focus-visible` and the focus ring tokens. The interaction matrix replays `:hover`, `:focus-visible`, `:active` and `:visited` from the stylesheet itself: `fixtures/interaction-matrix` lifts the rules out of `@media (hover: hover)` and `(any-hover: hover)` into `.doc-force-*` classes. A story adds the class to the element and writes no hover style of its own. Other queries (reduced motion, width) are never lifted. Reduced motion: keep the fade, drop the travel.
 10. **Target size** `--ds-size-target-min` (44px, house standard, WCAG 2.5.5 AAA; 2.5.8 AA is 24px) for anything pressable.
 
 ## Families

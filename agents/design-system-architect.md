@@ -168,7 +168,7 @@ A state belongs to the component or pattern it is a state of. You own the model.
 
 Before you grade or build a component, pattern or screen, build or read its **state
 matrix** (`states/state-matrix.md`). Rows are states. Columns are variants. Each cell is
-`designed`, `n/a` with a reason, or `missing`. The showcase renders one States-grid cell per state. Rule ids
+`designed`, `n/a` with a reason, or `missing`. The showcase renders one state-matrix cell per state. Rule ids
 follow `<component>.state.<state>` for matrix cells and `<component>.states.<slug>` for other
 state rules (`knowledge/governance/rulebook.md` § Rule id shapes). A missing state is a finding. Empty, incorrect,
 disabled-without-reason and too-many ship missing most often.

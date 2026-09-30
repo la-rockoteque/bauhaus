@@ -10,7 +10,7 @@ import { Table } from './table';
 import type { TableColumn, TableSort } from './table';
 import { tableRules } from './table.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 // A generic component cannot type the story args, so the meta names no component.
 const meta = { title: 'Data structures/Table', parameters: { layout: 'fullscreen' } } satisfies Meta;
 
@@ -187,7 +187,7 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'labels', value: 'The text the table speaks: select all, select row, sort message, selection summary, loading.' },
       ]}
       states={{
-        note: 'Cells are narrow, so the tables here use two columns and scroll sideways when they must. The live demo below shows the full table and the card stack.',
+        note: 'The tables here use two columns, except Too many. The live demo below shows the full table and the card stack.',
         cells: [
           { id: 'nothing', status: 'designed', render: <div style={cell}><Table caption="Requisitions" columns={SMALL} rows={[]} getRowId={rowId} empty={<Slot>Search for a requisition to see results.</Slot>} /></div>, trigger: 'rows=[] · empty', note: 'Before the first query: the slot invites. It does not say "no results".' },
           { id: 'loading', status: 'designed', render: <div style={cell}><Table caption="Requisitions" columns={SMALL} rows={[]} getRowId={rowId} loading skeletonRows={3} /></div>, trigger: 'loading', note: 'Skeleton rows keep the columns and the alignment. aria-busy is set.' },
@@ -205,7 +205,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'active', status: 'designed', render: <div style={cell}><Force cls="doc-force-active" target=".ds-table__sort"><Live rows={DATA.slice(0, 3)} columns={SMALL} selectable={false} /></Force></div>, trigger: ':active', note: 'Forced on the first sort button.' },
           { id: 'disabled', status: 'n/a', reason: 'Rows are data, not controls. A control inside a cell disables itself and says why.' },
           { id: 'selected', status: 'designed', render: <div style={cell}><Table caption="Requisitions" columns={SMALL} rows={DATA.slice(0, 3)} getRowId={rowId} selectedIds={['REQ-1043']} onSelectionChange={() => undefined} /></div>, trigger: 'selectedIds', note: 'Fill plus a checked box. The summary line counts this page.' },
-          { id: 'compact', status: 'designed', group: 'interaction', label: 'Density: compact', render: <div style={cell}><Live rows={DATA.slice(0, 3)} columns={SMALL} selectable={false} density="compact" /></div>, trigger: 'density="compact"', note: 'Less padding. Controls stay at 24px or more.' },
+          { id: 'default', variant: 'Compact', status: 'designed', render: <div style={cell}><Live rows={DATA.slice(0, 3)} columns={SMALL} selectable={false} density="compact" /></div>, trigger: 'density="compact"', note: 'Less padding. Controls stay at 24px or more.' },
           { id: 'sorted', status: 'designed', group: 'interaction', label: 'Sorted', render: <div style={cell}><Table caption="Requisitions" columns={SMALL} rows={[...DATA.slice(0, 3)].reverse()} getRowId={rowId} sort={{ key: 'id', direction: 'descending' }} onSortChange={() => undefined} /></div>, trigger: 'sort', note: 'aria-sort on the th and a direction glyph.' },
         ],
       }}

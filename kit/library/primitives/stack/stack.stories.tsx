@@ -5,7 +5,7 @@ import { Box } from '../box/box';
 import { Stack } from './stack';
 import { stackRules } from './stack.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Primitives/Stack', component: Stack, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Stack>;
 
 export default meta;

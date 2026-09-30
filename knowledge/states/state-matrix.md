@@ -20,7 +20,7 @@ The state matrix is the artifact that makes states real. Every component, patter
 
 1. Give every component, pattern and screen a state matrix before it ships. (Speelman 2015)
 2. Mark each cell `designed`, `n/a` with a reason, or `missing`. A blank cell is `missing`. (Speelman: a conscious decision to ignore a state is still a decision)
-3. Back each `designed` cell with a live render in the showcase States grid, built with realistic data. (Speelman 2015 § Too many; Figma, "Button states")
+3. Back each `designed` cell with a live render in the showcase state matrix, built with realistic data. (Speelman 2015 § Too many; Figma, "Button states")
 4. Start from the required-rows table. Justify every `n/a`. (Speelman 2015)
 5. Give each applicable state one rulebook rule. (`../governance/rulebook.md`)
 
@@ -37,7 +37,7 @@ Rows are states. Columns are variants (or, for a pattern, the main configuration
 
 | Cell | Meaning | Required |
 |---|---|---|
-| `designed` | A spec exists and the States grid renders it live. | Show the live render. |
+| `designed` | A spec exists and the state matrix renders it live. | Show the live render. |
 | `n/a` | This state cannot occur for this component. | A reason. "n/a" alone is `missing`. |
 | `missing` | Not designed yet. | Nothing. It is a finding. |
 
@@ -90,8 +90,11 @@ Not every state applies to every kind. Start from this table, then justify any `
 
 ## In Storybook
 
-- The showcase renders a States grid through `DocPage` (`states` prop). Every `designed` cell is a live render, named for the state: `Loading`, `Empty`, `TooMany`, `Error`, `Done`. The cell shows its trigger: the prop, or the CSS selector. Figma's advice to "explode" a screen into every state combination is the same idea in a design file.
-- An `n/a` cell shows its reason. A `missing` cell carries a badge. The grid never leaves a cell blank.
+- The showcase renders a state matrix through `DocPage` (`states` prop). Every `designed` cell is a live render, named for the state: `Loading`, `Empty`, `TooMany`, `Error`, `Done`. The cell shows its trigger: the prop, or the CSS selector. Figma's advice to "explode" a screen into every state combination is the same idea in a design file.
+- Section 4 has three parts. A summary strip counts the matrix and gives one chip per state: ✓ designed, n/a, ✗ missing. Each chip links to its row.
+- **Lifecycle** (`fixtures/lifecycle`): one full-width row per state, in Speelman's order. A table or a dialog gets the width its *too many* state needs.
+- **Interaction** (`fixtures/interaction-matrix`): states are rows, variants are columns. A cell names its variant with `variant: 'Vertical'`; a cell with no `variant` is the base column. A variant is never a row (`misfile.state-as-variant`). A dash marks a variant that does not show that state. It is not a finding, because the base column answers the state.
+- An `n/a` row is one line with its reason, in its place. A `missing` row is one line with a badge, in its place. The matrix never leaves a cell blank.
 - Use realistic data. The *too many* cell uses the longest real value the product has, not a lorem string.
 - Use forced-state helpers where the state cannot be reached by hand (hover, focus-visible).
 - The guide (`.mdx`) explains why each state looks as it does. It does not repeat the grid.

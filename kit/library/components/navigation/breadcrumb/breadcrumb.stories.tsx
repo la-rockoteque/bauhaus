@@ -4,7 +4,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Breadcrumb, type BreadcrumbItem } from './breadcrumb';
 import { breadcrumbRules } from './breadcrumb.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Navigation/Breadcrumb', component: Breadcrumb, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Breadcrumb>;
 
 export default meta;

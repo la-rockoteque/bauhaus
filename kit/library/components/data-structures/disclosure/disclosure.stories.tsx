@@ -8,7 +8,7 @@ import { Accordion, AccordionItem } from './accordion';
 import { Disclosure } from './disclosure';
 import { disclosureRules } from './disclosure.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 // The title is a required prop, so the meta names no component: a story would need args.
 const meta = { title: 'Data structures/Disclosure', parameters: { layout: 'fullscreen' } } satisfies Meta;
 
@@ -110,7 +110,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'active', status: 'designed', render: <div style={cell}><Force cls="doc-force-active" target=".ds-disclosure__trigger">{faq()}</Force></div>, trigger: ':active', note: 'Forced on the first header.' },
           { id: 'disabled', status: 'designed', render: <div style={cell}><Accordion><AccordionItem value="w" title="Extended warranty" disabled disabledReason="Available after you buy a product."><Body>Hidden.</Body></AccordionItem></Accordion></div>, trigger: 'disabled · disabledReason', note: 'A native disabled button. It says why.' },
           { id: 'selected', status: 'designed', label: 'Selected (open)', render: <div style={cell}>{faq({ defaultOpen: ['shipping'] })}</div>, trigger: 'aria-expanded="true"', note: 'The chevron turns and the panel shows.' },
-          { id: 'single-open', status: 'designed', group: 'interaction', label: 'Single-open', render: <div style={cell}>{faq({ single: true, defaultOpen: ['shipping'] })}</div>, trigger: 'single', note: 'Open another item and this one closes.' },
+          { id: 'default', variant: 'Single-open', status: 'designed', render: <div style={cell}>{faq({ single: true, defaultOpen: ['shipping'] })}</div>, trigger: 'single', note: 'Open another item and this one closes.' },
         ],
       }}
       dos={[

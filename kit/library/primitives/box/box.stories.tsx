@@ -4,7 +4,7 @@ import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Box } from './box';
 import { boxRules } from './box.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Primitives/Box', component: Box, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Box>;
 
 export default meta;
