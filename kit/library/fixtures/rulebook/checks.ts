@@ -256,6 +256,7 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'button.native-element': sourceMatches(`${BUTTON}.tsx`, /<button[\s>]/, 'button.tsx does not render a native <button>'),
   'button.focus-ring': all(uses(`${BUTTON}.css`, '.ds-button:focus-visible', 'outline', '--ds-focus-ring-color'), uses(`${BUTTON}.css`, '.ds-button:focus-visible', 'outline-offset', '--ds-focus-ring-offset')),
   'button.touch-target': all(uses(`${BUTTON}.css`, '.ds-button', 'min-block-size', '--ds-size-target-min'), uses(`${BUTTON}.css`, '.ds-button', 'min-inline-size', '--ds-size-target-min'), pxAtLeast('--ds-size-target-min', 24)),
+  'button.narrow-hit-area': all(uses(`${BUTTON}.css`, '.ds-button--narrow', 'min-block-size', '--ds-size-control-narrow'), uses(`${BUTTON}.css`, '.ds-button--narrow::before', 'inset-block', '--ds-size-target-min')),
   'button.no-literal': noLiteral(`${BUTTON}.css`),
   'button.state.disabled': all(uses(`${BUTTON}.css`, '.ds-button:disabled', 'color', '--ds-disabled-text'), uses(`${BUTTON}.css`, '.ds-button:disabled', 'background', '--ds-disabled-surface')),
   'button.state.loading': all(

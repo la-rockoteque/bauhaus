@@ -124,7 +124,8 @@
       }
     },
     "control": {
-      "$description": "Heights of pressable and typeable controls. Never below the 44px target floor.",
+      "$description": "Heights of pressable and typeable controls. Never below the 44px target floor, except narrow: it draws smaller and keeps a 44px hit area.",
+      "narrow": { "$value": "{space.8}", "$description": "Visible height of a narrow control. Its hit area stays at size.target.min." },
       "sm": {
         "$value": "{size.target.min}"
       },

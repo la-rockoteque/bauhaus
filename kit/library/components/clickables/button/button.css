@@ -37,12 +37,36 @@
   color: var(--ds-text-link);
 }
 
+/* Subtle: the quietest action. Neutral text, no fill and no outline until hover. */
+.ds-button--subtle {
+  background: transparent;
+  color: var(--ds-text-default);
+}
+
+/* Narrow: drawn at size.control.narrow with a smaller label, for dense chrome such as toolbars and segmented controls.
+   An invisible layer keeps the hit area at size.target.min, so the target floor holds (WCAG 2.5.5 at the house floor). */
+.ds-button--narrow {
+  min-block-size: var(--ds-size-control-narrow);
+  padding-block: 0;
+  padding-inline: var(--ds-space-inline-md);
+  font-size: var(--ds-text-caption-size);
+}
+
+.ds-button--narrow::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: calc((var(--ds-size-control-narrow) - var(--ds-size-target-min)) / 2);
+}
+
 .ds-button--primary:hover { background: var(--ds-action-primary-hover); }
 .ds-button--primary:active { background: var(--ds-action-primary-pressed); }
 .ds-button--secondary:hover { background: var(--ds-state-hover-layer); }
 .ds-button--secondary:active { background: var(--ds-state-pressed-layer); }
 .ds-button--tertiary:hover { background: var(--ds-state-hover-layer); }
 .ds-button--tertiary:active { background: var(--ds-state-pressed-layer); }
+.ds-button--subtle:hover { background: var(--ds-state-hover-layer); }
+.ds-button--subtle:active { background: var(--ds-state-pressed-layer); }
 
 .ds-button:focus-visible {
   outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);

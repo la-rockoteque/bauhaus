@@ -33,6 +33,17 @@ export const buttonRules = [
     basis: 'House floor at the WCAG 2.5.5 (AAA) figure; WCAG 2.5.8 (AA) minimum is 24px',
   },
   {
+    id: 'button.narrow-hit-area',
+    component: 'Button',
+    rubric: 'target size',
+    severity: 'MEDIUM',
+    expectation: 'A narrow button draws smaller but keeps a hit area of size.target.min, grown by an invisible layer.',
+    expected: '--ds-size-target-min',
+    verify: 'auto',
+    covers: ['target-size'],
+    basis: 'House floor at the WCAG 2.5.5 (AAA) figure; WCAG 2.5.8 (AA) minimum is 24px',
+  },
+  {
     id: 'button.no-literal',
     component: 'Button',
     rubric: 'tokens',
