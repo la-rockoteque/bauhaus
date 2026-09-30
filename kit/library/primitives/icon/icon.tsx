@@ -1,9 +1,9 @@
 import type { SVGAttributes } from 'react';
-import { GLYPHS } from './glyphs';
-import type { IconGlyph } from './glyphs';
+import { GLYPHS, GLYPH_VIEWBOX, MIRRORED_IN_RTL } from '../../foundations/iconography/glyphs';
+import type { IconGlyph } from '../../foundations/iconography/glyphs';
 import './icon.css';
 
-export type { IconGlyph } from './glyphs';
+export type { IconGlyph } from '../../foundations/iconography/glyphs';
 export type IconSize = 'sm' | 'md' | 'lg';
 
 export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'children'> {
@@ -16,10 +16,10 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'children'
 }
 
 export function Icon({ glyph, size = 'md', label, className, ...rest }: IconProps) {
-  const classes = ['ds-icon', `ds-icon--${size}`, className];
+  const classes = ['ds-icon', `ds-icon--${size}`, MIRRORED_IN_RTL.includes(glyph) && 'ds-icon--mirror', className];
   const a11y = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true as const };
   return (
-    <svg {...rest} {...a11y} className={classes.filter(Boolean).join(' ')} viewBox="0 0 16 16" focusable="false">
+    <svg {...rest} {...a11y} className={classes.filter(Boolean).join(' ')} viewBox={GLYPH_VIEWBOX} focusable="false">
       <path d={GLYPHS[glyph]} />
     </svg>
   );

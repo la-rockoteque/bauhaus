@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { Text } from '../text/text';
-import { GLYPH_NAMES } from './glyphs';
+import { GLYPH_NAMES } from '../../foundations/iconography/glyphs';
 import { Icon } from './icon';
 import { iconRules } from './icon.rules';
 
@@ -58,13 +58,14 @@ export const Showcase: StoryObj = {
       name="Icon"
       layer="Primitive"
       plain="An icon is a small picture that stands for an action or a state, such as a check, a magnifying glass or a warning triangle. It sits beside words or inside a button. It does not replace them."
-      precise="Primitive component · inline SVG from a built-in set of sixteen glyphs · three sizes from tokens · hidden from assistive technology unless it has a label."
+      precise="Primitive component · inline SVG from a built-in set of 42 glyphs · three sizes from tokens · hidden from assistive technology unless it has a label."
       usedFor="Inside buttons, fields, banners, menus and next to status text."
       tokens={{
         mode: 'consumed',
         note: 'The icon has no component tokens. The stroke is currentColor, so it follows the text colour of its context.',
         rows: [
           { name: 'size.icon.sm · md · lg', tier: '2', use: 'Side of the icon box: 16, 20, 24 px' },
+          { name: 'icon.stroke', tier: '2', use: 'Stroke weight, 2px at 24; defined by the iconography foundation' },
         ],
       }}
       anatomy={{
@@ -76,13 +77,13 @@ export const Showcase: StoryObj = {
         ],
       }}
       specs={[
-        { label: 'Grid', value: '16 by 16 viewBox, strokes only, round caps and joins' },
+        { label: 'Grid', value: '24 by 24 viewBox, strokes only, square caps and mitre joins, stroke from icon.stroke' },
         { label: 'Colour', value: 'currentColor' },
         { label: 'Default', value: 'md, aria-hidden, not focusable' },
-        { label: 'Sprite', value: 'None. The path data lives in glyphs.ts' },
+        { label: 'Sprite', value: 'None. The path data lives in foundations/iconography/glyphs.ts' },
       ]}
       api={[
-        { label: 'glyph', value: 'Required. One of: check, close, chevron-down, chevron-up, chevron-left, chevron-right, search, plus, minus, info, warning, error, success, menu, more, external.' },
+        { label: 'glyph', value: 'Required. One of the 42 names in GLYPH_NAMES, in four groups: navigation, actions, status, objects. See Foundations/Iconography.' },
         { label: 'size', value: '"sm" | "md" | "lg", default "md".' },
         { label: 'label', value: 'The accessible name. Without it, the icon is hidden from assistive technology.' },
         { label: '…props', value: 'Every SVG attribute except children.' },
@@ -106,7 +107,7 @@ export const Showcase: StoryObj = {
           { id: 'selected', status: 'n/a', reason: notInteractive },
         ],
       }}
-      extra={[{ title: 'Glyphs', kicker: 'The sixteen built-in glyphs at size lg. Add a new one to glyphs.ts, never at a call site.', content: gallery }]}
+      extra={[{ title: 'Glyphs', kicker: 'The 42 built-in glyphs at size lg. Add a new one to foundations/iconography/glyphs.ts, never at a call site.', content: gallery }]}
       dos={[
         { text: 'Pair an icon with visible text when it carries meaning.', basis: 'WCAG 1.4.1 (A); 1.1.1 (A)' },
         { text: 'Pass label only when the icon says something the text does not.', basis: 'WCAG 1.1.1 (A)' },

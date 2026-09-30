@@ -48,7 +48,7 @@ The Showcase story holds the anatomy, the states grid, the recipe, the working f
 
 The recipe keeps the list of flagged fields in one place. A field joins the list on blur, or with all invalid fields on submit. A field leaves the list when its value is valid. The summary reads the same list, so a fixed field disappears from the field and the summary together.
 
-A checkbox and a radio group are not checked on blur. Choosing is one action, so there is no unfinished value to wait for. They are checked on submit.
+A checkbox is checked when focus leaves it, and a radio group when focus leaves the group (`onBlur` on both; arrow keys inside the group do not count). A user who tabs past an empty required group sees its error at once. Pointer users are covered by the check on submit.
 
 ## 3. Why the states look as they do
 
@@ -58,7 +58,7 @@ A checkbox and a radio group are not checked on blur. Choosing is one action, so
 - **One and some.** A partly filled form shows no error on the fields still empty. A complete form shows none at all, and the button stays enabled.
 - **Too many needs a plan for two axes.** Long values wrap or scroll inside the field and are never cut. Many errors are all listed in the summary, one link each, in field order.
 - **Incorrect starts at the field.** After blur the message sits under the field. The summary appears only after a submit.
-- **Correct is used sparingly.** The password rule is not obvious, so a quiet check confirms it. A green check on every valid field adds noise (Nielsen heuristic 5).
+- **Correct is used sparingly.** The password rule is not obvious, so a quiet check confirms it: `success` on the TextField puts the message in a polite live region (`role="status"`), styled as success and not as an error. The description keeps the rule. A green check on every valid field adds noise (Nielsen heuristic 5).
 - **Done is announced.** The success message sits in a status region (WCAG 4.1.3 Status Messages, AA). Motion or colour alone would tell a screen reader user nothing.
 
 ## 4. Pitfalls and don'ts
@@ -76,5 +76,3 @@ A checkbox and a radio group are not checked on blur. Choosing is one action, so
 ## 5. Component gaps
 
 - There is no ErrorSummary component. The recipe composes a Banner, a Stack list and Links. Its `id` and `tabIndex` pass through the Banner. If three apps repeat this, propose the component.
-- TextField has no slot for a "correct" message. The recipe puts it in the description, which changes when the rule is met.
-- RadioGroup and Checkbox have no `onBlur`. That is why they are checked on submit.

@@ -2,13 +2,21 @@ import type { AnatomyAt } from '../doc-page/types';
 
 export type Point = { x: number; y: number };
 
-/** The anchor point on a box: its centre, or one of its four corners. */
-export function corner(box: Pick<DOMRect, 'left' | 'top' | 'right' | 'bottom' | 'width' | 'height'>, at: AnatomyAt = 'center'): Point {
+/** How far `start` and `end` sit outside the box, in px: the radius of a pin plus a small gap, so no marker touches the edge it names. */
+export const OUTSET = 12;
+
+/**
+ * The anchor point on a box, always just outside it, `outset` px away, so a marker never covers what it names.
+ * `start` and `end` are the middle of the left or right edge. A corner is diagonally outside that corner.
+ * `center` is the middle of the box: only for a large box such as an input or a card, never for text.
+ */
+export function corner(box: Pick<DOMRect, 'left' | 'top' | 'right' | 'bottom' | 'width' | 'height'>, at: AnatomyAt = 'start', outset = OUTSET): Point {
+  const middle = box.top + box.height / 2;
+  if (at === 'center') return { x: box.left + box.width / 2, y: middle };
+  if (at === 'start') return { x: box.left - outset, y: middle };
+  if (at === 'end') return { x: box.right + outset, y: middle };
   const [block, inline] = at.split('-');
-  return {
-    x: inline === 'start' ? box.left : inline === 'end' ? box.right : box.left + box.width / 2,
-    y: block === 'top' ? box.top : block === 'bottom' ? box.bottom : box.top + box.height / 2,
-  };
+  return { x: inline === 'start' ? box.left - outset : box.right + outset, y: block === 'top' ? box.top - outset : box.bottom + outset };
 }
 
 /**

@@ -49,9 +49,39 @@ function useStoredOpen(): [boolean | null, (open: boolean) => void] {
 
 const sameNumbers = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
+/** A box of text on the stage, in coordinates of the whole block. */
+interface Hole { x: number; y: number; w: number; h: number }
+
+/** The gap kept between a leader line and the glyphs it passes, in px. */
+const HALO = 2;
+
+/** The line boxes of every visible text and icon in `box`, except the markers themselves. */
+function textHoles(box: HTMLElement, frame: DOMRect): Hole[] {
+  const holes: Hole[] = [];
+  const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (!node.textContent?.trim() || node.parentElement?.closest('.doc-pin, .doc-dot, .ds-visually-hidden')) continue;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    // jsdom has no layout: its Range has no rects.
+    for (const r of range.getClientRects?.() ?? []) {
+      // A visually hidden text is a 1px box: it has nothing to protect.
+      if (r.width > 2 && r.height > 2) holes.push({ x: r.left - frame.left - HALO, y: r.top - frame.top - HALO, w: r.width + 2 * HALO, h: r.height + 2 * HALO });
+    }
+  }
+  // Icons are drawn glyphs: the line breaks around them too.
+  for (const icon of box.querySelectorAll('svg')) {
+    const r = icon.getBoundingClientRect();
+    if (r.width > 2 && r.height > 2) holes.push({ x: r.left - frame.left - HALO, y: r.top - frame.top - HALO, w: r.width + 2 * HALO, h: r.height + 2 * HALO });
+  }
+  return holes;
+}
+
 interface Measure {
   /** Where each part sits, in coordinates of the whole block. */
   anchors: Record<number, Point>;
+  /** Where the component's text sits. Leader lines break around it. */
+  holes: Hole[];
   /** The top-left corner of the rendered component, in the same coordinates. */
   origin: Point;
   height: number;
@@ -65,7 +95,7 @@ export function Stage({ anatomy }: { anatomy: Anatomy }) {
   const open = stored ?? wide;
   const lines = open && wide;
   const [active, setActive] = useState<number | null>(null);
-  const [measure, setMeasure] = useState<Measure>({ anchors: {}, origin: { x: 0, y: 0 }, height: 0 });
+  const [measure, setMeasure] = useState<Measure>({ anchors: {}, holes: [], origin: { x: 0, y: 0 }, height: 0 });
   const [paths, setPaths] = useState<Record<number, string>>({});
   const [tick, setTick] = useState(0);
   const root = useRef<HTMLDivElement>(null);
@@ -74,6 +104,7 @@ export function Stage({ anatomy }: { anatomy: Anatomy }) {
   const rows = useRef(new Map<number, HTMLElement>());
   const fallback = useRef(new Map<number, HTMLElement>());
   const bodyId = useId();
+  const maskId = `${useId().replace(/:/g, '')}-leaders`;
 
   // Rows follow the anchors from top to bottom, so the lines never cross.
   const order = useMemo(
@@ -90,11 +121,11 @@ export function Stage({ anatomy }: { anatomy: Anatomy }) {
     for (const part of parts) {
       const el = part.target ? box.querySelector(part.target) : fallback.current.get(part.n);
       if (!el) continue;
-      const point = part.target ? corner(el.getBoundingClientRect(), part.at) : corner(el.getBoundingClientRect());
+      const point = part.target ? corner(el.getBoundingClientRect(), part.at) : corner(el.getBoundingClientRect(), 'center');
       anchors[part.n] = { x: point.x - frame.left, y: point.y - frame.top };
     }
     const own = box.getBoundingClientRect();
-    const next = { anchors, origin: { x: own.left - frame.left, y: own.top - frame.top }, height: own.height };
+    const next = { anchors, holes: textHoles(box, frame), origin: { x: own.left - frame.left, y: own.top - frame.top }, height: own.height };
     setMeasure((prev) => (sameNumbers(prev, next) ? prev : next));
   }, [parts, tick, open, wide, render]);
 
@@ -149,14 +180,14 @@ export function Stage({ anatomy }: { anatomy: Anatomy }) {
         style={{ ...style, ...series(part.n) }}
         data-part={part.n}
         data-target={part.target}
-        data-at={part.at ?? 'center'}
+        data-at={part.at ?? 'start'}
         aria-hidden="true"
         onMouseEnter={() => setActive(part.n)}
         onMouseLeave={() => setActive(null)}
       />
     ) : (
       <Tooltip key={part.n} content={label(part)} placement="top">
-        <button type="button" ref={ref as (el: HTMLButtonElement | null) => void} className="ds-series doc-pin" style={{ ...style, ...series(part.n) }} data-part={part.n} data-target={part.target} data-at={part.at ?? 'center'} aria-label={`Part ${part.n}`}>
+        <button type="button" ref={ref as (el: HTMLButtonElement | null) => void} className="ds-series doc-pin" style={{ ...style, ...series(part.n) }} data-part={part.n} data-target={part.target} data-at={part.at ?? 'start'} aria-label={`Part ${part.n}`}>
           {part.n}
         </button>
       </Tooltip>
@@ -214,8 +245,14 @@ export function Stage({ anatomy }: { anatomy: Anatomy }) {
       </aside>
       {lines && (
         <svg className="doc-leaders" aria-hidden="true">
+          <defs>
+            <mask id={maskId} maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+              <rect x="-10000" y="-10000" width="20000" height="20000" fill="white" />
+              {measure.holes.map((hole, k) => <rect key={k} x={hole.x} y={hole.y} width={hole.w} height={hole.h} fill="black" />)}
+            </mask>
+          </defs>
           {order.filter((n) => paths[n]).map((n) => (
-            <path key={n} d={paths[n]} className={`ds-series${active === n ? ' is-active' : ''}`} data-part={n} style={series(n)} />
+            <path key={n} d={paths[n]} mask={`url(#${maskId})`} className={`ds-series${active === n ? ' is-active' : ''}`} data-part={n} style={series(n)} />
           ))}
         </svg>
       )}

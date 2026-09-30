@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import type { ChangeEvent, ReactNode } from 'react';
+import type { ChangeEvent, FocusEvent, ReactNode } from 'react';
 import { Stack } from '../../../primitives/stack/stack';
 import { FieldDescription, FieldError, FieldMarker } from '../field';
 import { useFieldIds } from '../use-field-ids';
@@ -28,20 +28,27 @@ export interface RadioGroupProps {
   /** Uncontrolled starting value. Preselect only with a reason: a chosen default hides the question. */
   defaultValue?: string;
   onValueChange?: (value: string) => void;
+  /** Group blur: called when focus leaves the group, not when it moves from one radio to another. Validate here. */
+  onBlur?: (event: FocusEvent<HTMLFieldSetElement>) => void;
   required?: boolean;
   disabled?: boolean;
   className?: string;
 }
 
 /** A fieldset of native radios. The browser owns the arrow keys and the single Tab stop. */
-export function RadioGroup({ legend, description, error, requiredText, errorPrefix, options, name, id, value, defaultValue, onValueChange, required, disabled, className }: RadioGroupProps) {
+export function RadioGroup({ legend, description, error, requiredText, errorPrefix, options, name, id, value, defaultValue, onValueChange, onBlur, required, disabled, className }: RadioGroupProps) {
   const ids = useFieldIds({ id, description, error });
   const generated = useId();
   const groupName = name ?? generated;
   const onChange = (event: ChangeEvent<HTMLInputElement>) => onValueChange?.(event.target.value);
+  // Blur bubbles from each radio. Arrow keys move focus inside the group, so only a move to the outside counts.
+  const leave = (event: FocusEvent<HTMLFieldSetElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) onBlur?.(event);
+  };
   return (
     <fieldset
       id={ids.id}
+      onBlur={leave}
       role="radiogroup"
       disabled={disabled}
       aria-required={required || undefined}

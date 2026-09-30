@@ -34,7 +34,7 @@ The Showcase story holds the tokens, the anatomy, the states grid, the live rule
 - **Gap.** A space step from 0 to 12. The default is 4, which is 16px in the default scale.
 - **Alignment.** `align` acts on the cross axis, `justify` on the main axis. Both default to the CSS start behaviour, and `align` defaults to `stretch`.
 - **Wrap.** Set `wrap` on a horizontal stack whose children vary in width, such as a row of buttons or tags. Without it, the row overflows at 320 CSS px (WCAG 1.4.10 Reflow, AA).
-- **Lists.** Pass `as="ul"` or `as="ol"` and use `li` children when the items are alike. Screen reader users then hear the item count (WCAG 1.3.1, A).
+- **Lists.** Pass `as="ul"` or `as="ol"` and use `li` children when the items are alike. The stack resets the markers, the margin and the padding of the list. It also sets `role="list"`, since Safari drops list semantics from a list with `list-style: none`; pass another `role` to override it. Screen reader users then hear the item count (WCAG 1.3.1, A).
 - **i18n.** Stack holds no text.
 
 ## 3. Why the states look as they do

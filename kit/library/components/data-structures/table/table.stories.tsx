@@ -158,11 +158,11 @@ export const Showcase: StoryObj<typeof meta> = {
         render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}><Live rows={DATA.slice(0, 2)} columns={SMALL} /></div>,
         parts: [
           { n: 1, label: 'Caption', note: 'names the table, required', target: '.ds-table__caption' },
-          { n: 2, label: 'Column header', note: 'th scope="col", required', target: 'thead .ds-table__head--sortable', at: 'top-start' },
-          { n: 3, label: 'Sort button', note: 'optional, with aria-sort and a direction glyph', target: '.ds-table__sort .ds-table__direction' },
+          { n: 2, label: 'Column header', note: 'th scope="col", required', target: 'thead .ds-table__head--sortable', at: 'bottom-start' },
+          { n: 3, label: 'Sort button', note: 'optional, with aria-sort and a direction glyph', target: '.ds-table__sort .ds-table__direction', at: 'end' },
           { n: 4, label: 'Row header', note: 'th scope="row", the identifier', target: 'tbody .ds-table__cell--row-header', at: 'top-start' },
           { n: 5, label: 'Value cell', note: 'td with data-label', target: 'tbody td:last-child', at: 'bottom-end' },
-          { n: 6, label: 'Selection cell', note: 'optional native checkbox', target: 'tbody .ds-table__check', at: 'bottom-start' },
+          { n: 6, label: 'Selection cell', note: 'optional native checkbox', target: 'tbody .ds-table__check', at: 'bottom-end' },
         ],
       }}
       specs={[

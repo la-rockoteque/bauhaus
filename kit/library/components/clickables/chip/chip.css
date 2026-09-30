@@ -1,0 +1,104 @@
+/* One pill. A removable chip holds its remove button inside the same outline, so the pair reads as one shape. */
+.ds-chip {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-control-gap);
+  max-inline-size: 100%;
+  min-block-size: var(--ds-space-8);
+  padding-inline: var(--ds-space-inline-lg);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-surface-sunken);
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+}
+
+/* A long label cuts short with an ellipsis; the text stays whole in the DOM, so the accessible name is complete. */
+.ds-chip__label {
+  min-inline-size: 0;
+  max-inline-size: var(--ds-size-overlay-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-chip__label:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+/* Pressable chips keep the 44px target inside their border. */
+.ds-chip--removable,
+.ds-chip--selectable {
+  min-block-size: calc(var(--ds-size-target-min) + 2 * var(--ds-size-border-thin));
+  border-color: var(--ds-border-strong);
+  background: var(--ds-surface-default);
+}
+
+.ds-chip--removable {
+  padding-inline-end: 0;
+}
+
+.ds-chip .ds-chip__remove {
+  flex: none;
+  border-radius: var(--ds-radius-full);
+  color: var(--ds-text-default);
+}
+
+.ds-chip--selectable {
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .ds-chip--selectable:hover { background: var(--ds-state-hover-layer); }
+}
+
+.ds-chip--selectable:active { background: var(--ds-state-pressed-layer); }
+
+.ds-chip--selectable:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+/* Selected: fill, the same fill's text role, and a check, so colour is not the only cue. */
+.ds-chip--selectable[aria-pressed="true"] {
+  border-color: var(--ds-selection-surface);
+  background: var(--ds-selection-surface);
+  color: var(--ds-selection-text);
+}
+
+@media (hover: hover) {
+  .ds-chip--selectable[aria-pressed="true"]:hover {
+    background: var(--ds-selection-surface);
+    box-shadow: inset 0 0 0 var(--ds-size-border-thick) var(--ds-selection-text);
+  }
+}
+
+.ds-chip--selectable[aria-pressed="true"]:active {
+  background: var(--ds-selection-surface);
+  box-shadow: inset 0 0 0 var(--ds-size-border-thick) var(--ds-selection-text);
+}
+
+.ds-chip--disabled,
+.ds-chip--selectable:disabled {
+  border-color: var(--ds-disabled-border);
+  background: var(--ds-disabled-surface);
+  color: var(--ds-disabled-text);
+  cursor: not-allowed;
+}
+
+.ds-chip--selectable[aria-pressed]:disabled {
+  border-color: var(--ds-disabled-border);
+  background: var(--ds-disabled-surface);
+  color: var(--ds-disabled-text);
+  box-shadow: none;
+}
+
+@media (forced-colors: active) {
+  .ds-chip { border-color: CanvasText; }
+  .ds-chip--selectable[aria-pressed="true"] { border-color: Highlight; }
+}

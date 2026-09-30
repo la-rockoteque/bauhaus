@@ -1,18 +1,24 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { expectNoAxeViolations } from '../../expect-no-axe-violations';
-import { GLYPHS, GLYPH_NAMES } from './glyphs';
+import { GLYPHS, GLYPH_NAMES, GLYPH_VIEWBOX } from '../../foundations/iconography/glyphs';
 import { Icon } from './icon';
 
 describe('Icon', () => {
-  it('ships the sixteen glyphs, each with path data', () => {
-    expect(GLYPH_NAMES).toHaveLength(16);
-    for (const glyph of GLYPH_NAMES) expect(GLYPHS[glyph].length).toBeGreaterThan(0);
+  it.each(GLYPH_NAMES)('draws the %s glyph from its path data on the grid, with only currentColor', (glyph) => {
+    const { container } = render(<Icon glyph={glyph} />);
+    const svg = container.querySelector('svg')!;
+    expect(container.querySelector('path')?.getAttribute('d')).toBe(GLYPHS[glyph]);
+    expect(svg.getAttribute('viewBox')).toBe(GLYPH_VIEWBOX);
+    expect(svg.outerHTML).not.toMatch(/\b(?:fill|stroke)=|#[0-9a-f]{3,8}\b|rgb|hsl/i);
   });
 
-  it.each(GLYPH_NAMES)('draws the %s glyph from its path data', (glyph) => {
-    const { container } = render(<Icon glyph={glyph} />);
-    expect(container.querySelector('path')?.getAttribute('d')).toBe(GLYPHS[glyph]);
+  it('flips the glyphs that point along the reading direction, and only those', () => {
+    const { container } = render(<><Icon glyph="arrow-right" /><Icon glyph="arrow-up" /><Icon glyph="clock" /></>);
+    const [right, up, clock] = [...container.querySelectorAll('svg')];
+    expect(right.getAttribute('class')).toContain('ds-icon--mirror');
+    expect(up.getAttribute('class')).not.toContain('ds-icon--mirror');
+    expect(clock.getAttribute('class')).not.toContain('ds-icon--mirror');
   });
 
   it('is hidden from assistive technology by default', () => {
@@ -37,8 +43,13 @@ describe('Icon', () => {
     expect(container.querySelector('svg')!.getAttribute('class')).toContain('ds-icon--lg');
   });
 
-  it('has no axe violations, hidden or labelled', async () => {
-    const { container } = render(<><Icon glyph="check" /><Icon glyph="info" label="Information" size="sm" /></>);
+  it('has no axe violations, hidden or labelled, for the whole set', async () => {
+    const { container } = render(
+      <>
+        {GLYPH_NAMES.map((glyph) => <Icon key={glyph} glyph={glyph} />)}
+        <Icon glyph="info" label="Information" size="sm" />
+      </>,
+    );
     await expectNoAxeViolations(container);
   });
 });

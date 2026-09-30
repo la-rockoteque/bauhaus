@@ -23,8 +23,13 @@ export interface TokensSpec {
   note?: string;
 }
 
-/** Where on the target's box the anchor sits. */
-export type AnatomyAt = 'center' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end';
+/**
+ * Where the anchor sits on the target's box.
+ * `start` is the default: the middle of the leading edge, just outside the box, so the anchor never covers the glyphs of a text part.
+ * `end` is the middle of the trailing edge, also outside. A corner sits diagonally outside that corner.
+ * `center` puts the anchor on top of the box: only for a large box such as an input or a card, never for text.
+ */
+export type AnatomyAt = 'start' | 'end' | 'center' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end';
 
 /** A numbered part of the anatomy: an anchor on the stage and a row in the parts panel. */
 export interface AnatomyPart {
@@ -37,7 +42,7 @@ export interface AnatomyPart {
    * The stage measures its box and puts the anchor exactly there.
    */
   target?: string;
-  /** Which point of the target's box holds the anchor. Default `center`. Two anchors on one row need different points. */
+  /** Which point of the target's box holds the anchor. Default `start`. Two anchors on one row need different points. */
   at?: AnatomyAt;
   /** Fallback when there is no `target`: CSS left and top of the anchor, relative to the rendered component box. */
   x?: string;

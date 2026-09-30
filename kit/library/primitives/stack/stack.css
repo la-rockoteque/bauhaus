@@ -13,3 +13,10 @@
 .ds-stack--justify-between { justify-content: space-between; }
 
 .ds-stack--wrap { flex-wrap: wrap; }
+
+/* A list stack has no markers and no indent; the role in stack.tsx keeps the list semantics that Safari drops with list-style: none. */
+.ds-stack--list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

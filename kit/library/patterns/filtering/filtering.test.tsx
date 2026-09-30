@@ -22,18 +22,18 @@ describe('Filtering pattern', () => {
     await userEvent.selectOptions(screen.getByLabelText('Status'), 'Shipped');
     await waitFor(() => expect(status().textContent).toBe('Showing 1–25 of 336 results'));
     const chips = within(chipList()!);
-    expect(chips.getByRole('button', { name: 'Remove filter: Status, Shipped' })).toBeTruthy();
+    expect(chips.getByRole('button', { name: 'Remove filter Status: Shipped' })).toBeTruthy();
     expect(chips.getByRole('button', { name: 'Clear all' })).toBeTruthy();
   });
 
   it('removes a chip, updates the count and says what changed', async () => {
     render(<OrderFilters orders={many} delayMs={0} initialFilters={{ ...NO_FILTERS, status: 'Shipped', region: 'Asia' }} />);
     const before = status().textContent;
-    await userEvent.click(screen.getByRole('button', { name: 'Remove filter: Region, Asia' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Remove filter Region: Asia' }));
     await waitFor(() => expect(status().textContent).not.toBe(before));
     expect(status().textContent).toBe('Removed filter Region, Asia. Showing 1–25 of 336 results');
-    expect(screen.queryByRole('button', { name: 'Remove filter: Region, Asia' })).toBeNull();
-    expect(screen.getByRole('button', { name: 'Remove filter: Status, Shipped' })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Remove filter Region: Asia' })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Remove filter Status: Shipped' })).toBeTruthy();
     expect(document.activeElement).toBe(screen.getByLabelText(/Search orders/));
   });
 
@@ -95,7 +95,7 @@ describe('Filtering pattern', () => {
   it('shows a retry when the request failed, and keeps the filters', async () => {
     render(<OrderFilters orders={many} delayMs={0} initialFilters={{ ...NO_FILTERS, status: 'Shipped' }} failed />);
     expect(screen.getByRole('alert').textContent).toContain('Your filters are kept');
-    expect(screen.getByRole('button', { name: 'Remove filter: Status, Shipped' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Remove filter Status: Shipped' })).toBeTruthy();
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
     expect(screen.queryByRole('alert')).toBeNull();
   });

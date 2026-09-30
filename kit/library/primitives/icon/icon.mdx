@@ -5,15 +5,15 @@ import * as Stories from './icon.stories';
 
 # Icon
 
-The Showcase story holds the tokens, the anatomy, the glyph gallery, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+The Showcase story holds the tokens, the anatomy, the glyph gallery (the full catalogue is in Foundations/Iconography), the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
 
 ## 1. Introduction
 
 **In plain words:** An icon is a small picture that stands for an action or a state, such as a check, a magnifying glass or a warning triangle. It sits beside words or inside a button. It does not replace them.
 
-**Precisely:** Primitive component. An inline SVG drawn from a built-in set of sixteen glyphs. It has three sizes from tokens. It is hidden from assistive technology unless it has a label.
+**Precisely:** Primitive component. An inline SVG drawn from the built-in set of 42 glyphs. It has three sizes from tokens. It is hidden from assistive technology unless it has a label.
 
-**The job.** Icons are drawn from path data in `glyphs.ts`, so the library needs no sprite file, no icon font and no network request. Each glyph is a stroke on a 16 by 16 grid. The stroke uses `currentColor`, so the icon takes the text colour of its context and works in every theme.
+**The job.** Icons are drawn from path data in `foundations/iconography/glyphs.ts`, so the library needs no sprite file, no icon font and no network request. Each glyph is a stroke on a 24 by 24 grid, drawn by the rules of the iconography foundation. The stroke uses `currentColor`, so the icon takes the text colour of its context and works in every theme.
 
 **The layer.** A primitive. Buttons, fields, banners and menus place an Icon inside their own markup.
 
@@ -37,7 +37,8 @@ The Showcase story holds the tokens, the anatomy, the glyph gallery, the states 
 - **Meaningful.** With `label`, the SVG gets `role="img"` and `aria-label`. Use this when the icon says something the nearby text does not.
 - **Size.** `sm`, `md` (default) and `lg` read `size.icon.sm|md|lg`. The icon scales with the token, not with the font size.
 - **Colour.** Set `color` on the parent. Non-text contrast of 3:1 against the surface applies (WCAG 1.4.11, AA).
-- **Adding a glyph.** Draw it on the 16 by 16 grid as strokes, add it to `glyphs.ts`, and add a test line. Do not draw one at a call site.
+- **Right to left.** The four directional glyphs (`arrow-left`, `arrow-right`, `chevron-left`, `chevron-right`) flip under `:dir(rtl)`.
+- **Adding a glyph.** Follow the construction checklist in the Iconography guide and add the glyph to `foundations/iconography/glyphs.ts`. Do not draw one at a call site.
 - **i18n.** The `label` arrives as a prop.
 
 ## 3. Why the states look as they do

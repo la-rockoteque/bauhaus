@@ -16,7 +16,7 @@ export const Sample: StoryObj = {
           parts: [
             { n: 1, label: 'Container', note: 'native button, required', target: '.ds-button', at: 'top-start' },
             { n: 2, label: 'Label', note: 'children, required', target: '.ds-button__label', at: 'bottom-start' },
-            { n: 3, label: 'Spinner', note: 'shown only while loading', target: '.ds-button__spinner' },
+            { n: 3, label: 'Spinner', note: 'shown only while loading', target: '.ds-button__spinner', at: 'center' },
           ],
         }}
       />

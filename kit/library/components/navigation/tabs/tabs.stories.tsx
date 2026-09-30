@@ -47,7 +47,7 @@ export const Showcase: StoryObj = {
         parts: [
           { n: 1, label: 'Tab list', note: 'role tablist, required', target: '[role=tablist]', at: 'bottom-start' },
           { n: 2, label: 'Tab', note: 'role tab, aria-selected', target: '[role=tab]:last-of-type', at: 'top-end' },
-          { n: 3, label: 'Selected bar', note: 'border.strong', target: '[role=tab][aria-selected=true]', at: 'bottom-end' },
+          { n: 3, label: 'Selected bar', note: 'border.strong', target: '[role=tab][aria-selected=true]', at: 'bottom-start' },
           { n: 4, label: 'Panel', note: 'role tabpanel, one per tab', target: '[role=tabpanel]:not([hidden])' },
         ],
       }}

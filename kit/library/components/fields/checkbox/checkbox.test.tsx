@@ -48,6 +48,16 @@ describe('Checkbox', () => {
     expect((screen.getByRole('checkbox') as HTMLInputElement).checked).toBe(false);
   });
 
+  it('passes onBlur through to the input, so a form can validate when focus leaves', async () => {
+    const onBlur = vi.fn();
+    render(<><Checkbox label="Accept the terms" onBlur={onBlur} /><button type="button">After</button></>);
+    await userEvent.tab();
+    expect(onBlur).not.toHaveBeenCalled();
+    await userEvent.tab();
+    expect(onBlur).toHaveBeenCalledTimes(1);
+    expect(onBlur.mock.calls[0][0].target).toBe(screen.getByRole('checkbox'));
+  });
+
   it('has no axe violations', async () => {
     const { container } = render(
       <>

@@ -52,7 +52,7 @@ export const Showcase: StoryObj<typeof meta> = {
         ),
         parts: [
           { n: 1, label: 'Container', note: 'role status or alert, required', target: '.ds-banner', at: 'top-start' },
-          { n: 2, label: 'Icon', note: 'one glyph per status, required', target: '.ds-banner__icon', at: 'top-end' },
+          { n: 2, label: 'Icon', note: 'one glyph per status, required', target: '.ds-banner__icon' },
           { n: 3, label: 'Title', note: 'optional', target: '.ds-banner__title' },
           { n: 4, label: 'Body', note: 'children', target: '.ds-banner__body' },
           { n: 5, label: 'Actions', note: 'optional', target: '.ds-banner__actions' },

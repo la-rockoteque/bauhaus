@@ -57,7 +57,7 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'description · error', value: 'Help and error text under the label, tied with aria-describedby. The error sets aria-invalid.' },
         { label: 'indeterminate', value: 'Shows the mixed state. The user clears it by toggling.' },
         { label: 'required · requiredText · errorPrefix', value: 'As the text field.' },
-        { label: '…props', value: 'Every native input attribute, such as checked, defaultChecked, disabled, name, value, onChange and ref.' },
+        { label: '…props', value: 'Every native input attribute, such as checked, defaultChecked, disabled, name, value, onChange, onBlur and ref. onBlur fires when focus leaves the box: validate there.' },
       ]}
       states={{
         cells: [

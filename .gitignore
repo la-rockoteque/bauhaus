@@ -9,3 +9,5 @@ kit/library/package-lock.json
 kit/library/dist/*
 !kit/library/dist/tokens.css
 !kit/library/dist/tokens.ts
+kit/library/storybook-static/
+.vercel/

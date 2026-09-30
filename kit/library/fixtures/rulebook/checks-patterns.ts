@@ -38,7 +38,7 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'form-validation.done-announced': sourceMatches(FORM, /<Banner[^>]*status="success"/, 'the recipe has no success Banner (role status)'),
 
   'filtering.no-own-style': noPatternStyle('filtering'),
-  'filtering.chip-removable': sourceMatches(FILTERING, /<IconButton label=\{`Remove filter: \$\{chip\.name\}, \$\{chip\.value\}`\}/, 'a chip remove button has no name that says which filter it removes'),
+  'filtering.chip-removable': sourceMatches(FILTERING, /<Chip variant="removable" removeLabel="Remove filter" onRemove=\{\(\) => remove\(chip\)\}>\{`\$\{chip\.name\}: \$\{chip\.value\}`\}<\/Chip>/, 'a chip remove button has no name that says which filter it removes'),
   'filtering.count-announced': sourceMatches(FILTERING, /<Text role="status">/, 'the result count is not in a status region'),
   'filtering.no-dead-end': all(
     sourceMatches(FILTERING, /const relax =/, 'the recipe does not compute a filter to relax'),

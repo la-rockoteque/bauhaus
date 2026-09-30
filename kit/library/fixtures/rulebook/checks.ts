@@ -252,12 +252,6 @@ const neverRemovedFromTree = (path: string): Check => () => {
   return bad.length ? `${path} removes ${bad.map((rule) => rule.selector).join(', ')} from the tree` : null;
 };
 
-const glyphCount = (expected: number): Check => () => {
-  const text = sourceOf('primitives/icon/glyphs.ts');
-  if (text === undefined) return 'glyphs.ts not found';
-  return (text.match(/^ {2}'?[a-z-]+'?: '/gm) ?? []).length === expected ? null : `glyphs.ts does not hold ${expected} glyphs`;
-};
-
 export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'button.native-element': sourceMatches(`${BUTTON}.tsx`, /<button[\s>]/, 'button.tsx does not render a native <button>'),
   'button.focus-ring': all(uses(`${BUTTON}.css`, '.ds-button:focus-visible', 'outline', '--ds-focus-ring-color'), uses(`${BUTTON}.css`, '.ds-button:focus-visible', 'outline-offset', '--ds-focus-ring-offset')),
@@ -333,7 +327,7 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'icon.label-names-it': sourceMatches(`${ICON}.tsx`, /role: 'img', 'aria-label': label/, 'a label does not become role img with aria-label'),
   'icon.size-from-token': all(noLiteral(`${ICON}.css`), ...['sm', 'md', 'lg'].map((size) => uses(`${ICON}.css`, `.ds-icon--${size}`, 'inline-size', `--ds-size-icon-${size}`))),
   'icon.current-color': uses(`${ICON}.css`, '.ds-icon', 'stroke', 'currentColor'),
-  'icon.glyph-set-closed': glyphCount(16),
+  'icon.glyph-set-closed': sourceMatches(`${ICON}.tsx`, /<path d=\{GLYPHS\[glyph\]\} \/>/, 'the icon draws a path that does not come from the glyph set'),
 
   'visually-hidden.clip-pattern': all(
     uses(`${VISUALLY_HIDDEN}.css`, '.ds-visually-hidden', 'position', 'absolute'),

@@ -37,7 +37,7 @@ export const Showcase: StoryObj<typeof meta> = {
         parts: [
           { n: 1, label: 'Pill', note: 'the fill, status', target: '.ds-badge', at: 'top-start' },
           { n: 2, label: 'Visible text', note: 'a word, or a number capped at 99+', target: '.ds-badge > span:first-child' },
-          { n: 3, label: 'Accessible name', note: 'the full number and what it counts', target: '.ds-badge .ds-visually-hidden', at: 'bottom-end' },
+          { n: 3, label: 'Accessible name', note: 'the full number and what it counts; hidden, so the marker sits on the pill', target: '.ds-badge', at: 'bottom-end' },
         ],
       }}
       specs={[

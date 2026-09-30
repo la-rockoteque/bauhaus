@@ -1,0 +1,122 @@
+/* The icon catalogue and the construction grid (fixture). Layout only; the drawing colours are roles. */
+
+.ds-icon-catalog {
+  display: grid;
+  gap: var(--ds-space-4);
+}
+
+.ds-icon-catalog__group {
+  display: grid;
+  gap: var(--ds-space-3);
+}
+
+.ds-icon-catalog__grid,
+.ds-icon-catalog__figures,
+.ds-icon-catalog__sheet {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-icon-catalog__grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--ds-space-12) * 3)), 1fr));
+}
+
+.ds-icon-catalog__figures {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--ds-space-12) * 4)), 1fr));
+}
+
+.ds-icon-catalog__sheet {
+  grid-template-columns: repeat(auto-fill, calc(var(--ds-space-12) * 4));
+}
+
+.ds-icon-catalog__card {
+  display: grid;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+}
+
+.ds-icon-catalog__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ds-space-1);
+}
+
+.ds-icon-catalog__tile {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: var(--ds-space-2);
+  background: var(--ds-surface-default);
+  color: var(--ds-text-default);
+  border-radius: var(--ds-radius-sm);
+}
+
+/* ---- size pairing ---- */
+
+.ds-icon-catalog__pairing {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-icon-catalog__pairing li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-4);
+}
+
+.ds-icon-catalog__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-control-gap);
+  min-inline-size: calc(var(--ds-space-12) * 5);
+}
+
+/* ---- the construction grid ---- */
+
+.ds-glyph-grid {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  background: var(--ds-surface-default);
+  color: var(--ds-text-default);
+}
+
+.ds-glyph-grid__grid,
+.ds-glyph-grid__live,
+.ds-glyph-grid__keylines > *,
+.ds-glyph-grid__centre {
+  stroke-width: var(--ds-size-border-thin);
+  vector-effect: non-scaling-stroke;
+}
+
+.ds-glyph-grid__grid {
+  stroke: var(--ds-border-default);
+}
+
+.ds-glyph-grid__live {
+  stroke: var(--ds-border-strong);
+  stroke-dasharray: var(--ds-size-border-thick);
+}
+
+.ds-glyph-grid__keylines > * {
+  stroke: var(--ds-status-info);
+}
+
+.ds-glyph-grid__glyph {
+  opacity: 0.85;
+}
+
+.ds-glyph-grid__centre {
+  stroke: var(--ds-status-error);
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+}

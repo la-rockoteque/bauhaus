@@ -23,6 +23,23 @@ export function FieldError({ id, prefix = 'Error', children }: { id?: string; pr
   ) : null;
 }
 
+/**
+ * The confirmation that a value is right (states: Correct). Quiet: a check and text in the success colour, no border change.
+ * It is a polite live region (role="status") that stays in the page while empty, so a screen reader announces the message when it appears.
+ */
+export function FieldSuccess({ id, prefix = 'Correct', children }: { id?: string; prefix?: string; children?: ReactNode }) {
+  return (
+    <p id={children ? id : undefined} role="status" className="ds-field__success">
+      {children && (
+        <>
+          <Icon glyph="success" size="sm" />
+          <span><VisuallyHidden>{prefix}: </VisuallyHidden>{children}</span>
+        </>
+      )}
+    </p>
+  );
+}
+
 export interface FieldProps {
   ids: FieldIds;
   label: ReactNode;
@@ -31,13 +48,17 @@ export interface FieldProps {
   required?: boolean;
   requiredText?: string;
   errorPrefix?: string;
+  /** A confirmation shown in a polite live region. Hidden while `error` is set. Pass `announceSuccess` to keep the region in the page. */
+  success?: ReactNode;
+  successPrefix?: string;
+  announceSuccess?: boolean;
   className?: string;
   /** The control, placed between the description and the error. */
   children: ReactNode;
 }
 
 /** Label, description, control and error of one field. The control lives in `children` and reads `ids`. */
-export function Field({ ids, label, description, error, required, requiredText, errorPrefix, className, children }: FieldProps) {
+export function Field({ ids, label, description, error, required, requiredText, errorPrefix, success, successPrefix, announceSuccess, className, children }: FieldProps) {
   return (
     <div className={['ds-field', className].filter(Boolean).join(' ')}>
       <label className="ds-field__label" htmlFor={ids.id}>
@@ -47,6 +68,7 @@ export function Field({ ids, label, description, error, required, requiredText, 
       <FieldDescription id={ids.descriptionId}>{description}</FieldDescription>
       {children}
       <FieldError id={ids.errorId} prefix={errorPrefix}>{error}</FieldError>
+      {(announceSuccess || (success && !error)) && <FieldSuccess id={ids.successId} prefix={successPrefix}>{error ? undefined : success}</FieldSuccess>}
     </div>
   );
 }

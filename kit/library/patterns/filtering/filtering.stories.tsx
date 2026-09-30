@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage, LIFECYCLE } from '../../fixtures/doc-page/doc-page';
 import { Button } from '../../components/clickables/button/button';
-import { IconButton } from '../../components/clickables/icon-button/icon-button';
+import { Chip } from '../../components/clickables/chip/chip';
 import { Checkbox } from '../../components/fields/checkbox/checkbox';
 import { Select } from '../../components/fields/select/select';
 import { TextField } from '../../components/fields/text-field/text-field';
@@ -14,7 +14,6 @@ import { List, ListItem } from '../../components/data-structures/list/list';
 import { Table } from '../../components/data-structures/table/table';
 import type { TableColumn } from '../../components/data-structures/table/table';
 import { Pagination } from '../../components/navigation/pagination/pagination';
-import { Icon } from '../../primitives/icon/icon';
 import { Stack } from '../../primitives/stack/stack';
 import { Text } from '../../primitives/text/text';
 import { filteringRules } from './filtering.rules';
@@ -62,7 +61,7 @@ export function applyFilters(orders: readonly Order[], f: Filters): Order[] {
 
 export interface Chip { key: keyof Filters; name: string; value: string }
 
-/** One chip per active filter. The visible text is "name: value"; the remove button names both. */
+/** One chip per active filter. The visible text is "name: value"; the remove button names both: "Remove filter name: value". */
 export function activeChips(f: Filters): Chip[] {
   const chips: Chip[] = [];
   if (f.query.trim()) chips.push({ key: 'query', name: 'Search', value: f.query.trim() });
@@ -213,16 +212,15 @@ export function OrderFilters({ orders, initialFilters = NO_FILTERS, initialPage 
         </Stack>
       </div>
       {chips.length > 0 && (
-        <Stack role="list" direction="horizontal" gap={2} align="center" wrap aria-label="Active filters">
+        <Stack as="ul" direction="horizontal" gap={2} align="center" wrap aria-label="Active filters">
           {chips.map((chip) => (
-            <Stack role="listitem" key={chip.key} direction="horizontal" gap={0} align="center">
-              <Badge>{chip.name}: {chip.value}</Badge>
-              <IconButton label={`Remove filter: ${chip.name}, ${chip.value}`} icon={<Icon glyph="close" size="sm" />} onClick={() => remove(chip)} />
-            </Stack>
+            <li key={chip.key}>
+              <Chip variant="removable" removeLabel="Remove filter" onRemove={() => remove(chip)}>{`${chip.name}: ${chip.value}`}</Chip>
+            </li>
           ))}
-          <div role="listitem">
+          <li>
             <Button variant="tertiary" onClick={clearAll}>Clear all</Button>
-          </div>
+          </li>
         </Stack>
       )}
       <Stack direction="horizontal" gap={3} align="center">
@@ -280,14 +278,14 @@ export const Showcase: StoryObj = {
       name="Filtering"
       layer="Pattern"
       plain="Filtering narrows a long list. It shows what is set, how many results are left, and a way to undo each choice."
-      precise="Pattern · a search field and facet controls, removable chips for the active filters, a result count in a status region, a table with pagination, and an empty state that offers the filter to relax · composes TextField, Select, Checkbox, Badge, IconButton, Button, Table, Pagination and EmptyState; has no style of its own."
+      precise="Pattern · a search field and facet controls, removable chips for the active filters, a result count in a status region, a table with pagination, and an empty state that offers the filter to relax · composes TextField, Select, Checkbox, Chip, Badge, Button, Table, Pagination and EmptyState; has no style of its own."
       usedFor="A table or list too long to scan, where the user narrows it by text and a few facets."
       tokens={{ mode: 'consumed', note: 'None of its own. Layout comes from Stack. Colour, type and spacing come from the components it composes.', rows: [] }}
       anatomy={{
         render: <OrderFilters orders={ORDERS_30} initialFilters={{ ...NO_FILTERS, status: 'Shipped', region: 'Asia' }} pageSize={2} delayMs={0} />,
         parts: [
           { n: 1, label: 'Filter bar', note: 'search field and facets in a search landmark · a top bar for few facets', target: '[role=search]', at: 'top-start' },
-          { n: 2, label: 'Chips', note: 'Badge and IconButton per active filter, named "Remove filter: …" · one Clear all', target: '[aria-label="Active filters"]', at: 'top-start' },
+          { n: 2, label: 'Chips', note: 'Chip per active filter, remove button named "Remove filter …" · one Clear all', target: '[aria-label="Active filters"]', at: 'top-start' },
           { n: 3, label: 'Result count', note: 'a status region · "Showing 1–25 of 1,342 results"', target: '[role=status]', at: 'top-start' },
           { n: 4, label: 'Results', note: 'Table (or List) · loading keeps the size', target: 'table', at: 'top-end' },
           { n: 5, label: 'Pagination', note: 'Pagination · announces the page', target: 'nav', at: 'top-start' },
@@ -321,7 +319,7 @@ export const Showcase: StoryObj = {
             <List ordered divided>
               <ListItem title="Place the filters where they are seen" description="A top bar for a few facets, a side panel for many. On a phone, open them in a full-screen sheet with Apply and Clear." />
               <ListItem title="Apply at once and show it" description="Update on each change. Keep the table size with skeleton rows and put a Spinner beside the count. Add an Apply button only for an expensive query, and say why." />
-              <ListItem title="Show every active filter as a chip" description="Badge plus IconButton. The button is named “Remove filter: Status, Shipped”. Add one “Clear all”." />
+              <ListItem title="Show every active filter as a chip" description="A removable Chip in a list. The button is named “Remove filter Status: Shipped”. Add one “Clear all”." />
               <ListItem title="Show the count and the total, announced" description="“Showing 1–25 of 1,342 results” in a role=status element. Put the removed filter in the same message." />
               <ListItem title="Leave no dead end" description="When no rows match, name the filters and offer the one whose removal brings back the most results, in a single button." />
               <ListItem title="Keep the state in the URL" description="Read fromSearchParams(location.search) into initialFilters and initialPage. Write toSearchParams(filters, page) in onStateChange with your router. Back, reload and share then restore the view." />

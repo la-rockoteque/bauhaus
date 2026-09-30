@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { RadioGroup } from './radio-group';
@@ -63,6 +63,28 @@ describe('RadioGroup', () => {
     expect((screen.getByRole('radio', { name: 'Pickup' }) as HTMLInputElement).disabled).toBe(true);
     rerender(<RadioGroup legend="Delivery" options={OPTIONS} disabled />);
     expect((screen.getByRole('radio', { name: 'Standard' }) as HTMLInputElement).matches(':disabled')).toBe(true);
+  });
+
+  it('calls onBlur once when focus leaves the group, and not when arrow keys move inside it', async () => {
+    const onBlur = vi.fn();
+    render(<><RadioGroup legend="Delivery" options={OPTIONS} defaultValue="standard" onBlur={onBlur} /><button type="button">After</button></>);
+    await userEvent.tab();
+    expect(document.activeElement).toBe(screen.getByRole('radio', { name: 'Standard' }));
+    // jsdom lacks CSS.escape, which user-event needs for arrow keys, so move focus as the arrow would.
+    act(() => screen.getByRole('radio', { name: 'Express' }).focus());
+    expect(document.activeElement).toBe(screen.getByRole('radio', { name: 'Express' }));
+    expect(onBlur).not.toHaveBeenCalled();
+    await userEvent.tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'After' }));
+    expect(onBlur).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onBlur when focus leaves an empty group', async () => {
+    const onBlur = vi.fn();
+    render(<><RadioGroup legend="Delivery" options={OPTIONS} onBlur={onBlur} /><button type="button">After</button></>);
+    await userEvent.tab();
+    await userEvent.tab();
+    expect(onBlur).toHaveBeenCalledTimes(1);
   });
 
   it('has no axe violations', async () => {

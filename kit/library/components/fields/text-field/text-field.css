@@ -1,8 +1,22 @@
-/* The box, label, description and error come from ../field.css. */
+/* The box, label, description, error and success come from ../field.css. */
+.ds-text-field__box {
+  position: relative;
+}
+
 .ds-text-field__input {
   text-overflow: ellipsis;
 }
 
 .ds-text-field__input::-webkit-search-cancel-button {
   appearance: none;
+}
+
+/* The trailing slot sits inside the input's border, at its end, as tall as the box. */
+.ds-text-field__end {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: var(--ds-size-border-thin);
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-control-gap);
 }
