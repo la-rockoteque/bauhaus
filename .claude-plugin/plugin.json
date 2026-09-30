@@ -18,5 +18,6 @@
     "motion",
     "ui",
     "ux"
-  ]
+  ],
+  "icon": "./assets/bauhaus-128.png"
 }
