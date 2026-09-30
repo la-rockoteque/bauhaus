@@ -4,7 +4,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Tabs, type TabItem, type TabsProps } from './tabs';
 import { tabsRules } from './tabs.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Navigation/Tabs', component: Tabs, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Tabs>;
 
 export default meta;
@@ -96,8 +96,8 @@ export const Showcase: StoryObj = {
             note: 'Skipped by the arrows. The reason shows as a tooltip and is read after the label.',
           },
           { id: 'selected', status: 'designed', render: demo({ defaultValue: 'settings' }), trigger: 'aria-selected="true"', note: 'Fill, bar and darker text.' },
-          { id: 'vertical', status: 'designed', group: 'interaction', label: 'Vertical', render: demo({ orientation: 'vertical' }), trigger: 'orientation="vertical"', note: 'Up and Down move. The bar sits at the inline end.' },
-          { id: 'manual', status: 'designed', group: 'interaction', label: 'Manual activation', render: demo({ activation: 'manual' }), trigger: 'activation="manual"', note: 'Arrows move focus only. Enter or Space selects.' },
+          { id: 'default', variant: 'Vertical', status: 'designed', render: demo({ orientation: 'vertical' }), trigger: 'orientation="vertical"', note: 'Up and Down move. The bar sits at the inline end.' },
+          { id: 'default', variant: 'Manual activation', status: 'designed', render: demo({ activation: 'manual' }), trigger: 'activation="manual"', note: 'Arrows move focus only. Enter or Space selects.' },
         ],
       }}
       dos={[

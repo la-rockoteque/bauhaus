@@ -4,7 +4,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Pagination, type PaginationProps } from './pagination';
 import { paginationRules } from './pagination.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Navigation/Pagination', component: Pagination, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Pagination>;
 
 export default meta;
@@ -92,7 +92,7 @@ export const Showcase: StoryObj = {
           { id: 'disabled', status: 'designed', label: 'Disabled (first page)', render: show({ page: 1, total: '1–25 of 1,342' }), trigger: 'page = 1', note: 'Previous is disabled: the current page and the total say why. It keeps focus.' },
           { id: 'selected', status: 'designed', label: 'Selected (current page)', render: show({ page: 7 }), trigger: 'aria-current="page"', note: 'Filled, outlined and marked for assistive technology.' },
           { id: 'last', status: 'designed', group: 'interaction', label: 'Disabled (last page)', render: show({ page: 12 }), trigger: 'page = pageCount', note: 'Next is disabled.' },
-          { id: 'links', status: 'designed', group: 'interaction', label: 'Link mode', render: show({ getHref: (n) => `#page-${n}`, onPageChange: undefined }), trigger: 'getHref', note: 'Pages are links. Back, reload and sharing work.' },
+          { id: 'default', variant: 'Link mode', status: 'designed', render: show({ getHref: (n) => `#page-${n}`, onPageChange: undefined }), trigger: 'getHref', note: 'Pages are links. Back, reload and sharing work.' },
         ],
       }}
       dos={[

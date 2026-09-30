@@ -5,7 +5,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Select } from './select';
 import { selectRules } from './select.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Fields/Select', component: Select, parameters: { layout: 'fullscreen' }, args: { label: 'Label', options: [] } } satisfies Meta<typeof Select>;
 
 export default meta;

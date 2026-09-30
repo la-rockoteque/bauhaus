@@ -11,7 +11,7 @@ import { MenuItem } from '../../clickables/menu-item/menu-item';
 import { Menu, MenuSection, MenuSeparator } from './menu';
 import { menuRules } from './menu.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Overlays/Menu', parameters: { layout: 'fullscreen' } } satisfies Meta;
 
 export default meta;
@@ -138,7 +138,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'active', status: 'designed', render: <Forced attributes={PRESS}>{twoItems}</Forced>, trigger: 'item [data-pressed]' },
           { id: 'disabled', status: 'designed', render: <Menu label="Project actions"><MenuItem id="archive" isDisabled>Archive</MenuItem><MenuItem id="duplicate">Duplicate</MenuItem></Menu>, trigger: 'isDisabled', note: 'Stays in the list, skipped by the arrows. Say why near the trigger.' },
           { id: 'selected', status: 'designed', render: views('single'), trigger: 'selectionMode="single"', note: 'A check and a fill mark the chosen item.' },
-          { id: 'multiple', status: 'designed', group: 'interaction', label: 'Selected (multiple)', render: views('multiple'), trigger: 'selectionMode="multiple"', note: 'Each item toggles. The menu stays open.' },
+          { id: 'selected', variant: 'Multiple', status: 'designed', render: views('multiple'), trigger: 'selectionMode="multiple"', note: 'Each item toggles. The menu stays open.' },
         ],
       }}
       extra={[

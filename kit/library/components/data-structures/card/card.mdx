@@ -5,7 +5,7 @@ import * as Stories from './card.stories';
 
 # Card
 
-The Showcase story holds the tokens, the stage and the states grid. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
+The Showcase story holds the tokens, the stage and the state matrix. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
 
 ## 1. Introduction
 
@@ -61,7 +61,7 @@ Switch shape when the count grows. Six cards read well. Sixty do not. At that si
 - **Some** is the normal card.
 - **Too many** is long text. Words and titles wrap inside the card (`overflow-wrap: anywhere`, `min-inline-size: 0`), so a long reference never widens a grid column (WCAG 1.4.10, AA).
 - **Incorrect** replaces the body with an alert. The caller adds a retry.
-- **Nothing, one, correct, done** are n/a. See the States grid for each reason.
+- **Nothing, one, correct, done** are n/a. See the state matrix for each reason.
 - **Hover** and **pressed** apply to a linked card only. The border strengthens and the title underlines, so hover does not rest on colour alone. Pressed adds the pressed layer. **Focus-visible** rings the whole card.
 - **Disabled** and **selected** are n/a.
 

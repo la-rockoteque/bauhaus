@@ -1,0 +1,40 @@
+/* Interaction matrix: states are rows, variants are columns. It scrolls inside its region, never the page. */
+
+.doc-imatrix th[scope='row'] {
+  inline-size: calc(var(--ds-space-12) * 3);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-imatrix th[scope='row'] .doc-badge {
+  margin-inline-start: var(--ds-space-2);
+}
+
+.doc-imatrix tbody tr {
+  scroll-margin-block-start: var(--ds-space-6);
+}
+
+.doc-imatrix td {
+  min-inline-size: var(--doc-card-min);
+  padding: var(--ds-space-3);
+}
+
+.doc-im-stack {
+  display: grid;
+  gap: var(--ds-space-3);
+}
+
+.doc-im-empty {
+  color: var(--ds-text-muted);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.doc-im-na td,
+.doc-im-missing td {
+  vertical-align: middle;
+}
+
+.doc-im-missing td {
+  background: var(--ds-status-error-surface);
+  color: var(--ds-status-error-text);
+}

@@ -2,10 +2,10 @@ import { useId } from 'react';
 import type { ReactNode } from 'react';
 import { Text } from '../../../primitives/text/text';
 import { Button } from '../../clickables/button/button';
-import { Dialog } from './dialog';
-import type { DialogProps } from './dialog';
+import { Modal } from '../modal/modal';
+import type { ModalProps } from '../modal/modal';
 
-export interface ConfirmDialogProps extends Pick<DialogProps, 'open' | 'title' | 'size' | 'inline' | 'className'> {
+export interface ConfirmationDialogProps extends Pick<ModalProps, 'open' | 'title' | 'size' | 'inline' | 'className'> {
   /** Called on Cancel, Escape and the scrim. */
   onClose: () => void;
   onConfirm: () => void;
@@ -18,11 +18,11 @@ export interface ConfirmDialogProps extends Pick<DialogProps, 'open' | 'title' |
   destructive?: boolean;
 }
 
-/** An alert dialog with a cancel and a confirm action. */
-export function ConfirmDialog({ open, onClose, onConfirm, title, description, confirmLabel, cancelLabel, destructive = false, ...rest }: ConfirmDialogProps) {
+/** An alert dialog that asks for a choice: a cancel and a confirm action. For a message with one answer, use AlertDialog. */
+export function ConfirmationDialog({ open, onClose, onConfirm, title, description, confirmLabel, cancelLabel, destructive = false, ...rest }: ConfirmationDialogProps) {
   const descriptionId = useId();
   return (
-    <Dialog
+    <Modal
       {...rest}
       open={open}
       onClose={onClose}
@@ -37,6 +37,6 @@ export function ConfirmDialog({ open, onClose, onConfirm, title, description, co
       }
     >
       <Text id={descriptionId}>{description}</Text>
-    </Dialog>
+    </Modal>
   );
 }

@@ -58,7 +58,7 @@ A page documents one foundation, token group, component or pattern. Each slice c
 5. **Usage** — an exhaustive guide to when to use it, when not to, and what to use instead, and how to use it: variants, composition, content, responsive, accessibility.
 6. **Pitfalls and don'ts** — the common mistakes, each with why it fails.
 
-The showcase carries what a reader can see: a short Introduction, Tokens with swatches, Anatomy with pins, the States grid, and a compact Do / Don't. The guide carries what a picture cannot show: the full Introduction, Usage in depth, the reasoning behind each state, Pitfalls with their reasons, and every rule with its basis. The two pages never repeat each other's tables.
+The showcase carries what a reader can see: a short Introduction, Tokens with swatches, Anatomy with pins, the state matrix, and a compact Do / Don't. The guide carries what a picture cannot show: the full Introduction, Usage in depth, the reasoning behind each state, Pitfalls with their reasons, and every rule with its basis. The two pages never repeat each other's tables.
 
 No generic content. Every rule in Usage and every item in Pitfalls names its **basis**: a WCAG criterion with its level, an APG pattern, a heuristic by name, a published system, or a research result. A line that has no basis, or that could fit any design system unchanged, is slop. Cut it.
 

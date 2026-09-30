@@ -5,7 +5,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Textarea } from './textarea';
 import { textareaRules } from './textarea.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Fields/Textarea', component: Textarea, parameters: { layout: 'fullscreen' }, args: { label: 'Label' } } satisfies Meta<typeof Textarea>;
 
 export default meta;

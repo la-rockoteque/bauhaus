@@ -1,0 +1,42 @@
+// Rulebook entries for Confirmation dialog. Shape: knowledge/governance/rulebook.md. Ids are permanent.
+export const confirmationDialogRules = [
+  {
+    id: 'confirmation-dialog.alert-role',
+    component: 'ConfirmationDialog',
+    rubric: 'semantics',
+    severity: 'HIGH',
+    expectation: 'The dialog has role alertdialog and is described by its message, so the question is read out on open.',
+    verify: 'auto',
+    covers: ['name-role-value'],
+    basis: 'APG Alert and Message Dialogs; WCAG 4.1.2 Name, Role, Value (A)',
+  },
+  {
+    id: 'confirmation-dialog.destructive-focus',
+    component: 'ConfirmationDialog',
+    rubric: 'focus',
+    severity: 'HIGH',
+    expectation: 'When the action is destructive, focus starts on Cancel, the least destructive choice. Otherwise it starts on the confirm action.',
+    verify: 'auto',
+    covers: ['keyboard'],
+    basis: 'APG Alert and Message Dialogs; WCAG 2.4.3 Focus Order (A)',
+  },
+  {
+    id: 'confirmation-dialog.destructive-named',
+    component: 'ConfirmationDialog',
+    rubric: 'content',
+    severity: 'HIGH',
+    expectation: 'The confirm action names the action and its object ("Delete 3 files"), never "OK", and never red alone.',
+    verify: 'review',
+    covers: ['color-not-alone'],
+    basis: 'WCAG 1.4.1 Use of Color (A), 2.4.6 Headings and Labels (AA)',
+  },
+  {
+    id: 'confirmation-dialog.built-on-modal',
+    component: 'ConfirmationDialog',
+    rubric: 'semantics',
+    severity: 'MEDIUM',
+    expectation: 'The dialog renders through Modal, so focus, Escape, the scrim and the narrow layout behave as in every other modal.',
+    verify: 'auto',
+    basis: 'Nielsen heuristic 4, consistency and standards; project decision: one modal behaviour',
+  },
+] as const;

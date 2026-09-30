@@ -5,7 +5,7 @@ import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { VisuallyHidden } from './visually-hidden';
 import { visuallyHiddenRules } from './visually-hidden.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Primitives/Visually hidden', component: VisuallyHidden, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof VisuallyHidden>;
 
 export default meta;

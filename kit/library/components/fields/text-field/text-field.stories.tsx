@@ -5,7 +5,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { TextField } from './text-field';
 import { textFieldRules } from './text-field.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Fields/Text field', component: TextField, parameters: { layout: 'fullscreen' }, args: { label: 'Label' } } satisfies Meta<typeof TextField>;
 
 export default meta;
@@ -90,8 +90,8 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'active', status: 'n/a', reason: 'Typing is the feedback. A text field has no pressed look.' },
           { id: 'disabled', status: 'designed', render: cell(<TextField label="Account number" defaultValue="0012-3456" disabled description="Set when the account opens." />), trigger: 'disabled', note: 'Say why, in the description.' },
           { id: 'selected', status: 'n/a', reason: 'Not selectable. Selected text is the browser own.' },
-          { id: 'clearable', status: 'designed', group: 'interaction', render: cell(<TextField label="Search orders" type="search" defaultValue="Ada" />), trigger: 'type="search" with text', note: 'The clear icon button appears while the field holds text. It empties the field and returns focus.' },
-          { id: 'trailing', status: 'designed', group: 'interaction', render: cell(<TextField label="Weight" type="number" defaultValue="12" trailing={<span aria-hidden="true">kg</span>} />), trigger: 'trailing', note: 'A unit at the end of the box. The text stops before it.' },
+          { id: 'default', variant: 'Clearable', status: 'designed', render: cell(<TextField label="Search orders" type="search" defaultValue="Ada" />), trigger: 'type="search" with text', note: 'The clear icon button appears while the field holds text. It empties the field and returns focus.' },
+          { id: 'default', variant: 'Trailing', status: 'designed', render: cell(<TextField label="Weight" type="number" defaultValue="12" trailing={<span aria-hidden="true">kg</span>} />), trigger: 'trailing', note: 'A unit at the end of the box. The text stops before it.' },
           { id: 'read-only', status: 'designed', group: 'interaction', render: cell(<TextField label="Reference" defaultValue="INV-2041" readOnly />), trigger: 'readOnly', note: 'Sunken fill, normal text, still focusable and copyable. Distinct from disabled.' },
           { id: 'invalid', status: 'designed', group: 'interaction', render: cell(<TextField label="Email address" defaultValue="ada@" error="Enter an email address, like name@example.com" className="doc-force-focus" />), trigger: 'error + :focus-visible', note: 'The focus border wins over the invalid border while the field has focus; the ring and the message stay.' },
           { id: 'required', status: 'designed', group: 'interaction', render: cell(<TextField label="Email address" required description="We send the receipt here." />), trigger: 'required', note: 'The marker is the word "(required)", not a bare asterisk.' },

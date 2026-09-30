@@ -135,7 +135,7 @@ is an interaction state of a component. It is never a variant.
 
 A missing state is a finding. Empty, incorrect, disabled-without-reason and too-many ship
 missing most often. Rule ids follow `<component>.state.<state>`. The showcase renders one
-States-grid cell per state.
+state-matrix cell per state.
 
 ---
 

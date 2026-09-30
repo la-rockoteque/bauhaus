@@ -6,7 +6,7 @@ import { Text } from '../../../primitives/text/text';
 import { Skeleton, SkeletonRegion } from './skeleton';
 import { skeletonRules } from './skeleton.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Feedback/Skeleton', component: Skeleton, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Skeleton>;
 
 export default meta;

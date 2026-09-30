@@ -5,7 +5,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Checkbox } from './checkbox';
 import { checkboxRules } from './checkbox.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Fields/Checkbox', component: Checkbox, parameters: { layout: 'fullscreen' }, args: { label: 'Label' } } satisfies Meta<typeof Checkbox>;
 
 export default meta;

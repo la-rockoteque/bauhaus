@@ -6,7 +6,7 @@ import { GLYPH_NAMES } from '../../foundations/iconography/glyphs';
 import { Icon } from './icon';
 import { iconRules } from './icon.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Primitives/Icon', component: Icon, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Icon>;
 
 export default meta;

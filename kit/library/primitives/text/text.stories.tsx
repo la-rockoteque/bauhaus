@@ -4,7 +4,7 @@ import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Text } from './text';
 import { textRules } from './text.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Primitives/Text', component: Text, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Text>;
 
 export default meta;

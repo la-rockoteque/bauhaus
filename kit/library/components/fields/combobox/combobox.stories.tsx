@@ -6,7 +6,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Combobox, ForceOpenContext } from './combobox';
 import { comboboxRules } from './combobox.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Fields/Combobox', component: Combobox, parameters: { layout: 'fullscreen' }, args: { label: 'Label', options: [] } } satisfies Meta<typeof Combobox>;
 
 export default meta;

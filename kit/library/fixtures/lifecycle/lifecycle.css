@@ -1,0 +1,76 @@
+/* Lifecycle rows: the state on the left, its renders full width on the right. */
+
+.doc-lifecycle {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-lc-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: var(--ds-space-2) var(--ds-space-4);
+  scroll-margin-block-start: var(--ds-space-6);
+}
+
+.doc-lc-head {
+  flex: 0 0 calc(var(--ds-space-12) * 3);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-2);
+  padding-block-start: var(--ds-space-2);
+  font-size: var(--ds-font-size-sm);
+}
+
+.doc-lc-step {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: var(--ds-space-6);
+  block-size: var(--ds-space-6);
+  border: thin solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-full);
+  color: var(--ds-text-muted);
+  font-size: var(--ds-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.doc-lc-name {
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-lc-cells {
+  flex: 1 1 var(--doc-card-min);
+  min-inline-size: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3);
+}
+
+/* A cell is as wide as its render: a button stays small, a table takes the row. */
+.doc-lc-cells > .doc-cell {
+  flex: 0 1 auto;
+  min-inline-size: min(100%, var(--doc-card-min));
+  max-inline-size: 100%;
+}
+
+/* n/a and missing take one line, in their place in the cycle. */
+.doc-lc-reason {
+  flex: 1 1 var(--doc-card-min);
+  margin: 0;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: thin dashed var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+  font-size: var(--ds-font-size-sm);
+}
+
+.doc-lc-missing .doc-lc-reason {
+  border-style: solid;
+  border-color: var(--ds-status-error-border);
+  background: var(--ds-status-error-surface);
+  color: var(--ds-status-error-text);
+}
+

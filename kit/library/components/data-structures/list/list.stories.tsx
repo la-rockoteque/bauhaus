@@ -9,7 +9,7 @@ import { Text } from '../../../primitives/text/text';
 import { List, ListItem } from './list';
 import { listRules } from './list.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Data structures/List', component: List, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof List>;
 
 export default meta;

@@ -6,7 +6,7 @@ import { Stack } from '../../../primitives/stack/stack';
 import { Chip } from './chip';
 import { chipRules } from './chip.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Clickables/Chip', component: Chip, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Chip>;
 
 export default meta;

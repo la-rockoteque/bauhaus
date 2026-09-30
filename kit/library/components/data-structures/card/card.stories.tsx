@@ -8,7 +8,7 @@ import { Text } from '../../../primitives/text/text';
 import { Card } from './card';
 import { cardRules } from './card.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 // The title is a required prop, so the meta names no component: a story would need args.
 const meta = { title: 'Data structures/Card', parameters: { layout: 'fullscreen' } } satisfies Meta;
 

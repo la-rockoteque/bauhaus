@@ -1,8 +1,8 @@
-// Rulebook entries for Dialog. Shape: knowledge/governance/rulebook.md. Ids are permanent.
-export const dialogRules = [
+// Rulebook entries for Modal. Shape: knowledge/governance/rulebook.md. Ids are permanent.
+export const modalRules = [
   {
-    id: 'dialog.native-element',
-    component: 'Dialog',
+    id: 'modal.native-element',
+    component: 'Modal',
     rubric: 'semantics',
     severity: 'HIGH',
     expectation: 'The dialog renders a native dialog element and opens it with showModal, so the page behind is inert and focus stays inside.',
@@ -11,8 +11,8 @@ export const dialogRules = [
     basis: 'WAI-ARIA APG Dialog (Modal) pattern; WCAG 2.1.2 No Keyboard Trap (A), 4.1.2 Name, Role, Value (A)',
   },
   {
-    id: 'dialog.labelled',
-    component: 'Dialog',
+    id: 'modal.labelled',
+    component: 'Modal',
     rubric: 'semantics',
     severity: 'HIGH',
     expectation: 'The dialog is named by its title through aria-labelledby.',
@@ -21,8 +21,8 @@ export const dialogRules = [
     basis: 'WCAG 4.1.2 Name, Role, Value (A); APG Dialog (Modal)',
   },
   {
-    id: 'dialog.focus-in-and-restore',
-    component: 'Dialog',
+    id: 'modal.focus-in-and-restore',
+    component: 'Modal',
     rubric: 'focus',
     severity: 'HIGH',
     expectation: 'Focus moves into the dialog on open (a data-autofocus element, the first focusable element, or the title) and returns to the opener on close.',
@@ -31,8 +31,8 @@ export const dialogRules = [
     basis: 'WCAG 2.4.3 Focus Order (A); APG Dialog (Modal)',
   },
   {
-    id: 'dialog.esc-closes',
-    component: 'Dialog',
+    id: 'modal.esc-closes',
+    component: 'Modal',
     rubric: 'keyboard',
     severity: 'HIGH',
     expectation: 'Escape closes the dialog through the cancel event and calls onClose.',
@@ -41,8 +41,8 @@ export const dialogRules = [
     basis: 'APG Dialog (Modal); WCAG 2.1.1 Keyboard (A)',
   },
   {
-    id: 'dialog.scrim-configurable',
-    component: 'Dialog',
+    id: 'modal.scrim-configurable',
+    component: 'Modal',
     rubric: 'usage',
     severity: 'MEDIUM',
     expectation: 'A click on the scrim closes the dialog only when dismissOnScrim is set. The default is off.',
@@ -50,8 +50,8 @@ export const dialogRules = [
     basis: 'Nielsen heuristic 5, error prevention: a stray click must not lose typed work',
   },
   {
-    id: 'dialog.footer-stays',
-    component: 'Dialog',
+    id: 'modal.footer-stays',
+    component: 'Modal',
     rubric: 'focus',
     severity: 'HIGH',
     expectation: 'When the content is long only the body scrolls. The header and the actions stay in view, so they never hide a focused control.',
@@ -60,8 +60,8 @@ export const dialogRules = [
     basis: 'WCAG 2.4.11 Focus Not Obscured (Minimum) (AA)',
   },
   {
-    id: 'dialog.full-screen-narrow',
-    component: 'Dialog',
+    id: 'modal.full-screen-narrow',
+    component: 'Modal',
     rubric: 'responsive',
     severity: 'MEDIUM',
     expectation: 'At 768px and narrower the dialog fills the screen.',
@@ -71,8 +71,8 @@ export const dialogRules = [
     basis: 'WCAG 1.4.10 Reflow (AA); project decision: full screen on phones',
   },
   {
-    id: 'dialog.size-from-tokens',
-    component: 'Dialog',
+    id: 'modal.size-from-tokens',
+    component: 'Modal',
     rubric: 'tokens',
     severity: 'MEDIUM',
     expectation: 'The dialog widths read size.overlay.sm, md and lg.',
@@ -81,8 +81,8 @@ export const dialogRules = [
     basis: 'Project decision: one scale of overlay widths',
   },
   {
-    id: 'dialog.motion',
-    component: 'Dialog',
+    id: 'modal.motion',
+    component: 'Modal',
     rubric: 'motion',
     severity: 'MEDIUM',
     expectation: 'Enter and exit use the motion tokens. Under reduced motion the fade stays and the travel goes.',
@@ -91,8 +91,8 @@ export const dialogRules = [
     basis: 'Project decision: motion tokens; WCAG 2.3.3 Animation from Interactions (AAA)',
   },
   {
-    id: 'dialog.elevation',
-    component: 'Dialog',
+    id: 'modal.elevation',
+    component: 'Modal',
     rubric: 'tokens',
     severity: 'MEDIUM',
     expectation: 'The panel uses overlay.surface, overlay.border, radius.overlay and shadow.2; the scrim is the backdrop.',
@@ -100,28 +100,8 @@ export const dialogRules = [
     basis: 'Project decision: elevation rungs and one scrim (elevation.rungs, elevation.single-scrim)',
   },
   {
-    id: 'dialog.alert-role',
-    component: 'Dialog',
-    rubric: 'semantics',
-    severity: 'HIGH',
-    expectation: 'The confirm dialog has role alertdialog, is described by its message, and starts focus on Cancel when the action is destructive.',
-    verify: 'auto',
-    covers: ['name-role-value', 'keyboard'],
-    basis: 'APG Alert and Message Dialogs; WCAG 4.1.2 (A)',
-  },
-  {
-    id: 'dialog.destructive-named',
-    component: 'Dialog',
-    rubric: 'content',
-    severity: 'HIGH',
-    expectation: 'A destructive action is named by its label ("Delete 3 files"), never by red alone or by "OK".',
-    verify: 'review',
-    covers: ['color-not-alone'],
-    basis: 'WCAG 1.4.1 Use of Color (A), 2.4.6 Headings and Labels (AA)',
-  },
-  {
-    id: 'dialog.state.loading',
-    component: 'Dialog',
+    id: 'modal.state.loading',
+    component: 'Modal',
     rubric: 'states',
     severity: 'MEDIUM',
     expectation: 'While content loads the body is marked aria-busy and keeps its place.',
@@ -129,8 +109,8 @@ export const dialogRules = [
     basis: 'WCAG 4.1.3 Status Messages (AA); Nielsen heuristic 1',
   },
   {
-    id: 'dialog.no-literal',
-    component: 'Dialog',
+    id: 'modal.no-literal',
+    component: 'Modal',
     rubric: 'tokens',
     severity: 'MEDIUM',
     expectation: 'The dialog stylesheet reads semantic tokens only and holds no colour or px literal.',

@@ -4,7 +4,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Link } from './link';
 import { linkRules } from './link.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Clickables/Link', component: Link, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Link>;
 
 export default meta;
@@ -77,7 +77,7 @@ export const Showcase: StoryObj = {
           { id: 'disabled', status: 'n/a', reason: 'An anchor with no href is not a link. Show plain text and say why the destination is unavailable.' },
           { id: 'selected', status: 'designed', label: 'Selected (current)', render: <Link href={HREF} current standalone>Shipments</Link>, trigger: 'current', note: 'aria-current="page"; heavier text and a thicker underline.' },
           { id: 'visited', status: 'designed', group: 'interaction', render: <Link href={HREF} className="doc-force-visited">Shipping policy</Link>, trigger: ':visited', note: 'Another hue, still underlined. Forced by .doc-force-visited.' },
-          { id: 'external', status: 'designed', group: 'interaction', label: 'External', render: <Link href={HREF} external>Carrier tracking</Link>, trigger: 'external', note: 'Icon plus the hidden text "opens in a new tab".' },
+          { id: 'default', variant: 'External', status: 'designed', render: <Link href={HREF} external>Carrier tracking</Link>, trigger: 'external', note: 'Icon plus the hidden text "opens in a new tab".' },
         ],
       }}
       extra={[
