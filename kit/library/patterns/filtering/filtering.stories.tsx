@@ -1,6 +1,7 @@
 import { useEffect, useId, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage, LIFECYCLE } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Button } from '../../components/clickables/button/button';
 import { Chip } from '../../components/clickables/chip/chip';
 import { Checkbox } from '../../components/fields/checkbox/checkbox';
@@ -281,7 +282,7 @@ export const Showcase: StoryObj = {
       precise="Pattern · a search field and facet controls, removable chips for the active filters, a result count in a status region, a table with pagination, and an empty state that offers the filter to relax · composes TextField, Select, Checkbox, Chip, Badge, Button, Table, Pagination and EmptyState; has no style of its own."
       usedFor="A table or list too long to scan, where the user narrows it by text and a few facets."
       tokens={{ mode: 'consumed', note: 'None of its own. Layout comes from Stack. Colour, type and spacing come from the components it composes.', rows: [] }}
-      anatomy={{
+      stage={{
         render: <OrderFilters orders={ORDERS_30} initialFilters={{ ...NO_FILTERS, status: 'Shipped', region: 'Asia' }} pageSize={2} delayMs={0} />,
         parts: [
           { n: 1, label: 'Filter bar', note: 'search field and facets in a search landmark · a top bar for few facets', target: '[role=search]', at: 'top-start' },
@@ -346,9 +347,13 @@ export const Showcase: StoryObj = {
         { text: 'End on “No results” with no way out.', basis: 'WCAG 3.3.3 (AA)', rule: 'filtering.no-dead-end' },
         { text: 'Keep filter state only in component memory.', basis: 'Nielsen 3', rule: 'filtering.url-state' },
       ]}
-      rules={filteringRules}
       guide="patterns-filtering--docs"
       guideName="Filtering"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Filtering" layer="Pattern" rules={filteringRules} guide="patterns-filtering--docs" guideName="Filtering" />,
 };

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { RadioGroup } from './radio-group';
 import { radioGroupRules } from './radio-group.rules';
 
@@ -50,7 +51,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'radius.full', tier: '2', use: 'Circle shape' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: cell(<RadioGroup legend="Delivery" required description="Prices show at checkout." options={DELIVERY} defaultValue="standard" />),
         parts: [
           { n: 1, label: 'Legend', note: 'required, names the group', target: '.ds-field__label' },
@@ -60,9 +61,12 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Target', value: 'size.target.min, 44px, the whole option row' },
-        { label: 'Circle', value: 'size.icon.lg, 24px, outline size.border.thick' },
-        { label: 'Dot', value: 'size.icon.sm' },
+        { label: 'Target height', property: 'height', target: '.ds-field__choice-target', token: 'size.target.min', value: '44px, the whole option row' },
+        { label: 'Target width', property: 'width', target: '.ds-field__choice-target', token: 'size.target.min' },
+        { label: 'Circle height', property: 'height', target: '.ds-radio-group__circle', token: 'size.icon.lg', value: '24px, outline size.border.thick' },
+        { label: 'Circle width', property: 'width', target: '.ds-radio-group__circle', token: 'size.icon.lg' },
+        { label: 'Dot height', property: 'height', target: '.ds-radio-group__dot', token: 'size.icon.sm' },
+        { label: 'Dot width', property: 'width', target: '.ds-radio-group__dot', token: 'size.icon.sm' },
         { label: 'Options', value: 'stacked with no gap: the targets touch, none overlaps' },
         { label: 'Focus', value: 'ring 2px, offset 2px, around the circle, on :focus-visible' },
       ]}
@@ -107,9 +111,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Show the error by colour alone.', basis: 'WCAG 1.4.1 (A)', rule: 'radio.error-bound' },
         { text: 'Write a colour or px literal in the stylesheet.', basis: 'misfile.raw-value-in-component', rule: 'radio.no-literal' },
       ]}
-      rules={radioGroupRules}
       guide="fields-radio-group--docs"
       guideName="Radio group"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Radio group" layer="Component" family="Fields" rules={radioGroupRules} guide="fields-radio-group--docs" guideName="Radio group" />,
 };

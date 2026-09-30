@@ -2,6 +2,7 @@ import { useEffect, useId, useState } from 'react';
 import type { FormEvent, MouseEvent } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage, LIFECYCLE } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Button } from '../../components/clickables/button/button';
 import { Link } from '../../components/clickables/link/link';
 import { Checkbox } from '../../components/fields/checkbox/checkbox';
@@ -190,7 +191,7 @@ export const Showcase: StoryObj = {
       precise="Pattern · labelled fields, an error under each field, and an error summary Banner that takes focus on a failed submit · composes TextField, Select, Checkbox, RadioGroup, Button, Banner and Stack; has no style of its own."
       usedFor="Any form that a user fills in and submits: sign-up, checkout, settings."
       tokens={{ mode: 'consumed', note: 'None of its own. Layout comes from Stack. Colour, type and spacing come from the components it composes.', rows: [] }}
-      anatomy={{
+      stage={{
         render: <SignUpForm attempt="submit" initialValues={{ name: 'Ada Lovelace', email: 'ada@' }} />,
         parts: [
           { n: 1, label: 'Error summary', note: 'Banner, error, urgent · focus lands here on submit; one link per field', target: '[role=alert]', at: 'top-start' },
@@ -261,9 +262,13 @@ export const Showcase: StoryObj = {
         { text: 'Disable the submit button to signal invalid data.', basis: 'Nielsen 9', rule: 'form-validation.submit-enabled' },
         { text: 'Ask the user to type an email or a password twice.', basis: 'WCAG 3.3.7 (A)', rule: 'form-validation.no-redundant-entry' },
       ]}
-      rules={formValidationRules}
       guide="patterns-form-validation--docs"
       guideName="Form validation"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Form validation" layer="Pattern" rules={formValidationRules} guide="patterns-form-validation--docs" guideName="Form validation" />,
 };

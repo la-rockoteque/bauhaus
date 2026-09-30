@@ -8,8 +8,4 @@ describe('themePage', () => {
     expect(props).toMatchObject({ name: 'Themes', layer: 'Theme', guide: 'themes--docs', guideName: 'Themes' });
     for (const theme of THEMES) expect(props.precise).toContain(theme);
   });
-
-  it('grades no rule of its own', () => {
-    expect(themePage('g', 'G').rules).toEqual([]);
-  });
 });

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { RadiusTiles } from '../../fixtures/specimens/specimens';
 import { shapeRules } from './shape.rules';
 
@@ -42,9 +43,13 @@ export const Showcase: StoryObj = {
         { text: 'Write border-radius: 6px in a component.', basis: 'Closed scale', rule: 'shape.controls-use-control-radius' },
         { text: 'Use a borderless pale button on a white page.', basis: 'WCAG 1.4.11 (AA)', rule: 'shape.boundary-visible' },
       ]}
-      rules={shapeRules}
       guide="foundations-shape--docs"
       guideName="Shape"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Shape" layer="Foundation" rules={shapeRules} guide="foundations-shape--docs" guideName="Shape" />,
 };

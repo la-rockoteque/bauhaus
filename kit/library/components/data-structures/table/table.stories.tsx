@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from '../../clickables/button/button';
 import { Text } from '../../../primitives/text/text';
 import { VisuallyHidden } from '../../../primitives/visually-hidden/visually-hidden';
@@ -154,7 +155,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'motion.duration.fast · deliberate · ease.standard', tier: '2', use: 'Row hover fade; skeleton shimmer period' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}><Live rows={DATA.slice(0, 2)} columns={SMALL} /></div>,
         parts: [
           { n: 1, label: 'Caption', note: 'names the table, required', target: '.ds-table__caption' },
@@ -167,7 +168,8 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Row height', value: 'size.target.min, 44px, comfortable · about 32px, compact' },
-        { label: 'Cell padding', value: 'space.inset.sm block · space.inset.md inline' },
+        { label: 'Cell padding inline', property: 'padding-inline', target: 'tbody .ds-table__cell--row-header', token: 'space.inset.md' },
+        { label: 'Cell padding block', property: 'padding-block', target: 'tbody .ds-table__cell--row-header', token: 'space.inset.sm' },
         { label: 'Alignment', value: 'text left · figures right, mono, tabular' },
         { label: 'Header', value: 'table.header-surface, text.label.*, sticky on z.sticky' },
         { label: 'Card stack', value: '768px and below · thead becomes a sort bar · each value prints its data-label' },
@@ -226,9 +228,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Show row actions on hover only.', basis: 'WCAG 2.1.1 (A)', rule: 'table.row-actions-visible' },
         { text: 'Write a colour or px literal in table.css.', basis: 'misfile.raw-value-in-component', rule: 'table.no-literal' },
       ]}
-      rules={tableRules}
       guide="data-structures-table--docs"
       guideName="Table"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Table" layer="Component" family="Data structures" rules={tableRules} guide="data-structures-table--docs" guideName="Table" />,
 };

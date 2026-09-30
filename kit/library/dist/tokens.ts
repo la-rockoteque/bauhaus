@@ -269,6 +269,7 @@ export const tokens = {
       "min": "44px"
     },
     "control": {
+      "narrow": "32px",
       "sm": "44px",
       "md": "48px",
       "lg": "56px"

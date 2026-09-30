@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { ColorRamps, ContrastPairs, PaletteRamps, RoleChips, RoleSwatches } from '../../fixtures/specimens/specimens';
 import { colorRules } from './color.rules';
 
@@ -81,9 +82,13 @@ export const Showcase: StoryObj = {
         { text: 'Show an error with red alone.', basis: 'WCAG 1.4.1 (A)', rule: 'color.ui-contrast' },
         { text: 'Tune grey text by eye.', basis: 'WCAG 1.4.3 (AA)', rule: 'color.text-contrast' },
       ]}
-      rules={colorRules}
       guide="foundations-color--docs"
       guideName="Color"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Color" layer="Foundation" rules={colorRules} guide="foundations-color--docs" guideName="Color" />,
 };

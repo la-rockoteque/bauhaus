@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Select } from './select';
 import { selectRules } from './select.rules';
 
@@ -42,7 +43,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'size.control.md · size.icon.md · radius.control', tier: '2', use: 'Height; chevron; corner radius' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: cell(<Select label="Country" required description="Where you live." options={COUNTRIES.slice(0, 3)} emptyLabel="Choose a country" />),
         parts: [
           { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
@@ -52,9 +53,10 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Height', value: 'size.control.md, 48px' },
-        { label: 'Padding', value: 'space.control.inline, more at the end for the chevron' },
-        { label: 'Radius', value: 'radius.control' },
+        { label: 'Height', property: 'height', target: '.ds-select__input', token: 'size.control.md', value: '48px' },
+        { label: 'Padding inline', value: 'space.control.inline, more at the end for the chevron' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-select__input', token: 'space.inset.sm' },
+        { label: 'Radius', property: 'radius', target: '.ds-select__input', token: 'radius.control' },
         { label: 'Chevron', value: 'icon chevron-down, size.icon.md, hidden from assistive technology' },
         { label: 'Options', value: 'the browser list; the page does not style it' },
       ]}
@@ -100,9 +102,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Leave the label out.', basis: 'WCAG 3.3.2 (A)', rule: 'select.visible-label' },
         { text: 'Write a colour or px literal in the stylesheet.', basis: 'misfile.raw-value-in-component', rule: 'select.no-literal' },
       ]}
-      rules={selectRules}
       guide="fields-select--docs"
       guideName="Select"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Select" layer="Component" family="Fields" rules={selectRules} guide="fields-select--docs" guideName="Select" />,
 };

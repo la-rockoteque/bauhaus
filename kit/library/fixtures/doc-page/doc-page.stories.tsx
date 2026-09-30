@@ -15,11 +15,10 @@ export const Sample: StoryObj = {
       plain="A page shell with sample props: introduction, anatomy, tokens, states, guidance."
       precise="Fixture · the page every slice showcase renders · not exported."
       tokens={{ mode: 'consumed', rows: [{ name: 'text.default', tier: 'role', use: 'Body text', swatch: '--ds-text-default' }] }}
-      anatomy={{ render: <span>Sample</span>, parts: [{ n: 1, label: 'Text', target: 'span' }] }}
+      stage={{ render: <span>Sample</span>, parts: [{ n: 1, label: 'Text', target: 'span' }] }}
       states={{ cells: [{ id: 'default', status: 'designed', render: <span>Sample</span> }, { id: 'hover', status: 'n/a', reason: 'A sample is not interactive.' }] }}
       dos={[{ text: 'Name the basis of every rule.', basis: 'Project decision' }]}
       donts={[{ text: 'Write a line that fits any system.', basis: 'Project decision' }]}
-      rules={[]}
       guide="fixtures-doc-page--docs"
       guideName="Doc page"
     />

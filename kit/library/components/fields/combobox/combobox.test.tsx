@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { Combobox } from './combobox';
+import { Combobox, ForceOpenContext } from './combobox';
 import { expectNoAxeViolations } from '../../../expect-no-axe-violations';
 
 const OPTIONS = [
@@ -102,5 +102,23 @@ describe('Combobox', () => {
     await userEvent.click(screen.getByRole('button'));
     await screen.findByRole('listbox');
     await expectNoAxeViolations(document.body);
+  });
+
+  it('in a showcase, draws the list open as a picture and leaves the field closed, so nothing around it is hidden', () => {
+    render(
+      <>
+        <p>Around the field</p>
+        <ForceOpenContext value>
+          <Combobox label="Country" options={OPTIONS} defaultInputValue="C" defaultSelectedKey="cl" />
+        </ForceOpenContext>
+      </>,
+    );
+    expect(screen.getByRole('combobox').getAttribute('aria-expanded')).toBe('false');
+    expect(screen.getByText('Around the field').closest('[aria-hidden="true"]')).toBeNull();
+    const picture = document.querySelector('.ds-combobox__popover--inline')!;
+    expect(picture.getAttribute('aria-hidden')).toBe('true');
+    expect([...picture.querySelectorAll('.ds-combobox__label')].map((l) => l.textContent)).toEqual(['Canada', 'Chile', 'France']);
+    expect(picture.querySelector('[data-focused]')?.textContent).toBe('Canada');
+    expect(picture.querySelector('[data-selected]')?.textContent).toBe('Chile');
   });
 });

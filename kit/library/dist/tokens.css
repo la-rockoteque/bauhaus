@@ -197,6 +197,7 @@
   --ds-space-field-gap: var(--ds-space-1);
   --ds-space-group-gap: var(--ds-space-4);
   --ds-size-target-min: 44px;
+  --ds-size-control-narrow: var(--ds-space-8);
   --ds-size-control-sm: var(--ds-size-target-min);
   --ds-size-control-md: var(--ds-space-12);
   --ds-size-control-lg: 56px;

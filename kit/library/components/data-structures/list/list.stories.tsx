@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from '../../clickables/button/button';
 import { Icon } from '../../../primitives/icon/icon';
 import { Text } from '../../../primitives/text/text';
@@ -73,7 +74,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'motion.duration.deliberate', tier: '2', use: 'Skeleton shimmer period' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}><List aria-label="Files">{file(...FILES[0], { href: '#anatomy' })}</List></div>,
         parts: [
           { n: 1, label: 'Row', note: 'li, required', target: '.ds-list__item', at: 'top-start' },
@@ -85,8 +86,9 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Row height', value: 'at least size.target.min, 44px' },
-        { label: 'Padding', value: 'space.inset.sm block · space.inset.md inline' },
-        { label: 'Gap between slots', value: 'space.inline.md' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-list__item', token: 'space.inset.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-list__item', token: 'space.inset.sm' },
+        { label: 'Gap between slots', property: 'gap', target: '.ds-list__item', token: 'space.inline.md' },
         { label: 'Divider', value: 'size.border.thin in border.default, opt-in' },
         { label: 'Interactive target', value: 'the whole row, through one stretched link or button' },
         { label: 'Long text', value: 'wraps inside the row, never widens it' },
@@ -134,9 +136,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Write a colour or px literal in list.css.', basis: 'misfile.raw-value-in-component', rule: 'list.no-literal' },
         { text: 'Label a link "Open" or "Details".', basis: 'WCAG 2.4.4 (A)', rule: 'list.title-names-row' },
       ]}
-      rules={listRules}
       guide="data-structures-list--docs"
       guideName="List"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="List" layer="Component" family="Data structures" rules={listRules} guide="data-structures-list--docs" guideName="List" />,
 };

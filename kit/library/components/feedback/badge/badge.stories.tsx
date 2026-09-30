@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Badge } from './badge';
 import { badgeRules } from './badge.rules';
 
@@ -32,7 +33,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'radius.pill', tier: '2', use: 'Corner radius' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Badge status="warning" count={142} label="open alerts" />,
         parts: [
           { n: 1, label: 'Pill', note: 'the fill, status', target: '.ds-badge', at: 'top-start' },
@@ -42,8 +43,9 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Minimum width', value: 'space.6, 24px, so a single digit stays a circle' },
-        { label: 'Padding', value: 'space.inset.xs block · space.inline.sm inline' },
-        { label: 'Radius', value: 'radius.pill' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-badge', token: 'space.inline.sm' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-badge', token: 'space.inset.xs' },
+        { label: 'Radius', property: 'radius', target: '.ds-badge', token: 'radius.pill' },
         { label: 'Cap', value: 'max, default 99, shows "99+"' },
         { label: 'Target', value: 'Not a control, so no target floor applies' },
       ]}
@@ -113,9 +115,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Make a badge pressable.', basis: 'WCAG 2.5.8 (AA)', rule: 'badge.not-a-control' },
         { text: 'Write a colour literal in badge.css.', basis: 'misfile.raw-value-in-component', rule: 'badge.no-literal' },
       ]}
-      rules={badgeRules}
       guide="feedback-badge--docs"
       guideName="Badge"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Badge" layer="Component" family="Feedback" rules={badgeRules} guide="feedback-badge--docs" guideName="Badge" />,
 };

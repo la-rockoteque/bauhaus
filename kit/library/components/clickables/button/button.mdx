@@ -5,7 +5,7 @@ import * as Stories from './button.stories';
 
 # Button
 
-The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+The Showcase story holds the tokens, the stage and the states grid. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
 
 ## 1. Introduction
 
@@ -13,7 +13,7 @@ The Showcase story holds the tokens, the anatomy, the states grid, the live rule
 
 **Precisely:** Component in the clickables family. It triggers one action in the current view. It does not navigate, and it does not toggle a setting.
 
-**The job.** A button answers the question "what can I do here?". Each view region has one main answer, so the button comes in three variants that rank the answers: primary, secondary, tertiary. Rank is the only thing a variant changes. State (disabled, loading) is a separate prop, so a button can be secondary and loading at once.
+**The job.** A button answers the question "what can I do here?". Each view region has one main answer, so the button comes in four variants that rank the answers: primary, secondary, tertiary, subtle. Rank is the only thing a variant changes. State (disabled, loading) is a separate prop, so a button can be secondary and loading at once.
 
 **The layer.** The button is a component. It reads roles and semantic tokens. It owns no colour, no size and no radius of its own.
 
@@ -33,7 +33,8 @@ The Showcase story holds the tokens, the anatomy, the states grid, the live rule
 
 ### How
 
-- **Variants.** Show one primary per view region. Make the other actions secondary or tertiary. Choice time grows with the number of options (Hick 1952), and extra emphasis competes with the important item (Nielsen heuristic 8).
+- **Variants.** Show one primary per view region. Make the other actions secondary or tertiary. Use subtle for chrome that must stay quiet, such as a toolbar or a segmented control. Choice time grows with the number of options (Hick 1952), and extra emphasis competes with the important item (Nielsen heuristic 8).
+- **Narrow.** `size="narrow"` draws the button 32px high (`size.control.narrow`) with a caption-size label, for dense chrome. An invisible layer keeps the hit area at `size.target.min`, so the 44px floor holds (WCAG 2.5.5, AAA figure; 2.5.8, AA). Keep 12px or more between narrow buttons stacked vertically: each hit area grows 6px above and below, so closer ones overlap. (`button.narrow-hit-area`)
 - **Content.** Start the label with a verb and name the object: "Save changes". A label describes its purpose (WCAG 2.4.6 Headings and Labels, AA).
 - **Keyboard.** Space and Enter activate the button. The component renders a native `button`, so this needs no code (APG Button pattern).
 - **Target size.** The target is at least 24 by 24 CSS px (WCAG 2.5.8, AA). The house floor is 44px, the WCAG 2.5.5 (AAA) figure. This is a project decision.
@@ -45,7 +46,7 @@ The Showcase story holds the tokens, the anatomy, the states grid, the live rule
 
 ## 3. Why the states look as they do
 
-- **Hover and pressed** use a state layer (`state.hover-layer`, `state.pressed-layer`) on the secondary and tertiary variants, and a darker fill on the primary. Each differs from its base in lightness, so no state relies on hue alone (WCAG 1.4.1 Use of Color, A).
+- **Hover and pressed** use a state layer (`state.hover-layer`, `state.pressed-layer`) on the secondary, tertiary and subtle variants, and a darker fill on the primary. Each differs from its base in lightness, so no state relies on hue alone (WCAG 1.4.1 Use of Color, A).
 - **Focus-visible** draws an outline offset from the box. The offset keeps the ring visible against the primary fill, where a ring of the same colour would vanish (WCAG 1.4.11 Non-text Contrast, AA). Mouse presses do not show it.
 - **Disabled** uses the disabled roles and the native `disabled` attribute. The attribute removes the button from the tab order and blocks the click, and no ARIA needs to imitate it. The state reads as unavailable, so the view must say why (Nielsen heuristic 1).
 - **Loading** hides the label with `opacity`, not `display`. The label keeps its width, so the layout does not jump. It stays in the accessibility tree, so the button keeps its name (WCAG 4.1.2, A). `aria-busy` tells assistive technology that work is running.

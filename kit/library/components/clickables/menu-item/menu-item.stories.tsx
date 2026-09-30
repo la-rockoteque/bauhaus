@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Menu } from '../../overlays/menu/menu';
 import { MenuItem } from './menu-item';
 import { menuItemRules } from './menu-item.rules';
@@ -62,7 +63,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'radius.control', tier: '2', use: 'Corner radius of the highlight' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: inMenu(<MenuItem id="save" icon="check" description="Write the file to disk" shortcut="Ctrl+S">Save</MenuItem>),
         parts: [
           { n: 1, label: 'Container', note: 'role menuitem, required', target: '.ds-menu-item', at: 'top-start' },
@@ -73,9 +74,10 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Minimum height', value: 'size.target.min, 44px' },
-        { label: 'Padding', value: 'space.control.inline inline · space.inset.xs block' },
-        { label: 'Radius', value: 'radius.control' },
+        { label: 'Minimum height', value: 'size.target.min, 44px; a description makes the item taller' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-menu-item', token: 'space.control.inline' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-menu-item', token: 'space.inset.xs' },
+        { label: 'Radius', property: 'radius', target: '.ds-menu-item', token: 'radius.control' },
         { label: 'Label', value: 'text.body.*, wraps, never truncates' },
         { label: 'Description', value: 'text.caption.*, text.muted, read by assistive technology as the description' },
         { label: 'Focus', value: 'ring 2px drawn inside the item, on data-focus-visible' },
@@ -124,9 +126,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Make an item shorter than 44px.', basis: 'House floor, WCAG 2.5.5 (AAA)', rule: 'menu-item.touch-target' },
         { text: 'Write a colour or px literal in menu-item.css.', basis: 'misfile.raw-value-in-component', rule: 'menu-item.no-literal' },
       ]}
-      rules={menuItemRules}
       guide="clickables-menu-item--docs"
       guideName="Menu item"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Menu item" layer="Component" family="Clickables" rules={menuItemRules} guide="clickables-menu-item--docs" guideName="Menu item" />,
 };

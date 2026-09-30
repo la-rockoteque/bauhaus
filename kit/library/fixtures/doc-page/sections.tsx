@@ -1,24 +1,39 @@
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Text } from '../../primitives/text/text';
-import { Stage } from '../anatomy/anatomy';
+import { TokenName } from '../dictionary/dictionary';
+import { Stage } from '../stage/stage';
+import { ThemeSwitch } from '../theme-switch/theme-switch';
+import { PanelTheme, usePageTheme } from '../theme-switch/theme-store';
+import { TableScroll } from './table-scroll';
 import type { DocPageProps, Guidance, Row, TokensSpec } from './types';
 
-/** A numbered section with a heading and an optional one-line kicker. */
+/**
+ * A numbered section in its own panel, with a heading, an optional one-line kicker and a theme switch.
+ * The switch sets `data-theme` on the panel only, so one section can show dark beside a light page.
+ * Until the viewer picks, the panel follows the page.
+ */
 export function Section({ num, title, kicker, children }: { num?: number; title: string; kicker?: string; children: ReactNode }) {
+  const page = usePageTheme();
+  const [own, setOwn] = useState<string | null>(null);
+  const theme = own ?? page;
   return (
-    <section className="doc-section">
+    <section className="doc-section" data-theme={own ?? undefined}>
       <div className="doc-section-head">
-        <Text variant="heading" as="h2" className="doc-h2">
-          {num !== undefined && <span className="doc-num">{num}</span>}
-          {title}
-        </Text>
-        {kicker && (
-          <Text variant="caption" tone="muted" as="p" className="doc-kicker">
-            {kicker}
+        <div className="doc-section-title">
+          <Text variant="heading" as="h2" className="doc-h2">
+            {num !== undefined && <span className="doc-num">{num}</span>}
+            {title}
           </Text>
-        )}
+          {kicker && (
+            <Text variant="caption" tone="muted" as="p" className="doc-kicker">
+              {kicker}
+            </Text>
+          )}
+        </div>
+        <ThemeSwitch value={theme} onChange={(next) => setOwn(next === page ? null : next)} label={`Theme of ${title}`} />
       </div>
-      {children}
+      <PanelTheme.Provider value={own}>{children}</PanelTheme.Provider>
     </section>
   );
 }
@@ -41,14 +56,7 @@ export function Introduction({ plain, precise, usedFor }: Pick<DocPageProps, 'pl
   );
 }
 
-/** A table that scrolls inside its own box, so a long token name never widens the page (WCAG 1.4.10). */
-export function TableScroll({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <div className="doc-table-scroll" role="region" aria-label={label} tabIndex={0}>
-      {children}
-    </div>
-  );
-}
+export { TableScroll } from './table-scroll';
 
 const TIER: Record<TokensSpec['rows'][number]['tier'], string> = { '1': '1 · primitive', '2': '2 · semantic', '3': '3 · component', role: 'role' };
 
@@ -71,7 +79,7 @@ export function Tokens({ tokens }: { tokens: TokensSpec }) {
                 <td>
                   <span className="doc-token">
                     {row.swatch && <span className="doc-swatch" style={{ background: `var(${row.swatch})` }} aria-hidden="true" />}
-                    <code>{row.name}</code>
+                    <TokenName name={row.name} />
                   </span>
                 </td>
                 <td className="doc-muted">{TIER[row.tier]}</td>
@@ -114,13 +122,17 @@ function RowTable({ title, rows, api = false }: { title: string; rows?: readonly
   );
 }
 
-export function AnatomySection({ anatomy, specimens, specs, api }: Pick<DocPageProps, 'anatomy' | 'specimens' | 'specs' | 'api'>) {
-  if (!anatomy && !specimens && !specs?.length && !api?.length) return null;
+export function StageSection({ stage, specimens, specs, api, tokens }: Pick<DocPageProps, 'stage' | 'specimens' | 'specs' | 'api' | 'tokens'>) {
+  if (!stage && !specimens && !specs?.length && !api?.length) return null;
+  // Without a stage there is nothing to measure: the specs are text only.
+  const textSpecs = specs?.flatMap((spec) => {
+    const value = [spec.token, spec.value].filter(Boolean).join(' · ');
+    return value ? [{ label: spec.label, value }] : [];
+  });
   return (
-    <Section num={2} title="Anatomy" kicker={anatomy ? 'Each part is marked on the component and listed in the parts panel.' : undefined}>
+    <Section num={2} title="Stage" kicker={stage ? 'The component with its numbered parts, its measured specs, or taken apart into the layers its tokens paint.' : undefined}>
       {specimens}
-      {anatomy && <Stage anatomy={anatomy} />}
-      <RowTable title="Specs" rows={specs} />
+      {stage ? <Stage stage={stage} specs={specs} tokens={tokens.mode === 'consumed' ? tokens.rows : undefined} /> : <RowTable title="Specs" rows={textSpecs} />}
       <RowTable title="API" rows={api} api />
     </Section>
   );

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Breadcrumb, type BreadcrumbItem } from './breadcrumb';
 import { breadcrumbRules } from './breadcrumb.rules';
 
@@ -40,7 +41,7 @@ export const Showcase: StoryObj = {
           { name: 'size.target.min', tier: '2', use: 'Target of each crumb and of the "…" button, through Link and Button' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: show(THREE),
         parts: [
           { n: 1, label: 'Landmark', note: 'nav with aria-label, required', target: '.ds-breadcrumb', at: 'top-start' },
@@ -51,7 +52,7 @@ export const Showcase: StoryObj = {
       }}
       specs={[
         { label: 'Structure', value: 'nav[aria-label] > ol > li, one li per crumb' },
-        { label: 'Crumb target', value: 'size.target.min, 44px high' },
+        { label: 'Crumb target', property: 'height', target: '.ds-breadcrumb__item:first-child .ds-link', token: 'size.target.min' },
         { label: 'Separator', value: 'chevron icon, aria-hidden, text.muted' },
         { label: 'Current', value: 'aria-current="page", text.default, heavier weight' },
         { label: 'Collapse', value: 'more than maxItems (4): first crumb, "…" button, then the last maxItems − 2' },
@@ -107,9 +108,13 @@ export const Showcase: StoryObj = {
         { text: 'Add a breadcrumb to a flat site.', basis: 'navigation.md rule 11', rule: 'breadcrumb.deep-only' },
         { text: 'Write a colour literal in breadcrumb.css.', basis: 'misfile.raw-value-in-component', rule: 'breadcrumb.no-literal' },
       ]}
-      rules={breadcrumbRules}
       guide="navigation-breadcrumb--docs"
       guideName="Breadcrumb"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Breadcrumb" layer="Component" family="Navigation" rules={breadcrumbRules} guide="navigation-breadcrumb--docs" guideName="Breadcrumb" />,
 };

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage, LIFECYCLE } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Button } from '../../components/clickables/button/button';
 import { EmptyState } from '../../components/feedback/empty-state/empty-state';
 import { emptyResultsRules } from './empty-results.rules';
@@ -33,7 +34,7 @@ export const Showcase: StoryObj = {
         note: 'None of its own. Layout and colour come from the EmptyState component and the button.',
         rows: [],
       }}
-      anatomy={{
+      stage={{
         render: <Recipe heading="No orders match these filters" hint="Filters: status Shipped, date last 7 days." action="Clear filters" />,
         parts: [
           { n: 1, label: 'Heading', note: 'EmptyState title, a heading · required', target: '.ds-empty-state__title', at: 'top-start' },
@@ -68,9 +69,13 @@ export const Showcase: StoryObj = {
         { text: 'Add a stylesheet to the pattern folder.', basis: 'docs/library.md', rule: 'empty-results.no-own-style' },
         { text: 'Update silently after filtering.', basis: 'WCAG 4.1.3 (AA)', rule: 'empty-results.announced' },
       ]}
-      rules={emptyResultsRules}
       guide="patterns-empty-results--docs"
       guideName="Empty results"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Empty results" layer="Pattern" rules={emptyResultsRules} guide="patterns-empty-results--docs" guideName="Empty results" />,
 };

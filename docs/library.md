@@ -13,7 +13,7 @@ packages/design-system/                 one package, one version, one public ent
 ├─ index.ts                             the public API; the app never deep-imports
 ├─ .storybook/                          Storybook config only: main.ts globs ../**/*.stories.tsx and ../**/*.mdx · preview.tsx · manager.ts · theme.ts
 ├─ fixtures/                            Storybook-only building blocks, one slice each · never exported, never published
-│  ├─ doc-page/  anatomy/  states-grid/  theme-switch/  rulebook/  guide/  series/
+│  ├─ doc-page/  stage/  states-grid/  theme-switch/  rulebook/  guide/  series/
 │  └─ specimens/  type-specimens/  elevation-specimens/  themes-page/
 ├─ foundations/
 │  ├─ color/        palette.tokens.json · colors.tokens.json · color.mdx · color.stories.tsx · color.rules.ts
@@ -79,7 +79,7 @@ A slice is one folder per thing. It holds every file about that thing, named aft
 |---|---|---|
 | `<name>.tsx` | The component (framework file: `.vue`, `.svelte`, `.ts` for a custom element). | Component, primitive |
 | `<name>.css` | Its styles. Semantic tokens only; no literals. | If it has styles |
-| `<name>.stories.tsx` | The showcase. One story renders `<DocPage …/>` like moship-web's pages: short introduction, anatomy stage with an anchor on each part and a parts panel, tokens with swatches, Specs and API tables, the States grid (every designed state rendered live, `n/a` cells with their reason, `missing` cells badged), live specimens, the live Rulebook table, Accessibility coverage, a compact Do / Don't and a pointer to the guide. | Every slice |
+| `<name>.stories.tsx` | The showcase. One story renders `<DocPage …/>` like moship-web's pages: short introduction, the Stage (the component with an anatomy layer, an anchor on each part and a parts panel, and a specs layer of measured redlines, each layer hideable), tokens with swatches, Specs and API tables, the States grid (every designed state rendered live, `n/a` cells with their reason, `missing` cells badged), live specimens, a compact Do / Don't and a pointer to the guide. A second story, Advisories, holds the live Rulebook table and the Accessibility coverage. | Every slice |
 | `<name>.mdx` | The guide. It declares `<Meta of={Stories}/>`, so one Storybook entry shows the guide as "Docs" and the showcase as a story. It holds the full Introduction, Usage in depth, the reasoning behind each state, Pitfalls with their reasons, and every rule with its basis. | Every slice |
 | `<name>.rules.ts` | Its rulebook entries. | Every slice |
 | `<name>.test.tsx` | Behaviour and accessibility tests. | Component, primitive |
@@ -127,7 +127,7 @@ Storybook is the design system's first consumer. It never falls back to Storyboo
 
 ## Fixtures
 
-A fixture is a Storybook-only building block, structured like a component and never exported. `DocPage`, the anatomy stage, the states grid, the rulebook and the specimens are fixtures. Each has its own folder in `fixtures/`, so it can be reused and developed alone.
+A fixture is a Storybook-only building block, structured like a component and never exported. `DocPage`, the stage, the states grid, the rulebook and the specimens are fixtures. Each has its own folder in `fixtures/`, so it can be reused and developed alone.
 
 | File | Holds |
 |---|---|

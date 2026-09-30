@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Text } from '../text/text';
 import { GLYPH_NAMES } from '../../foundations/iconography/glyphs';
 import { Icon } from './icon';
@@ -68,7 +69,7 @@ export const Showcase: StoryObj = {
           { name: 'icon.stroke', tier: '2', use: 'Stroke weight, 2px at 24; defined by the iconography foundation' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Icon glyph="search" size="lg" />,
         parts: [
           { n: 1, label: 'SVG box', note: 'square, from size', target: '.ds-icon', at: 'top-start' },
@@ -78,6 +79,8 @@ export const Showcase: StoryObj = {
       }}
       specs={[
         { label: 'Grid', value: '24 by 24 viewBox, strokes only, square caps and mitre joins, stroke from icon.stroke' },
+        { label: 'Height', property: 'height', target: '.ds-icon', token: 'size.icon.lg', value: 'size.icon.lg in this stage' },
+        { label: 'Width', property: 'width', target: '.ds-icon', token: 'size.icon.lg', value: 'size.icon.lg in this stage' },
         { label: 'Colour', value: 'currentColor' },
         { label: 'Default', value: 'md, aria-hidden, not focusable' },
         { label: 'Sprite', value: 'None. The path data lives in foundations/iconography/glyphs.ts' },
@@ -120,9 +123,13 @@ export const Showcase: StoryObj = {
         { text: 'Set a width or height in px.', basis: 'Project decision', rule: 'icon.size-from-token' },
         { text: 'Draw a one-off SVG at a call site.', basis: 'Nielsen 4', rule: 'icon.glyph-set-closed' },
       ]}
-      rules={iconRules}
       guide="primitives-icon--docs"
       guideName="Icon"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Icon" layer="Primitive" rules={iconRules} guide="primitives-icon--docs" guideName="Icon" />,
 };

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Text } from './text';
 import { textRules } from './text.rules';
 
@@ -26,7 +27,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'text.default · text.muted', tier: 'role', use: 'Tone', swatch: '--ds-text-muted' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Text variant="heading" as="h3">Order summary</Text>,
         parts: [
           { n: 1, label: 'Element', note: 'chosen by as; p, span or h2 by default', target: '.ds-text', at: 'top-start' },
@@ -86,9 +87,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Set grey text below 4.5:1 for "quiet" copy.', basis: 'WCAG 1.4.3 (AA)', rule: 'text.muted-contrast' },
         { text: 'Write a px font size at a call site.', basis: 'Project decision', rule: 'text.size-from-role' },
       ]}
-      rules={textRules}
       guide="primitives-text--docs"
       guideName="Text"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Text" layer="Primitive" rules={textRules} guide="primitives-text--docs" guideName="Text" />,
 };

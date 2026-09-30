@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Box } from './box';
 import { boxRules } from './box.rules';
 
@@ -29,7 +30,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'surface.default · raised · sunken', tier: 'role', use: 'Optional background', swatch: '--ds-surface-raised' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Box padding={4} surface="raised" style={{ border: 'thin solid var(--ds-border-strong)' }}>Content</Box>,
         parts: [
           { n: 1, label: 'Element', note: 'chosen by as, div by default', target: '.ds-box', at: 'top-start' },
@@ -39,6 +40,8 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Default element', value: 'div, display block, no role' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-box', token: 'space.4', value: 'space.4 in this stage' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-box', token: 'space.4', value: 'space.4 in this stage' },
         { label: 'Spacing', value: 'space.0 to space.12 only; logical properties' },
         { label: 'Gap', value: 'Works with display flex or grid' },
       ]}
@@ -102,9 +105,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Style a div as a list or a navigation.', basis: 'WCAG 1.3.1 (A)', rule: 'box.element-by-structure' },
         { text: 'Put onClick on a Box.', basis: 'APG Button; WCAG 4.1.2 (A)', rule: 'box.not-interactive' },
       ]}
-      rules={boxRules}
       guide="primitives-box--docs"
       guideName="Box"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Box" layer="Primitive" rules={boxRules} guide="primitives-box--docs" guideName="Box" />,
 };

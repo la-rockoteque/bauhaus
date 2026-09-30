@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Stack } from '../../../primitives/stack/stack';
 import { Chip } from './chip';
 import { chipRules } from './chip.rules';
@@ -42,7 +43,7 @@ export const Showcase: StoryObj = {
           { name: 'radius.pill · radius.full', tier: '2', use: 'Chip outline; round remove button' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Chip variant="removable" removeLabel="Remove filter">Status: Shipped</Chip>,
         parts: [
           { n: 1, label: 'Container', note: 'one outlined pill, required', target: '.ds-chip', at: 'top-start' },
@@ -53,7 +54,7 @@ export const Showcase: StoryObj = {
       specs={[
         { label: 'Height', value: 'static: space.8 · pressable: size.target.min plus the outline, so the target is 44px' },
         { label: 'Padding', value: 'space.inline.lg on each side; none after the remove button, which fills the end' },
-        { label: 'Radius', value: 'radius.pill; the remove button is radius.full' },
+        { label: 'Radius', property: 'radius', target: '.ds-chip', token: 'radius.pill', value: 'the remove button is radius.full' },
         { label: 'Label', value: 'text.label.*, one line, ellipsis past size.overlay.sm' },
         { label: 'Focus', value: 'ring 2px, offset 2px, on the button or the cut label' },
         { label: 'Wrap', value: 'a row of chips wraps: put them in a Stack with wrap' },
@@ -119,9 +120,13 @@ export const Showcase: StoryObj = {
         { text: 'Cut a long label with no way to read it whole.', basis: 'WCAG 1.4.13 (AA)', rule: 'chip.truncate-tooltip' },
         { text: 'Write a colour literal in chip.css.', basis: 'misfile.raw-value-in-component', rule: 'chip.no-literal' },
       ]}
-      rules={chipRules}
       guide="clickables-chip--docs"
       guideName="Chip"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Chip" layer="Component" family="Clickables" rules={chipRules} guide="clickables-chip--docs" guideName="Chip" />,
 };

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Text } from '../../../primitives/text/text';
 import { Accordion, AccordionItem } from './accordion';
 import { Disclosure } from './disclosure';
@@ -63,7 +64,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'motion.duration.base · deliberate · ease.standard · ease.enter', tier: '2', use: 'Chevron turn, panel reveal, skeleton shimmer' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}><Disclosure title="Shipping" open onToggle={() => undefined}><Body>Orders leave within two business days.</Body></Disclosure></div>,
         parts: [
           { n: 1, label: 'Header', note: 'summary, or a button in a heading; required', target: '.ds-disclosure__trigger', at: 'top-start' },
@@ -74,7 +75,9 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Header height', value: 'at least size.target.min, 44px' },
-        { label: 'Padding', value: 'space.inset.sm block · space.inset.md inline' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-disclosure__trigger', token: 'space.inset.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-disclosure__trigger', token: 'space.inset.sm' },
+        { label: 'Radius', property: 'radius', target: '.ds-disclosure', token: 'radius.md' },
         { label: 'Reveal', value: 'fade and rise, motion.duration.base · fade only under reduced motion' },
         { label: 'Keyboard (single)', value: 'Enter or Space on the summary, from the browser' },
         { label: 'Keyboard (accordion)', value: 'Enter or Space toggles · Down, Up, Home, End move between headers' },
@@ -123,9 +126,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Keep the travel of the reveal under reduced motion.', basis: 'WCAG 2.3.3 (AAA)', rule: 'disclosure.reduced-motion' },
         { text: 'Write a colour or px literal in disclosure.css.', basis: 'misfile.raw-value-in-component', rule: 'disclosure.no-literal' },
       ]}
-      rules={disclosureRules}
       guide="data-structures-disclosure--docs"
       guideName="Disclosure"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Disclosure" layer="Component" family="Data structures" rules={disclosureRules} guide="data-structures-disclosure--docs" guideName="Disclosure" />,
 };

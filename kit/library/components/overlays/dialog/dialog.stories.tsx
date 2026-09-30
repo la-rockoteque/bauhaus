@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Text } from '../../../primitives/text/text';
@@ -90,7 +91,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'z.modal', tier: '2', use: 'Paint order; the native top layer already sits above the page' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: (
           <Frame>
             <Dialog inline open onClose={noop} title="Edit address" closeLabel="Close" footer={cancelSave}>
@@ -111,7 +112,8 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Width', value: 'size.overlay.sm 20rem · md 30rem (default) · lg 40rem, capped to the screen minus space.8' },
         { label: 'Height', value: 'up to the screen height minus space.8; the body scrolls, the title row and the actions stay' },
         { label: 'Narrow screen', value: 'At 768px and narrower the dialog fills the screen' },
-        { label: 'Radius and rung', value: 'radius.overlay · shadow.2' },
+        { label: 'Radius', property: 'radius', target: '.ds-dialog__panel', token: 'radius.overlay' },
+        { label: 'Rung', value: 'shadow.2' },
         { label: 'Motion', value: 'Fade and 16px rise, motion.duration.base; reduced motion keeps the fade' },
         { label: 'Focus', value: 'On open: a data-autofocus element, else the first focusable, else the title. On close: back to the opener' },
       ]}
@@ -165,9 +167,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Write a colour or px literal in dialog.css.', basis: 'misfile.raw-value-in-component', rule: 'dialog.no-literal' },
         { text: 'Label the destructive action "OK".', basis: 'WCAG 2.4.6 (AA)', rule: 'dialog.destructive-named' },
       ]}
-      rules={dialogRules}
       guide="overlays-dialog--docs"
       guideName="Dialog"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Dialog" layer="Component" family="Overlays" rules={dialogRules} guide="overlays-dialog--docs" guideName="Dialog" />,
 };

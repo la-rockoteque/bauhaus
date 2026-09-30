@@ -43,7 +43,9 @@
   cursor: not-allowed;
 }
 
-.ds-combobox[data-open] .ds-combobox__button .ds-icon {
+/* Open, or drawn open by a showcase (ds-combobox--open): the chevron turns over. */
+.ds-combobox[data-open] .ds-combobox__button .ds-icon,
+.ds-combobox--open .ds-combobox__button .ds-icon {
   rotate: 180deg;
 }
 
@@ -142,5 +144,6 @@
 @media (prefers-reduced-motion: reduce) {
   .ds-combobox__popover[data-entering],
   .ds-combobox__popover[data-exiting] { animation: none; }
-  .ds-combobox[data-open] .ds-combobox__button .ds-icon { rotate: none; }
+  .ds-combobox[data-open] .ds-combobox__button .ds-icon,
+  .ds-combobox--open .ds-combobox__button .ds-icon { rotate: none; }
 }

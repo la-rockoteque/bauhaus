@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { FontRoles, TypeScale, TypefaceSpecimens } from '../../fixtures/type-specimens/type-specimens';
 import { typographyRules } from './typography.rules';
 
@@ -69,9 +70,13 @@ export const Showcase: StoryObj = {
         { text: 'Read a typeface or a font role in a component.', basis: 'typefaces.md rule 18', rule: 'typography.typeface-at-call-site' },
         { text: 'Load font files from a third-party CDN.', basis: 'typefaces.md rule 26 (privacy)', rule: 'typography.self-hosted' },
       ]}
-      rules={typographyRules}
       guide="foundations-typography--docs"
       guideName="Typography"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Typography" layer="Foundation" rules={typographyRules} guide="foundations-typography--docs" guideName="Typography" />,
 };

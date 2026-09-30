@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Stack } from '../stack/stack';
 import { Heading } from './heading';
 import type { HeadingLevel, HeadingSize } from './heading';
@@ -35,7 +36,7 @@ export const Showcase: StoryObj = {
           { name: 'text.default', tier: 'role', use: 'Colour', swatch: '--ds-text-default' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Heading level={2}>Delivery address</Heading>,
         parts: [
           { n: 1, label: 'Element', note: 'h1 to h6, from level, required', target: '.ds-heading', at: 'top-start' },
@@ -105,9 +106,13 @@ export const Showcase: StoryObj = {
         { text: 'Put two h1 elements on one page.', basis: 'WCAG 2.4.6 (AA)', rule: 'heading.one-h1' },
         { text: 'Write a px font size at a call site.', basis: 'Project decision', rule: 'heading.size-from-text-style' },
       ]}
-      rules={headingRules}
       guide="primitives-heading--docs"
       guideName="Heading"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Heading" layer="Primitive" rules={headingRules} guide="primitives-heading--docs" guideName="Heading" />,
 };

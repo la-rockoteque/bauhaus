@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Checkbox } from './checkbox';
 import { checkboxRules } from './checkbox.rules';
 
@@ -36,7 +37,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'radius.sm', tier: '2', use: 'Box corner' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: cell(<Checkbox label="Send me the newsletter" description="One email a month." defaultChecked />),
         parts: [
           { n: 1, label: 'Target', note: '44px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
@@ -46,8 +47,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Target', value: 'size.target.min, 44px, the whole row is the target' },
-        { label: 'Box', value: 'size.icon.lg, 24px, outline size.border.thick' },
+        { label: 'Target height', property: 'height', target: '.ds-field__choice-target', token: 'size.target.min', value: '44px, the whole row is the target' },
+        { label: 'Target width', property: 'width', target: '.ds-field__choice-target', token: 'size.target.min' },
+        { label: 'Box height', property: 'height', target: '.ds-checkbox__box', token: 'size.icon.lg', value: '24px, outline size.border.thick' },
+        { label: 'Box width', property: 'width', target: '.ds-checkbox__box', token: 'size.icon.lg' },
+        { label: 'Box radius', property: 'radius', target: '.ds-checkbox__box', token: 'radius.sm' },
         { label: 'Mark', value: 'check, or minus for mixed, size.icon.sm' },
         { label: 'Label', value: 'text.body.*, to the side, clickable' },
         { label: 'Focus', value: 'ring 2px, offset 2px, around the box, on :focus-visible' },
@@ -91,9 +95,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Use a div with a click handler.', basis: 'APG Checkbox; WCAG 4.1.2 (A)', rule: 'checkbox.native-element' },
         { text: 'Write a colour or px literal in the stylesheet.', basis: 'misfile.raw-value-in-component', rule: 'checkbox.no-literal' },
       ]}
-      rules={checkboxRules}
       guide="fields-checkbox--docs"
       guideName="Checkbox"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Checkbox" layer="Component" family="Fields" rules={checkboxRules} guide="fields-checkbox--docs" guideName="Checkbox" />,
 };

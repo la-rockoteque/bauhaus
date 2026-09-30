@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { ElevationRungs, ScrimSample, ZStack } from '../../fixtures/elevation-specimens/elevation-specimens';
 import { RoleChips } from '../../fixtures/specimens/specimens';
 import { elevationRules } from './elevation.rules';
@@ -67,9 +68,13 @@ export const Showcase: StoryObj = {
         { text: 'Define a second scrim.', basis: 'Material 3 single scrim role', rule: 'elevation.single-scrim' },
         { text: 'Let a sticky header cover the focused row.', basis: 'WCAG 2.4.11 (AA)', rule: 'elevation.focus-not-obscured' },
       ]}
-      rules={elevationRules}
       guide="foundations-elevation--docs"
       guideName="Elevation"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Elevation" layer="Foundation" rules={elevationRules} guide="foundations-elevation--docs" guideName="Elevation" />,
 };

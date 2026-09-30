@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { TextField } from './text-field';
 import { textFieldRules } from './text-field.rules';
 
@@ -40,7 +41,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'radius.control', tier: '2', use: 'Corner radius' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: cell(<TextField label="Email address" required clearable description="We send the receipt here." error="Enter an email address, like name@example.com" defaultValue="ada@" />),
         parts: [
           { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
@@ -52,9 +53,10 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Height', value: 'size.control.md, 48px' },
-        { label: 'Padding', value: 'space.control.inline inline · space.inset.sm block' },
-        { label: 'Radius', value: 'radius.control' },
+        { label: 'Height', property: 'height', target: '.ds-text-field__input', token: 'size.control.md', value: '48px' },
+        { label: 'Padding inline', value: 'space.control.inline, more at the end when a clear button or trailing content shows' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-text-field__input', token: 'space.inset.sm' },
+        { label: 'Radius', property: 'radius', target: '.ds-text-field__input', token: 'radius.control' },
         { label: 'Value', value: 'text.body.*, 16px: no zoom on iOS focus' },
         { label: 'Label', value: 'text.label.*, above the input, never inside it' },
         { label: 'Focus', value: 'border.focus plus a ring, 2px, offset 2px, on :focus-visible' },
@@ -110,9 +112,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Write a colour or px literal in the stylesheet.', basis: 'misfile.raw-value-in-component', rule: 'text-field.no-literal' },
         { text: 'Ask for personal data with no autocomplete token.', basis: 'WCAG 1.3.5 (AA)', rule: 'text-field.autocomplete' },
       ]}
-      rules={textFieldRules}
       guide="fields-text-field--docs"
       guideName="Text field"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Text field" layer="Component" family="Fields" rules={textFieldRules} guide="fields-text-field--docs" guideName="Text field" />,
 };

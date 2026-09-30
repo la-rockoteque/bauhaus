@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Icon } from '../../../primitives/icon/icon';
 import { Button } from '../../clickables/button/button';
 import { EmptyState } from './empty-state';
@@ -33,7 +34,7 @@ export const Showcase: StoryObj = {
           { name: 'size.overlay.md', tier: '2', use: 'Maximum inline size, 30rem, so lines stay readable' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: (
           <EmptyState title="No projects yet" media={<Icon glyph="plus" size="lg" />} actions={<Button>Create a project</Button>}>
             Projects you create appear here. Start with one to invite your team.
@@ -47,8 +48,10 @@ export const Showcase: StoryObj = {
         ],
       }}
       specs={[
-        { label: 'Width', value: 'Fills its container, up to size.overlay.md (30rem), centred' },
-        { label: 'Padding', value: 'space.inset.xl block · space.inset.md inline' },
+        { label: 'Width', property: 'width', target: '.ds-empty-state', token: 'size.overlay.md', value: 'fills its container, up to this, centred' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-empty-state', token: 'space.inset.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-empty-state', token: 'space.inset.xl' },
+        { label: 'Gap', property: 'gap', target: '.ds-empty-state', token: 'space.stack.sm' },
         { label: 'Title', value: 'A real heading, Heading size "subheading", level from the prop' },
         { label: 'Body', value: 'text.body.*, text.muted' },
         { label: 'Text', value: 'None of its own; every string comes from props' },
@@ -134,9 +137,13 @@ export const Showcase: StoryObj = {
         { text: 'Show the illustration to a screen reader.', basis: 'WCAG 1.1.1 (A)', rule: 'empty.media-hidden' },
         { text: 'Bake a string into the component.', basis: 'docs/library.md', rule: 'empty.text-from-props' },
       ]}
-      rules={emptyStateRules}
       guide="feedback-empty-state--docs"
       guideName="Empty state"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Empty state" layer="Component" family="Feedback" rules={emptyStateRules} guide="feedback-empty-state--docs" guideName="Empty state" />,
 };

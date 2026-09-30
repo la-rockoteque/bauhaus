@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Stack } from '../stack/stack';
 import { Text } from '../text/text';
 import { Divider } from './divider';
@@ -30,7 +31,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'size.border.thin', tier: '2', use: 'The line thickness' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: (
           <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}>
             <Divider />
@@ -43,7 +44,7 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Element', value: 'hr' },
-        { label: 'Thickness', value: 'size.border.thin' },
+        { label: 'Thickness', property: 'height', target: '.ds-divider', token: 'size.border.thin' },
         { label: 'Vertical', value: 'Stretches to the height of its row' },
         { label: 'Margin', value: '0; spacing belongs to the parent' },
       ]}
@@ -111,9 +112,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Rely on the line alone to mark a new section.', basis: 'WCAG 1.3.1 (A)', rule: 'divider.meaning-not-line-alone' },
         { text: 'Write a colour or a px width for the line.', basis: 'Project decision', rule: 'divider.border-token' },
       ]}
-      rules={dividerRules}
       guide="primitives-divider--docs"
       guideName="Divider"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Divider" layer="Primitive" rules={dividerRules} guide="primitives-divider--docs" guideName="Divider" />,
 };
