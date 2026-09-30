@@ -237,7 +237,7 @@ Use the test in review too. A reviewer who flags a line names the check it faile
 
 ## Misfiles
 
-- A showcase that renders only the default state, or a States grid with blank cells. See `misfile.state-only-happy-path`.
+- A showcase that renders only the default state, or a state matrix with blank cells. See `misfile.state-only-happy-path`.
 - Usage written as marketing ("delightful, powerful buttons"). It has no rule and no basis.
 - A foundation page that is only a token table. See `misfile.foundation-tokens-only`.
 - Pitfalls copied from another system without checking they apply here.

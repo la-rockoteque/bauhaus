@@ -22,7 +22,7 @@ sources:
 2. Sort the sidebar: Principles, Foundations, Themes, Primitives, the component families, Patterns. (Basis: `docs/architecture.md` § The three layers.)
 3. File a page by what it documents, not by what it is made of. Legacy pages sit beside their modern counterpart. (Basis: one place to look.)
 4. Render every showcase through `DocPage` so each has the same sections (see Doc page template). Declare `<Meta of={Stories}/>` in the guide so both share one entry. (Basis: Nielsen 4 Consistency and standards.)
-5. Show all required states in the States grid of the showcase, live, in every theme. A state is a cell of the grid, not a story of its own. (Basis: `states/state-matrix.md`.)
+5. Show all required states in the state matrix of the showcase, live, in every theme. A state is a cell of the grid, not a story of its own. (Basis: `states/state-matrix.md`.)
 6. Drive the grid cells with `args`, so controls match the real API. Do not hand-write a control for a prop the type already describes. (Basis: Storybook controls read component types.)
 7. Write one interaction test per interactive cell for behaviour that a screenshot cannot show: keyboard, focus, open and close. (Basis: `accessibility/testing.md`.)
 8. Run axe on each showcase. Zero violations at A and AA is the gate. (Basis: `accessibility/testing.md`.)
@@ -92,7 +92,7 @@ A written spec drifts from the code. A running page cannot: it renders the real 
 ## Rulebook seeds
 
 - `storybook.page-per-component` · auto · HIGH · Every exported component has a showcase and a guide. Four artifacts.
-- `storybook.states-shown` · review · MEDIUM · The States grid shows every state in the matrix.
+- `storybook.states-shown` · review · MEDIUM · The state matrix shows every state in the matrix.
 - `storybook.axe-clean` · auto · HIGH · Each showcase has zero axe violations at A and AA.
 - `storybook.interaction-test` · review · MEDIUM · Interactive components have a `play` test.
 - `storybook.rulebook-live` · auto · MEDIUM · The rulebook page reads live verdicts.

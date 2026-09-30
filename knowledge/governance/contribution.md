@@ -31,7 +31,7 @@ sources:
 |---|---|---|---|
 | **Tokens** | Named values in the DTCG source | The scale's tier-1 tokens and the semantic tokens that name intents | Semantic state tokens the component reads; optional component tokens |
 | **Guide** (`<name>.mdx`) | The prose spec | Scale, rationale, usage rules, limits | Full introduction, usage in depth, reasoning per state, pitfalls with reasons |
-| **Showcase** (`<name>.stories.tsx`) | The running spec | Visual scale and live token table | `DocPage`: anatomy, States grid with every state live, compact do and don't |
+| **Showcase** (`<name>.stories.tsx`) | The running spec | Visual scale and live token table | `DocPage`: anatomy, state matrix with every state live, compact do and don't |
 | **Rulebook entries** | Graded expectations | Review rules (scale closed, rationale present) | Auto and review rules, each with a stable id |
 
 Every slice follows [page-contract.md](page-contract.md): introduction, tokens, anatomy, states, usage, pitfalls.
@@ -40,7 +40,7 @@ Every slice follows [page-contract.md](page-contract.md): introduction, tokens, 
 
 - Tokens: every state has its semantic state token (hover, focus, disabled, error), or the cell says "n/a" with a reason.
 - Guide: the reasoning lists each state, its visual change, its token and its ARIA attribute.
-- Showcase: one cell per state in the States grid. A state that cannot render is shown as a labelled facsimile.
+- Showcase: one cell per state in the state matrix. A state that cannot render is shown as a labelled facsimile.
 - Rulebook: at least one rule per state that carries a WCAG duty (focus visible, 2.4.7 AA; not colour alone, 1.4.1 A).
 
 ## Adding a component
@@ -60,7 +60,7 @@ Where the styles live: a family read by several components goes in the shared sh
 Then:
 1. Write the tokens it needs (semantic first; tier 1 only if the scale lacks a step).
 2. Write the guide (`.mdx`) and the state matrix.
-3. Write the showcase (`.stories.tsx`) with a States grid cell per state.
+3. Write the showcase (`.stories.tsx`) with a state matrix cell per state.
 4. Write the rulebook entries. Mark each `auto` or `review`.
 5. Migrate the first adopter.
 6. Run the checks. Add any failing `auto` rule as a known violation with an advisory. See [rulebook.md](rulebook.md).

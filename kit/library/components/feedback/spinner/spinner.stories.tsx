@@ -4,7 +4,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Spinner } from './spinner';
 import { spinnerRules } from './spinner.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Feedback/Spinner', parameters: { layout: 'fullscreen' } } satisfies Meta;
 
 export default meta;

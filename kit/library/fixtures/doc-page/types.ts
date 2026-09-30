@@ -95,6 +95,11 @@ export interface StateCell {
   status: 'designed' | 'n/a';
   /** Group for a free id; a matrix id knows its own. */
   group?: 'lifecycle' | 'interaction';
+  /**
+   * The variant this cell shows, as its matrix column: `Vertical`, `Compact`, `Destructive`.
+   * Omit it for the base component. A variant is a choice, never a state: `vertical` is not a row.
+   */
+  variant?: string;
   /** The live render. Required when `designed`. */
   render?: ReactNode;
   /** What produces the state: a prop, or the CSS selector. */

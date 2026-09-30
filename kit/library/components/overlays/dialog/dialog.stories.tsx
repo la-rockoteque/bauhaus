@@ -12,7 +12,7 @@ import { ConfirmDialog } from './confirm-dialog';
 import { Dialog } from './dialog';
 import { dialogRules } from './dialog.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Overlays/Dialog', parameters: { layout: 'fullscreen' } } satisfies Meta;
 
 export default meta;
@@ -147,7 +147,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'active', status: 'n/a', reason: 'The panel is not pressable. Its buttons carry their own pressed state.' },
           { id: 'disabled', status: 'designed', render: <Dialog inline open onClose={noop} title="Publish page" closeLabel="Close" footer={<Button disabled>Publish page</Button>}><Text>Publishing needs a title. Add one, then publish.</Text></Dialog>, trigger: 'disabled action', note: 'The reason sits in the body, next to the disabled action.' },
           { id: 'selected', status: 'n/a', reason: 'A dialog is not a selectable item.' },
-          { id: 'alert-dialog', status: 'designed', group: 'lifecycle', label: 'Alert dialog (confirm)', render: <ConfirmDialog inline open onClose={noop} onConfirm={noop} title="Delete this project?" description="This removes 3 files and cannot be undone." confirmLabel="Delete project" cancelLabel="Cancel" destructive />, trigger: 'ConfirmDialog destructive', note: 'role="alertdialog". The action names what it deletes; focus starts on Cancel.' },
+          { id: 'default', variant: 'Alert dialog', status: 'designed', render: <ConfirmDialog inline open onClose={noop} onConfirm={noop} title="Delete this project?" description="This removes 3 files and cannot be undone." confirmLabel="Delete project" cancelLabel="Cancel" destructive />, trigger: 'ConfirmDialog destructive', note: 'role="alertdialog". The action names what it deletes; focus starts on Cancel.' },
         ],
       }}
       extra={[{ title: 'Try it', kicker: 'The real modal: open it with a press, then use Tab, Shift+Tab, Escape.', content: <TryIt /> }]}

@@ -1,0 +1,155 @@
+/* State matrix: the summary strip, and the cell that lifecycle rows and the interaction matrix share. */
+
+/* Summary */
+
+.doc-summary {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin-block: var(--ds-space-4) var(--ds-space-2);
+  padding: var(--ds-space-4);
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+  font-size: var(--ds-font-size-sm);
+}
+
+.doc-summary-count {
+  margin: 0;
+  color: var(--ds-text-muted);
+}
+
+.doc-summary-missing {
+  color: var(--ds-status-error-text);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-summary-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-2) var(--ds-space-3);
+}
+
+.doc-summary-name {
+  flex: 0 0 calc(var(--ds-space-12) * 2);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-summary-chips {
+  flex: 1 1 var(--doc-card-min);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-chip {
+  display: inline-flex;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-1) var(--ds-space-3);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-full);
+  color: var(--ds-text-default);
+  font-size: var(--ds-font-size-xs);
+  text-decoration: none;
+}
+
+.doc-chip:hover {
+  border-color: var(--ds-border-strong);
+}
+
+.doc-chip:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.doc-chip-designed {
+  border-color: var(--ds-status-success-border);
+  background: var(--ds-status-success-surface);
+}
+
+.doc-chip-na {
+  border-style: dashed;
+  color: var(--ds-text-muted);
+}
+
+.doc-chip-missing {
+  border-color: var(--ds-status-error-border);
+  background: var(--ds-status-error-surface);
+  color: var(--ds-status-error-text);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+/* Cell */
+
+.doc-cell {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  margin: 0;
+  overflow: hidden;
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+}
+
+.doc-cell-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: calc(var(--ds-space-12) * 2);
+  /* The padding leaves room for a focus ring, so a forced focus is never clipped. */
+  padding: var(--ds-space-6) var(--ds-space-4);
+  /* The page breaks long token names anywhere; a live render wraps as it does in an app. */
+  overflow-wrap: normal;
+  background-image: linear-gradient(var(--doc-grid-line) var(--doc-hairline), transparent 0),
+    linear-gradient(90deg, var(--doc-grid-line) var(--doc-hairline), transparent 0);
+  background-size: var(--ds-space-2) var(--ds-space-2);
+}
+
+.doc-cell-meta {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-block-start: thin solid var(--ds-border-default);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+}
+
+.doc-cell-caption {
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-cell-na {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-3);
+  border-style: dashed;
+  font-size: var(--ds-font-size-sm);
+}
+
+.doc-trigger {
+  color: var(--ds-text-muted);
+}
+
+/* Badges on n/a and missing rows */
+
+.doc-badge {
+  padding: 0 var(--ds-space-2);
+  border: thin solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-full);
+  color: var(--ds-text-muted);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-badge-na {
+  border-style: dashed;
+}
+
+.doc-badge-missing {
+  border-color: var(--ds-status-error);
+  color: var(--ds-status-error-text);
+}

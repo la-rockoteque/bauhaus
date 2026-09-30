@@ -6,7 +6,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { RadioGroup } from './radio-group';
 import { radioGroupRules } from './radio-group.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Fields/Radio group', component: RadioGroup, parameters: { layout: 'fullscreen' }, args: { legend: 'Legend', options: [] } } satisfies Meta<typeof RadioGroup>;
 
 export default meta;

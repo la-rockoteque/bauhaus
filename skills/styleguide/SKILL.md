@@ -29,7 +29,7 @@ The styleguide is the set of all slice pages: each slice's showcase (`<name>.sto
 
 ## Page contract
 
-Every slice has these sections, in this order. The showcase carries Tokens, Anatomy, the States grid and a compact Do / Don't. The guide carries the full Introduction, Usage, the reasoning per state and Pitfalls with reasons. The two never repeat each other's tables:
+Every slice has these sections, in this order. The showcase carries Tokens, Anatomy, the state matrix and a compact Do / Don't. The guide carries the full Introduction, Usage, the reasoning per state and Pitfalls with reasons. The two never repeat each other's tables:
 
 1. **Introduction** — what it is, its job, its layer. Plain words first.
 2. **Tokens** — defined (foundation, token group) or consumed (component, pattern), with values and intent.

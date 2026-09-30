@@ -5,7 +5,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Switch } from './switch';
 import { switchRules } from './switch.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Fields/Switch', component: Switch, parameters: { layout: 'fullscreen' }, args: { label: 'Label' } } satisfies Meta<typeof Switch>;
 
 export default meta;

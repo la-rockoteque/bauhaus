@@ -4,7 +4,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from './button';
 import { buttonRules } from './button.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Clickables/Button', component: Button, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Button>;
 
 export default meta;

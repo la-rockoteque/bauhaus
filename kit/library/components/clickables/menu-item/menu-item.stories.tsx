@@ -7,7 +7,7 @@ import { Menu } from '../../overlays/menu/menu';
 import { MenuItem } from './menu-item';
 import { menuItemRules } from './menu-item.rules';
 
-// The showcase: one page story. The states grid replaces one story per state.
+// The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Clickables/Menu item', parameters: { layout: 'fullscreen' } } satisfies Meta;
 
 export default meta;
@@ -110,7 +110,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'active', status: 'designed', render: <Forced attributes={PRESS}>{inMenu(<MenuItem id="duplicate">Duplicate</MenuItem>)}</Forced>, trigger: '[data-pressed]' },
           { id: 'disabled', status: 'designed', render: inMenu(<MenuItem id="archive" isDisabled description="Only owners can archive">Archive</MenuItem>), trigger: 'isDisabled', note: 'Stays in the list. The description says why.' },
           { id: 'selected', status: 'designed', render: inMenu(<MenuItem id="list">List</MenuItem>, { selectionMode: 'single', defaultSelectedKeys: ['list'] }), trigger: 'selected in a choosing menu', note: 'A check and a fill; never the fill alone.' },
-          { id: 'destructive', status: 'designed', group: 'interaction', label: 'Destructive', render: inMenu(<MenuItem id="delete" destructive>Delete project</MenuItem>), trigger: 'destructive', note: 'Error colour and a label that names what goes.' },
+          { id: 'default', variant: 'Destructive', status: 'designed', render: inMenu(<MenuItem id="delete" destructive>Delete project</MenuItem>), trigger: 'destructive', note: 'Error colour and a label that names what goes.' },
         ],
       }}
       dos={[

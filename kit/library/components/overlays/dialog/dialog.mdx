@@ -5,7 +5,7 @@ import * as Stories from './dialog.stories';
 
 # Dialog
 
-The Showcase story holds the tokens, the stage and the states grid. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
+The Showcase story holds the tokens, the stage and the state matrix. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
 
 ## 1. Introduction
 
@@ -75,6 +75,6 @@ The Showcase story holds the tokens, the stage and the states grid. The Advisori
 
 ## 5. Notes
 
-- **Inline.** The `inline` prop renders the dialog open, in the flow, with no scrim and no trap. It exists for previews, such as the States grid. Do not use it to build a modal.
+- **Inline.** The `inline` prop renders the dialog open, in the flow, with no scrim and no trap. It exists for previews, such as the state matrix. Do not use it to build a modal.
 - **Scrollable body.** Browsers make a scroll container focusable by keyboard when it overflows, so a keyboard user can scroll the body. The component adds no `tabindex`.
 - **Nested overlays.** A popover or a menu opened from inside a dialog paints above it (`z.popover` is above `z.modal`). A tooltip paints above both.
