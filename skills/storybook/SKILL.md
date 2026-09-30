@@ -19,7 +19,7 @@ Storybook is the running spec: one page per foundation, component and pattern. T
 
 ## Page contract
 
-Every slice has two pages. The showcase (`<name>.stories.tsx`) has one story that renders `<DocPage/>`: short Introduction, Tokens with swatches, Anatomy stage with pins, Specs and API tables, the States grid (every state live, `n/a` with reason, `missing` badged), live Rulebook, Accessibility coverage, compact Do / Don't. The guide (`<name>.mdx`, with `<Meta of={Stories}/>`) holds the full Introduction, Usage, the reasoning per state and Pitfalls with reasons. The two never repeat each other's tables. Usage and Pitfalls name a basis for every line. No generic lines. `DocPage` lives in `.storybook/doc-page/`, outside the package. The sidebar sorts Principles, Foundations, Themes, Primitives, the component families, Patterns. A toolbar switches light and dark.
+Every slice has two pages. The showcase (`<name>.stories.tsx`) has one story that renders `<DocPage/>`: short Introduction, Anatomy stage with a parts panel, Tokens with swatches, Specs and API tables, the States grid (every state live, `n/a` with reason, `missing` badged), live Rulebook, Accessibility coverage, compact Do / Don't. The guide (`<name>.mdx`, with `<Meta of={Stories}/>`) holds the full Introduction, Usage, the reasoning per state and Pitfalls with reasons. The two never repeat each other's tables. Usage and Pitfalls name a basis for every line. No generic lines. `DocPage` lives in `fixtures/doc-page/`, a Storybook-only fixture outside the package. The sidebar sorts Principles, Foundations, Themes, Primitives, the component families, Patterns. A toolbar switches light and dark.
 
 ## Sections and pages
 

@@ -33,6 +33,7 @@ Read the family, size, weight and line height of a style together: `--ds-text-<s
 | `text.muted` | Secondary text; 4.5:1 on the default surface |
 | `text.inverse` | Text on `surface.inverse` (tooltip, toast) |
 | `text.link` | Link text and tertiary action label |
+| `text.link-visited` | Link text after the visit; another hue than `text.link`, 4.5:1 on every surface |
 
 ### Surfaces and borders
 
@@ -55,7 +56,7 @@ Read the family, size, weight and line height of a style together: `--ds-text-<s
 | `action.secondary-text` | Label on the secondary fill |
 | `state.hover-layer` | Hover fill of a transparent or neutral control |
 | `state.pressed-layer` | Pressed fill of a transparent or neutral control |
-| `state.selected` | Fill of a selected item: menu item, list row, tab |
+| `state.selected` | Fill of a selected item: menu item, list row, tab; a different value from `state.hover-layer` in both themes |
 | `focus.ring.color` | Colour of the focus ring |
 | `disabled.text` · `disabled.surface` · `disabled.border` | Disabled label, fill and outline; exempt from contrast |
 
@@ -141,6 +142,19 @@ Always pair a status colour with an icon or a word (WCAG 1.4.1).
 | `size.border.thick` | Emphasis border, same as the focus ring width |
 | `size.overlay.sm` · `md` · `lg` | Maximum inline size of a floating surface: 20, 30, 40 rem (toast and tooltip, menu, dialog) |
 
+## Series colours
+
+| Token | Purpose |
+|---|---|
+| `series.hue` · `series.step` · `series.chroma` | 250, 137.508, 0.075: the golden-angle rule for categorical series. Plain numbers, in degrees |
+| `series.lightness` | Role: 0.55 in light, 0.72 in dark. Series n is `oklch(var(--ds-series-lightness) var(--ds-series-chroma) calc(var(--ds-series-hue) + var(--part) * var(--ds-series-step)))`, with `--part: n` on the element. Never the only cue: keep a number or a label |
+
+## Breakpoints
+
+| Token | Purpose |
+|---|---|
+| `breakpoint.sm` · `md` · `lg` | 640, 768, 1024 px. A media query cannot read a custom property: write the same number in `@media (max-width: 768px)`. `spacing.breakpoints-match` fails when a width equals none of the three |
+
 ## Shape
 
 | Token | Purpose |
@@ -157,6 +171,8 @@ Always pair a status colour with an icon or a word (WCAG 1.4.1).
 | `motion.duration.fast` | 150ms: hover and press feedback |
 | `motion.duration.base` | 200ms: small enter and exit |
 | `motion.duration.deliberate` | 400ms, the ceiling: larger reveal, one spinner turn |
+| `motion.duration.loop` | 1600ms: one pass of a looping animation (skeleton shimmer, indeterminate progress). Not a transition, so the ceiling does not apply |
+| `motion.shift` | 8px: the one travel distance of an enter or exit. 0 under reduced motion (`foundations/motion/motion.css`) |
 | `motion.ease.standard` | Movement that stays on screen |
 | `motion.ease.enter` | An element arrives |
 | `motion.ease.exit` | An element leaves |

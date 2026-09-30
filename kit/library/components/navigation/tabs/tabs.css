@@ -61,8 +61,7 @@
 }
 
 @media (hover: hover) {
-  .ds-tabs__tab:hover:not([aria-selected='true']):not(:disabled),
-  .ds-tabs__tab.doc-force-hover:not([aria-selected='true']) {
+  .ds-tabs__tab:hover:not([aria-selected='true']):not(:disabled) {
     background: var(--ds-state-hover-layer);
     color: var(--ds-text-default);
   }

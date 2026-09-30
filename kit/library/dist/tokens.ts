@@ -163,6 +163,12 @@ export const tokens = {
       "a64": "#121416a3"
     }
   },
+  "series": {
+    "hue": 250,
+    "step": 137.508,
+    "chroma": 0.075,
+    "lightness": 0.55
+  },
   "z": {
     "base": 0,
     "dropdown": 10,
@@ -189,8 +195,10 @@ export const tokens = {
     "duration": {
       "fast": "150ms",
       "base": "200ms",
-      "deliberate": "400ms"
+      "deliberate": "400ms",
+      "loop": "1600ms"
     },
+    "shift": "8px",
     "ease": {
       "standard": "cubic-bezier(0.2, 0, 0, 1)",
       "enter": "cubic-bezier(0, 0, 0, 1)",
@@ -276,6 +284,11 @@ export const tokens = {
       "md": "30rem",
       "lg": "40rem"
     }
+  },
+  "breakpoint": {
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px"
   },
   "font": {
     "sans": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
@@ -368,7 +381,8 @@ export const tokens = {
     "default": "#121416",
     "muted": "#5f6165",
     "inverse": "#ffffff",
-    "link": "#0f4aa7"
+    "link": "#0f4aa7",
+    "link-visited": "#095955"
   },
   "surface": {
     "default": "#ffffff",

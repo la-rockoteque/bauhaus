@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { Box } from '../box/box';
 import { Stack } from './stack';
 import { stackRules } from './stack.rules';
@@ -35,11 +35,10 @@ export const Showcase: StoryObj<typeof meta> = {
             <Chip>Three</Chip>
           </Stack>
         ),
-        stageWidth: 'calc(var(--ds-space-12) * 8)',
         parts: [
-          { n: 1, label: 'Container', note: 'a flex Box; element chosen by as', x: '-18px', y: '50%' },
-          { n: 2, label: 'Items', note: 'children, in DOM order', x: '50%', y: '-18px' },
-          { n: 3, label: 'Gap', note: 'a space step, between items only', x: '50%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Container', note: 'a flex Box; element chosen by as', target: '.ds-stack', at: 'top-start' },
+          { n: 2, label: 'Items', note: 'children, in DOM order', target: '.ds-stack > :nth-child(2)' },
+          { n: 3, label: 'Gap', note: 'a space step, between items only', target: '.ds-stack > :first-child', at: 'bottom-end' },
         ],
       }}
       specs={[

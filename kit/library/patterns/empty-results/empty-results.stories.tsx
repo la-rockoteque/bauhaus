@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage, LIFECYCLE } from '../../.storybook/doc-page/doc-page';
+import { DocPage, LIFECYCLE } from '../../fixtures/doc-page/doc-page';
 import { Button } from '../../components/clickables/button/button';
-import { Text } from '../../primitives/text/text';
+import { EmptyState } from '../../components/feedback/empty-state/empty-state';
 import { emptyResultsRules } from './empty-results.rules';
 
 // The pattern is a recipe, not a component: the showcase composes the parts it names.
-const meta = { title: 'Patterns/Empty results', parameters: { layout: 'fullscreen' } } satisfies Meta;
+const meta = { title: 'Patterns/Empty results', parameters: { layout: 'fullscreen' }, excludeStories: ['Recipe'] } satisfies Meta;
 
 export default meta;
 
-const Recipe = ({ heading, hint, action, busy = false }: { heading: string; hint: string; action: string; busy?: boolean }) => (
-  <div role="status" style={{ display: 'grid', gap: 'var(--ds-space-stack-sm)', justifyItems: 'start', maxInlineSize: 'calc(var(--ds-space-12) * 6)' }}>
-    <Text variant="heading" as="h3">{heading}</Text>
-    <Text tone="muted">{hint}</Text>
-    <Button variant="secondary" loading={busy}>{action}</Button>
+export const Recipe = ({ heading, hint, action, busy = false }: { heading: string; hint: string; action: string; busy?: boolean }) => (
+  <div role="status">
+    <EmptyState title={heading} headingLevel={3} actions={<Button variant="secondary" loading={busy}>{action}</Button>}>
+      {hint}
+    </EmptyState>
   </div>
 );
 
@@ -26,21 +26,20 @@ export const Showcase: StoryObj = {
       name="Empty results"
       layer="Pattern"
       plain="An empty result is what a list shows when there is nothing to show. It should say why, and give the user a way forward."
-      precise="Pattern · a heading, a hint and one button, arranged in a status region · composes the text primitive and the button; has no style of its own."
+      precise="Pattern · an EmptyState (title, reason, one button) inside a status region · composes the empty-state component and the button; has no style of its own."
       usedFor="A list, table or search that returns zero rows."
       tokens={{
         mode: 'consumed',
-        note: 'None of its own. Layout and colour come from the text primitive and the button. The parent sets the gaps.',
-        rows: [{ name: 'space.stack.sm', tier: '2', use: 'Gap between the three parts, set by the parent' }],
+        note: 'None of its own. Layout and colour come from the EmptyState component and the button.',
+        rows: [],
       }}
       anatomy={{
         render: <Recipe heading="No orders match these filters" hint="Filters: status Shipped, date last 7 days." action="Clear filters" />,
-        stageWidth: 'calc(var(--ds-space-12) * 10)',
         parts: [
-          { n: 1, label: 'Heading', note: 'Text, variant heading · required', x: '-18px', y: '20px' },
-          { n: 2, label: 'Hint', note: 'Text, muted · optional; state the filters that applied', x: '-18px', y: '52px' },
-          { n: 3, label: 'Action', note: 'Button, secondary · required when a filter caused the result', x: '-18px', y: '96px' },
-          { n: 4, label: 'Status region', note: 'role="status" · required', x: 'calc(100% + 18px)', y: '50%' },
+          { n: 1, label: 'Heading', note: 'EmptyState title, a heading · required', target: '.ds-empty-state__title', at: 'top-start' },
+          { n: 2, label: 'Hint', note: 'EmptyState body · optional; state the filters that applied', target: '.ds-empty-state__body', at: 'top-start' },
+          { n: 3, label: 'Action', note: 'EmptyState actions, a secondary Button · required when a filter caused the result', target: '.ds-empty-state__actions', at: 'top-start' },
+          { n: 4, label: 'Status region', note: 'role="status" · required', target: '[role=status]', at: 'top-end' },
         ],
       }}
       states={{

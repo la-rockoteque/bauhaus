@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Text } from '../../../primitives/text/text';
@@ -98,15 +98,13 @@ export const Showcase: StoryObj<typeof meta> = {
             </Dialog>
           </Frame>
         ),
-        stageWidth: 'calc(var(--ds-space-12) * 8)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Scrim', note: 'the ::backdrop, modal only', x: '50%', y: 'calc(100% + 18px)' },
-          { n: 2, label: 'Container', note: 'native dialog, required', x: '-18px', y: '50%' },
-          { n: 3, label: 'Title', note: 'required, names the dialog', x: '-18px', y: '11%' },
-          { n: 4, label: 'Close', note: 'optional, closeLabel', x: 'calc(100% + 18px)', y: '11%' },
-          { n: 5, label: 'Body', note: 'children, scrolls', x: 'calc(100% + 18px)', y: '44%' },
-          { n: 6, label: 'Actions', note: 'footer, optional', x: 'calc(100% + 18px)', y: '86%' },
+          { n: 1, label: 'Scrim', note: 'the ::backdrop, modal only', target: '.ds-dialog', at: 'bottom-end' },
+          { n: 2, label: 'Container', note: 'native dialog, required', target: '.ds-dialog__panel', at: 'top-start' },
+          { n: 3, label: 'Title', note: 'required, names the dialog', target: '.ds-dialog__title' },
+          { n: 4, label: 'Close', note: 'optional, closeLabel', target: '.ds-dialog__header .ds-icon-button', at: 'top-end' },
+          { n: 5, label: 'Body', note: 'children, scrolls', target: '.ds-dialog__body' },
+          { n: 6, label: 'Actions', note: 'footer, optional', target: '.ds-dialog__footer' },
         ],
       }}
       specs={[

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { Stack } from '../stack/stack';
 import { Text } from '../text/text';
 import { Divider } from './divider';
@@ -36,10 +36,9 @@ export const Showcase: StoryObj<typeof meta> = {
             <Divider />
           </div>
         ),
-        stageWidth: 'calc(var(--ds-space-12) * 7)',
         parts: [
-          { n: 1, label: 'Line', note: 'a native hr', x: '50%', y: '-18px' },
-          { n: 2, label: 'Role', note: 'separator, or none when decorative', x: '50%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Line', note: 'a native hr', target: '.ds-divider' },
+          { n: 2, label: 'Role', note: 'separator, or none when decorative', target: '.ds-divider', at: 'bottom-end' },
         ],
       }}
       specs={[

@@ -226,15 +226,15 @@ A motion page carries these six sections. (Order: `docs/architecture.md` § Page
 - Say what motion does: it reports change. Layer: foundation. (`taxonomy/layers.md`)
 - Lead with the rule "every animation reports a real state change, and nothing else moves". (Rensink et al., 1997)
 
-### 2. Tokens
-- Durations: five tokens with values and roles. Easing: three curves. Displacement: `--ds-motion-shift`.
-- Shared entrances as named keyframes, named for what they do (`ds-fade-in`, `ds-enter-from-right`), not for a component.
-- The reduced-motion block, shown beside the tokens it changes.
-
-### 3. Anatomy
+### 2. Anatomy
 - A motion is: trigger, property (`transform` or `opacity`), duration token, easing token, origin edge.
 - A role: one of the five. Each role has a budget.
 - Show a live, replayable swatch for each duration and each curve. A static table cannot show the difference between 150 ms and 300 ms. Show each swatch beside its `reduce` version.
+
+### 3. Tokens
+- Durations: five tokens with values and roles. Easing: three curves. Displacement: `--ds-motion-shift`.
+- Shared entrances as named keyframes, named for what they do (`ds-fade-in`, `ds-enter-from-right`), not for a component.
+- The reduced-motion block, shown beside the tokens it changes.
 
 ### 4. States
 - Motion provides the transitions between states: default to hover (`fast`, colour), to pressed (`instant`), to focus-visible (none), to selected (`fast`), to loading (progress role), to success or error (attention role, with a status message), to expanded (`base`), to open or closed (`slow` in, `base` out).

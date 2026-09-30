@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Breadcrumb, type BreadcrumbItem } from './breadcrumb';
 import { breadcrumbRules } from './breadcrumb.rules';
 
@@ -42,13 +42,11 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: show(THREE),
-        stageWidth: 'calc(var(--ds-space-12) * 9)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Landmark', note: 'nav with aria-label, required', x: '-18px', y: '50%' },
-          { n: 2, label: 'Link', note: 'every crumb but the last', x: '4%', y: '-18px' },
-          { n: 3, label: 'Separator', note: 'decorative, aria-hidden', x: '26%', y: 'calc(100% + 18px)' },
-          { n: 4, label: 'Current crumb', note: 'aria-current="page"', x: '84%', y: '-18px' },
+          { n: 1, label: 'Landmark', note: 'nav with aria-label, required', target: '.ds-breadcrumb', at: 'top-start' },
+          { n: 2, label: 'Link', note: 'every crumb but the last', target: '.ds-breadcrumb__item:first-child .ds-link', at: 'bottom-start' },
+          { n: 3, label: 'Separator', note: 'decorative, aria-hidden', target: '.ds-breadcrumb__separator', at: 'top-start' },
+          { n: 4, label: 'Current crumb', note: 'aria-current="page"', target: '.ds-breadcrumb__current', at: 'bottom-end' },
         ],
       }}
       specs={[

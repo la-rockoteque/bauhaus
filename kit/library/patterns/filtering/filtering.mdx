@@ -1,0 +1,76 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './filtering.stories';
+
+<Meta of={Stories} />
+
+# Filtering
+
+The Showcase story holds the anatomy, the states grid, the recipe, the working pattern, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** Filtering narrows a long list. It shows what is set, how many results are left, and a way to undo each choice.
+
+**Precisely:** Pattern. A search field and facet controls, removable chips for the active filters, a result count in a status region, a table with pagination, and an empty state that offers the filter to relax. It composes TextField, Select, Checkbox, Badge, IconButton, Button, Table, Pagination and EmptyState. It has no style and no token of its own.
+
+**The user need.** Users forget what they set. They ask three questions after each change: "what is active?", "how many are left?" and "how do I undo this?". The pattern answers all three in place.
+
+**When it exists.** Use it for a table or list that is too long to scan. It sits above components in the import order, so only an app or another pattern may import it.
+
+## 2. Usage
+
+### When to use
+
+- A table or list of tens or thousands of rows that the user narrows by text and a few facets.
+
+### When not to use, and what to use instead
+
+- **Sorting.** Sorting reorders rows; it does not narrow them. Use the Table sort.
+- **A site-wide search box.** That is navigation, not filtering.
+- **Under about ten rows.** Show them all.
+
+### How
+
+- **Placement.** Use a top bar for a few facets (up to about four), as the Showcase does. Use a side panel for many facets. On desktop, never hide the controls behind an unlabelled icon. On a phone, open them in a full-screen sheet with Apply and Clear, and show the active count on the trigger (Nielsen heuristic 6, recognition rather than recall).
+- **Search.** Give the search field a visible label and put it in a `role="search"` region (WCAG 3.3.2, A). Do not move focus when results change (WCAG 3.2.2 On Input, A).
+- **Instant apply.** Apply each change at once. While results update, keep the table size with skeleton rows and put a Spinner beside the count. Use an Apply button only for an expensive query, and say why (Nielsen heuristic 1). Typing restarts the wait, which debounces the search field; 250 to 400 ms is usual.
+- **Chips.** Show each active filter as a Badge with its own IconButton. The button is named “Remove filter: Status, Shipped” (WCAG 4.1.2, A). The IconButton meets the 44px target (WCAG 2.5.8, AA). Add one “Clear all” while any filter is active (Nielsen heuristic 3). After a removal, focus moves to the search field, because the pressed button is gone.
+- **Count.** Show the range and the total: “Showing 1–25 of 1,342 results”. Put it in a `role="status"` element so a screen reader announces each change (WCAG 4.1.3, AA). The message also says what the user did: “Removed filter Region, Asia.” or “Filters cleared.” One result reads “Showing 1 of 1 result”.
+- **Facet counts.** Show a count beside a facet option only when it is right for the current selection. A wrong count misleads.
+- **No dead end.** When no rows match, the EmptyState names the active filters and offers, in one button, the removal that brings back the most results, with that number: “Remove Status: Cancelled (3 orders)”. A second button clears all filters (WCAG 3.3.3, AA; Nielsen heuristic 9).
+- **URL.** Encode the filter, the search text and the page in the URL, so back, reload and share restore the view (Nielsen heuristic 3). The pattern imports no router. It takes `initialFilters` and `initialPage`, and calls `onStateChange(filters, page)` once results settle. The story exports two helpers:
+
+  1. On load, `fromSearchParams(new URLSearchParams(location.search))` returns `{ filters, page }`. Pass them as `initialFilters` and `initialPage`.
+  2. In `onStateChange`, call `toSearchParams(filters, page).toString()` and push it with your router.
+
+  The “Try it” section shows the string live.
+- **Keep the filters.** When the user opens a row and comes back, the URL restores the same view.
+- **i18n.** Text arrives as props in a real app. The recipe holds its English strings in the story only.
+
+## 3. Why the states look as they do
+
+- **Nothing is not none.** With no orders at all, filtering is not the cause. The copy is first-use, with no “Clear filters” button.
+- **Loading keeps the slot.** Skeleton rows have the size of the rows. The count stays, and a Spinner sits beside it. The old rows are not shown as if they were the answer.
+- **None names the way out.** The heading says the filters match nothing, the body names them, and one button relaxes the best one.
+- **One reads correctly.** “1 of 1 result”, no pager, and the layout holds.
+- **Some agrees with itself.** The chips, the count and the pager describe the same set.
+- **Too many gives a total and a prompt.** The total, the pager and “Add a filter to narrow it” show when the result passes 1,000.
+- **Incorrect keeps the filters.** A failed request shows an error in place with a retry. The filters and the search text stay.
+- **Correct is the accepted filter.** The chip appears and the count changes. That confirms the choice.
+- **Done says what changed.** After “Clear all” or a chip removal, the status region says so before it gives the count.
+
+## 4. Pitfalls and don'ts
+
+- **Do not hide the active filters.** Users forget what they set. (Nielsen heuristic 6; `filtering.active-visible`)
+- **Do not name a chip button “×” or “Remove”.** A screen reader user cannot tell which filter goes. (WCAG 4.1.2, A; `filtering.chip-removable`)
+- **Do not update the count silently.** (WCAG 4.1.3, AA; `filtering.count-announced`)
+- **Do not end on “No results”.** (WCAG 3.3.3, AA; `filtering.no-dead-end`)
+- **Do not keep the state only in component memory.** A reload loses the view and a link cannot share it. (Nielsen heuristic 3; `filtering.url-state`)
+- **Do not import a router.** The library has no app concern. (`docs/library.md`, isolation rule 4)
+- **Do not add a stylesheet to the pattern folder.** (`docs/library.md`; `filtering.no-own-style`)
+
+## 5. Component gaps
+
+- There is no Chip component. The recipe composes a Badge and an IconButton in a Stack. The pair reads as two controls side by side, not one joined shape. If the app needs a joined chip, add a Chip component with a `removeLabel` prop and its own tokens, then let the pattern compose it.
+- TextField of type search has no built-in clear button. The recipe relies on the native clear control of the browser and on “Clear all”. A clear button that empties the field and keeps focus (Nielsen heuristic 3) needs a trailing-action slot on TextField.
+- There is no side-panel or filter-sheet component. A panel needs a Dialog or a layout component the library does not have yet.

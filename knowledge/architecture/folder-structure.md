@@ -47,7 +47,7 @@ Bauhaus uses package by feature inside a small set of layer-named roots. The roo
 
 ```
 packages/design-system/
-├─ package.json          index.ts          .storybook/
+├─ package.json          index.ts          .storybook/          fixtures/
 ├─ foundations/          color/ spacing/ typography/ motion/ elevation/ shape/ iconography/ density/ focus/
 ├─ themes/               light/ dark/
 ├─ primitives/           box/ text/ icon/ visually-hidden/
@@ -174,7 +174,7 @@ Test by product speech: no product owner asks for "a Box on the settings page". 
 - Title comes from the path: `foundations/spacing` gives Foundations/Spacing, `components/clickables/button` gives Clickables/Button, `patterns/filtering` gives Patterns/Filtering.
 - Each slice has two pages. The stories file is the showcase: one story renders `<DocPage …/>` and shows the visual sections (Tokens, Anatomy, the States grid, live Rulebook, Accessibility, compact Do / Don't). The `.mdx` file is the guide: the full Introduction, Usage, the reasoning behind each state, Pitfalls with reasons. It declares `<Meta of={Stories}/>`, so one entry shows the guide as "Docs" and the showcase as a story.
 - The States grid renders every designed cell live inside the showcase. A state is a cell of the grid, not a story of its own.
-- `DocPage` lives in `.storybook/doc-page/`, outside the published package. The sidebar sorts Principles, Foundations, Themes, Primitives, the component families, Patterns. A toolbar switches light and dark.
+- `DocPage` lives in `fixtures/doc-page/`, one of the Storybook-only fixtures (a slice each, structured like a component, never exported, never published; only stories, tests, `.storybook/` and other fixtures may import them). The sidebar sorts Principles, Foundations, Themes, Primitives, the component families, Patterns, Fixtures. A toolbar switches light and dark.
 - `scripts/structure.mjs` reports `slice.page` when the guide is missing and `slice.showcase` when the stories file does not render `DocPage`.
 
 ## Import direction

@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './form-validation.stories';
+
+<Meta of={Stories} />
+
+# Form validation
+
+The Showcase story holds the anatomy, the states grid, the recipe, the working form, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** Form validation is how a form tells you what is wrong and how to fix it. It waits until you finish a field, then says so in plain words next to it.
+
+**Precisely:** Pattern. Labelled fields, an error under each field, and an error summary Banner that takes focus on a failed submit. It composes TextField, Select, Checkbox, RadioGroup, Button, Banner and Stack. It has no style and no token of its own.
+
+**The user need.** A form asks for work. The user needs to know what each question means, when an answer is wrong, where the wrong answers are, and when the work is done.
+
+**When it exists.** Use it for any form that a user fills in and submits. It sits above components in the import order, so only an app or another pattern may import it.
+
+## 2. Usage
+
+### When to use
+
+- A sign-up, checkout, settings or contact form.
+- Each step of a multi-step form. A wizard reuses these rules per step.
+
+### When not to use, and what to use instead
+
+- **A single control that saves on change.** A Switch or Select that applies at once needs a Toast or status message, not a summary.
+- **A search or filter.** Nothing is "wrong" there. Use the filtering pattern.
+- **A system error.** A failed request is not a field error. Show an error in place with a retry, and keep the input.
+
+### How
+
+- **Labels.** Every field shows its label at all times. A placeholder is never the label (WCAG 3.3.2 Labels or Instructions, A). Group radios and related boxes in a fieldset with a legend; RadioGroup does this.
+- **When to check.** Check a field when the user leaves it, and check every field on submit. Do not flag a field the user has not left, and do not flag on each key stroke before the value is finished (Nielsen heuristic 5, error prevention).
+- **After the first error.** Once a field shows an error, re-check it on each input. Remove the error the moment the value is valid.
+- **Error text.** Name the field and suggest the fix: "Enter an email address, like name@example.com" (WCAG 3.3.1 Error Identification, A; 3.3.3 Error Suggestion, AA). The component adds the icon, the hidden "Error" word, `aria-invalid` and `aria-describedby`.
+- **Error summary.** On a submit with errors, show a Banner at the top with `status="error"` and `urgent`. Give it `tabIndex={-1}` and move focus to it. Each item is a link that moves focus to its field. A radio group links to its first radio.
+- **Keep the input.** A failed submit keeps everything the user typed (Nielsen heuristic 3).
+- **Submit.** Keep the button enabled. While the request runs, set `loading`: the label and the width stay.
+- **Done.** Replace the form with a success Banner. It is a status region, so a screen reader announces it. Focus moves to it, because the button that had focus is gone.
+- **Ask once.** Do not add a "confirm email" or "confirm password" field. Set `autoComplete` on personal fields and pre-fill what the app knows (WCAG 3.3.7 Redundant Entry, A; 1.3.5 Identify Input Purpose, AA). Allow paste in the password field (WCAG 3.3.8, AA).
+- **Layout.** One column. The primary action sits below the fields.
+- **i18n.** Text arrives as props. The recipe holds its English strings in the story only.
+
+### Where the checks run
+
+The recipe keeps the list of flagged fields in one place. A field joins the list on blur, or with all invalid fields on submit. A field leaves the list when its value is valid. The summary reads the same list, so a fixed field disappears from the field and the summary together.
+
+A checkbox and a radio group are not checked on blur. Choosing is one action, so there is no unfinished value to wait for. They are checked on submit.
+
+## 3. Why the states look as they do
+
+- **Nothing is quiet.** The untouched form shows labels and hints, no errors. An error before the user acted reports a failure that did not happen.
+- **Loading keeps the form.** The values stay and the button keeps its size, so nothing jumps and the user can see what was sent.
+- **None is n/a.** A form always has its fields. There is no empty form.
+- **One and some.** A partly filled form shows no error on the fields still empty. A complete form shows none at all, and the button stays enabled.
+- **Too many needs a plan for two axes.** Long values wrap or scroll inside the field and are never cut. Many errors are all listed in the summary, one link each, in field order.
+- **Incorrect starts at the field.** After blur the message sits under the field. The summary appears only after a submit.
+- **Correct is used sparingly.** The password rule is not obvious, so a quiet check confirms it. A green check on every valid field adds noise (Nielsen heuristic 5).
+- **Done is announced.** The success message sits in a status region (WCAG 4.1.3 Status Messages, AA). Motion or colour alone would tell a screen reader user nothing.
+
+## 4. Pitfalls and don'ts
+
+- **Do not use a placeholder as the label.** It vanishes on input and has low contrast. (WCAG 3.3.2, A; `form-validation.visible-label`)
+- **Do not flag a field on each key stroke.** The user sees an error for a value that is not finished. (Nielsen heuristic 5; `form-validation.validate-on-blur`)
+- **Do not write "Invalid input".** It names no field and gives no fix. (WCAG 3.3.3, AA; `form-validation.error-names-fix`)
+- **Do not wire errors by hand.** The field components tie the error with `aria-describedby` and set `aria-invalid`. (WCAG 3.3.1, A; `form-validation.error-linked`)
+- **Do not disable the submit button to signal invalid data.** The user cannot tell why. Keep it enabled and report what is missing. (Nielsen heuristic 9; `form-validation.submit-enabled`)
+- **Do not leave focus behind on a failed submit.** A keyboard user would tab through the whole form to find the error. (`form-validation.summary-focus`)
+- **Do not show the success message without a status region.** (WCAG 4.1.3, AA; `form-validation.done-announced`)
+- **Do not ask twice.** (WCAG 3.3.7, A; `form-validation.no-redundant-entry`)
+- **Do not add a stylesheet to the pattern folder.** (`docs/library.md`; `form-validation.no-own-style`)
+
+## 5. Component gaps
+
+- There is no ErrorSummary component. The recipe composes a Banner, a Stack list and Links. Its `id` and `tabIndex` pass through the Banner. If three apps repeat this, propose the component.
+- TextField has no slot for a "correct" message. The recipe puts it in the description, which changes when the rule is met.
+- RadioGroup and Checkbox have no `onBlur`. That is why they are checked on submit.

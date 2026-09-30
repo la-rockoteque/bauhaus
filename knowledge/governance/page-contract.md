@@ -31,19 +31,19 @@ Each slice has two pages, and they never repeat each other's tables.
 | Section | Showcase (`DocPage` props) | Guide (`.mdx`) |
 |---|---|---|
 | 1 Introduction | short: `name`, `layer`, `family` (eyebrow), `plain`, `precise`, `usedFor` | full: plain words, then precise, the layer |
-| 2 Tokens | `tokens`: `{ mode: 'defined' \| 'consumed', rows: [{ name, tier, use, swatch }] }` | none |
-| 3 Anatomy | `anatomy` (`render`, `parts` pins, legend), `specimens` for a foundation, `specs` table, `api` table | none |
+| 2 Anatomy | `anatomy` (`render`, `parts` with a `target` selector each: anchors on the component and a parts panel), `specimens` for a foundation, `specs` table, `api` table | none |
+| 3 Tokens | `tokens`: `{ mode: 'defined' \| 'consumed', rows: [{ name, tier, use, swatch }] }` | none |
 | 4 States | `states`: `{ cells, expect }`, the grid. Each cell is live, with its trigger; `n/a` with its reason; `missing` badged | the reasoning behind each state |
 | 5 Usage | none | when, when not and what instead, how: variants, composition, content and wording, responsive, keyboard and ARIA, i18n. Each rule with its basis |
 | 6 Pitfalls | `dos`, `donts`: compact, each `{ text, basis, rule }` | full prose with the reasons |
 | Rulebook | `rules`: the `<name>.rules.ts` export, graded live | every rule with its basis |
 | Accessibility | derived from the rules' `covers` (no prop) | keyboard and ARIA prose |
 
-`DocPage` lives in `.storybook/doc-page/`, outside the published package. `extra` adds sections between States and Do and don't; `guide` and `guideName` point to the guide. The props are typed in `.storybook/doc-page/types.ts` (`DocPageProps`). `scripts/structure.mjs` reports `slice.page` when the guide is missing and `slice.showcase` when the stories file does not render `DocPage`.
+`DocPage` lives in `fixtures/doc-page/`, a Storybook-only fixture outside the published package. `extra` adds sections between States and Do and don't; `guide` and `guideName` point to the guide. The props are typed in `.storybook/doc-page/types.ts` (`DocPageProps`). `scripts/structure.mjs` reports `slice.page` when the guide is missing and `slice.showcase` when the stories file does not render `DocPage`.
 
 ## Rules
 
-1. Every slice has six sections, in this order, split across the showcase and the guide: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. (One order means one place to look.)
+1. Every slice has six sections, in this order, split across the showcase and the guide: Introduction, Anatomy, Tokens, States, Usage, Pitfalls and don'ts. (One order means one place to look.)
 2. Start the Introduction with plain words, then the precise statement. (Architecture contract: two registers.)
 3. Name the layer in the Introduction. (Readers must not guess; see [../taxonomy/layers.md](../taxonomy/layers.md).)
 4. Fill the States section from the state matrix. A blank cell is a finding. (See [../states/state-matrix.md](../states/state-matrix.md).)
@@ -58,8 +58,8 @@ Each slice has two pages, and they never repeat each other's tables.
 | Section | Foundation | Token group | Component | Pattern |
 |---|---|---|---|---|
 | **1 Introduction** | What family, the job it does for users, the layer, plain words first | What decisions the group names, its tiers, plain words first | What the part is, its one job, the layer, plain words first | The user need, the recipe in one line, the layer, plain words first |
-| **2 Tokens** | **Defined**: the scale's tier-1 tokens and the semantic tokens that name intents (colour: palette, colors, roles per theme) | **Defined**: every token with tier, value or alias, and description | **Consumed**: semantic tokens read, optional component tokens | **Consumed**: layout and spacing tokens, through the components it composes; no token of its own |
-| **3 Anatomy** | The scale and its structure: steps, growth rule, limits, closed set | The tiers and the alias chains | Named parts, each marked required or optional, with slots | The components it composes and how they are arranged |
+| **2 Anatomy** | The scale and its structure: steps, growth rule, limits, closed set | The tiers and the alias chains | Named parts, each marked required or optional, with slots | The components it composes and how they are arranged |
+| **3 Tokens** | **Defined**: the scale's tier-1 tokens and the semantic tokens that name intents (colour: palette, colors, roles per theme) | **Defined**: every token with tier, value or alias, and description | **Consumed**: semantic tokens read, optional component tokens | **Consumed**: layout and spacing tokens, through the components it composes; no token of its own |
 | **4 States** | The states it supplies tokens for (hover layer, focus ring, disabled) | Same, per token | The full state matrix: lifecycle and interaction | The lifecycle states of the recipe (nothing, loading, none, too many, incorrect, done) |
 | **5 Usage** | When to use each step; when not, and what instead; how to combine, contrast and a11y constraints | Which token for which job; when not, and what instead | When to use; when not and what instead; how: variants, composition, content, responsive, accessibility | When to use; when not and what instead; how: content, order, responsive, accessibility |
 | **6 Pitfalls** | Off-scale values, mixing steps, skipping the rationale | Naming, tier and alias mistakes | Wrong element, missing states, local look | Own style, own spacing, missing lifecycle states |
@@ -75,11 +75,11 @@ The template below is the guide's outline. The showcase fills the same headings 
 **In plain words:** <one to three short sentences, an everyday picture>.
 **Precisely:** <layer> · <one-sentence job> · <what it is and is not>.
 
-## 2. Tokens
-<defined | consumed>: table of token · tier · value or alias · use.
-
-## 3. Anatomy
+## 2. Anatomy
 <parts, required or optional; scale and steps; tiers and aliases; composed components>.
+
+## 3. Tokens
+<defined | consumed>: table of token · tier · value or alias · use.
 
 ## 4. States
 <the reasoning per state; the grid itself sits in the showcase: designed | n/a — reason | missing>.
@@ -105,7 +105,11 @@ Each rule ends with its basis in parentheses.
 Save, send, delete. If pressing it takes you somewhere else, it is a link, not a button.
 **Precisely:** Component · triggers one action in the current view · not for navigation.
 
-## 2. Tokens (consumed)
+## 2. Anatomy
+Container (required) · Label (required, unless icon-only) · Leading icon (optional) ·
+Trailing icon (optional) · Spinner (shown only while loading).
+
+## 3. Tokens (consumed)
 | Token | Tier | Use |
 |---|---|---|
 | `action.primary` | 2 | Fill of the primary variant |
@@ -115,10 +119,6 @@ Save, send, delete. If pressing it takes you somewhere else, it is a link, not a
 | `focus.ring.*` | 2 | Focus indicator |
 | `radius.control` | 2 | Corner radius |
 | `size.target.min` | 2 | Minimum height and width |
-
-## 3. Anatomy
-Container (required) · Label (required, unless icon-only) · Leading icon (optional) ·
-Trailing icon (optional) · Spinner (shown only while loading).
 
 ## 4. States
 Interaction: default, hover, focus-visible, active, disabled, loading. Lifecycle: nothing
@@ -160,17 +160,17 @@ Interaction: default, hover, focus-visible, active, disabled, loading. Lifecycle
 Far things read as separate. One fixed set of gaps keeps every screen in the same rhythm.
 **Precisely:** Foundation · a closed scale on a 4px grid, 12 steps · governs margin, padding and gap.
 
-## 2. Tokens (defined)
+## 2. Anatomy
+Base unit 4px. Steps 1 to 6 grow by 4px. Steps 7 to 12 grow by larger jumps so large gaps stay distinct.
+The scale is closed: no step exists between `space.4` and `space.5`.
+
+## 3. Tokens (defined)
 | Token | Tier | Value |
 |---|---|---|
 | `space.1` … `space.12` | 1 | 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96 px, in `rem` |
 | `space.inline.gap` | 2 | `{space.2}` — between controls in a row |
 | `space.stack.group` | 2 | `{space.6}` — between unrelated groups |
 | `space.stack.related` | 2 | `{space.2}` — between a label and its control |
-
-## 3. Anatomy
-Base unit 4px. Steps 1 to 6 grow by 4px. Steps 7 to 12 grow by larger jumps so large gaps stay distinct.
-The scale is closed: no step exists between `space.4` and `space.5`.
 
 ## 4. States
 Spacing has no interaction state. It supplies tokens for density: `comfortable` uses the

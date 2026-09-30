@@ -104,13 +104,13 @@
 }
 
 @keyframes ds-toast-in {
-  from { opacity: 0; transform: translateY(var(--ds-space-2)); }
+  from { opacity: 0; transform: translateY(var(--ds-motion-shift)); }
   to { opacity: 1; transform: none; }
 }
 
 @keyframes ds-toast-out {
   from { opacity: 1; transform: none; }
-  to { opacity: 0; transform: translateY(var(--ds-space-2)); }
+  to { opacity: 0; transform: translateY(var(--ds-motion-shift)); }
 }
 
 @keyframes ds-toast-fade-in {

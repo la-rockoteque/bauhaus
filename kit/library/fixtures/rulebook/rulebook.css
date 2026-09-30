@@ -1,0 +1,37 @@
+/* Rulebook and accessibility */
+
+.doc-table-grid td > code + code {
+  margin-inline-start: var(--ds-space-2);
+}
+
+.doc-expectation {
+  margin: 0;
+}
+
+.doc-meta {
+  margin: var(--ds-space-1) 0 0;
+  color: var(--ds-text-muted);
+  font-size: var(--ds-font-size-xs);
+}
+
+.doc-meta code {
+  font-size: var(--ds-font-size-xs);
+}
+
+/* The verdict is a word as well as a colour, so it reads in greyscale. */
+.doc-verdict {
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-table-grid [data-verdict='pass'] .doc-verdict {
+  color: var(--ds-status-success);
+}
+
+.doc-table-grid [data-verdict='fail'] .doc-verdict {
+  color: var(--ds-status-error);
+}
+
+.doc-table-grid [data-verdict='review'] .doc-verdict,
+.doc-table-grid [data-verdict='to verify'] .doc-verdict {
+  color: var(--ds-text-muted);
+}

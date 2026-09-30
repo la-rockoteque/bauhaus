@@ -52,8 +52,8 @@ Each cell is `designed`, `n/a` with a reason, or `missing`. A `missing` cell is 
 A page documents one foundation, token group, component or pattern. Each slice carries it as two pages: the showcase (`<name>.stories.tsx`, one story rendering `DocPage`) and the guide (`<name>.mdx`). The styleguide is the set of all slice pages. Together they have these sections, in this order. `knowledge/governance/page-contract.md` holds the full spec per layer.
 
 1. **Introduction** — what it is, the job it does, and the layer it belongs to. Plain words first.
-2. **Tokens** — the tokens it defines (foundation, token group) or consumes (component, pattern), with values and intent.
-3. **Anatomy** — the named parts, and which are required or optional. For a foundation: the scale and its structure.
+2. **Anatomy** — the named parts, and which are required or optional. For a foundation: the scale and its structure.
+3. **Tokens** — the tokens it defines (foundation, token group) or consumes (component, pattern), with values and intent.
 4. **States** — the state matrix. For a foundation or token group: the states it provides tokens for.
 5. **Usage** — an exhaustive guide to when to use it, when not to, and what to use instead, and how to use it: variants, composition, content, responsive, accessibility.
 6. **Pitfalls and don'ts** — the common mistakes, each with why it fails.

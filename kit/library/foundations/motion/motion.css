@@ -1,0 +1,6 @@
+/* Travel collapses, the fade stays. Import after dist/tokens.css: both set :root, and the later one wins. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ds-motion-shift: 0px;
+  }
+}

@@ -81,15 +81,15 @@ A token-naming page carries these six sections. (Order: `docs/architecture.md` Â
 - Say what a name does: it states the job of a token. Foundation decisions, stored as tokens. (`taxonomy/layers.md`)
 - Lead with the good-versus-bad pair: `--ds-text-muted` and `--blue-light`.
 
-### 2. Tokens
-- The grammar, written out with the category list, the state list and the abbreviation list.
-- The prefix from the project config and the path-to-CSS mapping rule.
-- One example per category.
-
-### 3. Anatomy
+### 2. Anatomy
 - A name: category, property, variant, state, in that order. Category is required. The others are optional.
 - The CSS form: prefix, then segments joined by hyphens.
 - Show the name parsed segment by segment.
+
+### 3. Tokens
+- The grammar, written out with the category list, the state list and the abbreviation list.
+- The prefix from the project config and the path-to-CSS mapping rule.
+- One example per category.
 
 ### 4. States
 - The state segment is the vocabulary for interaction states in tokens: default, hover, pressed, focus, disabled, selected, error, success.

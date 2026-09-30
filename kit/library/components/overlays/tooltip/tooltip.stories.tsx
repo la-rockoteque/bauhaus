@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Button } from '../../clickables/button/button';
@@ -64,11 +64,9 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: open(),
-        stageWidth: 'calc(var(--ds-space-12) * 5)',
-        stagePadding: 'var(--ds-space-8)',
         parts: [
-          { n: 1, label: 'Trigger', note: 'a control with its own name, required', x: '50%', y: 'calc(100% + 18px)' },
-          { n: 2, label: 'Bubble', note: 'a string, required', x: '50%', y: '-18px' },
+          { n: 1, label: 'Trigger', note: 'a control with its own name, required', target: '.ds-icon-button' },
+          { n: 2, label: 'Bubble', note: 'a string, required', target: '.ds-tooltip' },
         ],
       }}
       specs={[

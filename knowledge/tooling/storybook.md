@@ -46,12 +46,12 @@ Titles follow `Section/Name`, taken from the path. Example: `Fields/Text field`.
 
 ## The showcase and the guide
 
-`DocPage` lives in `.storybook/doc-page/`, outside the published package. The showcase story passes it props (`governance/page-contract.md` maps the six sections to props). It has these blocks:
+`DocPage` lives in `fixtures/doc-page/`. Fixtures are Storybook-only building blocks, one slice each, and the published package never includes them. The showcase story passes it props (`governance/page-contract.md` maps the six sections to props). It has these blocks:
 
 1. **Header** — eyebrow (`kind`) and title.
 2. **Introduction** — a short plain line and the precise line.
-3. **Tokens** — the tokens it reads, with swatches.
-4. **Anatomy** — the stage with numbered pins and a legend, then the Specs table and the API table.
+3. **Anatomy** — the stage with an anchor on each part (`target` selector), a collapsible parts panel with dotted leader lines (numbered pins with tooltips when the panel is closed or the screen is narrow), then the Specs table and the API table.
+4. **Tokens** — the tokens it reads, with swatches.
 5. **States** — a grid of every state the matrix requires: live render and trigger; `n/a` cells with their reason; `missing` cells badged.
 6. **Do and don't** — two columns, each line with a basis chip.
 7. **Rulebook** — the entries of `<name>.rules.ts` with live verdicts.

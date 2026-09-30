@@ -29,7 +29,7 @@ A pattern composes existing components to answer a recurring need. It introduces
 6. **Design the flow.** Dispatch `bauhaus:ux-designer`: order of parts, focus order, keyboard, ARIA, live regions, copy, the data shape. Dispatch `bauhaus:responsive-reviewer` for the phone floor.
 7. **State matrix.** Mandatory. Run `/bauhaus:states`. Patterns carry the lifecycle axis: nothing, loading, none, one, some, too-many, incorrect, correct, done. Mark each designed, n/a with reason, or missing. A pattern without its matrix is not done.
 8. **Propose before you populate.** Show the composition to the user with `AskUserQuestion` (2-4 options). Write after the answer.
-9. **Land the artifacts to the page contract.** Each has six sections in order: Introduction, Tokens (consumed), Anatomy, States, Usage, Pitfalls and don'ts.
+9. **Land the artifacts to the page contract.** Each has six sections in order: Introduction, Anatomy, Tokens (consumed), States, Usage, Pitfalls and don'ts.
    - **Guide.** `patterns/<name>/<name>.mdx`.
    - **Showcase.** `Patterns/<Name>`: one `<DocPage/>` story, one States-grid cell per lifecycle state.
    - **Rulebook.** Review rules (`<pattern>.<rule>`), plus `<pattern>.state.<state>` per designed state. Most pattern rules are `review`. Make one `auto` rule: "uses only listed components and no raw value".

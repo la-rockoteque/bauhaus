@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { Box } from './box';
 import { boxRules } from './box.rules';
 
@@ -31,11 +31,10 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: <Box padding={4} surface="raised" style={{ border: 'thin solid var(--ds-border-strong)' }}>Content</Box>,
-        stageWidth: 'calc(var(--ds-space-12) * 6)',
         parts: [
-          { n: 1, label: 'Element', note: 'chosen by as, div by default', x: '-18px', y: '50%' },
-          { n: 2, label: 'Padding', note: 'padding, paddingInline, paddingBlock', x: '50%', y: '-18px' },
-          { n: 3, label: 'Surface', note: 'optional', x: 'calc(100% + 18px)', y: '50%' },
+          { n: 1, label: 'Element', note: 'chosen by as, div by default', target: '.ds-box', at: 'top-start' },
+          { n: 2, label: 'Padding', note: 'padding, paddingInline, paddingBlock', target: '.ds-box', at: 'bottom-start' },
+          { n: 3, label: 'Surface', note: 'optional', target: '.ds-box' },
         ],
       }}
       specs={[

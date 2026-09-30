@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Button } from '../../clickables/button/button';
 import { Text } from '../../../primitives/text/text';
 import { VisuallyHidden } from '../../../primitives/visually-hidden/visually-hidden';
-import stylesheet from './table.css?raw';
 import { Table } from './table';
 import type { TableColumn, TableSort } from './table';
 import { tableRules } from './table.rules';
@@ -83,9 +82,7 @@ function Live({ rows = DATA, columns = COLUMNS, selectable = true, ...rest }: { 
   );
 }
 
-const forcedHover = [...stylesheet.matchAll(/@media \(hover: hover\)\s*\{([\s\S]*?)\n\}/g)].map((match) => match[1].replaceAll(':hover', '.doc-force-hover')).join('\n');
-
-/** Adds a forced-state class to the first match of `target`, so the real rule paints it. Hover rules sit in a media block, so their copy is read from the stylesheet. */
+/** Adds a forced-state class to the first match of `target`, so the real rule paints it. */
 function Force({ cls, target, children }: { cls: string; target: string; children: ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -93,7 +90,6 @@ function Force({ cls, target, children }: { cls: string; target: string; childre
   }, [cls, target]);
   return (
     <div ref={box} style={{ inlineSize: '100%' }}>
-      <style>{forcedHover}</style>
       {children}
     </div>
   );
@@ -160,15 +156,13 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}><Live rows={DATA.slice(0, 2)} columns={SMALL} /></div>,
-        stageWidth: 'calc(var(--ds-space-12) * 5)',
-        stagePadding: 'var(--ds-space-6)',
         parts: [
-          { n: 1, label: 'Caption', note: 'names the table, required', x: '50%', y: '-18px' },
-          { n: 2, label: 'Column header', note: 'th scope="col", required', x: '-18px', y: '20%' },
-          { n: 3, label: 'Sort button', note: 'optional, with aria-sort and a direction glyph', x: 'calc(100% + 18px)', y: '20%' },
-          { n: 4, label: 'Row header', note: 'th scope="row", the identifier', x: '-18px', y: '58%' },
-          { n: 5, label: 'Value cell', note: 'td with data-label', x: 'calc(100% + 18px)', y: '58%' },
-          { n: 6, label: 'Selection cell', note: 'optional native checkbox', x: '-18px', y: '85%' },
+          { n: 1, label: 'Caption', note: 'names the table, required', target: '.ds-table__caption' },
+          { n: 2, label: 'Column header', note: 'th scope="col", required', target: 'thead .ds-table__head--sortable', at: 'top-start' },
+          { n: 3, label: 'Sort button', note: 'optional, with aria-sort and a direction glyph', target: '.ds-table__sort .ds-table__direction' },
+          { n: 4, label: 'Row header', note: 'th scope="row", the identifier', target: 'tbody .ds-table__cell--row-header', at: 'top-start' },
+          { n: 5, label: 'Value cell', note: 'td with data-label', target: 'tbody td:last-child', at: 'bottom-end' },
+          { n: 6, label: 'Selection cell', note: 'optional native checkbox', target: 'tbody .ds-table__check', at: 'bottom-start' },
         ],
       }}
       specs={[

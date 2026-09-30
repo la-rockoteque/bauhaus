@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { Text } from '../text/text';
 import { GLYPH_NAMES } from './glyphs';
 import { Icon } from './icon';
@@ -69,11 +69,10 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: <Icon glyph="search" size="lg" />,
-        stageWidth: 'calc(var(--ds-space-12) * 4)',
         parts: [
-          { n: 1, label: 'SVG box', note: 'square, from size', x: '-18px', y: '50%' },
-          { n: 2, label: 'Glyph', note: 'stroke path, from glyph', x: '50%', y: '-18px' },
-          { n: 3, label: 'Label', note: 'optional; makes it an image with a name', x: 'calc(100% + 18px)', y: '50%' },
+          { n: 1, label: 'SVG box', note: 'square, from size', target: '.ds-icon', at: 'top-start' },
+          { n: 2, label: 'Glyph', note: 'stroke path, from glyph', target: '.ds-icon path' },
+          { n: 3, label: 'Label', note: 'optional; makes it an image with a name', target: '.ds-icon', at: 'bottom-end' },
         ],
       }}
       specs={[

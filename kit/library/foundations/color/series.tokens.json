@@ -1,0 +1,18 @@
+{
+  "series": {
+    "$type": "number",
+    "$description": "Categorical series colours by the golden-angle rule: colour n = oklch(series.lightness series.chroma, series.hue + n × series.step). Angles are degrees, written as plain numbers. The CSS composes the colour; a token file cannot compute it.",
+    "hue": {
+      "$value": 250,
+      "$description": "Hue of series 0, in degrees."
+    },
+    "step": {
+      "$value": 137.508,
+      "$description": "The golden angle in degrees: no hue repeats, and neighbours sit about 137 degrees apart."
+    },
+    "chroma": {
+      "$value": 0.075,
+      "$description": "Fixed chroma, so every series has the same semi-muted weight."
+    }
+  }
+}

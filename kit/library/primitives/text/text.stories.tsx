@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { Text } from './text';
 import { textRules } from './text.rules';
 
@@ -28,10 +28,9 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: <Text variant="heading" as="h3">Order summary</Text>,
-        stageWidth: 'calc(var(--ds-space-12) * 6)',
         parts: [
-          { n: 1, label: 'Element', note: 'chosen by as; p, span or h2 by default', x: '-18px', y: '50%' },
-          { n: 2, label: 'Look', note: 'chosen by variant and tone', x: 'calc(100% + 18px)', y: '50%' },
+          { n: 1, label: 'Element', note: 'chosen by as; p, span or h2 by default', target: '.ds-text', at: 'top-start' },
+          { n: 2, label: 'Look', note: 'chosen by variant and tone', target: '.ds-text', at: 'bottom-end' },
         ],
       }}
       specs={[

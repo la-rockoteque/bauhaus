@@ -260,7 +260,7 @@ Export captures the current state, not the default.
 When you write or review documentation, apply
 `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md`. Every DSM page (foundation,
 token group, component, pattern) carries, across its showcase and guide, in order: Introduction,
-Tokens, Anatomy, States, Usage, Pitfalls and don'ts. You own:
+Anatomy, Tokens, States, Usage, Pitfalls and don'ts. You own:
 
 - **Introduction** — what it is and the job it does, in plain words first.
 - **States content** — the lifecycle states, what each says and does.

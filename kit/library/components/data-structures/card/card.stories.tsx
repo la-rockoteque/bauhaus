@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Button } from '../../clickables/button/button';
 import { Text } from '../../../primitives/text/text';
-import stylesheet from './card.css?raw';
 import { Card } from './card';
 import { cardRules } from './card.rules';
 
@@ -14,9 +13,7 @@ const meta = { title: 'Data structures/Card', parameters: { layout: 'fullscreen'
 
 export default meta;
 
-const forcedHover = [...stylesheet.matchAll(/@media \(hover: hover\)\s*\{([\s\S]*?)\n\}/g)].map((match) => match[1].replaceAll(':hover', '.doc-force-hover')).join('\n');
-
-/** Adds a forced-state class to the first match of `target`, so the real rule paints it. Hover rules sit in a media block, so their copy is read from the stylesheet. */
+/** Adds a forced-state class to the first match of `target`, so the real rule paints it. */
 function Force({ cls, target, children }: { cls: string; target: string; children: ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -24,7 +21,6 @@ function Force({ cls, target, children }: { cls: string; target: string; childre
   }, [cls, target]);
   return (
     <div ref={box} style={{ inlineSize: '100%' }}>
-      <style>{forcedHover}</style>
       {children}
     </div>
   );
@@ -68,14 +64,12 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}>{project({ href: '#anatomy' })}</div>,
-        stageWidth: 'calc(var(--ds-space-12) * 5)',
-        stagePadding: 'var(--ds-space-6)',
         parts: [
-          { n: 1, label: 'Container', note: 'article with a border, required', x: '-18px', y: '50%' },
-          { n: 2, label: 'Title', note: 'a heading; the link when there is an href', x: '25%', y: '-18px' },
-          { n: 3, label: 'Meta', note: 'optional, not interactive', x: '85%', y: '-18px' },
-          { n: 4, label: 'Body', note: 'children', x: 'calc(100% + 18px)', y: '45%' },
-          { n: 5, label: 'Footer', note: 'optional', x: '50%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Container', note: 'article with a border, required', target: '.ds-card', at: 'top-start' },
+          { n: 2, label: 'Title', note: 'a heading; the link when there is an href', target: '.ds-card__title' },
+          { n: 3, label: 'Meta', note: 'optional, not interactive', target: '.ds-card__meta', at: 'top-end' },
+          { n: 4, label: 'Body', note: 'children', target: '.ds-card__body' },
+          { n: 5, label: 'Footer', note: 'optional', target: '.ds-card__footer' },
         ],
       }}
       specs={[

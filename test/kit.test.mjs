@@ -4,8 +4,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runPairs } from '../scripts/contrast.mjs';
-import { checkProject, main as tokensMain } from '../scripts/tokens.mjs';
+import { contrastOf, parseColor, runPairs } from '../scripts/contrast.mjs';
+import { checkProject, loadModel, main as tokensMain } from '../scripts/tokens.mjs';
 
 const KIT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'kit');
 const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -33,6 +33,30 @@ test('kit/library: tokens check is clean and dist/tokens.css is current', () => 
   assert.equal(config.tokens.defaultTheme, 'light');
   assert.deepEqual(checkProject(config, root), { errors: [], drift: [], warnings: [] });
 });
+
+// Series colour n = oklch(series.lightness series.chroma, series.hue + n x series.step). The number sits on the fill
+// (WCAG 1.4.3 large bold text, 3:1); the fill and the line sit on the page (WCAG 1.4.11 non-text, 3:1).
+for (const theme of ['light', 'dark']) {
+  test(`kit/library: series colours 1 to 12 hold 3:1 for their number and on the page in the ${theme} theme`, () => {
+    const root = path.join(KIT, 'library');
+    const { model, errors } = loadModel(readJson(path.join(root, 'bauhaus.config.json')), root);
+    assert.deepEqual(errors, []);
+    const roles = Object.fromEntries(model.themes.find((t) => t.name === theme).tokens.map((t) => [t.path, t.resolved]));
+    const base = Object.fromEntries(model.tokens.map((t) => [t.path, t.resolved]));
+    const page = parseColor(roles['surface.default']);
+    const number = parseColor(roles['text.inverse']);
+    const low = [];
+    for (let n = 1; n <= 12; n++) {
+      const hue = base['series.hue'] + n * base['series.step'];
+      const fill = parseColor(`oklch(${roles['series.lightness']} ${base['series.chroma']} ${hue})`);
+      const onFill = contrastOf(number, fill);
+      const onPage = contrastOf(fill, page);
+      if (onFill < 3) low.push(`${n}: number on fill ${onFill.toFixed(2)}`);
+      if (onPage < 3) low.push(`${n}: fill on page ${onPage.toFixed(2)}`);
+    }
+    assert.deepEqual(low, []);
+  });
+}
 
 test('kit/bauhaus.config.example.json: builds into a temp dir and checks clean', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bauhaus-kit-'));

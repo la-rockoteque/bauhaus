@@ -130,7 +130,8 @@ html:has(.ds-dialog:modal) {
 .ds-dialog--inline.ds-dialog--md { max-inline-size: var(--ds-size-overlay-md); }
 .ds-dialog--inline.ds-dialog--lg { max-inline-size: var(--ds-size-overlay-lg); }
 
-@media (max-width: 48rem) {
+/* 768px is breakpoint.md. A custom property cannot sit in a media query, so spacing.breakpoints-match keeps the two equal. */
+@media (max-width: 768px) {
   .ds-dialog:not(.ds-dialog--inline) {
     inline-size: 100vw;
     max-inline-size: 100vw;

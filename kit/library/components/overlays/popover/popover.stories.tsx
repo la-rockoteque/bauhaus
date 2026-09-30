@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Text } from '../../../primitives/text/text';
@@ -53,12 +53,10 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: <Popover label="Filters"><Filters /></Popover>,
-        stageWidth: 'calc(var(--ds-space-12) * 5)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Container', note: 'the anchored surface, required', x: '-18px', y: '50%' },
-          { n: 2, label: 'Content', note: 'children, required', x: 'calc(100% + 18px)', y: '50%' },
-          { n: 3, label: 'Trigger', note: 'the button that opens it, not drawn here', x: '50%', y: '-18px' },
+          { n: 1, label: 'Container', note: 'the anchored surface, required', target: '.ds-popover', at: 'top-start' },
+          { n: 2, label: 'Content', note: 'children, required', target: '.ds-popover__content' },
+          { n: 3, label: 'Trigger', note: 'the button that opens it, not drawn here', target: '.ds-popover__content', at: 'bottom-end' },
         ],
       }}
       specs={[

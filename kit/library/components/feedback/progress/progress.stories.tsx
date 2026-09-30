@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Progress } from './progress';
 import { progressRules } from './progress.rules';
 
@@ -36,13 +36,11 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: <Progress label="Uploading report.pdf" value={40} valueText="40% · 4.2 of 10.5 MB" />,
-        stageWidth: 'calc(var(--ds-space-12) * 7)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Label', note: 'visible, required', x: '10%', y: '-18px' },
-          { n: 2, label: 'Value text', note: 'the number in words', x: '90%', y: '-18px' },
-          { n: 3, label: 'Track', note: 'progress.track', x: '85%', y: 'calc(100% + 18px)' },
-          { n: 4, label: 'Fill', note: 'progress.fill', x: '20%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Label', note: 'visible, required', target: '.ds-progress__label', at: 'top-start' },
+          { n: 2, label: 'Value text', note: 'the number in words', target: '.ds-progress__value', at: 'bottom-end' },
+          { n: 3, label: 'Track', note: 'progress.track', target: '.ds-progress__bar', at: 'bottom-end' },
+          { n: 4, label: 'Fill', note: 'progress.fill', target: '.ds-progress__bar', at: 'top-start' },
         ],
       }}
       specs={[

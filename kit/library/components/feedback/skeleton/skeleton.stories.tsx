@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Text } from '../../../primitives/text/text';
 import { Skeleton, SkeletonRegion } from './skeleton';
 import { skeletonRules } from './skeleton.rules';
@@ -66,13 +66,11 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: <ProfileSkeleton />,
-        stageWidth: 'calc(var(--ds-space-12) * 7)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Region', note: 'aria-busy, plus one polite status line', x: '50%', y: '-18px' },
-          { n: 2, label: 'Circle', note: 'mirrors an avatar', x: '-18px', y: '20px' },
-          { n: 3, label: 'Text line', note: 'mirrors a name; the last line is shorter', x: 'calc(100% + 18px)', y: '20px' },
-          { n: 4, label: 'Block', note: 'mirrors an image or card', x: '50%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Region', note: 'aria-busy, plus one polite status line', target: '[role=status]', at: 'top-start' },
+          { n: 2, label: 'Circle', note: 'mirrors an avatar', target: '.ds-skeleton--circle' },
+          { n: 3, label: 'Text line', note: 'mirrors a name; the last line is shorter', target: '.ds-skeleton--text', at: 'top-end' },
+          { n: 4, label: 'Block', note: 'mirrors an image or card', target: '.ds-skeleton-lines', at: 'bottom-end' },
         ],
       }}
       specs={[

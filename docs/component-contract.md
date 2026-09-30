@@ -10,9 +10,9 @@ Every component in `kit/library` follows this file, `docs/library.md` and the pa
 |---|---|
 | `<name>.tsx` | The component. Named export in PascalCase. Props interface exported as `<Name>Props`. |
 | `<name>.css` | Its styles. Class prefix `ds-<name>`, BEM (`ds-<name>__part`, `ds-<name>--variant`). Semantic tokens and text styles only (`var(--ds-…)`). No raw colour, no px outside `0` and `1px` hairlines, no palette, colors, typeface or font role. |
-| `<name>.stories.tsx` | The showcase: one story `Showcase` rendering `<DocPage …/>` from `.storybook/doc-page/doc-page`. Title from the path (`Fields/Text field`). |
+| `<name>.stories.tsx` | The showcase: one story `Showcase` rendering `<DocPage …/>` from `fixtures/doc-page/doc-page`. Title from the path (`Fields/Text field`). The story imports `DocPage` from `fixtures/doc-page/doc-page` (`fixtures/` holds the Storybook-only blocks; see `docs/library.md`). Section order: Introduction, Anatomy, Tokens, States. Each anatomy part names a `target` selector inside the rendered component (and an optional `at` corner); give two parts on the same row different `at` points, so their leader lines do not overlap. |
 | `<name>.mdx` | The guide: exhaustive prose the showcase cannot show. `<Meta of={Stories} />`. Never repeats the showcase's tables. |
-| `<name>.rules.ts` | Rulebook entries, the Button shape. Ids `<name>.<slug>`, permanent. Include `basis` and `covers` (A11Y checklist ids from `.storybook/doc-page/a11y.ts`). |
+| `<name>.rules.ts` | Rulebook entries, the Button shape. Ids `<name>.<slug>`, permanent. Include `basis` and `covers` (A11Y checklist ids from `fixtures/rulebook/a11y.ts`). |
 | `<name>.test.tsx` | Vitest + Testing Library. Tests the behaviour, the keyboard contract, the ARIA wiring, and `expectNoAxeViolations` (root `expect-no-axe-violations.ts`). |
 
 A part that cannot stand alone (a dialog header, a field label) stays inside the slice as `<part>.tsx`, and is exported only if a consumer composes it.
@@ -27,7 +27,7 @@ A part that cannot stand alone (a dialog header, a field label) stays inside the
 6. **Text as props.** No i18n, router, data fetching. Links take `href` or an `as`/render prop.
 7. **Composition over configuration.** Compose `Text`, `Icon`, `VisuallyHidden`, `Stack`, `Button`. A component never imports a pattern.
 8. **Public API.** Do not edit `index.ts`; list the exports in the report. The lead adds them.
-9. **Hover styles** sit in `@media (hover: hover)`. Focus uses `:focus-visible` and the focus ring tokens. Reduced motion: keep the fade, drop the travel.
+9. **Hover styles** sit in `@media (hover: hover)`. Focus uses `:focus-visible` and the focus ring tokens. The states grid replays `:hover`, `:focus-visible`, `:active` and `:visited` from the stylesheet itself: `fixtures/states-grid` lifts the rules out of `@media (hover: hover)` and `(any-hover: hover)` into `.doc-force-*` classes. A story adds the class to the element and writes no hover style of its own. Other queries (reduced motion, width) are never lifted. Reduced motion: keep the fade, drop the travel.
 10. **Target size** `--ds-size-target-min` (44px, house standard, WCAG 2.5.5 AAA; 2.5.8 AA is 24px) for anything pressable.
 
 ## Families

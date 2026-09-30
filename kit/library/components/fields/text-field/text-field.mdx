@@ -46,7 +46,7 @@ The Showcase story holds the tokens, the anatomy, the states grid, the live rule
 
 ## 3. Why the states look as they do
 
-- **Hover** darkens the border to `field.border-hover`, inside `@media (hover: hover)` so a touch does not leave it stuck. The showcase sets the hover cell by hand, because the grid cannot replay a media query.
+- **Hover** darkens the border to `field.border-hover`, inside `@media (hover: hover)` so a touch does not leave it stuck.
 - **Focus-visible** changes the border to `field.border-focus` and draws a ring outside it. The border alone can fall under 3:1 next to the fill, so the ring carries the contrast (WCAG 2.4.7, AA; WCAG 1.4.11, AA).
 - **Invalid** changes the border to `field.border-invalid`. The message, icon and `aria-invalid` carry the meaning. When the field also has focus, the focus border wins and the ring stays.
 - **Disabled** uses the native `disabled` attribute and the disabled roles. The attribute removes the field from the tab order and from the form, so the view must say why (Nielsen heuristic 1). The label stays legible.

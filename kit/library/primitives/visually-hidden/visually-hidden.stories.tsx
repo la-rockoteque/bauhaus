@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { VisuallyHidden } from './visually-hidden';
 import { visuallyHiddenRules } from './visually-hidden.rules';
 
@@ -37,10 +37,9 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: skipLink,
-        stageWidth: 'calc(var(--ds-space-12) * 6)',
         parts: [
-          { n: 1, label: 'Element', note: 'span by default; a for a skip link', x: '-18px', y: '50%' },
-          { n: 2, label: 'Text', note: 'children, required', x: '50%', y: '-18px' },
+          { n: 1, label: 'Element', note: 'span by default; a for a skip link', target: '.ds-visually-hidden', at: 'top-start' },
+          { n: 2, label: 'Text', note: 'children, required', target: '.ds-visually-hidden', at: 'bottom-end' },
         ],
       }}
       specs={[

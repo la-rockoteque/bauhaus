@@ -118,15 +118,15 @@ A theming page carries these six sections. (Order: `docs/architecture.md` § Pag
 - Say what a theme is: a full set of role values chosen at runtime, sibling to the other themes. Not a layer and not a foundation. (`taxonomy/layers.md`)
 - Lead with one screen shown in light, dark and high contrast.
 
-### 2. Tokens
-- The list of themes and their dimensions: scheme, contrast, brand, density.
-- For each theme, every role and its value, side by side.
-- State roles per theme (see table above).
-
-### 3. Anatomy
+### 2. Anatomy
 - A theme: a name, a selector, a folder (`themes/<name>/`) with one tokens file. Only roles appear in it, all of them.
 - The selector chain: system preference, user attribute, forced-colors, contrast preference.
 - The parity matrix: rows are role names, columns are themes. Every cell is filled.
+
+### 3. Tokens
+- The list of themes and their dimensions: scheme, contrast, brand, density.
+- For each theme, every role and its value, side by side.
+- State roles per theme (see table above).
 
 ### 4. States
 - Show the state matrix (default, hover, pressed, focus-visible, disabled, selected, error, success) once per theme. Mark each cell `designed`, `n/a` with a reason, or `missing`. (`states/interaction-states.md`)

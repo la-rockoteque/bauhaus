@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Button } from '../../clickables/button/button';
 import { Banner } from './banner';
 import { bannerRules } from './banner.rules';
@@ -50,15 +50,13 @@ export const Showcase: StoryObj<typeof meta> = {
             Your card ends in 4242 and expires on 31 October.
           </Banner>
         ),
-        stageWidth: 'calc(var(--ds-space-12) * 9)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Container', note: 'role status or alert, required', x: '-18px', y: '50%' },
-          { n: 2, label: 'Icon', note: 'one glyph per status, required', x: '-18px', y: '28px' },
-          { n: 3, label: 'Title', note: 'optional', x: '50%', y: '-18px' },
-          { n: 4, label: 'Body', note: 'children', x: '30%', y: 'calc(100% + 18px)' },
-          { n: 5, label: 'Actions', note: 'optional', x: '12%', y: 'calc(100% + 18px)' },
-          { n: 6, label: 'Close button', note: 'optional, needs a name', x: 'calc(100% + 18px)', y: '28px' },
+          { n: 1, label: 'Container', note: 'role status or alert, required', target: '.ds-banner', at: 'top-start' },
+          { n: 2, label: 'Icon', note: 'one glyph per status, required', target: '.ds-banner__icon', at: 'top-end' },
+          { n: 3, label: 'Title', note: 'optional', target: '.ds-banner__title' },
+          { n: 4, label: 'Body', note: 'children', target: '.ds-banner__body' },
+          { n: 5, label: 'Actions', note: 'optional', target: '.ds-banner__actions' },
+          { n: 6, label: 'Close button', note: 'optional, needs a name', target: '.ds-banner > .ds-icon-button', at: 'bottom-end' },
         ],
       }}
       specs={[

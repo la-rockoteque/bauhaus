@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
-import { RadiusTiles } from '../../.storybook/doc-page/specimens';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { RadiusTiles } from '../../fixtures/specimens/specimens';
 import { shapeRules } from './shape.rules';
 
 const meta = { title: 'Foundations/Shape', parameters: { layout: 'fullscreen' } } satisfies Meta;

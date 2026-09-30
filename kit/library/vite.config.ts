@@ -6,7 +6,7 @@ import { defineConfig } from 'vitest/config';
 // @internationalized packages are dependencies: the consumer installs them, the bundle does not inline them. Tokens are built by `npm run tokens` into dist/,
 // so the build must not empty that folder.
 export default defineConfig({
-  plugins: [react(), dts({ include: ['index.ts', 'foundations', 'themes', 'primitives', 'components', 'patterns'], exclude: ['**/*.stories.tsx', '**/*.test.tsx', '**/*.rules.ts'] })],
+  plugins: [react(), dts({ include: ['index.ts', 'foundations', 'themes', 'primitives', 'components', 'patterns'], exclude: ['**/*.stories.tsx', '**/*.test.{ts,tsx}', '**/*.rules.ts'] })],
   build: {
     emptyOutDir: false,
     lib: { entry: 'index.ts', formats: ['es'], fileName: 'index', cssFileName: 'style' },
@@ -14,5 +14,6 @@ export default defineConfig({
       external: ['react', 'react-dom', 'react/jsx-runtime', 'react-aria-components', /^@react-aria\//, /^@react-stately\//, /^@internationalized\//],
     },
   },
-  test: { environment: 'jsdom', globals: true, include: ['**/*.test.tsx'], exclude: ['node_modules', 'dist'] },
+  // Fixtures read dist/tokens.css and the library's stylesheets as text (?raw); vitest empties CSS files unless they are processed.
+  test: { environment: 'jsdom', globals: true, include: ['**/*.test.{ts,tsx}'], exclude: ['node_modules', 'dist'], css: { include: [/\.css\?raw$/] } },
 });

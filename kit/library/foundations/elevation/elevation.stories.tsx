@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
-import { ElevationRungs, ScrimSample, ZStack } from '../../.storybook/doc-page/elevation-specimens';
-import { RoleChips } from '../../.storybook/doc-page/specimens';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { ElevationRungs, ScrimSample, ZStack } from '../../fixtures/elevation-specimens/elevation-specimens';
+import { RoleChips } from '../../fixtures/specimens/specimens';
 import { elevationRules } from './elevation.rules';
 
 const meta = { title: 'Foundations/Elevation', parameters: { layout: 'fullscreen' } } satisfies Meta;

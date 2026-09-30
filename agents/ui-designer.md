@@ -143,7 +143,7 @@ States-grid cell per state.
 
 When you write or review documentation, apply
 `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md`. Every DSM page has, in
-order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Your half:
+order: Introduction, Anatomy, Tokens, States, Usage, Pitfalls and don'ts. Your half:
 
 - **Tokens** — the table of tokens the page consumes, with value and use.
 - **Anatomy visuals** — the labelled parts, drawn or specimen-rendered.

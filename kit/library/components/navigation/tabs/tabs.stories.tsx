@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Tabs, type TabItem, type TabsProps } from './tabs';
 import { tabsRules } from './tabs.rules';
 
@@ -44,13 +44,11 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: demo({ tabs: THREE.slice(0, 2) }),
-        stageWidth: 'calc(var(--ds-space-12) * 8)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Tab list', note: 'role tablist, required', x: '-18px', y: '20px' },
-          { n: 2, label: 'Tab', note: 'role tab, aria-selected', x: '12%', y: '-18px' },
-          { n: 3, label: 'Selected bar', note: 'border.strong', x: '-18px', y: '46px' },
-          { n: 4, label: 'Panel', note: 'role tabpanel, one per tab', x: '50%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Tab list', note: 'role tablist, required', target: '[role=tablist]', at: 'bottom-start' },
+          { n: 2, label: 'Tab', note: 'role tab, aria-selected', target: '[role=tab]:last-of-type', at: 'top-end' },
+          { n: 3, label: 'Selected bar', note: 'border.strong', target: '[role=tab][aria-selected=true]', at: 'bottom-end' },
+          { n: 4, label: 'Panel', note: 'role tabpanel, one per tab', target: '[role=tabpanel]:not([hidden])' },
         ],
       }}
       specs={[

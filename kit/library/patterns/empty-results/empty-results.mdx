@@ -11,9 +11,9 @@ The Showcase story holds the tokens, the anatomy, the states grid, the live rule
 
 **In plain words:** An empty result is what a list shows when there is nothing to show. It should say why, and give the user a way forward.
 
-**Precisely:** Pattern. A heading, a hint and one button, arranged in a status region. It composes the text primitive and the button. It has no style and no token of its own.
+**Precisely:** Pattern. An EmptyState (title, reason and one button) inside a status region. It composes the EmptyState component and the button. It has no style and no token of its own.
 
-**The user need.** A blank area reads as broken. The user asks two questions: "is it loading, empty or failed?" and "what do I do now?". The pattern answers both in three lines.
+**The user need.** A blank area reads as broken. The user asks two questions: "is it loading, empty or failed?" and "what do I do now?". The pattern answers both in three lines, through the EmptyState component.
 
 **When it exists.** Use it whenever a list, table or search can return zero rows. It sits above components in the import order, so only an app or another pattern may import it.
 

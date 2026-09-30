@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Button } from './button';
 import { buttonRules } from './button.rules';
 
@@ -38,12 +38,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       anatomy={{
-        render: <Button variant="primary">Save changes</Button>,
-        stageWidth: 'calc(var(--ds-space-12) * 7)',
+        render: <Button variant="primary" loading>Save changes</Button>,
         parts: [
-          { n: 1, label: 'Container', note: 'native button, required', x: '-18px', y: '50%' },
-          { n: 2, label: 'Label', note: 'children, required', x: '50%', y: '-18px' },
-          { n: 3, label: 'Spinner', note: 'shown only while loading', x: 'calc(100% + 18px)', y: '50%' },
+          { n: 1, label: 'Container', note: 'native button, required', target: '.ds-button', at: 'top-start' },
+          { n: 2, label: 'Label', note: 'children, required', target: '.ds-button__label', at: 'bottom-start' },
+          { n: 3, label: 'Spinner', note: 'shown only while loading', target: '.ds-button__spinner' },
         ],
       }}
       specs={[

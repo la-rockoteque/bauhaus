@@ -25,7 +25,16 @@
       "deliberate": {
         "$value": "{duration.400}",
         "$description": "The ceiling (house.maxDurationMs). Also one turn of a spinner."
+      },
+      "loop": {
+        "$value": "1600ms",
+        "$description": "One pass of a looping animation: skeleton shimmer, indeterminate progress. Not a transition, so the 400ms ceiling does not apply. Every loop stops under reduced motion."
       }
+    },
+    "shift": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "The one travel distance of an enter or exit. Collapses to 0 under prefers-reduced-motion (motion.css); the fade stays."
     },
     "ease": {
       "$type": "cubicBezier",

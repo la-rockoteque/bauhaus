@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Button } from '../../clickables/button/button';
@@ -92,14 +92,12 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: <Menu label="Project actions">{projectItems}</Menu>,
-        stageWidth: 'calc(var(--ds-space-12) * 6)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Trigger', note: 'a button, the only tab stop, not drawn here', x: '50%', y: '-18px' },
-          { n: 2, label: 'Container', note: 'role menu, required', x: '-18px', y: '50%' },
-          { n: 3, label: 'Item', note: 'the menu item slice', x: 'calc(100% + 18px)', y: '22%' },
-          { n: 4, label: 'Separator', note: 'optional', x: 'calc(100% + 18px)', y: '70%' },
-          { n: 5, label: 'Section', note: 'optional, with a title', x: 'calc(100% + 18px)', y: '92%' },
+          { n: 1, label: 'Trigger', note: 'a button, the only tab stop, not drawn here', target: '.ds-menu__popover', at: 'top-start' },
+          { n: 2, label: 'Container', note: 'role menu, required', target: '.ds-menu', at: 'top-end' },
+          { n: 3, label: 'Item', note: 'the menu item slice', target: '.ds-menu-item' },
+          { n: 4, label: 'Separator', note: 'optional', target: '.ds-menu__separator' },
+          { n: 5, label: 'Section', note: 'optional, with a title', target: '.ds-menu-item--destructive', at: 'bottom-end' },
         ],
       }}
       specs={[

@@ -39,6 +39,16 @@ export const spacingRules = [
     basis: 'WCAG 2.5.8 Target Size (Minimum) (AA); house floor 44px at the WCAG 2.5.5 (AAA) figure',
   },
   {
+    id: 'spacing.breakpoints-match',
+    component: 'Spacing',
+    rubric: 'reflow',
+    severity: 'MEDIUM',
+    expectation: 'Every width in an @media query equals a breakpoint token (640, 768 or 1024px).',
+    expected: '640 · 768 · 1024px',
+    verify: 'auto',
+    basis: 'Project decision: a custom property cannot sit in a media query, so the literal is checked against the token',
+  },
+  {
     id: 'spacing.text-spacing-safe',
     component: 'Spacing',
     rubric: 'reflow',

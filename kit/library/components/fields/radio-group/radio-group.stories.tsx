@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { RadioGroup } from './radio-group';
 import { radioGroupRules } from './radio-group.rules';
 
@@ -15,6 +16,15 @@ const DELIVERY = [
   { value: 'express', label: 'Express, next day' },
   { value: 'pickup', label: 'Pickup in store' },
 ];
+
+/** Adds a forced-state class to the first match of `target`, so the real rule paints it. The class must reach an inner element the component does not expose. */
+function Force({ cls, target, children }: { cls: string; target: string; children: ReactNode }) {
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    box.current?.querySelector(target)?.classList.add(cls);
+  }, [cls, target]);
+  return <div ref={box}>{children}</div>;
+}
 
 export const Showcase: StoryObj<typeof meta> = {
   name: 'Showcase',
@@ -42,12 +52,11 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: cell(<RadioGroup legend="Delivery" required description="Prices show at checkout." options={DELIVERY} defaultValue="standard" />),
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Legend', note: 'required, names the group', x: '-18px', y: '12px' },
-          { n: 2, label: 'Description', note: 'optional', x: '-18px', y: '40px' },
-          { n: 3, label: 'Radio and dot', note: 'native, drawn', x: '-18px', y: '88px' },
-          { n: 4, label: 'Option label', note: 'required, part of the target', x: 'calc(100% + 18px)', y: '88px' },
+          { n: 1, label: 'Legend', note: 'required, names the group', target: '.ds-field__label' },
+          { n: 2, label: 'Description', note: 'optional', target: '.ds-field__description' },
+          { n: 3, label: 'Radio and dot', note: 'native, drawn', target: '.ds-radio-group__circle' },
+          { n: 4, label: 'Option label', note: 'required, part of the target', target: '.ds-field__choice-label', at: 'bottom-end' },
         ],
       }}
       specs={[
@@ -77,8 +86,8 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'correct', status: 'designed', render: cell(<RadioGroup legend="Delivery" required options={DELIVERY} defaultValue="standard" />), trigger: 'error cleared' },
           { id: 'done', status: 'n/a', reason: 'Saving belongs to the form.' },
           { id: 'default', status: 'designed', render: cell(<RadioGroup legend="Delivery" options={DELIVERY} defaultValue="standard" />), trigger: 'rest' },
-          { id: 'hover', status: 'designed', render: cell(<RadioGroup legend="Delivery" options={DELIVERY.slice(0, 2)} defaultValue="standard" />), trigger: ':hover', note: 'Hover darkens the circle outline inside @media (hover: hover); the grid cannot replay it, so this cell shows rest.' },
-          { id: 'focus-visible', status: 'designed', render: cell(<RadioGroup legend="Delivery" options={DELIVERY.slice(0, 2)} defaultValue="standard" />), trigger: ':focus-visible', note: 'Real focus needs the keyboard: Tab into the group, then use the arrows.' },
+          { id: 'hover', status: 'designed', render: cell(<Force cls="doc-force-hover" target=".ds-radio-group__input"><RadioGroup legend="Delivery" options={DELIVERY.slice(0, 2)} defaultValue="standard" /></Force>), trigger: ':hover', note: 'Forced on the first option. The circle outline takes field.border-hover.' },
+          { id: 'focus-visible', status: 'designed', render: cell(<Force cls="doc-force-focus" target=".ds-radio-group__input"><RadioGroup legend="Delivery" options={DELIVERY.slice(0, 2)} defaultValue="standard" /></Force>), trigger: ':focus-visible', note: 'Forced on the first option. The ring goes around the circle.' },
           { id: 'active', status: 'n/a', reason: 'The choice changes at once on press; there is no pressed look.' },
           { id: 'disabled', status: 'designed', render: cell(<RadioGroup legend="Delivery" options={DELIVERY} defaultValue="standard" disabled />), trigger: 'disabled', note: 'The whole group. One option can be disabled with option.disabled.' },
           { id: 'selected', status: 'designed', render: cell(<RadioGroup legend="Delivery" options={DELIVERY.slice(0, 2)} defaultValue="express" />), trigger: 'checked', note: 'Fill and a dot: shape, not colour alone.' },

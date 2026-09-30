@@ -67,7 +67,7 @@ Interaction states (hover, active, disabled, selected, focus-visible) are roles,
 
 ## Token group page
 
-A token group has a page in the styleguide and in Storybook, to the page contract: 1 Introduction, 2 Tokens (defined, with values and intent), 3 Anatomy (structure of the group), 4 States (which states it provides tokens for), 5 Usage (when to use each token, when not and what to use instead), 6 Pitfalls and don'ts. Every Usage rule and Pitfall names a basis. For each line ask: "What is the basis?" and "Would this line be true of any design system?" No basis or generic: rewrite or cut. Route page writing to `/bauhaus:styleguide`.
+A token group has a page in the styleguide and in Storybook, to the page contract: 1 Introduction, 2 Anatomy (structure of the group), 3 Tokens (defined, with values and intent), 4 States (which states it provides tokens for), 5 Usage (when to use each token, when not and what to use instead), 6 Pitfalls and don'ts. Every Usage rule and Pitfall names a basis. For each line ask: "What is the basis?" and "Would this line be true of any design system?" No basis or generic: rewrite or cut. Route page writing to `/bauhaus:styleguide`.
 
 ## Tier checks (run on every change)
 

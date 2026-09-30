@@ -74,15 +74,15 @@ A spacing and layout page carries these six sections. (Order: `docs/architecture
 - Say what spacing does: it groups and separates. Layer: foundation. (`taxonomy/layers.md`)
 - Lead with one before-and-after: the same screen with and without the scale.
 
-### 2. Tokens
-- Spacing: `--ds-space-1` to `--ds-space-8`, with the value in `rem` and in `px`.
-- Breakpoints: `sm`, `md`, `lg` with the literal values, published for documentation and JavaScript.
-- Container widths and gutters.
-
-### 3. Anatomy
+### 2. Anatomy
 - The scale: a 4px unit, 8 to 12 steps, skipped steps by design.
 - Three gap kinds: inset, stack, inline. Show each with a diagram.
 - The layout grid: columns, gutters, margins, container.
+
+### 3. Tokens
+- Spacing: `--ds-space-1` to `--ds-space-8`, with the value in `rem` and in `px`.
+- Breakpoints: `sm`, `md`, `lg` with the literal values, published for documentation and JavaScript.
+- Container widths and gutters.
 
 ### 4. States
 - Spacing has no interaction states. It provides tokens for the states of layout: breakpoint ranges (`sm`, `md`, `lg`), container widths, and the reflow state at 320 CSS px and 400% zoom. (WCAG 1.4.10 Reflow, AA)

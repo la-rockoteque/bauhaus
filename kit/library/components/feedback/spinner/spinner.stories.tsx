@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Spinner } from './spinner';
 import { spinnerRules } from './spinner.rules';
 
@@ -35,11 +35,10 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: <Spinner label="Loading orders" showLabel />,
-        stageWidth: 'calc(var(--ds-space-12) * 4)',
         parts: [
-          { n: 1, label: 'Status region', note: 'role status, required', x: 'calc(100% + 18px)', y: '-12px' },
-          { n: 2, label: 'Ring', note: 'aria-hidden', x: '-18px', y: '50%' },
-          { n: 3, label: 'Label', note: 'required; hidden from sight unless showLabel', x: '60%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Status region', note: 'role status, required', target: '.ds-spinner', at: 'top-start' },
+          { n: 2, label: 'Ring', note: 'aria-hidden', target: '.ds-spinner__ring' },
+          { n: 3, label: 'Label', note: 'required; hidden from sight unless showLabel', target: '.ds-spinner__label', at: 'bottom-end' },
         ],
       }}
       specs={[

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
-import { MotionSwatches } from '../../.storybook/doc-page/specimens';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { MotionSwatches } from '../../fixtures/specimens/specimens';
 import { motionRules } from './motion.rules';
 
 const meta = { title: 'Foundations/Motion', parameters: { layout: 'fullscreen' } } satisfies Meta;
@@ -24,6 +24,8 @@ export const Showcase: StoryObj = {
           { name: 'motion.duration.fast', tier: '2', use: '{duration.150}; hover and press' },
           { name: 'motion.duration.base', tier: '2', use: '{duration.200}; small enter and exit' },
           { name: 'motion.duration.deliberate', tier: '2', use: '{duration.400}; the ceiling; one spinner turn' },
+          { name: 'motion.duration.loop', tier: '2', use: '1600ms; one pass of a looping animation (skeleton shimmer, indeterminate progress); not a transition, so the ceiling does not apply' },
+          { name: 'motion.shift', tier: '2', use: '8px; the one travel distance of an enter or exit; 0 under prefers-reduced-motion' },
           { name: 'motion.ease.standard', tier: '2', use: 'cubic-bezier(0.2, 0, 0, 1); movement that stays on screen' },
           { name: 'motion.ease.enter', tier: '2', use: 'cubic-bezier(0, 0, 0, 1); an element arrives, fast start and soft landing' },
           { name: 'motion.ease.exit', tier: '2', use: 'cubic-bezier(0.4, 0, 1, 1); an element leaves, soft start and fast end' },

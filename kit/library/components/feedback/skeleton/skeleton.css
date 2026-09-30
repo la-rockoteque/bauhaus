@@ -6,7 +6,7 @@
   background-size: 50% 100%;
   background-position: -100% 0;
   border-radius: var(--ds-radius-sm);
-  animation: ds-skeleton-shimmer calc(var(--ds-motion-duration-deliberate) * 4) linear infinite;
+  animation: ds-skeleton-shimmer var(--ds-motion-duration-loop) linear infinite;
 }
 
 .ds-skeleton--text {

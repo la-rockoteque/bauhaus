@@ -71,15 +71,15 @@ A shape page carries these six sections. (Order: `docs/architecture.md` § Page 
 - Say what shape does: corner radius names the kind of element and lines mark edges. Layer: foundation. (`taxonomy/layers.md`)
 - Lead with one row of specimens: tag, input, button, card, pill.
 
-### 2. Tokens
-- Radius: `--ds-radius-sm`, `-md`, `-lg`, `-pill`, with values and the element each fits.
-- Border width: `--ds-border-width-hairline`, `-medium`.
-- Border style values in use. Focus ring width and offset.
-
-### 3. Anatomy
+### 2. Anatomy
 - A radius scale: 3 to 6 steps plus one full-round value, each mapped to an element kind.
 - A border: width, style, colour. Colour comes from the `border.*` roles. Width and style come from here.
 - A focus ring: outline width, offset, colour. Show it on a light and a dark surface.
+
+### 3. Tokens
+- Radius: `--ds-radius-sm`, `-md`, `-lg`, `-pill`, with values and the element each fits.
+- Border width: `--ds-border-width-hairline`, `-medium`.
+- Border style values in use. Focus ring width and offset.
 
 ### 4. States
 - Shape provides tokens for: default edge, hover edge (stronger border token), focus-visible ring, selected edge (2px, `accent`), error edge (`danger` line), disabled edge (`border.disabled`), dragged (dashed drop target).

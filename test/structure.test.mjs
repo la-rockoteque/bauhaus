@@ -66,15 +66,15 @@ test('check: skips node_modules, dist and .storybook', () => {
   assert.deepEqual(checkStructure(dir), []);
 });
 
-test('check: slice.showcase needs a DocPage import from doc-page and a <DocPage element', () => {
+test('check: slice.showcase needs a DocPage import from fixtures/doc-page/doc-page and a <DocPage element', () => {
   const at = (story) => checkStructure(tmpLibrary(SLICE('primitives/box', 'box', { 'box.stories.tsx': story }))).filter((f) => f.id === 'slice.showcase').map((f) => f.path);
   assert.deepEqual(at(''), ['primitives/box/box.stories.tsx']);
   assert.deepEqual(at("import { DocPage } from './somewhere';\nexport const A = () => <DocPage />;"), ['primitives/box/box.stories.tsx'], 'wrong import path');
-  assert.deepEqual(at("import { DocPage } from '../../.storybook/doc-page/doc-page';"), ['primitives/box/box.stories.tsx'], 'imported but never rendered');
+  assert.deepEqual(at("import { DocPage } from '../../fixtures/doc-page/doc-page';"), ['primitives/box/box.stories.tsx'], 'imported but never rendered');
   assert.deepEqual(at(DOC_STORY), []);
 });
 
-test('check: a story may import the page builder from .storybook', () => {
+test('check: a story may import the page builder from fixtures', () => {
   const dir = tmpLibrary(SLICE('foundations/color', 'color', { 'color.tokens.json': '{}' }));
   assert.deepEqual(checkStructure(dir).filter((f) => f.id === 'structure.direction'), []);
 });
@@ -210,7 +210,7 @@ function tmpLibrary(files) {
   }
   return dir;
 }
-const DOC_STORY = "import { DocPage } from '../../.storybook/doc-page/doc-page';\nexport const Showcase = { render: () => <DocPage /> };\n";
+const DOC_STORY = "import { DocPage } from '../../fixtures/doc-page/doc-page';\nexport const Showcase = { render: () => <DocPage /> };\n";
 const SLICE = (dir, name, extra = {}) => Object.fromEntries(Object.entries({
   [`${name}.stories.tsx`]: DOC_STORY, [`${name}.mdx`]: '', [`${name}.rules.ts`]: '', [`${name}.test.tsx`]: '', [`${name}.tsx`]: '', ...extra,
 }).map(([f, t]) => [`${dir}/${f}`, t]));
@@ -280,8 +280,54 @@ test('check: themes are one showcase and one guide at themes/, each theme folder
   assert.ok(missing.some((x) => x.startsWith('slice.story themes')), 'the theme set needs a showcase');
   assert.ok(missing.some((x) => x.startsWith('slice.page themes')), 'the theme set needs a guide');
   assert.ok(!missing.some((x) => /themes\/(light|dark)/.test(x)), `theme folders need only tokens: ${missing.join(' | ')}`);
-  write('themes/themes.stories.tsx', "import { DocPage } from '../.storybook/doc-page/doc-page';\nexport const Showcase = { render: () => <DocPage /> };\n");
+  write('themes/themes.stories.tsx', "import { DocPage } from '../fixtures/doc-page/doc-page';\nexport const Showcase = { render: () => <DocPage /> };\n");
   write('themes/themes.mdx', '# Themes');
   const after = ids(checkStructure(root).findings ?? checkStructure(root)).filter((x) => x.includes('themes'));
   assert.deepEqual(after, []);
+});
+
+// ---------- fixtures: Storybook-only blocks ----------
+
+const FX = (name, extra = {}) => Object.fromEntries(Object.entries({ [`${name}.tsx`]: 'export const A = () => null;', [`${name}.stories.tsx`]: '', ...extra }).map(([f, t]) => [`fixtures/${name}/${f}`, t]));
+
+test('check: fixtures is a root; a fixture slice needs a story, not a guide or a rulebook', () => {
+  const ids = (dir) => checkStructure(dir).map((f) => `${f.id} ${f.path}`);
+  assert.deepEqual(ids(tmpLibrary(FX('anatomy'))), []);
+  assert.deepEqual(ids(tmpLibrary({ 'fixtures/anatomy/anatomy.tsx': '' })), ['slice.story fixtures/anatomy']);
+});
+
+test('check: a fixture with logic needs a test', () => {
+  const logic = tmpLibrary(FX('series', { 'series.tsx': 'export function seriesColor(n) { return n; }' }));
+  assert.deepEqual(checkStructure(logic).map((f) => `${f.id} ${f.path}`), ['slice.test fixtures/series']);
+  const hook = tmpLibrary(FX('anatomy', { 'anatomy.tsx': 'export const A = () => { useEffect(() => {}); return null; };' }));
+  assert.deepEqual(checkStructure(hook).map((f) => f.id), ['slice.test']);
+  const tested = tmpLibrary(FX('series', { 'series.tsx': 'export function seriesColor(n) { return n; }', 'series.test.tsx': '' }));
+  assert.deepEqual(checkStructure(tested), []);
+});
+
+test('check: fixture.exposed flags the entry or a library file that imports a fixture, not stories, tests or fixtures', () => {
+  const dir = tmpLibrary({
+    ...FX('doc-page'),
+    ...FX('anatomy', { 'anatomy.tsx': "import { DocPage } from '../doc-page/doc-page';\nimport { Button } from '../../components/clickables/button/button';" }),
+    ...SLICE('components/clickables/button', 'button', { 'button.tsx': "import { DocPage } from '../../../fixtures/doc-page/doc-page';" }),
+    ...SLICE('components/clickables/link', 'link', { 'link.test.tsx': "import { DocPage } from '../../../fixtures/doc-page/doc-page';" }),
+    'index.ts': "export { DocPage } from './fixtures/doc-page/doc-page';",
+  });
+  const hits = checkStructure(dir).filter((f) => f.id === 'fixture.exposed');
+  assert.deepEqual(hits.map((f) => f.path).sort(), ['components/clickables/button/button.tsx', 'index.ts']);
+  assert.ok(hits.every((f) => f.severity === 'HIGH'));
+});
+
+test('check: a fixture may import the library slices but not the public entry', () => {
+  const dir = tmpLibrary({
+    ...FX('anatomy', { 'anatomy.tsx': "import { Button } from '../../components/clickables/button/button';\nimport { Tooltip } from '../../index';" }),
+  });
+  const hits = checkStructure(dir).filter((f) => f.id === 'structure.direction');
+  assert.equal(hits.length, 1);
+  assert.match(hits[0].message, /public entry/);
+});
+
+test('check: storybook.literal also reads fixtures', () => {
+  const dir = tmpLibrary({ ...FX('anatomy', { 'anatomy.css': '.a { margin: 12px; color: var(--ds-text-default); }' }) });
+  assert.deepEqual(checkStructure(dir).filter((f) => f.id === 'storybook.literal').map((f) => f.path), ['fixtures/anatomy/anatomy.css']);
 });

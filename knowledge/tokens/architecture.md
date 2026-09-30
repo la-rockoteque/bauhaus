@@ -170,14 +170,14 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 - Say what a token is, in plain words: the written-down form of one foundation decision, with one value. Not a layer. (`taxonomy/layers.md`)
 - Show the colour chain: `button.background` to `action.primary` to `colors.primary.600` to `palette.dark-blue.600` to `#244b7b`.
 
-### 2. Tokens
-- The token groups the system defines, one table per foundation: name, tier, `$type`, value, `$description`.
-- The tier of each row is shown. Primitive token rows are marked "not for call sites".
-
-### 3. Anatomy
+### 2. Anatomy
 - A token: name (path), `$value`, `$type`, `$description`, optional `$extensions` and `$deprecated`. `$value` is required. The rest are optional. (DTCG)
 - A group: a name and children, with an optional inherited `$type`.
 - An alias: `"{group.token}"`. It resolves to another token's value.
+
+### 3. Tokens
+- The token groups the system defines, one table per foundation: name, tier, `$type`, value, `$description`.
+- The tier of each row is shown. Primitive token rows are marked "not for call sites".
 
 ### 4. States
 - Tokens provide state through the name, not through a new tier. A state is a name suffix on a role or a component token: `action.primary-hover`, `button.background-disabled`. Vocabulary is in `naming.md`.

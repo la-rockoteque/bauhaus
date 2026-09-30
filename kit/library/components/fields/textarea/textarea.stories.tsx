@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Textarea } from './textarea';
 import { textareaRules } from './textarea.rules';
 
@@ -39,12 +39,11 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: cell(<Textarea label="Message" required description="Tell us what happened." maxLength={200} count={42} defaultValue="The lid arrived cracked." />),
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Label', note: 'required, always visible', x: '-18px', y: '12px' },
-          { n: 2, label: 'Description', note: 'optional', x: '-18px', y: '40px' },
-          { n: 3, label: 'Textarea', note: 'native, required', x: '-18px', y: '110px' },
-          { n: 4, label: 'Counter', note: 'optional, with maxLength', x: 'calc(100% + 18px)', y: 'calc(100% - 12px)' },
+          { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
+          { n: 2, label: 'Description', note: 'optional', target: '.ds-field__description' },
+          { n: 3, label: 'Textarea', note: 'native, required', target: '.ds-textarea__input' },
+          { n: 4, label: 'Counter', note: 'optional, with maxLength', target: '.ds-textarea__counter' },
         ],
       }}
       specs={[
@@ -73,7 +72,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'correct', status: 'designed', render: cell(<Textarea label="Message" defaultValue="The lid arrived cracked." />), trigger: 'error cleared' },
           { id: 'done', status: 'n/a', reason: 'Saving belongs to the form.' },
           { id: 'default', status: 'designed', render: cell(<Textarea label="Message" defaultValue="The lid arrived cracked." />), trigger: 'rest' },
-          { id: 'hover', status: 'designed', render: cell(<Textarea label="Message" defaultValue="The lid arrived cracked." style={{ borderColor: 'var(--ds-field-border-hover)' }} />), trigger: ':hover', note: 'Set by hand: the real rule sits in @media (hover: hover).' },
+          { id: 'hover', status: 'designed', render: cell(<Textarea label="Message" defaultValue="The lid arrived cracked." className="doc-force-hover" />), trigger: ':hover', note: 'Forced by .doc-force-hover. The border takes field.border-hover.' },
           { id: 'focus-visible', status: 'designed', render: cell(<Textarea label="Message" defaultValue="The lid arrived cracked." className="doc-force-focus" />), trigger: ':focus-visible', note: 'Forced by .doc-force-focus.' },
           { id: 'active', status: 'n/a', reason: 'Typing is the feedback.' },
           { id: 'disabled', status: 'designed', render: cell(<Textarea label="Message" defaultValue="Closed ticket." disabled description="The ticket is closed." />), trigger: 'disabled' },

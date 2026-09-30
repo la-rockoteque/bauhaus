@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Select } from './select';
 import { selectRules } from './select.rules';
 
@@ -44,12 +44,11 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: cell(<Select label="Country" required description="Where you live." options={COUNTRIES.slice(0, 3)} emptyLabel="Choose a country" />),
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Label', note: 'required, always visible', x: '-18px', y: '12px' },
-          { n: 2, label: 'Description', note: 'optional', x: '-18px', y: '40px' },
-          { n: 3, label: 'Select', note: 'native, required', x: '-18px', y: '88px' },
-          { n: 4, label: 'Chevron', note: 'decorative', x: 'calc(100% + 18px)', y: '88px' },
+          { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
+          { n: 2, label: 'Description', note: 'optional', target: '.ds-field__description' },
+          { n: 3, label: 'Select', note: 'native, required', target: '.ds-select__input', at: 'top-start' },
+          { n: 4, label: 'Chevron', note: 'decorative', target: '.ds-select__chevron', at: 'bottom-end' },
         ],
       }}
       specs={[
@@ -79,7 +78,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'correct', status: 'designed', render: cell(<Select label="Country" options={COUNTRIES.slice(0, 3)} defaultValue="ca" />), trigger: 'error cleared' },
           { id: 'done', status: 'n/a', reason: 'Saving belongs to the form.' },
           { id: 'default', status: 'designed', render: cell(<Select label="Country" options={COUNTRIES.slice(0, 3)} defaultValue="ca" />), trigger: 'rest' },
-          { id: 'hover', status: 'designed', render: cell(<Select label="Country" options={COUNTRIES.slice(0, 3)} defaultValue="ca" style={{ borderColor: 'var(--ds-field-border-hover)' }} />), trigger: ':hover', note: 'Set by hand: the real rule sits in @media (hover: hover).' },
+          { id: 'hover', status: 'designed', render: cell(<Select label="Country" options={COUNTRIES.slice(0, 3)} defaultValue="ca" className="doc-force-hover" />), trigger: ':hover', note: 'Forced by .doc-force-hover. The border takes field.border-hover.' },
           { id: 'focus-visible', status: 'designed', render: cell(<Select label="Country" options={COUNTRIES.slice(0, 3)} defaultValue="ca" className="doc-force-focus" />), trigger: ':focus-visible', note: 'Forced by .doc-force-focus.' },
           { id: 'active', status: 'n/a', reason: 'The browser draws the open list; the page has no pressed look.' },
           { id: 'disabled', status: 'designed', render: cell(<Select label="Country" options={COUNTRIES.slice(0, 3)} defaultValue="ca" disabled description="Set by your plan." />), trigger: 'disabled' },

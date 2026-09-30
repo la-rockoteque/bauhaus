@@ -1,0 +1,276 @@
+/* Layout for the showcase pages and the guide pages.
+   Lays things out only: grid, gaps, stage. Every colour, size and font comes from a
+   var(--ds-*) token, so the pages theme with light and dark. The type itself is the Text primitive. */
+
+.doc,
+.doc-guide-page {
+  --doc-grid-line: color-mix(in srgb, var(--ds-border-default) 45%, transparent);
+  --doc-hairline: calc(var(--ds-space-1) / 4);
+  --doc-page-width: calc(var(--ds-space-12) * 24);
+  --doc-gutter: max(var(--ds-space-4), min(var(--ds-space-12), 6vw), calc((100% - var(--doc-page-width)) / 2));
+  --doc-card-min: calc(var(--ds-space-12) * 5);
+  box-sizing: border-box;
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-body-family);
+  /* A long token name breaks instead of widening the page (WCAG 1.4.10). */
+  overflow-wrap: anywhere;
+}
+
+.doc {
+  min-block-size: 100vh;
+  padding: var(--ds-space-12) var(--doc-gutter) calc(var(--ds-space-12) * 2);
+  background: var(--ds-surface-sunken);
+}
+
+.doc code,
+.doc-guide-page code {
+  font-family: var(--ds-text-code-family);
+  font-size: var(--ds-font-size-sm);
+}
+
+.doc-muted {
+  color: var(--ds-text-muted);
+}
+
+/* Header */
+
+.doc-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  padding-block-end: var(--ds-space-6);
+  border-block-end: thin solid var(--ds-border-default);
+}
+
+.doc-header-title {
+  display: grid;
+  gap: var(--ds-space-2);
+}
+
+.doc-eyebrow {
+  color: var(--ds-text-muted);
+  font-weight: var(--ds-font-weight-medium);
+}
+
+.doc-h1 {
+  font-size: calc(var(--ds-text-heading-size) * 1.5);
+}
+
+/* Sections */
+
+.doc-section {
+  margin-block-start: var(--ds-space-10);
+}
+
+.doc-section-head {
+  display: grid;
+  gap: var(--ds-space-1);
+  margin-block-end: var(--ds-space-4);
+}
+
+.doc-h2 {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ds-space-3);
+}
+
+.doc-num {
+  color: var(--ds-text-muted);
+  font-family: var(--ds-text-code-family);
+  font-size: var(--ds-font-size-md);
+  font-weight: var(--ds-font-weight-medium);
+}
+
+.doc-kicker,
+.doc-note,
+:is(.doc, .doc-guide-page) .doc-pointer {
+  max-inline-size: calc(var(--ds-space-12) * 16);
+}
+
+:is(.doc, .doc-guide-page) .doc-note {
+  margin-block-start: var(--ds-space-3);
+}
+
+:is(.doc, .doc-guide-page) .doc-h3 {
+  margin-block: var(--ds-space-6) var(--ds-space-2);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+:is(.doc, .doc-guide-page) .doc-lede {
+  max-inline-size: calc(var(--ds-space-12) * 16);
+  margin-block-end: var(--ds-space-3);
+}
+
+:is(.doc, .doc-guide-page) .doc-line {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ds-space-3);
+  max-inline-size: calc(var(--ds-space-12) * 16);
+  margin-block-start: var(--ds-space-3);
+}
+
+.doc-label {
+  flex: none;
+  padding: var(--ds-space-1) var(--ds-space-2);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  color: var(--ds-text-muted);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-medium);
+}
+
+/* Tables */
+
+.doc-table-scroll {
+  max-inline-size: 100%;
+  overflow-x: auto;
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.doc-table-scroll:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.doc-table {
+  inline-size: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+}
+
+.doc-table th,
+.doc-table td {
+  padding: var(--ds-space-2) var(--ds-space-4);
+  text-align: start;
+  vertical-align: top;
+  border-block-end: thin solid var(--ds-border-default);
+}
+
+.doc-table tr:last-child > th,
+.doc-table tr:last-child > td {
+  border-block-end: 0;
+}
+
+.doc-table thead th {
+  background: var(--ds-surface-raised);
+  color: var(--ds-text-muted);
+  font-weight: var(--ds-font-weight-medium);
+}
+
+.doc-table-rows th {
+  inline-size: 30%;
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-table-rows td {
+  font-family: var(--ds-text-code-family);
+}
+
+.doc-table-api td {
+  font-family: inherit;
+}
+
+.doc-token {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.doc-swatch {
+  flex: none;
+  inline-size: var(--ds-space-4);
+  block-size: var(--ds-space-4);
+  border: thin solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-sm);
+}
+
+/* Do and don't */
+
+.doc-guides {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--ds-space-12) * 8)), 1fr));
+  gap: var(--ds-space-4);
+}
+
+.doc-guide {
+  padding: var(--ds-space-4) var(--ds-space-6) var(--ds-space-6);
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-block-start: var(--ds-space-1) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.doc-guide-do {
+  border-block-start-color: var(--ds-status-success);
+}
+
+.doc-guide-dont {
+  border-block-start-color: var(--ds-status-error);
+}
+
+:is(.doc, .doc-guide-page) .doc-guide-head {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  margin-block-end: var(--ds-space-3);
+}
+
+.doc-guide-mark {
+  display: grid;
+  place-items: center;
+  inline-size: var(--ds-space-5);
+  block-size: var(--ds-space-5);
+  border-radius: var(--ds-radius-full);
+  font-size: var(--ds-font-size-xs);
+}
+
+.doc-guide-do .doc-guide-mark {
+  background: var(--ds-status-success-surface);
+  color: var(--ds-status-success);
+}
+
+.doc-guide-dont .doc-guide-mark {
+  background: var(--ds-status-error-surface);
+  color: var(--ds-status-error);
+}
+
+.doc-guide ul {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-guide li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-1) var(--ds-space-2);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+}
+
+.doc-basis {
+  padding: 0 var(--ds-space-2);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-surface-sunken);
+  color: var(--ds-text-muted);
+  font-size: var(--ds-font-size-xs);
+}
+
+.doc-rule-id {
+  color: var(--ds-text-muted);
+  font-size: var(--ds-font-size-xs);
+}
+
+:is(.doc, .doc-guide-page) .doc-pointer {
+  margin-block-start: var(--ds-space-10);
+}

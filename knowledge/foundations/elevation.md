@@ -68,15 +68,15 @@ An elevation page carries these six sections. (Order: `docs/architecture.md` § 
 - Say what elevation does: it shows how far a surface floats above the page. Layer: foundation. (`taxonomy/layers.md`)
 - Lead with the two-rung specimen: a menu and a modal over a card.
 
-### 2. Tokens
-- Shadows: `--ds-shadow-1`, `--ds-shadow-2`. Scrim: `--ds-scrim`.
-- Stacking order: `--ds-z-*`, one row per role, lowest to highest, in one table.
-- Dark-theme values for each shadow and surface.
-
-### 3. Anatomy
+### 2. Anatomy
 - A rung: a shadow (two layers), a surface fill, and a z-index role. Show all three as separate tokens.
 - The scrim: one value, sits between the page and a modal.
 - The stacking order as a stack diagram with role names.
+
+### 3. Tokens
+- Shadows: `--ds-shadow-1`, `--ds-shadow-2`. Scrim: `--ds-scrim`.
+- Stacking order: `--ds-z-*`, one row per role, lowest to highest, in one table.
+- Dark-theme values for each shadow and surface.
 
 ### 4. States
 - Elevation provides tokens for: resting (level 0 or 1), hover lift (one rung up, for interactive cards), dragged (raised to the overlay rung, Material 3 dragged state), open (menu, modal), and pressed (drops back to resting).

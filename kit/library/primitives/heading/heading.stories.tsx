@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { Stack } from '../stack/stack';
 import { Heading } from './heading';
 import type { HeadingLevel, HeadingSize } from './heading';
@@ -37,10 +37,9 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: <Heading level={2}>Delivery address</Heading>,
-        stageWidth: 'calc(var(--ds-space-12) * 6)',
         parts: [
-          { n: 1, label: 'Element', note: 'h1 to h6, from level, required', x: '-18px', y: '50%' },
-          { n: 2, label: 'Look', note: 'from size; defaults by level', x: 'calc(100% + 18px)', y: '50%' },
+          { n: 1, label: 'Element', note: 'h1 to h6, from level, required', target: '.ds-heading', at: 'top-start' },
+          { n: 2, label: 'Look', note: 'from size; defaults by level', target: '.ds-heading', at: 'bottom-end' },
         ],
       }}
       specs={[

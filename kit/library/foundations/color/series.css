@@ -1,0 +1,5 @@
+/* Series colour n: oklch(lightness chroma, hue + n × step), the golden-angle rule (series.tokens.json, the series role in each theme).
+   A token file cannot compute a colour, so the class composes it. Set --part: n on the element, then read var(--ds-series-color). */
+.ds-series {
+  --ds-series-color: oklch(var(--ds-series-lightness) var(--ds-series-chroma) calc(var(--ds-series-hue) + var(--part) * var(--ds-series-step)));
+}

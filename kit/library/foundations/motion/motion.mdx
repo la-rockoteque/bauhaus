@@ -13,7 +13,7 @@ The Showcase story holds replayable motion swatches with a reduced-motion switch
 
 **Precisely:** Foundation. Three durations, capped at 400ms. It governs transitions and the spinner.
 
-**Three steps, three roles.** Tier 1 holds the three durations. Tier 2 names the jobs: fast (hover, press), base (small enter and exit), deliberate (the ceiling, one spinner turn). Three easing curves sit beside the durations: `motion.ease.standard` (stays on screen), `motion.ease.enter` (arrives) and `motion.ease.exit` (leaves). The spinner uses `linear`, because a turn must not speed up and slow down.
+**Three steps, three roles.** Tier 1 holds the three durations. Tier 2 names the jobs: fast (hover, press), base (small enter and exit), deliberate (the ceiling, one spinner turn). `motion.duration.loop` (1600ms) is one pass of a looping animation, such as a skeleton shimmer or an indeterminate progress bar. It is not a transition, so the 400ms ceiling does not apply. `motion.shift` (8px) is the one travel distance of an enter or exit. `foundations/motion/motion.css` sets it to 0 under `prefers-reduced-motion: reduce`, so the fade stays and the travel goes; import it after `tokens.css`. Three easing curves sit beside the durations: `motion.ease.standard` (stays on screen), `motion.ease.enter` (arrives) and `motion.ease.exit` (leaves). The spinner uses `linear`, because a turn must not speed up and slow down.
 
 ## 2. Usage
 

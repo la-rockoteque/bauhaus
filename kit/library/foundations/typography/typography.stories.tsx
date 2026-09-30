@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
-import { FontRoles, TypeScale, TypefaceSpecimens } from '../../.storybook/doc-page/type-specimens';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { FontRoles, TypeScale, TypefaceSpecimens } from '../../fixtures/type-specimens/type-specimens';
 import { typographyRules } from './typography.rules';
 
 const meta = { title: 'Foundations/Typography', parameters: { layout: 'fullscreen' } } satisfies Meta;

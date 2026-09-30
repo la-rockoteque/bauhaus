@@ -74,15 +74,15 @@ A density page carries these six sections. (Order: `docs/architecture.md` § Pag
 - Say what density does: it sets how much fits on a screen, and lets people choose. Layer: foundation. (`taxonomy/layers.md`)
 - Lead with one table shown in both modes.
 
-### 2. Tokens
-- Control heights: `--ds-size-control-sm`, `-md`, `-lg`. Row heights. Inset and stack tokens per mode.
-- The `[data-density]` attribute values: `comfortable`, `compact`.
-- The measured target size of each control in each mode.
-
-### 3. Anatomy
+### 2. Anatomy
 - A mode: a set of semantic-token overrides for size and space. Nothing else changes.
 - A target: visible control plus padded hit area. Show both outlines.
 - The 24 x 24 CSS px floor and the 44 x 44 house standard, labelled with their levels.
+
+### 3. Tokens
+- Control heights: `--ds-size-control-sm`, `-md`, `-lg`. Row heights. Inset and stack tokens per mode.
+- The `[data-density]` attribute values: `comfortable`, `compact`.
+- The measured target size of each control in each mode.
 
 ### 4. States
 - The states of this foundation are its modes: comfortable and compact. Show each with default, hover, focus-visible, disabled and selected controls.

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
-import { FocusRing } from '../../.storybook/doc-page/specimens';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { FocusRing } from '../../fixtures/specimens/specimens';
 import { focusRules } from './focus.rules';
 
 const meta = { title: 'Foundations/Focus', parameters: { layout: 'fullscreen' } } satisfies Meta;

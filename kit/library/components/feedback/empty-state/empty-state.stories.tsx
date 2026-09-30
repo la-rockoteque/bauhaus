@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Icon } from '../../../primitives/icon/icon';
 import { Button } from '../../clickables/button/button';
 import { EmptyState } from './empty-state';
@@ -39,13 +39,11 @@ export const Showcase: StoryObj = {
             Projects you create appear here. Start with one to invite your team.
           </EmptyState>
         ),
-        stageWidth: 'calc(var(--ds-space-12) * 9)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Media', note: 'illustration or Icon, optional, aria-hidden', x: '-18px', y: '48px' },
-          { n: 2, label: 'Title', note: 'a heading, required', x: '-18px', y: '96px' },
-          { n: 3, label: 'Body', note: 'the reason, optional', x: 'calc(100% + 18px)', y: '130px' },
-          { n: 4, label: 'Actions', note: 'the next step, optional', x: '-18px', y: '190px' },
+          { n: 1, label: 'Media', note: 'illustration or Icon, optional, aria-hidden', target: '.ds-empty-state__media' },
+          { n: 2, label: 'Title', note: 'a heading, required', target: '.ds-empty-state__title' },
+          { n: 3, label: 'Body', note: 'the reason, optional', target: '.ds-empty-state__body' },
+          { n: 4, label: 'Actions', note: 'the next step, optional', target: '.ds-empty-state__actions' },
         ],
       }}
       specs={[

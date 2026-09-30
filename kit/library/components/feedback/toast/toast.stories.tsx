@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Button } from '../../clickables/button/button';
 import { ToastRegion } from './toast';
 import type { ToastData } from './toast';
@@ -85,14 +85,12 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: <Specimen initial={[sample('success', 'Conversation archived.', { id: 'an', title: 'Archived', action: { label: 'Undo', onAction: () => {} } })]} />,
-        stageWidth: 'calc(var(--ds-space-12) * 7)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Live region', note: 'role status or alert, always in the page', x: '-18px', y: '50%' },
-          { n: 2, label: 'Icon', note: 'status glyph with a spoken name', x: '20%', y: '-18px' },
-          { n: 3, label: 'Message', note: 'with an optional title', x: '50%', y: '-18px' },
-          { n: 4, label: 'Action', note: 'optional; makes the toast persistent', x: '30%', y: 'calc(100% + 18px)' },
-          { n: 5, label: 'Close button', note: 'named, 44px', x: 'calc(100% + 18px)', y: '30%' },
+          { n: 1, label: 'Live region', note: 'role status or alert, always in the page', target: '.ds-toast-region__live', at: 'top-start' },
+          { n: 2, label: 'Icon', note: 'status glyph with a spoken name', target: '.ds-toast__icon', at: 'top-start' },
+          { n: 3, label: 'Message', note: 'with an optional title', target: '.ds-toast__message' },
+          { n: 4, label: 'Action', note: 'optional; makes the toast persistent', target: '.ds-toast__action', at: 'bottom-end' },
+          { n: 5, label: 'Close button', note: 'named, 44px', target: '.ds-toast > .ds-icon-button', at: 'top-end' },
         ],
       }}
       specs={[

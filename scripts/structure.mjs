@@ -24,6 +24,8 @@ const USAGE_TEXT = `Usage: structure.mjs check <package-dir> [--json]
 
 const SKIP_DIRS = new Set(['node_modules', 'dist']);
 const LAYERS = ['foundations', 'themes', 'primitives', 'components', 'patterns'];
+// `fixtures` is a root that is not a layer: Storybook-only building blocks, sliced like components, never exported.
+const ROOTS = [...LAYERS, 'fixtures'];
 const BY_KIND = new Set(['hooks', 'utils', 'helpers', 'lib', 'common', 'shared', 'misc', 'types', 'constants', 'styles', 'stories', 'assets', 'core']);
 const MAIN_EXT = ['tsx', 'jsx', 'vue', 'svelte', 'ts'];
 const STORY_EXT = ['tsx', 'ts', 'jsx', 'js'];
@@ -42,6 +44,8 @@ const MAY_IMPORT = {
   primitives: ['foundations', 'primitives', 'root'],
   components: ['foundations', 'primitives', 'components', 'root'],
   patterns: ['components', 'primitives', 'root'],
+  // A fixture builds on the whole library, but only through its slices: the public entry stays closed to it.
+  fixtures: ['foundations', 'themes', 'primitives', 'components', 'patterns', 'fixtures', 'root'],
 };
 
 const finding = (id, severity, p, message, fix) => ({ id, severity, path: p, message, fix });
@@ -66,7 +70,7 @@ function sliceLayer(dir) {
   const parts = dir.split('/');
   // themes/ is itself a slice: one showcase and one guide for every theme; themes/<name>/ holds only tokens.
   if (dir === 'themes') return 'theme-set';
-  if (['foundations', 'themes', 'primitives', 'patterns'].includes(parts[0]) && parts.length === 2) return parts[0];
+  if (['foundations', 'themes', 'primitives', 'patterns', 'fixtures'].includes(parts[0]) && parts.length === 2) return parts[0];
   return parts[0] === 'components' && parts.length === 3 ? 'components' : null;
 }
 
@@ -74,7 +78,7 @@ function sliceLayer(dir) {
 function sliceOf(file) {
   const parts = file.split('/');
   const depth = parts[0] === 'components' ? 3 : 2;
-  return LAYERS.includes(parts[0]) && parts.length > depth ? parts.slice(0, depth).join('/') : null;
+  return ROOTS.includes(parts[0]) && parts.length > depth ? parts.slice(0, depth).join('/') : null;
 }
 
 // ---------- folder and slice checks ----------
@@ -84,7 +88,7 @@ function folderChecks({ dirs }) {
   for (const d of dirs) {
     const name = path.posix.basename(d);
     if (BY_KIND.has(name)) out.push(finding('misfile.folder-by-file-type', 'MEDIUM', d, `Folder "${name}" is named for a kind of file, not for what it holds.`, 'Move each file beside the code that uses it; shared code rises to the nearest common ancestor, named for what it does.'));
-    if (!d.includes('/') && !LAYERS.includes(name)) out.push(finding('structure.root', 'MEDIUM', d, `"${name}" is not a root folder of the library.`, `Move it into ${LAYERS.join(', ')}, or delete it.`));
+    if (!d.includes('/') && !ROOTS.includes(name)) out.push(finding('structure.root', 'MEDIUM', d, `"${name}" is not a root folder of the library.`, `Move it into ${ROOTS.join(', ')}, or delete it.`));
     if (d.split('/').length === 2 && d.startsWith('components/')) {
       const members = dirs.filter((x) => x.startsWith(`${d}/`) && x.split('/').length === 3).length;
       if (members < 2) out.push(finding('structure.family', 'LOW', d, `Family "${name}" has ${members} component slice${members === 1 ? '' : 's'}; a family needs 2 or more.`, 'Move the slice into the closest family, or wait for the second member.'));
@@ -101,8 +105,11 @@ function nameProblem(dir, layer, files) {
   return problems;
 }
 
-/** The showcase contract: the story file imports from a path ending in `doc-page` and renders `<DocPage`. */
-const rendersDocPage = (text) => /\bfrom\s*['"][^'"]*doc-page['"]/.test(text) && /<DocPage\b/.test(text);
+/** The showcase contract: the story file imports DocPage from a path ending in `fixtures/doc-page/doc-page` and renders `<DocPage`. */
+const rendersDocPage = (text) => /\bfrom\s*['"][^'"]*fixtures\/doc-page\/doc-page['"]/.test(text) && /<DocPage\b/.test(text);
+
+/** A fixture holds logic when its main file has a hook or an exported function that is not a component. */
+const hasLogic = (text) => /\buse(?:State|Effect|LayoutEffect|Memo|Ref|SyncExternalStore)\b|export (?:async )?function [a-z]/.test(text);
 
 function sliceChecks({ root, dirs, files }) {
   const out = [];
@@ -115,12 +122,20 @@ function sliceChecks({ root, dirs, files }) {
     if (problems.length) out.push(finding('structure.slice-name', 'MEDIUM', dir, `Slice "${name}": ${problems.join('; ')}.`, `Name the folder in kebab-case and its main file <folder>.tsx (or .vue, .svelte, .ts).`));
     const component = ['components', 'primitives'].includes(layer);
     const need = (id, severity, ok, what) => ok || out.push(finding(id, severity, dir, `Slice "${name}" has no ${what}.`, `Add ${what} to ${dir}/.`));
+    if (layer === 'fixtures') {
+      // A fixture is a Storybook-only block: a story that shows it alone, and a test when it holds logic. No guide, no rulebook.
+      need('slice.story', 'HIGH', STORY_EXT.some((e) => files.has(`${dir}/${name}.stories.${e}`)), `${name}.stories.tsx`);
+      const main = MAIN_EXT.map((e) => `${dir}/${name}.${e}`).find((f) => files.has(f));
+      const logic = main && hasLogic(fs.readFileSync(path.join(root, main), 'utf8'));
+      need('slice.test', 'MEDIUM', !logic || STORY_EXT.some((e) => files.has(`${dir}/${name}.test.${e}`)), `${name}.test.tsx`);
+      continue;
+    }
     if (layer === 'themes') { need('slice.tokens', 'MEDIUM', has(dir, 'tokens.json'), `${name}.tokens.json`); continue; }
     need('slice.story', 'HIGH', STORY_EXT.some((e) => files.has(`${dir}/${name}.stories.${e}`)), `${name}.stories.tsx`);
     need('slice.page', 'MEDIUM', has(dir, 'mdx'), `${name}.mdx`);
     const story = STORY_EXT.map((e) => `${dir}/${name}.stories.${e}`).find((f) => files.has(f));
     if (story && !rendersDocPage(fs.readFileSync(path.join(root, story), 'utf8'))) {
-      out.push(finding('slice.showcase', 'MEDIUM', story, `Slice "${name}": the story file does not render a DocPage.`, `Import DocPage from a path ending in doc-page (.storybook/doc-page/doc-page) and render <DocPage …/> in ${name}.stories.tsx.`));
+      out.push(finding('slice.showcase', 'MEDIUM', story, `Slice "${name}": the story file does not render a DocPage.`, `Import DocPage from a path ending in fixtures/doc-page/doc-page and render <DocPage …/> in ${name}.stories.tsx.`));
     }
     need('slice.rules', 'MEDIUM', layer === 'theme-set' || has(dir, 'rules.ts'), `${name}.rules.ts`);
     need('slice.test', 'MEDIUM', !component || STORY_EXT.some((e) => files.has(`${dir}/${name}.test.${e}`)), `${name}.test.tsx`);
@@ -138,7 +153,7 @@ function storyChecks({ files }) {
     if (!m) continue;
     const dir = path.posix.dirname(f);
     const layer = sliceLayer(dir);
-    const documentsSlice = ['foundations', 'theme-set', 'patterns'].includes(layer) && m[1] === path.posix.basename(dir);
+    const documentsSlice = ['foundations', 'theme-set', 'patterns', 'fixtures'].includes(layer) && m[1] === path.posix.basename(dir);
     if (!documentsSlice && !MAIN_EXT.some((e) => files.has(`${dir}/${m[1]}.${e}`))) {
       out.push(finding('misfile.story-far-from-component', 'MEDIUM', f, `Story "${m[1]}" has no ${m[1]}.tsx beside it.`, 'Move the story into the folder of the component it shows.'));
     }
@@ -206,10 +221,12 @@ function walk(dir) {
 
 const stripComments = (text) => text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');
 
-/** No raw colour or size in .storybook: the pages are styled with the library's tokens only. */
+/** No raw colour or size in .storybook or fixtures: the pages are styled with the library's tokens only. */
 export function storybookChecks({ root }) {
-  const dir = path.join(root, '.storybook');
-  if (!fs.existsSync(dir)) return [];
+  return ['.storybook', 'fixtures'].map((name) => path.join(root, name)).filter((dir) => fs.existsSync(dir)).flatMap((dir) => storybookHits(root, dir));
+}
+
+function storybookHits(root, dir) {
   return walk(dir).filter((f) => STORYBOOK_FILE.test(f) && !GENERATED.test(f)).flatMap((f) => {
     const hits = [...new Set(stripComments(fs.readFileSync(f, 'utf8')).match(STORYBOOK_LITERAL) ?? [])];
     const rel = path.relative(root, f).split(path.sep).join('/');
@@ -223,16 +240,21 @@ const importsOf = (text, ext) => [...cleanSource(text, ext).matchAll(IMPORT)].ma
 const isApp = (spec) => APP_MODULES.some((m) => spec === m || spec.startsWith(`${m}/`)) || APP_ALIAS.test(spec);
 
 /** What kind of local file `target` (package-relative, posix) is: a layer name, or `root`. */
-const kindOf = (target) => (LAYERS.includes(target.split('/')[0]) && target.includes('/') ? target.split('/')[0] : 'root');
+const kindOf = (target) => (ROOTS.includes(target.split('/')[0]) && target.includes('/') ? target.split('/')[0] : 'root');
 
 function relativeImport(file, spec, files) {
   const target = path.posix.normalize(path.posix.join(path.posix.dirname(file), spec));
-  // A story may import the page builder that lives in .storybook, outside the package layers.
+  // A story may import from .storybook, outside the package layers.
   if (STORY_FILE.test(file) && target.split('/')[0] === '.storybook') return null;
+  // A fixture is Storybook-only. Stories, tests and other fixtures may use it; nothing else in the library may.
+  if (target.split('/')[0] === 'fixtures' && file.split('/')[0] !== 'fixtures' && !STORY_FILE.test(file) && !/\.test\.[jt]sx?$/.test(file)) {
+    return finding('fixture.exposed', 'HIGH', file, `Imports a fixture ("${spec}"). Fixtures are Storybook-only and never ship.`, 'Only *.stories.tsx, *.test.tsx, .storybook/ and other fixtures may import fixtures.');
+  }
+  if (target.split('/')[0] === 'fixtures') return null;
   if (target.startsWith('..')) return finding('misfile.library-imports-app', 'HIGH', file, `"${spec}" reaches out of the package.`, 'Take the value as a prop; the library never imports the app.');
   const own = sliceOf(file);
   if (own && (target === own || target.startsWith(`${own}/`))) return null;
-  const layer = LAYERS.includes(file.split('/')[0]) ? file.split('/')[0] : null;
+  const layer = ROOTS.includes(file.split('/')[0]) ? file.split('/')[0] : null;
   const kind = kindOf(target);
   const entry = kind === 'root' && /^index(\.|$)/.test(target);
   if (!layer || (MAY_IMPORT[layer].includes(kind) && !entry)) return null;

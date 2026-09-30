@@ -42,8 +42,7 @@
 }
 
 @media (hover: hover) {
-  .ds-pagination__select:hover,
-  .ds-pagination__select.doc-force-hover {
+  .ds-pagination__select:hover {
     border-color: var(--ds-field-border-hover);
   }
 }
@@ -86,8 +85,7 @@
 }
 
 @media (hover: hover) {
-  .ds-pagination__item:hover:not(.ds-pagination__item--current):not(:disabled):not([aria-disabled]),
-  .ds-pagination__item.doc-force-hover {
+  .ds-pagination__item:hover:not(.ds-pagination__item--current):not(:disabled):not([aria-disabled]) {
     background: var(--ds-state-hover-layer);
   }
 }

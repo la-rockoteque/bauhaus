@@ -21,15 +21,13 @@
   min-inline-size: var(--ds-size-target-min);
 }
 
-/* Browsers let :visited change the colour only. Muted keeps 4.5:1 and the underline stays. */
-.ds-link:visited,
-.ds-link.doc-force-visited {
-  color: var(--ds-text-muted);
+/* Browsers let :visited change the colour only. text.link-visited keeps 4.5:1 and the underline stays. */
+.ds-link:visited {
+  color: var(--ds-text-link-visited);
 }
 
 @media (hover: hover) {
-  .ds-link:hover,
-  .ds-link.doc-force-hover {
+  .ds-link:hover {
     text-decoration-thickness: var(--ds-size-border-thick);
   }
 }

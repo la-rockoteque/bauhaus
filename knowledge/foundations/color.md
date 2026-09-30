@@ -69,6 +69,7 @@ sources:
 - Use three palette kinds: **categorical** (distinct hues, few of them), **sequential** (one hue, lightness runs low to high), **diverging** (two hues meeting at a neutral midpoint).
 - Keep categorical sets small. Distinguishability falls as the set grows. Group or filter instead of adding hues.
 - Check each mark against its background at 3:1. (WCAG 1.4.11 Non-text Contrast, AA)
+- Generate categorical series by the golden-angle rule, so no hue repeats and neighbours sit about 137 degrees apart: series n = `oklch(L C, H0 + n × 137.508)`, with L and C fixed so every series has the same semi-muted weight. Store `series.hue` (250), `series.step` (137.508) and `series.chroma` (0.075) as primitives and `series.lightness` as a theme role (0.55 in light, 0.72 in dark). A token file cannot compute a colour, so the CSS composes it: `oklch(var(--ds-series-lightness) var(--ds-series-chroma) calc(var(--ds-series-hue) + var(--part) * var(--ds-series-step)))`, with `--part: n` set on the element. Pick the lightness per theme so series 1 to 12 keep 3:1 on the page and 3:1 for a number drawn on the fill. Never let the colour carry the meaning alone: add a number, a label or a shape. (WCAG 1.4.1, A; 1.4.11, AA)
 - Keep chart colours as their own role group (`--ds-data-1`, `--ds-data-2`), or read a `colors` scale for sequential ramps. Do not reuse status roles for categories. Red then means "danger" everywhere.
 - Full chart guidance is in `patterns/dashboards-charts.md`.
 
@@ -135,17 +136,17 @@ A colour page in the styleguide and in Storybook carries these six sections. (Or
 - Say what colour does in three jobs: read, group, report state. A foundation, stored as tokens. (`taxonomy/layers.md`)
 - Show the palette as scales, the colors that alias it, and the roles of each theme side by side.
 
-### 2. Tokens
+### 2. Anatomy
+- A palette hue: grades 100 to 900, one hue, lightness runs light to dark.
+- A role group: required members (text, surface, border, action, four status families), optional members (data).
+- A status family: `solid`, `text`, `soft`, `line`. All four are required. (Consistent members make status testable.)
+
+### 3. Tokens
 - Palette: `--ds-palette-<hue>-<grade>`. Show the OKLCH value and the hex.
 - Colors: `--ds-colors-<role>-<grade>` and the palette entry each aliases.
 - Roles: text, surface, border, action, status, data. One row per role: value in each theme, intent, allowed surfaces.
 - State roles: state layers, `disabled.*`, `focus.ring.*`.
 - Show the measured contrast ratio beside each text and surface pair, and the level it meets. (WCAG 1.4.3, AA; 1.4.6, AAA)
-
-### 3. Anatomy
-- A palette hue: grades 100 to 900, one hue, lightness runs light to dark.
-- A role group: required members (text, surface, border, action, four status families), optional members (data).
-- A status family: `solid`, `text`, `soft`, `line`. All four are required. (Consistent members make status testable.)
 
 ### 4. States
 - Show every colour state in a matrix: default, hover, focus-visible, pressed, disabled, selected, error, success, warning. Mark each cell `designed`, `n/a` with a reason, or `missing`. (`states/interaction-states.md`)

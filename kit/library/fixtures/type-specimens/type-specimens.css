@@ -1,0 +1,66 @@
+/* Typography specimens: typefaces, fonts, text styles */
+
+.spec-faces {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--doc-card-min) * 2)), 1fr));
+  gap: var(--ds-space-3);
+}
+
+.spec-face {
+  display: grid;
+  align-content: start;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-4);
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.spec-face-head {
+  display: grid;
+  gap: var(--ds-space-1);
+  font-size: var(--ds-font-size-xs);
+}
+
+.spec-face p {
+  margin: 0;
+}
+
+.spec-face-pangram {
+  font-size: var(--ds-font-size-xl);
+  line-height: var(--ds-font-line-height-tight);
+}
+
+.spec-face-french,
+.spec-face-confusable,
+.spec-face-figures,
+.spec-face-ramp {
+  font-size: var(--ds-font-size-md);
+}
+
+.spec-face-ramp {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-4);
+}
+
+.spec-face-figures {
+  display: grid;
+  gap: var(--ds-space-1);
+}
+
+.spec-face-none {
+  font-size: var(--ds-font-size-xs);
+}
+
+.spec-role-row {
+  display: grid;
+  grid-template-columns: minmax(0, calc(var(--ds-space-12) * 3)) minmax(0, 1fr);
+  gap: var(--ds-space-1) var(--ds-space-4);
+  align-items: baseline;
+  font-size: var(--ds-font-size-sm);
+}
+
+.spec-role-row .doc-muted {
+  grid-column: 2;
+}

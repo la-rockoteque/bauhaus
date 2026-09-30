@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { TextField } from './text-field';
 import { textFieldRules } from './text-field.rules';
 
@@ -42,13 +42,12 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: cell(<TextField label="Email address" required description="We send the receipt here." error="Enter an email address, like name@example.com" defaultValue="ada@" />),
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Label', note: 'required, always visible', x: '-18px', y: '12px' },
-          { n: 2, label: 'Required marker', note: 'optional, in words', x: 'calc(100% + 18px)', y: '12px' },
-          { n: 3, label: 'Description', note: 'optional', x: '-18px', y: '40px' },
-          { n: 4, label: 'Input', note: 'native, required', x: '-18px', y: '88px' },
-          { n: 5, label: 'Error', note: 'shown when the value is wrong', x: '-18px', y: 'calc(100% - 12px)' },
+          { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label', at: 'top-start' },
+          { n: 2, label: 'Required marker', note: 'optional, in words', target: '.ds-field__marker', at: 'bottom-end' },
+          { n: 3, label: 'Description', note: 'optional', target: '.ds-field__description' },
+          { n: 4, label: 'Input', note: 'native, required', target: '.ds-text-field__input' },
+          { n: 5, label: 'Error', note: 'shown when the value is wrong', target: '.ds-field__error' },
         ],
       }}
       specs={[
@@ -80,7 +79,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'correct', status: 'designed', render: cell(<TextField label="Email address" description="We send the receipt here." defaultValue="ada@example.com" />), trigger: 'error cleared', note: 'The message goes as soon as the value is valid. The description returns.' },
           { id: 'done', status: 'n/a', reason: 'Saving belongs to the form. The view announces it with role="status".' },
           { id: 'default', status: 'designed', render: cell(<TextField label="Full name" defaultValue="Ada Lovelace" />), trigger: 'rest' },
-          { id: 'hover', status: 'designed', render: cell(<TextField label="Full name" defaultValue="Ada Lovelace" style={{ borderColor: 'var(--ds-field-border-hover)' }} />), trigger: ':hover', note: 'Set by hand here: the real rule sits in @media (hover: hover), which the grid cannot replay.' },
+          { id: 'hover', status: 'designed', render: cell(<TextField label="Full name" defaultValue="Ada Lovelace" className="doc-force-hover" />), trigger: ':hover', note: 'Forced by .doc-force-hover. The border takes field.border-hover.' },
           { id: 'focus-visible', status: 'designed', render: cell(<TextField label="Full name" defaultValue="Ada Lovelace" className="doc-force-focus" />), trigger: ':focus-visible', note: 'Forced by .doc-force-focus.' },
           { id: 'active', status: 'n/a', reason: 'Typing is the feedback. A text field has no pressed look.' },
           { id: 'disabled', status: 'designed', render: cell(<TextField label="Account number" defaultValue="0012-3456" disabled description="Set when the account opens." />), trigger: 'disabled', note: 'Say why, in the description.' },

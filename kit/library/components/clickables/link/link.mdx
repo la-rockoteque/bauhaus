@@ -45,7 +45,7 @@ The Showcase story holds the tokens, the anatomy, the states grid, the live rule
 - **Hover** thickens the underline, inside `@media (hover: hover)`, so a touch screen does not keep a stuck hover.
 - **Focus-visible** draws an outline offset from the text. Mouse presses do not show it.
 - **Active** switches to `text.default` for the moment of the press.
-- **Visited** uses `text.muted`. Browsers let `:visited` change the colour only, so the underline carries the "link" meaning. The design system has no visited role yet, so the muted text role stands in.
+- **Visited** uses `text.link-visited`, a hue apart from `text.link` that keeps 4.5:1 on every surface in both themes. Browsers let `:visited` change the colour only, so the underline carries the "link" meaning.
 - **Selected (current)** is heavier and more underlined. The weight and the line do the work that colour cannot.
 - **Disabled** is n/a. A link that cannot be followed is text. Say why in the surrounding copy.
 - **Too many** wraps the text, and `overflow-wrap: anywhere` breaks a long URL. Nothing truncates (WCAG 1.4.10, AA).

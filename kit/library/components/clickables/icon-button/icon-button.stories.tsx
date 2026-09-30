@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { IconButton } from './icon-button';
 import { iconButtonRules } from './icon-button.rules';
 
@@ -39,11 +39,10 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: close(),
-        stageWidth: 'calc(var(--ds-space-12) * 6)',
         parts: [
-          { n: 1, label: 'Button container', note: 'required', x: '-18px', y: '50%' },
-          { n: 2, label: 'Icon', note: 'required, hidden from assistive technology', x: '50%', y: '-18px' },
-          { n: 3, label: 'Label', note: 'required; becomes aria-label, never shown', x: 'calc(100% + 18px)', y: '50%' },
+          { n: 1, label: 'Button container', note: 'required', target: '.ds-icon-button', at: 'top-start' },
+          { n: 2, label: 'Icon', note: 'required, hidden from assistive technology', target: '.ds-icon-button__icon' },
+          { n: 3, label: 'Label', note: 'required; becomes aria-label, never shown', target: '.ds-icon-button', at: 'bottom-end' },
         ],
       }}
       specs={[

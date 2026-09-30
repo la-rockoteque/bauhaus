@@ -1,0 +1,87 @@
+/* Elevation: rungs, scrim and stacking order. */
+
+.spec-elev-stage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-8);
+  padding: var(--ds-space-8);
+  background: var(--ds-surface-sunken);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.spec-elev-tile {
+  display: grid;
+  gap: var(--ds-space-2);
+  max-inline-size: calc(var(--ds-space-12) * 4);
+  font-size: var(--ds-font-size-sm);
+}
+
+.spec-elev-surface {
+  inline-size: calc(var(--ds-space-12) * 4);
+  block-size: calc(var(--ds-space-12) * 2);
+  border-radius: var(--ds-radius-overlay);
+}
+
+.spec-elev-scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  min-block-size: calc(var(--ds-space-12) * 6);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.spec-elev-page {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: start;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-4);
+  background: var(--ds-surface-sunken);
+}
+
+.spec-elev-card {
+  inline-size: calc(var(--ds-space-12) * 5);
+  padding: var(--ds-space-4);
+  border-radius: var(--ds-radius-md);
+}
+
+.spec-elev-scrim {
+  position: absolute;
+  inset: 0;
+}
+
+.spec-elev-modal {
+  position: relative;
+  padding: var(--ds-space-6) var(--ds-space-8);
+  border-radius: var(--ds-radius-overlay);
+}
+
+.spec-z {
+  display: grid;
+  gap: var(--ds-space-2);
+  margin: 0;
+  padding: var(--ds-space-4);
+  list-style: none;
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.spec-z-row {
+  display: grid;
+  grid-template-columns: minmax(0, calc(var(--ds-space-12) * 3)) minmax(0, 1fr) minmax(0, calc(var(--ds-space-12)));
+  align-items: center;
+  gap: var(--ds-space-4);
+  font-size: var(--ds-font-size-sm);
+}
+
+.spec-z-bar {
+  max-inline-size: 100%;
+  block-size: var(--ds-space-3);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-action-primary);
+}

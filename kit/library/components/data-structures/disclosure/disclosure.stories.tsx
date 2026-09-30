@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Text } from '../../../primitives/text/text';
-import stylesheet from './disclosure.css?raw';
 import { Accordion, AccordionItem } from './accordion';
 import { Disclosure } from './disclosure';
 import { disclosureRules } from './disclosure.rules';
@@ -14,9 +13,7 @@ const meta = { title: 'Data structures/Disclosure', parameters: { layout: 'fulls
 
 export default meta;
 
-const forcedHover = [...stylesheet.matchAll(/@media \(hover: hover\)\s*\{([\s\S]*?)\n\}/g)].map((match) => match[1].replaceAll(':hover', '.doc-force-hover')).join('\n');
-
-/** Adds a forced-state class to the first match of `target`, so the real rule paints it. Hover rules sit in a media block, so their copy is read from the stylesheet. */
+/** Adds a forced-state class to the first match of `target`, so the real rule paints it. */
 function Force({ cls, target, children }: { cls: string; target: string; children: ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -24,7 +21,6 @@ function Force({ cls, target, children }: { cls: string; target: string; childre
   }, [cls, target]);
   return (
     <div ref={box} style={{ inlineSize: '100%' }}>
-      <style>{forcedHover}</style>
       {children}
     </div>
   );
@@ -69,13 +65,11 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}><Disclosure title="Shipping" open onToggle={() => undefined}><Body>Orders leave within two business days.</Body></Disclosure></div>,
-        stageWidth: 'calc(var(--ds-space-12) * 5)',
-        stagePadding: 'var(--ds-space-6)',
         parts: [
-          { n: 1, label: 'Header', note: 'summary, or a button in a heading; required', x: '-18px', y: '20%' },
-          { n: 2, label: 'Title', note: 'wraps, never truncates', x: '30%', y: '-18px' },
-          { n: 3, label: 'Chevron', note: 'turns when open; hidden from assistive technology', x: 'calc(100% + 18px)', y: '20%' },
-          { n: 4, label: 'Panel', note: 'the content', x: '50%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Header', note: 'summary, or a button in a heading; required', target: '.ds-disclosure__trigger', at: 'top-start' },
+          { n: 2, label: 'Title', note: 'wraps, never truncates', target: '.ds-disclosure__title' },
+          { n: 3, label: 'Chevron', note: 'turns when open; hidden from assistive technology', target: '.ds-disclosure__icon', at: 'bottom-end' },
+          { n: 4, label: 'Panel', note: 'the content', target: '.ds-disclosure__panel' },
         ],
       }}
       specs={[

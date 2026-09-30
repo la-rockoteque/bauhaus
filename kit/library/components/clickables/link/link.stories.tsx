@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Link } from './link';
 import { linkRules } from './link.rules';
 
@@ -23,10 +23,11 @@ export const Showcase: StoryObj = {
       usedFor="Text links in a sentence, footer and nav items, breadcrumb crumbs, pagination page links, external references."
       tokens={{
         mode: 'consumed',
-        note: 'The link has no component tokens. The visited colour has no role of its own: it reads text.muted (reported as a missing token).',
+        note: 'The link has no component tokens. The visited colour reads text.link-visited.',
         rows: [
           { name: 'text.link', tier: 'role', use: 'Link text at rest; 4.5:1 on the page in both themes', swatch: '--ds-text-link' },
-          { name: 'text.muted · text.default', tier: 'role', use: 'Visited text, and the pressed colour', swatch: '--ds-text-muted' },
+          { name: 'text.link-visited', tier: 'role', use: 'Visited link text; another hue than text.link, 4.5:1 on the page in both themes', swatch: '--ds-text-link-visited' },
+          { name: 'text.default', tier: 'role', use: 'The pressed colour', swatch: '--ds-text-default' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator', swatch: '--ds-focus-ring-color' },
           { name: 'text.label.weight', tier: '2', use: 'Weight of the current link' },
           { name: 'size.border.thin · size.border.thick', tier: '2', use: 'Underline at rest, and on hover or current' },
@@ -36,11 +37,10 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: <Link href={HREF} external>Read the WCAG guide</Link>,
-        stageWidth: 'calc(var(--ds-space-12) * 7)',
         parts: [
-          { n: 1, label: 'Text', note: 'children, required; underlined', x: '-18px', y: '50%' },
-          { n: 2, label: 'External icon', note: 'shown when external', x: 'calc(100% + 18px)', y: '50%' },
-          { n: 3, label: 'Hidden warning', note: 'externalLabel, spoken only', x: '50%', y: '-18px' },
+          { n: 1, label: 'Text', note: 'children, required; underlined', target: '.ds-link', at: 'top-start' },
+          { n: 2, label: 'External icon', note: 'shown when external', target: '.ds-link .ds-icon', at: 'bottom-end' },
+          { n: 3, label: 'Hidden warning', note: 'externalLabel, spoken only', target: '.ds-link' },
         ],
       }}
       specs={[
@@ -75,7 +75,7 @@ export const Showcase: StoryObj = {
           { id: 'active', status: 'designed', render: <Link href={HREF} className="doc-force-active">Shipping policy</Link>, trigger: ':active', note: 'Forced by .doc-force-active.' },
           { id: 'disabled', status: 'n/a', reason: 'An anchor with no href is not a link. Show plain text and say why the destination is unavailable.' },
           { id: 'selected', status: 'designed', label: 'Selected (current)', render: <Link href={HREF} current standalone>Shipments</Link>, trigger: 'current', note: 'aria-current="page"; heavier text and a thicker underline.' },
-          { id: 'visited', status: 'designed', group: 'interaction', render: <Link href={HREF} className="doc-force-visited">Shipping policy</Link>, trigger: ':visited', note: 'Muted text, still underlined. Forced by .doc-force-visited.' },
+          { id: 'visited', status: 'designed', group: 'interaction', render: <Link href={HREF} className="doc-force-visited">Shipping policy</Link>, trigger: ':visited', note: 'Another hue, still underlined. Forced by .doc-force-visited.' },
           { id: 'external', status: 'designed', group: 'interaction', label: 'External', render: <Link href={HREF} external>Carrier tracking</Link>, trigger: 'external', note: 'Icon plus the hidden text "opens in a new tab".' },
         ],
       }}

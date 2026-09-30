@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Menu } from '../../overlays/menu/menu';
 import { MenuItem } from './menu-item';
 import { menuItemRules } from './menu-item.rules';
@@ -64,14 +64,12 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: inMenu(<MenuItem id="save" icon="check" description="Write the file to disk" shortcut="Ctrl+S">Save</MenuItem>),
-        stageWidth: 'calc(var(--ds-space-12) * 7)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Container', note: 'role menuitem, required', x: '-18px', y: '50%' },
-          { n: 2, label: 'Icon', note: 'optional, hidden from assistive technology', x: '9%', y: '-18px' },
-          { n: 3, label: 'Label', note: 'children, a string, required', x: '35%', y: '-18px' },
-          { n: 4, label: 'Description', note: 'optional', x: '35%', y: 'calc(100% + 18px)' },
-          { n: 5, label: 'Shortcut', note: 'optional hint', x: '92%', y: '-18px' },
+          { n: 1, label: 'Container', note: 'role menuitem, required', target: '.ds-menu-item', at: 'top-start' },
+          { n: 2, label: 'Icon', note: 'optional, hidden from assistive technology', target: '.ds-menu-item__lead', at: 'top-start' },
+          { n: 3, label: 'Label', note: 'children, a string, required', target: '.ds-menu-item__label' },
+          { n: 4, label: 'Description', note: 'optional', target: '.ds-menu-item__description', at: 'bottom-start' },
+          { n: 5, label: 'Shortcut', note: 'optional hint', target: '.ds-menu-item__shortcut', at: 'bottom-end' },
         ],
       }}
       specs={[

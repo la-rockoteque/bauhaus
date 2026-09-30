@@ -1,0 +1,290 @@
+/* Specimens (foundations and themes) */
+
+.spec-group {
+  margin-block-start: var(--ds-space-6);
+}
+
+.spec-group:first-child {
+  margin-block-start: 0;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--doc-card-min)), 1fr));
+  gap: var(--ds-space-3);
+}
+
+.spec-ramp {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--ds-space-12) * 1.5)), 1fr));
+  gap: var(--ds-space-1);
+}
+
+.spec-ramp-cell {
+  display: grid;
+  align-content: start;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-2);
+  background: var(--ds-surface-default);
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-tight);
+}
+
+.spec-ramp-chip {
+  block-size: calc(var(--ds-space-12) * 1.25);
+  margin-block-end: var(--ds-space-1);
+  border-radius: var(--ds-radius-sm);
+  border: thin solid var(--ds-border-default);
+}
+
+.spec-ramp-cell code {
+  font-size: var(--ds-font-size-xs);
+}
+
+.spec-role {
+  overflow: hidden;
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.spec-role-chip {
+  block-size: calc(var(--ds-space-12) * 1.25);
+  border-block-end: thin solid var(--ds-border-default);
+}
+
+.spec-role-meta {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-3);
+  font-size: var(--ds-font-size-xs);
+}
+
+.spec-themes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--ds-space-12) * 8)), 1fr));
+  gap: var(--ds-space-4);
+}
+
+.spec-theme {
+  padding: var(--ds-space-4);
+  background: var(--ds-surface-default);
+  color: var(--ds-text-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.spec-theme-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-block-end: var(--ds-space-3);
+}
+
+.spec-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--ds-space-3);
+  padding-block: var(--ds-space-1);
+  font-size: var(--ds-font-size-xs);
+}
+
+.spec-pair-sample {
+  padding: var(--ds-space-1) var(--ds-space-2);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-sm);
+  font-size: var(--ds-font-size-sm);
+}
+
+.spec-ok {
+  color: var(--ds-status-success);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.spec-bad {
+  color: var(--ds-status-error);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.spec-rows {
+  display: grid;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-4);
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: minmax(0, calc(var(--ds-space-12) * 3)) minmax(0, 1fr) minmax(0, calc(var(--ds-space-12) * 2));
+  align-items: center;
+  gap: var(--ds-space-4);
+  font-size: var(--ds-font-size-sm);
+}
+
+.spec-motion .spec-row {
+  grid-template-columns: minmax(0, calc(var(--ds-space-12) * 5)) minmax(0, 1fr) minmax(0, calc(var(--ds-space-12) * 4));
+}
+
+.spec-bar {
+  block-size: var(--ds-space-3);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-action-primary);
+}
+
+.spec-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-4);
+}
+
+.spec-chips {
+  justify-content: center;
+  gap: var(--ds-space-3);
+}
+
+.spec-chips .spec-radius {
+  inline-size: var(--ds-space-8);
+  block-size: var(--ds-space-8);
+  border-radius: var(--ds-radius-sm);
+  border: thin solid var(--ds-border-strong);
+}
+
+.spec-chips .spec-tile {
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.spec-tile {
+  display: grid;
+  gap: var(--ds-space-2);
+  justify-items: center;
+  font-size: var(--ds-font-size-xs);
+}
+
+.spec-radius {
+  inline-size: calc(var(--ds-space-12) * 1.5);
+  block-size: calc(var(--ds-space-12) * 1.5);
+  background: var(--ds-state-selected);
+  border: var(--ds-focus-ring-width) solid var(--ds-action-primary);
+}
+
+.spec-type {
+  display: grid;
+  grid-template-columns: minmax(0, calc(var(--ds-space-12) * 4)) minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--ds-space-4);
+  padding-block: var(--ds-space-3);
+  border-block-end: thin solid var(--ds-border-default);
+}
+
+.spec-type:last-child {
+  border-block-end: 0;
+}
+
+.spec-type-spec {
+  display: grid;
+  gap: var(--ds-space-1);
+  font-size: var(--ds-font-size-xs);
+}
+
+.spec-type-sample {
+  margin: 0;
+}
+
+.spec-focus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-6);
+}
+
+.spec-focus-ring {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+/* Motion: every swatch runs, because a still page cannot show duration. */
+
+.spec-motion {
+  display: grid;
+  gap: var(--ds-space-4);
+}
+
+.spec-motion-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-4);
+}
+
+.spec-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.spec-toggle input {
+  inline-size: var(--ds-space-4);
+  block-size: var(--ds-space-4);
+  accent-color: var(--ds-action-primary);
+}
+
+.spec-motion-stage {
+  padding: var(--ds-space-4);
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.spec-motion-rail {
+  position: relative;
+  block-size: var(--ds-space-5);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-surface-sunken);
+  container-type: inline-size;
+}
+
+.spec-motion-dot {
+  position: absolute;
+  inset-block: calc(var(--ds-space-1) / 2 * 3);
+  inline-size: calc(var(--ds-space-3) + var(--ds-space-1) / 2);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-action-primary);
+  animation-name: spec-travel;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+/* Reduced motion, simulated: the travel stops and only the fade is left. */
+.spec-motion-stage[data-reduced] .spec-motion-dot {
+  animation-name: spec-fade;
+}
+
+@keyframes spec-travel {
+  from {
+    transform: translateX(calc(var(--ds-space-1) / 2 * 3));
+  }
+
+  to {
+    transform: translateX(calc(100cqw - var(--ds-space-4)));
+  }
+}
+
+@keyframes spec-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spec-motion-dot {
+    animation-name: spec-fade;
+  }
+}

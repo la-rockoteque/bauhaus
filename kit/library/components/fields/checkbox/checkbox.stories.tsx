@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Checkbox } from './checkbox';
 import { checkboxRules } from './checkbox.rules';
 
@@ -38,12 +38,11 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: cell(<Checkbox label="Send me the newsletter" description="One email a month." defaultChecked />),
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Target', note: '44px, holds the native input', x: '-18px', y: '22px' },
-          { n: 2, label: 'Box and check', note: 'drawn, decorative', x: '22px', y: '-18px' },
-          { n: 3, label: 'Label', note: 'required, part of the target', x: 'calc(100% + 18px)', y: '22px' },
-          { n: 4, label: 'Description', note: 'optional', x: 'calc(100% + 18px)', y: 'calc(100% - 12px)' },
+          { n: 1, label: 'Target', note: '44px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
+          { n: 2, label: 'Box and check', note: 'drawn, decorative', target: '.ds-checkbox__box' },
+          { n: 3, label: 'Label', note: 'required, part of the target', target: '.ds-field__choice-label', at: 'bottom-end' },
+          { n: 4, label: 'Description', note: 'optional', target: '.ds-field__description' },
         ],
       }}
       specs={[
@@ -72,7 +71,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'correct', status: 'designed', render: cell(<Checkbox label="I accept the terms" required defaultChecked />), trigger: 'error cleared' },
           { id: 'done', status: 'n/a', reason: 'Saving belongs to the form.' },
           { id: 'default', status: 'designed', render: cell(<Checkbox label="Send me the newsletter" />), trigger: 'rest' },
-          { id: 'hover', status: 'designed', render: cell(<Checkbox label="Send me the newsletter" />), trigger: ':hover', note: 'Hover darkens the box outline inside @media (hover: hover); the grid cannot replay a media query, so this cell shows rest.' },
+          { id: 'hover', status: 'designed', render: cell(<Checkbox label="Send me the newsletter" className="doc-force-hover" />), trigger: ':hover', note: 'Forced by .doc-force-hover. The box outline takes field.border-hover.' },
           { id: 'focus-visible', status: 'designed', render: cell(<Checkbox label="Send me the newsletter" className="doc-force-focus" />), trigger: ':focus-visible', note: 'Forced by .doc-force-focus.' },
           { id: 'active', status: 'n/a', reason: 'The box changes at once on press; there is no pressed look.' },
           { id: 'disabled', status: 'designed', render: cell(<><Checkbox label="Send me the newsletter" disabled /><Checkbox label="Send me the newsletter" disabled defaultChecked /></>), trigger: 'disabled', note: 'Checked and unchecked. Say why, near the box.' },

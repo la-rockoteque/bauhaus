@@ -85,16 +85,16 @@ A typography page carries these six sections. (Order: `docs/architecture.md` § 
 - Say what type does: it sets voice, order and readability. Layer: foundation. (`taxonomy/layers.md`)
 - Lead with one specimen: the scale set in the product's own text.
 
-### 2. Tokens
+### 2. Anatomy
+- A text style is four parts: family, size step, line height, weight. All four are required. Letter spacing is optional.
+- The scale is 5 to 8 steps from a ratio or a hand-tuned list. State the ratio or say "hand-tuned".
+- Show a specimen with baseline and line-height boxes.
+
+### 3. Tokens
 - Families: `--ds-font-body`, `--ds-font-mono`.
 - Scale: `--ds-text-xs` to `--ds-text-2xl`, in `rem`, with the pixel value at default zoom.
 - Line heights: `--ds-lh-tight`, `--ds-lh-snug`, `--ds-lh-normal`. Weights: regular, medium, semibold.
 - Optional DTCG `typography` composite tokens that bundle family, size, weight and line height into named text styles. (`tokens/architecture.md`)
-
-### 3. Anatomy
-- A text style is four parts: family, size step, line height, weight. All four are required. Letter spacing is optional.
-- The scale is 5 to 8 steps from a ratio or a hand-tuned list. State the ratio or say "hand-tuned".
-- Show a specimen with baseline and line-height boxes.
 
 ### 4. States
 - Typography provides text styles for these states: link (default, hover, visited, focus-visible), current item (heavier weight), disabled text, placeholder, error text, changing value (tabular numerals).

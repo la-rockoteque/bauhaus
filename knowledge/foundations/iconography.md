@@ -78,15 +78,15 @@ An iconography page carries these six sections. (Order: `docs/architecture.md` Â
 - Say what icons do: they stand for actions and things in little space. Layer: foundation. (`taxonomy/layers.md`)
 - Lead with the whole set on one grid, in the product's own colours.
 
-### 2. Tokens
-- Sizes: `--ds-icon-sm`, `-md`, `-lg`, with the type step each pairs with.
-- Stroke width per size. Colour is `currentColor`, so no colour token is defined here.
-- The delivery choice (sprite or component) and its file path from the project config.
-
-### 3. Anatomy
+### 2. Anatomy
 - Grid, safe area, stroke, corner treatment, end caps. Show an annotated example.
 - An icon-only control: hit area, glyph, accessible name. The name is required. (WCAG 4.1.2 Name, Role, Value, A)
 - An icon with text: glyph and label. The glyph is decorative.
+
+### 3. Tokens
+- Sizes: `--ds-icon-sm`, `-md`, `-lg`, with the type step each pairs with.
+- Stroke width per size. Colour is `currentColor`, so no colour token is defined here.
+- The delivery choice (sprite or component) and its file path from the project config.
 
 ### 4. States
 - Icons inherit state from their control through `currentColor`: default, hover, active, disabled, selected, error.

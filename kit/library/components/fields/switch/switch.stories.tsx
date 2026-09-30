@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Switch } from './switch';
 import { switchRules } from './switch.rules';
 
@@ -37,13 +37,12 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: cell(<Switch label="Email alerts" description="Sent once a day." defaultChecked />),
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Target', note: '44px, holds the native input', x: '-18px', y: '22px' },
-          { n: 2, label: 'Track', note: 'drawn, decorative', x: '22px', y: '-18px' },
-          { n: 3, label: 'Thumb and check', note: 'position and mark carry the state', x: '22px', y: '54px' },
-          { n: 4, label: 'Label', note: 'required, never changes', x: 'calc(100% + 18px)', y: '22px' },
-          { n: 5, label: 'Description', note: 'optional', x: 'calc(100% + 18px)', y: 'calc(100% - 12px)' },
+          { n: 1, label: 'Target', note: '44px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
+          { n: 2, label: 'Track', note: 'drawn, decorative', target: '.ds-switch__track' },
+          { n: 3, label: 'Thumb and check', note: 'position and mark carry the state', target: '.ds-switch__thumb', at: 'bottom-start' },
+          { n: 4, label: 'Label', note: 'required, never changes', target: '.ds-field__choice-label', at: 'bottom-end' },
+          { n: 5, label: 'Description', note: 'optional', target: '.ds-field__description' },
         ],
       }}
       specs={[
@@ -70,7 +69,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'correct', status: 'n/a', reason: 'Confirmation belongs to the view.' },
           { id: 'done', status: 'n/a', reason: 'The view announces the change in a status message when it matters.' },
           { id: 'default', status: 'designed', render: cell(<Switch label="Email alerts" />), trigger: 'rest' },
-          { id: 'hover', status: 'designed', render: cell(<Switch label="Email alerts" />), trigger: ':hover', note: 'Hover darkens the track outline inside @media (hover: hover); the grid cannot replay it, so this cell shows rest.' },
+          { id: 'hover', status: 'designed', render: cell(<Switch label="Email alerts" className="doc-force-hover" />), trigger: ':hover', note: 'Forced by .doc-force-hover. The track outline takes field.border-hover.' },
           { id: 'focus-visible', status: 'designed', render: cell(<Switch label="Email alerts" className="doc-force-focus" />), trigger: ':focus-visible', note: 'Forced by .doc-force-focus.' },
           { id: 'active', status: 'n/a', reason: 'The thumb slides on press; there is no pressed look.' },
           { id: 'disabled', status: 'designed', render: cell(<><Switch label="Email alerts" disabled /><Switch label="Email alerts" disabled defaultChecked /></>), trigger: 'disabled', note: 'Off and on. Say why, near the switch.' },

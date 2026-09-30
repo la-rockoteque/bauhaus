@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { Button, ComboBox, ComboBoxStateContext, FieldError as AriaFieldError, Input, Label, ListBox, ListBoxItem, Popover, Text } from 'react-aria-components';
 import type { Key } from 'react-aria-components';
@@ -35,13 +35,17 @@ export interface ComboboxProps {
   inputValue?: string;
   defaultInputValue?: string;
   onInputChange?: (value: string) => void;
-  /** Draw the list open, inline under the input, and keep it open. For a showcase grid that must show the list in place; a real field opens on the user's action. */
-  forceOpen?: boolean;
   required?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
   className?: string;
 }
+
+/**
+ * Showcase only, not exported from the package: a provider around a Combobox draws its list open, inline under the input, and keeps it open.
+ * A real field opens on the user's action.
+ */
+export const ForceOpenContext = createContext(false);
 
 /** Reopens the list whenever it closes. For showcases only. */
 function KeepOpen() {
@@ -56,8 +60,9 @@ function KeepOpen() {
 /** React Aria ComboBox styled with tokens. Focus stays in the input; the list is a popup; the result count is announced. */
 export function Combobox({
   label, description, error, requiredText, errorPrefix, options, emptyText = 'No results', loading = false, loadingText = 'Loading', placeholder, name,
-  selectedKey, defaultSelectedKey, onSelectionChange, inputValue, defaultInputValue, onInputChange, forceOpen = false, required, disabled, readOnly, className,
+  selectedKey, defaultSelectedKey, onSelectionChange, inputValue, defaultInputValue, onInputChange, required, disabled, readOnly, className,
 }: ComboboxProps) {
+  const forceOpen = useContext(ForceOpenContext);
   const disabledKeys = options.filter((option) => option.disabled).map((option) => option.id);
   const list = (
     <ListBox<ComboboxOption>

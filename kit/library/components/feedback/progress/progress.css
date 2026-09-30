@@ -63,7 +63,7 @@
   background-repeat: no-repeat;
   background-size: 40% 100%;
   background-position: -100% 0;
-  animation: ds-progress-slide calc(var(--ds-motion-duration-deliberate) * 4) linear infinite;
+  animation: ds-progress-slide var(--ds-motion-duration-loop) linear infinite;
 }
 
 .ds-progress__bar:indeterminate::-webkit-progress-bar {

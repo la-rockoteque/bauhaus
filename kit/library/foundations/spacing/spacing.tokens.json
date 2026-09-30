@@ -173,5 +173,21 @@
         "$description": "Large dialog."
       }
     }
+  },
+  "breakpoint": {
+    "$type": "dimension",
+    "$description": "Viewport widths where the layout changes. A custom property cannot sit in a media query, so a stylesheet writes the same number in @media (max-width) and an auto check holds the two equal.",
+    "sm": {
+      "$value": "640px",
+      "$description": "Small screens: a phone in landscape and up."
+    },
+    "md": {
+      "$value": "768px",
+      "$description": "Medium screens: a tablet in portrait and up."
+    },
+    "lg": {
+      "$value": "1024px",
+      "$description": "Large screens: a tablet in landscape and up."
+    }
   }
 }

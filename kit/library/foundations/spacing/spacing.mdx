@@ -39,6 +39,7 @@ The Showcase story holds the live scale, the semantic gaps, the live rulebook an
 
 Spacing has no interaction or lifecycle state. Two cells are decided:
 
+- **Breakpoints are tokens, but a media query cannot read them.** `breakpoint.sm`, `md` and `lg` are 640, 768 and 1024px. A stylesheet writes the same number in `@media (max-width: 768px)`, and `spacing.breakpoints-match` fails when a width in any query equals none of the three. Change a breakpoint in the token file and in every query in one commit.
 - **Density is n/a for now.** A `compact` theme would remap tier 2 tokens one step down. Controls would keep `size.target.min`, so a denser page never shrinks a target.
 - **Raised text spacing is designed.** Gaps are tokens and no container around text has a fixed height, so a user who raises text spacing loses nothing.
 

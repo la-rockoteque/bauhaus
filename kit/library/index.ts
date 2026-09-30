@@ -1,4 +1,6 @@
 // The public API. The app imports from here and never from a slice folder.
+import './foundations/motion/motion.css';
+import './foundations/color/series.css';
 export { Text } from './primitives/text/text';
 export type { TextProps, TextVariant } from './primitives/text/text';
 export { Box } from './primitives/box/box';

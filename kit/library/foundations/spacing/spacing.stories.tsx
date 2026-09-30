@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
-import { SpacingScale } from '../../.storybook/doc-page/specimens';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { SpacingScale } from '../../fixtures/specimens/specimens';
 import { spacingRules } from './spacing.rules';
 
 const meta = { title: 'Foundations/Spacing', parameters: { layout: 'fullscreen' } } satisfies Meta;
@@ -42,6 +42,7 @@ export const Showcase: StoryObj = {
           { name: 'size.control.sm · md · lg', tier: '2', use: 'Heights of buttons and fields: 44, 48, 56 px. Never below the target floor' },
           { name: 'size.icon.sm · md · lg', tier: '2', use: 'Side of an icon box: 16, 20, 24 px' },
           { name: 'size.border.thin · thick', tier: '2', use: 'Border widths: 1px hairline, and the focus ring width for emphasis' },
+          { name: 'breakpoint.sm · md · lg', tier: '2', use: 'Viewport widths where the layout changes: 640, 768, 1024 px. A media query cannot read a custom property, so a stylesheet writes the same number and spacing.breakpoints-match holds them equal' },
           { name: 'size.overlay.sm · md · lg', tier: '2', use: 'Maximum inline size of a floating surface: 20, 30, 40 rem' },
         ],
       }}

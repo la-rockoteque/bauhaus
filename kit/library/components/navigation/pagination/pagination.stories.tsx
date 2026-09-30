@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Pagination, type PaginationProps } from './pagination';
 import { paginationRules } from './pagination.rules';
 
@@ -45,14 +45,12 @@ export const Showcase: StoryObj = {
       }}
       anatomy={{
         render: show({ pageSize: SIZE }),
-        stageWidth: 'calc(var(--ds-space-12) * 16)',
-        stagePadding: 'var(--ds-space-12)',
         parts: [
-          { n: 1, label: 'Landmark', note: 'nav with aria-label, required', x: '-18px', y: '50%' },
-          { n: 2, label: 'Total', note: 'text from a prop', x: '4%', y: '-18px' },
-          { n: 3, label: 'Page-size select', note: 'native select, optional', x: '26%', y: '-18px' },
-          { n: 4, label: 'Previous and next', note: 'disabled at the ends', x: '10%', y: 'calc(100% + 18px)' },
-          { n: 5, label: 'Page', note: 'current has aria-current', x: '42%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Landmark', note: 'nav with aria-label, required', target: '.ds-pagination', at: 'top-start' },
+          { n: 2, label: 'Total', note: 'text from a prop', target: '.ds-pagination__total' },
+          { n: 3, label: 'Page-size select', note: 'native select, optional', target: '.ds-pagination__select', at: 'bottom-start' },
+          { n: 4, label: 'Previous and next', note: 'disabled at the ends', target: '.ds-pagination__list li:first-child button', at: 'top-end' },
+          { n: 5, label: 'Page', note: 'current has aria-current', target: '.ds-pagination__item--current', at: 'bottom-end' },
         ],
       }}
       specs={[

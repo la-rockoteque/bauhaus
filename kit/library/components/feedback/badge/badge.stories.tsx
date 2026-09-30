@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../../.storybook/doc-page/doc-page';
+import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { Badge } from './badge';
 import { badgeRules } from './badge.rules';
 
@@ -34,11 +34,10 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       anatomy={{
         render: <Badge status="warning" count={142} label="open alerts" />,
-        stageWidth: 'calc(var(--ds-space-12) * 3)',
         parts: [
-          { n: 1, label: 'Pill', note: 'the fill, status', x: '-18px', y: '50%' },
-          { n: 2, label: 'Visible text', note: 'a word, or a number capped at 99+', x: '50%', y: '-18px' },
-          { n: 3, label: 'Accessible name', note: 'the full number and what it counts', x: '50%', y: 'calc(100% + 18px)' },
+          { n: 1, label: 'Pill', note: 'the fill, status', target: '.ds-badge', at: 'top-start' },
+          { n: 2, label: 'Visible text', note: 'a word, or a number capped at 99+', target: '.ds-badge > span:first-child' },
+          { n: 3, label: 'Accessible name', note: 'the full number and what it counts', target: '.ds-badge .ds-visually-hidden', at: 'bottom-end' },
         ],
       }}
       specs={[

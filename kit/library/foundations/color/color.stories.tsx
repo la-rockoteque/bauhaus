@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DocPage } from '../../.storybook/doc-page/doc-page';
-import { ColorRamps, ContrastPairs, PaletteRamps, RoleChips, RoleSwatches } from '../../.storybook/doc-page/specimens';
+import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { ColorRamps, ContrastPairs, PaletteRamps, RoleChips, RoleSwatches } from '../../fixtures/specimens/specimens';
 import { colorRules } from './color.rules';
 
 // The showcase: one page story with live swatches, read from the generated tokens.
@@ -23,6 +23,8 @@ export const Showcase: StoryObj = {
         rows: [
           { name: 'palette.scarlet · dark-blue · teal · amber · green · gray  .100 … .900', tier: '1', use: 'Raw hex values, 100 lightest to 900 darkest. Read by colors only.', swatch: '--ds-palette-dark-blue-600' },
           { name: 'colors.primary · secondary · error · success · warning · info · neutral  .100 … .900', tier: '1', use: 'Aliases {palette.<hue>.<grade>}. Read by theme roles, charts and illustrations. The rebrand point.', swatch: '--ds-colors-primary-600' },
+          { name: 'series.hue · step · chroma', tier: '1', use: 'Golden-angle rule for categorical series: 250, 137.508, 0.075. Series n is oklch(lightness chroma, hue + n × step), composed in CSS with --part: n.' },
+          { name: 'series.lightness', tier: 'role', use: 'Lightness of every series colour: 0.55 in light, 0.72 in dark. Series 1 to 12 keep 3:1 on the page.' },
           { name: 'text.*', tier: 'role', use: 'default, muted, inverse, link', swatch: '--ds-text-default' },
           { name: 'surface.*', tier: 'role', use: 'default, raised, sunken', swatch: '--ds-surface-sunken' },
           { name: 'border.*', tier: 'role', use: 'default (decorative divider), strong (control boundary)', swatch: '--ds-border-strong' },

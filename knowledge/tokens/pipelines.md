@@ -151,13 +151,13 @@ A pipelines page carries these six sections. (Order: `docs/architecture.md` § P
 - Say what a pipeline does: it turns the stored foundation decisions into every platform's format. (`taxonomy/layers.md`)
 - Lead with a diagram: DTCG source, build, outputs, CI check.
 
-### 2. Tokens
-- The config fields that select the source, themes and outputs (`tokens.source`, `tokens.themes`, `tokens.outputs`, `prefix`).
-- The list of outputs the project builds, each with its path and consumer.
-
-### 3. Anatomy
+### 2. Anatomy
 - Source folder, theme folders, build script, outputs, drift check. Source and build script are required. Outputs are required. The Figma sync is optional.
 - The flow of one change: edit source, build, review diff, commit, CI check.
+
+### 3. Tokens
+- The config fields that select the source, themes and outputs (`tokens.source`, `tokens.themes`, `tokens.outputs`, `prefix`).
+- The list of outputs the project builds, each with its path and consumer.
 
 ### 4. States
 - A pipeline has build states: `build` writes outputs. `check` reports clean or drift. Show the exit result of each.
