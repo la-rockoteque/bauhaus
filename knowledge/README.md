@@ -58,6 +58,7 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 
 ## governance/ — keeping it coherent
 - `governance/page-contract.md` — the six sections every DSM page carries, per layer, and the anti-slop test.
+- `governance/decisions.md` — record every structural DS decision as an ADR: when, what, the template.
 - `governance/maturity.md` — maturity levels, where a project stands, what to do next.
 - `governance/contribution.md` — the four artifacts, the ≥ 2 occurrences rule, review flow.
 - `governance/rulebook.md` — rules, verify modes, advisories, known violations, ratchets.

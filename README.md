@@ -84,7 +84,8 @@ knowledge/   the knowledge base
 scripts/     token, extraction and contrast tools
 kit/         starter files: the library template, tokens, styleguide, Storybook (React)
 reference/   the original moship agents, for comparison only
-docs/        architecture.md — the contract every file follows
+docs/        architecture.md, library.md, component-contract.md — the contracts
+             adr/ — why each rule exists (architecture decision records)
 ```
 
 The Storybook kit and the seed styleguide are a verbatim port from moship-web. They still hold moship-specific pages, French UI copy and the `--mo-` prefix. They will be pruned step by step. See `kit/README.md`.

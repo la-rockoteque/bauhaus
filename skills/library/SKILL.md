@@ -109,3 +109,7 @@ Report findings on the package.
 ## Reports
 
 Language: `language.reports` from config. Severity `HIGH | MEDIUM | LOW`, sorted, max ten findings. End with the next subcommand to run.
+
+## Record the decisions
+
+Every answer given at a gate in this skill becomes an ADR in the project's ADR folder (`docs/adr/` if none), in the same change. Format: `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/decisions.md`.

@@ -26,7 +26,7 @@ Builds the system in six stages. The order is fixed. Each stage ends at a checkp
 4. **Propose before you populate.** A foundation is a decision. Put it to the user with `AskUserQuestion`: one focused question, 2-4 options, cost stated. Populate only after the answer.
 5. **Four artifacts.** A foundation or component is done when tokens, guide, showcase and rulebook entries ship together.
 6. **State matrix.** A component or pattern is not done without its matrix (`/bauhaus:states`). Each of the four artifacts carries the states: state roles, the States grid in the showcase, the reasoning in the guide, rules `<component>.state.<state>`.
-7. **Page contract.** Every slice carries six sections in order across showcase and guide: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Every Usage rule and Pitfall names a basis (`knowledge/governance/page-contract.md`).
+7. **Page contract.** Every slice carries six sections in order across showcase and guide: Introduction, Anatomy, Tokens, States, Usage, Pitfalls and don'ts. Every Usage rule and Pitfall names a basis (`knowledge/governance/page-contract.md`).
 8. **Slop check.** For each Usage and Pitfall line ask: "What is the basis?" and "Would this line be true of any design system?" No basis or generic: rewrite or cut.
 
 ## Steps
@@ -115,3 +115,7 @@ Refused:   <n> misfiles (ids)
 Open:      <advisories, decisions pending>
 Next:      <one step>
 ```
+
+## Record the decisions
+
+Every answer given at a gate in this skill becomes an ADR in the project's ADR folder (`docs/adr/` if none), in the same change. Format: `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/decisions.md`.

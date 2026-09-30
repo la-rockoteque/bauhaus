@@ -187,3 +187,7 @@ Next:       <one step>
 - Never skip the order of phase 9: foundations, their tokens, components, patterns, docs.
 - Sort findings by severity descending. Cap at ten per layer.
 - Never invent a misfile id or a citation.
+
+## Record the decisions
+
+Every answer given at a gate in this skill becomes an ADR in the project's ADR folder (`docs/adr/` if none), in the same change. Format: `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/decisions.md`.

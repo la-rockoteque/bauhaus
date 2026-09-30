@@ -412,6 +412,9 @@ For a whole repo, run `/bauhaus:analyse` (`${CLAUDE_PLUGIN_ROOT}/skills/analyse/
 
 ## 8. Governance
 
+**Record decisions.** Every answer a gate produces, and every structural choice you make, gets an ADR in the project's ADR folder (`docs/adr/` if it has none), in the same change. Read `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/decisions.md`. A changed decision supersedes its ADR; it never rewrites it.
+
+
 Read `knowledge/governance/` in full before you advise on it.
 
 **Maturity model.** `governance/maturity.md` defines the levels. Assess where the project

@@ -38,7 +38,7 @@ A foundation is a family of values and its scale. The scale is a decision, not a
 6. **Land the four artifacts in one pass.**
    1. **Tokens.** The foundation's decisions, stored as tokens in `<config.tokens.source>`: primitive tokens for the scale, semantic tokens for intents. Colour produces three things: `foundations/color/palette.tokens.json` (named hues with grades, primitive, never used by components), `foundations/color/colors.tokens.json` (primary, secondary, error, success, warning, info, neutral, 100 to 900, aliasing the palette: the rebrand point) and the roles in every theme (`themes/light`, the default, and `themes/dark`: `text.*`, `surface.*`, `border.*`, `action.*`, `status.*`, `focus.ring.*`, `disabled.*`, `state.*`, each aliasing `colors.*`). Every theme defines the same role names. In Carbon "colors" names the palette; here it names the role scales, defined once in `knowledge/foundations/color.md`. Then `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build` and `check`. Keep old names as deprecated aliases until the last call site moves.
    For typography the tokens are three files, see the typeface step below.
-   2. **Guide.** Write `foundations/<name>/<name>.mdx` (with `<Meta of={Stories}/>`) to the page contract. The full text of these sections goes here; the showcase carries the short Introduction, Tokens, Anatomy and the States grid:
+   2. **Guide.** Write `foundations/<name>/<name>.mdx` (with `<Meta of={Stories}/>`) to the page contract. The full text of these sections goes here; the showcase carries the short Introduction, Anatomy, Tokens and the States grid:
       1. Introduction: what the family is, its job, plain words first.
       2. Tokens: the tokens it defines, value and intent (colour: palette, colors, roles per theme).
       3. Anatomy: the scale and its structure (steps, ratio, grid).
@@ -90,3 +90,7 @@ Next:     <one step>
 - Never populate before the user answers.
 - A foundation is not done until all four artifacts ship together.
 - A foundation holds scales, not one-off values.
+
+## Record the decisions
+
+Every answer given at a gate in this skill becomes an ADR in the project's ADR folder (`docs/adr/` if none), in the same change. Format: `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/decisions.md`.

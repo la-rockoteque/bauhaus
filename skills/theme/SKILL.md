@@ -77,3 +77,7 @@ Open:      <failing pairs, states without override>
 - A theme defines every role. Never leave a role to inherit, and never rewrite a palette or colors value per theme.
 - Never ship a theme with a failing pair unless it is a written advisory.
 - Never hand-edit generated outputs.
+
+## Record the decisions
+
+Every answer given at a gate in this skill becomes an ADR in the project's ADR folder (`docs/adr/` if none), in the same change. Format: `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/decisions.md`.
