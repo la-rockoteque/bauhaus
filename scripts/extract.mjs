@@ -12,7 +12,7 @@ import { parseArgs } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { parseColor, luminance } from './contrast.mjs';
 
-const SKIP_DIRS = new Set(['node_modules', 'dist', 'build', '.git', 'storybook-static', 'coverage']);
+export const SKIP_DIRS = new Set(['node_modules', 'dist', 'build', '.git', 'storybook-static', 'coverage']);
 const EXTENSIONS = new Set(['.css', '.scss', '.sass', '.less', '.tsx', '.jsx', '.ts', '.js', '.vue', '.svelte', '.html']);
 // Test files hold CSS in strings and fixtures; they would inflate every count.
 const TEST_FILE = /\.(test|spec)\./;
@@ -38,14 +38,14 @@ export function walk(dir, base = dir, out = []) {
   return out;
 }
 
-const blank = (text, re) => text.replace(re, (m) => m.replace(/[^\n]/g, ' '));
+export const blank = (text, re) => text.replace(re, (m) => m.replace(/[^\n]/g, ' '));
 
-function cleanSource(source, ext) {
+export function cleanSource(source, ext) {
   const noBlock = blank(source, /\/\*[\s\S]*?\*\//g);
   return LINE_COMMENTS.has(ext) ? blank(noBlock, /(?<![:'"`])\/\/.*$/gm) : noBlock;
 }
 
-function lineFinder(text) {
+export function lineFinder(text) {
   const starts = [0];
   for (let i = 0; i < text.length; i++) if (text[i] === '\n') starts.push(i + 1);
   return (index) => {
@@ -215,6 +215,7 @@ export function scanFile(source, ext) {
   const { decls, customLines } = scanDeclarations(text, ext, lineOf);
   for (const d of decls) declRecords(d, add);
   scanColors(text, lineOf, customLines, add);
+  for (const r of records) if (r.category === 'color') r.prop = decls.findLast((d) => d.line === r.line)?.prop;
   return {
     records,
     declared: decls.filter((d) => d.prop.startsWith('--')).map((d) => ({ name: d.prop, value: d.value, line: d.line })),
@@ -236,6 +237,7 @@ function addFile(acc, file, scan) {
     const entry = bySlot(bySlot(acc.inventory, r.category, () => new Map()), r.value, () => ({ value: r.value, count: 0, declared: 0, files: [] }));
     entry.count += 1;
     entry.declared += r.declared ? 1 : 0;
+    if (r.prop) entry.props = { ...entry.props, [r.prop]: (entry.props?.[r.prop] ?? 0) + 1 }; // colours only: which property they sit in
     if (entry.files.length < MAX_FILES_PER_ENTRY) entry.files.push(where(r.line));
   }
   for (const d of scan.declared) {

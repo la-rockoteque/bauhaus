@@ -1,0 +1,2 @@
+.btn { padding: 5px 13px; color: #1f2937; background: #2563eb; border-radius: 6px; transition: background 150ms ease-out; }
+.btn--ghost { background: transparent; border: 1px solid #d1d5db; }
