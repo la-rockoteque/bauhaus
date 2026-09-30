@@ -1,13 +1,15 @@
 # Bauhaus
 
-A design-system workshop for AI agents. Bauhaus helps Claude Code build, extract, audit, evolve and advise on a design system (DSM): its tokens, primitives, patterns, styleguide, Storybook and rulebook.
+<img src="assets/bauhaus-512.png" alt="Bauhaus icon: stacked layers in red, black, blue and yellow" width="160">
 
-The name comes from the Bauhaus school (Weimar 1919, Dessau 1925, Berlin 1932–33). Its students took a preliminary course on form, colour and material first, then worked in the workshops. Bauhaus follows the same order: foundations first, then tokens, primitives and patterns. See `knowledge/bauhaus/principles.md`.
+A design-system workshop for AI agents. Bauhaus helps Claude Code build, extract, audit, evolve and advise on a design system (DSM): its tokens, components, patterns, styleguide, Storybook and rulebook.
+
+The name comes from the Bauhaus school (Weimar 1919, Dessau 1925, Berlin 1932–33). Its students took a preliminary course on form, colour and material first, then worked in the workshops. Bauhaus follows the same order: foundations first, then tokens, components and patterns. See `knowledge/bauhaus/principles.md`.
 
 ## What it gives you
 
-- **Four layers, never mixed.** Foundation, token, primitive, pattern. Every agent classifies an artifact before it builds or reviews it, and flags anything filed in the wrong layer (`knowledge/taxonomy/`).
-- **States as a core concept.** Every primitive, pattern and screen has a state matrix: Speelman's nine lifecycle states and the interaction states (`knowledge/states/`).
+- **Four layers, never mixed.** Foundation, token, component, pattern. Every agent classifies an artifact before it builds or reviews it, and flags anything filed in the wrong layer (`knowledge/taxonomy/`).
+- **States as a core concept.** Every component, pattern and screen has a state matrix: Speelman's nine lifecycle states and the interaction states (`knowledge/states/`).
 - **One page contract.** Every DSM page has an introduction, tokens, anatomy, states, a full usage guide, and pitfalls and don'ts. Every rule names its basis: a WCAG criterion with its level, an APG pattern, a heuristic, a published system or a research result (`knowledge/governance/page-contract.md`).
 - **Tech-agnostic tokens.** DTCG JSON is the source. `scripts/tokens.mjs` builds CSS, SCSS, JS, TS, JSON and a Tailwind preset.
 - **Plain words first.** Advice comes in two registers: plain for anyone, then precise for the implementer (`knowledge/taxonomy/plain-language.md`).
@@ -33,9 +35,10 @@ claude plugin install bauhaus@bauhaus
 | `/bauhaus:advise` | Ask any design-system question. Get a plain answer, then a precise one. |
 | `/bauhaus:audit` | Grade a component, a page or the working changes. |
 | `/bauhaus:states` | Author or audit a state matrix. |
+| `/bauhaus:library` | Choose where the DS lives, scaffold the isolated library, place and move components into slices, check the structure. |
 | `/bauhaus:tokens` | Author, rename, deprecate or build tokens. |
 | `/bauhaus:foundation` | Add or evolve a foundation. |
-| `/bauhaus:component` | Add or evolve a primitive. |
+| `/bauhaus:component` | Add or evolve a component. |
 | `/bauhaus:pattern` | Add or evolve a pattern. |
 | `/bauhaus:theme` | Add a theme: dark, brand, high contrast, density. |
 | `/bauhaus:styleguide` | Write or resync the prose styleguide. |
@@ -65,6 +68,9 @@ node scripts/normalise.mjs tokens --foundations <file> --out <dir>   # draft tie
 node scripts/components.mjs src/ --out <dir>   # list components, usages, near-duplicates
 node scripts/patterns.mjs --components <file> src/ --out <dir>   # co-occurrence and signals
 node scripts/normalise.mjs plan --analysis <dir>   # actions and batches
+node scripts/structure.mjs check packages/design-system   # slices, naming, import direction, isolation
+node scripts/structure.mjs place --components <file>      # target slice per component
+node scripts/structure.mjs scaffold packages/design-system --name @acme/design-system
 node scripts/contrast.mjs '#6b7280' '#fff'
 npm test
 ```
@@ -73,10 +79,10 @@ npm test
 
 ```
 agents/      the five agents
-skills/      the sixteen skills
+skills/      the seventeen skills
 knowledge/   the knowledge base
 scripts/     token, extraction and contrast tools
-kit/         starter files: tokens, styleguide, Storybook (React)
+kit/         starter files: the library template, tokens, styleguide, Storybook (React)
 reference/   the original moship agents, for comparison only
 docs/        architecture.md — the contract every file follows
 ```

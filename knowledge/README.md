@@ -5,10 +5,10 @@ The shelves agents read before they build, review or advise. File format: `docs/
 Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in question → `accessibility/wcag-map.md` for any criterion you cite.
 
 ## bauhaus/ — why the plugin thinks the way it does
-- `bauhaus/principles.md` — the Bauhaus school and movement, mapped to design-system principles (form follows function, the Vorkurs as the foundation layer, the workshops as primitives, the Gesamtkunstwerk as the system).
+- `bauhaus/principles.md` — the Bauhaus school and movement, mapped to design-system principles (form follows function, the Vorkurs as the foundation layer, the workshops as components, the Gesamtkunstwerk as the system).
 
 ## taxonomy/ — the four layers, and telling them apart
-- `taxonomy/layers.md` — foundation, token, primitive, pattern: definitions, boundaries, dependencies.
+- `taxonomy/layers.md` — foundation, token, component, pattern: definitions, boundaries, dependencies.
 - `taxonomy/decision-tree.md` — classify any artifact in five questions.
 - `taxonomy/misfiles.md` — the catalogue of wrong-layer artifacts, how to spot each, where it belongs.
 - `taxonomy/plain-language.md` — analogies, glossary and templates for explaining the system to non-designers.
@@ -30,7 +30,7 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 - `foundations/density.md` — compact / comfortable, target size.
 
 ## tokens/ — storing decisions
-- `tokens/architecture.md` — tiers (primitive, semantic, component), aliasing, DTCG format.
+- `tokens/architecture.md` — tiers (primitive token, semantic, component), aliasing, DTCG format.
 - `tokens/naming.md` — naming grammar, prefixes, anti-patterns.
 - `tokens/theming.md` — modes: light/dark, brand, high contrast, density; what changes per theme.
 - `tokens/pipelines.md` — DTCG → platforms, Style Dictionary, Tokens Studio, Figma variables, `scripts/tokens.mjs`.
@@ -40,10 +40,10 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 - `accessibility/apg-patterns.md` — the ARIA Authoring Practices patterns and their keyboard contracts.
 - `accessibility/testing.md` — axe, keyboard walks, screen readers, reduced-motion and reflow probes.
 
-## components/ — primitives
+## components/ — the reusable blocks
 - `components/anatomy-and-states.md` — anatomy, the nine lifecycle states and the interaction states, variants vs props.
-- `components/api-design.md` — props, composition, slots, headless vs styled, when to add a primitive.
-- `components/catalog.md` — per-primitive checklist for the common set (button … dialog).
+- `components/api-design.md` — props, composition, slots, headless vs styled, when to add a component.
+- `components/catalog.md` — per-component checklist for the common set (button … dialog).
 
 ## patterns/
 - `patterns/loading.md`
@@ -67,9 +67,14 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 ## analysis/ — recovering a system from existing code
 - `analysis/workflow.md` — the nine analyser phases, why the order is fixed, gates, resume, cutting scope.
 - `analysis/scale-inference.md` — infer a spacing base, a type ratio, colour ramps and other scales; outliers and overrides.
-- `analysis/component-mining.md` — find primitives, near-duplicates and state gaps; choose the keeper.
+- `analysis/component-mining.md` — find components, near-duplicates and state gaps; choose the keeper.
 - `analysis/pattern-mining.md` — co-occurrence, signals, from candidate to pattern.
 - `analysis/normalisation.md` — the nine actions, deltas, prioritisation, batches, deprecation, ratchets, rollback, plain-word plans.
+
+## architecture/ — where the design system lives
+- `architecture/library-options.md` — the four ways to house a DS (layered packages, single package, separate repo, web-components core) and how to choose.
+- `architecture/folder-structure.md` — screaming architecture and vertical slices: root folders, the slice, naming rules, families, primitives.
+- `architecture/extraction.md` — moving a DS out of an app into the library, one slice at a time, with shims and a ratchet.
 
 ## tooling/
 - `tooling/storybook.md` — structure, doc pages, addons, the dev overlay.

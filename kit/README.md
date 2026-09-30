@@ -4,6 +4,7 @@ Starter files that Bauhaus skills copy into a project.
 
 | Folder | Content | Status |
 |---|---|---|
+| `library/` | The isolated library template (`docs/library.md`): one example slice per root folder. Passes `structure.mjs check` and `tokens.mjs check`. | Generic. |
 | `tokens/` | Seed DTCG tokens: primitives, semantic, a dark theme, contrast pairs. | Generic. |
 | `bauhaus.config.example.json` | A valid project config, prefix `ds`. | Generic. |
 | `styleguide/` | `design-system.md` and `responsive-inventory.md` from moship. | Verbatim port. To prune. |
