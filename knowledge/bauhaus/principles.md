@@ -60,19 +60,19 @@ Only facts that the sources above support.
 
 The phrase comes from the American architect Louis Sullivan. In his 1896 essay he wrote that "form ever follows function". Modernists, including many at the Bauhaus, adopted the idea. The school never used it as an official slogan. Hannes Meyer, director 1928–1930, held the most strictly functional position.
 
-For a design system: a primitive exists because it does a job. Its shape follows that job. A button that needs ornament to read is the wrong button.
+For a design system: a component exists because it does a job. Its shape follows that job. A button that needs ornament to read is the wrong button.
 
 ### Unity of art and craft, and the workshop model
 
 The 1919 manifesto called for a new guild of craftspeople, without the class line between artist and craftsperson. Students learned in workshops (metal, weaving, wood, print, wall painting). Each workshop had a master of form and a master of craft.
 
-For a design system: primitives are made, not decreed. The people who build a primitive must own both its look and its code. A designer alone or a developer alone gives a weaker part. The design-system-architect and the maker of a primitive share the work.
+For a design system: components are made, not decreed. The people who build a component must own both its look and its code. A designer alone or a developer alone gives a weaker part. The design-system-architect and the maker of a component share the work.
 
 ### The Vorkurs
 
 Itten created the Vorkurs (preliminary course) at Weimar. Every student took it before entering a workshop. It taught materials, form, colour and composition, without a product to make. Albers and Moholy-Nagy carried it on after 1923.
 
-For a design system: the foundations are the Vorkurs. Everyone learns colour, type, spacing and motion rules first, before they build a screen. No one enters a workshop (builds a primitive or a pattern) without the shared basics.
+For a design system: the foundations are the Vorkurs. Everyone learns colour, type, spacing and motion rules first, before they build a screen. No one enters a workshop (builds a component or a pattern) without the shared basics.
 
 ### A small set of primary forms and colours
 
@@ -84,19 +84,19 @@ For a design system: a small, reasoned set beats a large, arbitrary one. Choose 
 
 The word is Richard Wagner's (1849), meaning a total work of art. The 1919 manifesto sets "the building" as the aim in which all crafts unite.
 
-For a design system: the whole must cohere. Tokens, primitives, patterns, styleguide, Storybook and rulebook are one work. A part that breaks the whole is a defect, even if it looks good alone.
+For a design system: the whole must cohere. Tokens, components, patterns, styleguide, Storybook and rulebook are one work. A part that breaks the whole is a defect, even if it looks good alone.
 
 ### Standardisation for industry
 
 From about 1923 the school moved toward designing prototypes for series production. The 1923 exhibition took the slogan "Art and Technology: A New Unity". Bauhaus workshops produced standard types (*Typen*), for instance furniture types, lamps and wallpaper, meant to be reproduced.
 
-For a design system: primitives are standard types. Design one good button and reproduce it everywhere. Variation happens through parameters (props, tokens), not through new one-offs.
+For a design system: components are standard types. Design one good button and reproduce it everywhere. Variation happens through parameters (props, tokens), not through new one-offs.
 
 ### Less is more
 
 Mies van der Rohe, last director, is associated with the phrase. It is older than him (Browning, 1855). He adopted it as a statement about reduced means and clarity.
 
-For a design system: prefer the smallest system that does the job. Every new token, primitive or rule has a cost in docs, tests and learning. Delete before you add.
+For a design system: prefer the smallest system that does the job. Every new token, component or rule has a cost in docs, tests and learning. Delete before you add.
 
 ## The plugin's principles
 
@@ -105,11 +105,11 @@ Derived from the ideas above. Each has a basis in a system practice, a standard 
 | # | Principle | From | Basis for the rule |
 |---|---|---|---|
 | 1 | **Function decides form.** Every part exists for a job that can be stated in one sentence. | Form follows function | One-job gate: [contribution](../governance/contribution.md). |
-| 2 | **Teach the foundations first.** Foundations are written, closed and read before any primitive is built. | The Vorkurs | Layer order in [../taxonomy/layers.md](../taxonomy/layers.md): foundation defines the scale tokens populate. |
-| 3 | **Make small, reusable parts.** A primitive has one job and appears at least twice. | Standardisation; workshops | Three gates: [contribution](../governance/contribution.md). |
+| 2 | **Teach the foundations first.** Foundations are written, closed and read before any component is built. | The Vorkurs | Layer order in [../taxonomy/layers.md](../taxonomy/layers.md): foundation defines the scale tokens populate. |
+| 3 | **Make small, reusable parts.** A component has one job and appears at least twice. | Standardisation; workshops | Three gates: [contribution](../governance/contribution.md). |
 | 4 | **Keep the set small and reasoned.** A closed scale, few hues, few radii, two elevation rungs. | Primary forms and colours; less is more | Closed scales: [colour](../foundations/color.md). |
 | 5 | **Constrain to cohere.** Tokens are the only source of a raw value. | Gesamtkunstwerk | [../taxonomy/layers.md](../taxonomy/layers.md) rule 3. |
-| 6 | **Makers own the whole part.** Look, code, states and accessibility belong to one owner per primitive. | Unity of art and craft | Four artifacts ship together ([../governance/contribution.md](../governance/contribution.md)). |
+| 6 | **Makers own the whole part.** Look, code, states and accessibility belong to one owner per component. | Unity of art and craft | Four artifacts ship together ([../governance/contribution.md](../governance/contribution.md)). |
 | 7 | **Design for reproduction.** Vary by props and tokens, not by copies. | Standardisation for industry | Adoption and token-coverage metrics ([../governance/metrics.md](../governance/metrics.md)). |
 | 8 | **Show the reason.** Every rule carries a basis: a criterion with its level, a published system or a research result. | Teaching by principle, not taste | Architecture contract: a finding with no basis is an opinion. |
 | 9 | **Delete before you add.** Each addition has a cost; closing an advisory is deleting it. | Less is more | Advisory rule: closing means deleting ([../governance/rulebook.md](../governance/rulebook.md)). |
@@ -117,7 +117,7 @@ Derived from the ideas above. Each has a basis in a system practice, a standard 
 
 ## Rulebook seeds
 
-- `bauhaus.one-job` · review · MEDIUM · Each primitive states its job in one sentence.
+- `bauhaus.one-job` · review · MEDIUM · Each component states its job in one sentence.
 - `bauhaus.closed-scale` · review · MEDIUM · Each foundation states that its scale is closed.
 - `bauhaus.basis-cited` · review · MEDIUM · Each rule cites a basis, not an authority.
 
@@ -129,7 +129,7 @@ Derived from the ideas above. Each has a basis in a system practice, a standard 
 
 ## See also
 
-- [../taxonomy/layers.md](../taxonomy/layers.md) — the foundation as the Vorkurs; the primitive as the standard type.
+- [../taxonomy/layers.md](../taxonomy/layers.md) — the foundation as the Vorkurs; the component as the standard type.
 - [../taxonomy/plain-language.md](../taxonomy/plain-language.md) — principle 10 in practice.
 - [../governance/contribution.md](../governance/contribution.md) — the workshop model as a review flow.
 - [../governance/maturity.md](../governance/maturity.md) — how far a project has come.

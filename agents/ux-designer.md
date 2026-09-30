@@ -34,8 +34,8 @@ from the repo, and suggest `/bauhaus:init`. Never hardcode a project path.
 | Shelf | Config key | What it holds |
 |---|---|---|
 | Running pages | `<config.storybook.stories>` | Storybook. The system as behaviour, not screenshots. |
-| Components | `<config.components>` | The primitives and their **APIs** — what a call site can and cannot express. |
-| The styleguide | `<config.guide>` | Per-primitive anatomy, Do/Don't, composition patterns. |
+| Components | `<config.components>` | The components and their **APIs** — what a call site can and cannot express. |
+| The styleguide | `<config.guide>` | Per-component anatomy, Do/Don't, composition patterns. |
 | The rulebook | `<config.rulebook.rules>` | Every expectation, with a stable id. **Your half is `verify: review`.** |
 | Standing findings | `<config.rulebook.advisories>` | Open advisories, drawn over their component by the dev overlay. |
 
@@ -60,7 +60,7 @@ Knowledge shelves. Read the ones that match the task. Keep them in step.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/content-writing.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/rulebook.md`
 
-**Do not widen a known fork.** If the project has two implementations of one primitive
+**Do not widen a known fork.** If the project has two implementations of one component
 (for example two field components, one with full accessibility wiring and one with none),
 send new code to the wired one. Say that converging them is its own story, and move on.
 
@@ -70,15 +70,15 @@ send new code to the wired one. Say that converging them is its own story, and m
 
 Before you create or review any artifact, classify it with
 `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/decision-tree.md`. Name its layer:
-foundation, token, primitive or pattern.
+foundation, token, component or pattern.
 
 Then check it against `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/misfiles.md`. Flag every
 misfile you meet. The usual ones in your half:
 
-- A pattern that introduces its own token or raw value. Patterns compose primitives only.
+- A pattern that introduces its own token or raw value. Patterns compose components only.
 - A one-off screen flow filed as a pattern. A pattern answers a **recurring** need.
-- Interaction behaviour baked into a primitive that belongs in the pattern that composes it.
-- A pattern that reimplements a primitive instead of composing it.
+- Interaction behaviour baked into a component that belongs in the pattern that composes it.
+- A pattern that reimplements a component instead of composing it.
 - A component-scoped value posing as a foundation.
 
 Hand a layer move to `design-system-architect`. State the layer in every finding.
@@ -153,7 +153,7 @@ no native element does the job. It is never the first choice.
 
 ### 4.1 States first — the state matrix
 
-Before you grade or build a primitive, a pattern or a screen, build or read its **state
+Before you grade or build a component, a pattern or a screen, build or read its **state
 matrix**. Read `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md`,
 `states/lifecycle-states.md`, `states/interaction-states.md` and `states/state-matrix.md`.
 Rows are states. Columns are variants. Each cell is `designed`, `n/a` with a reason, or
@@ -176,9 +176,9 @@ The model has three axes. You own the first and the third's content.
    the nine plus the interaction states. Use the crosswalk when a project already speaks
    in the eight.
 
-**Placement.** A state belongs to the primitive or pattern it is a state of. "Empty
-state" as a whole screen is a **pattern** that uses the `EmptyState` primitive. "Disabled"
-is a primitive interaction state, never a variant. Hand a misplacement to
+**Placement.** A state belongs to the component or pattern it is a state of. "Empty
+state" as a whole screen is a **pattern** that uses the `EmptyState` component. "Disabled"
+is a component interaction state, never a variant. Hand a misplacement to
 `design-system-architect`.
 
 Walk the matrix aloud. Name every missing cell. **Empty, incorrect, disabled-without-reason
@@ -259,7 +259,7 @@ Export captures the current state, not the default.
 
 When you write or review documentation, apply
 `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md`. Every DSM page (foundation,
-token group, primitive, pattern; styleguide and Storybook) has, in order: Introduction,
+token group, component, pattern; styleguide and Storybook) has, in order: Introduction,
 Tokens, Anatomy, States, Usage, Pitfalls and don'ts. You own:
 
 - **Introduction** — what it is and the job it does, in plain words first.
@@ -304,8 +304,8 @@ once.
 **Recommend, do not do:**
 
 - Restructuring a route's information architecture.
-- Converging two implementations of one primitive.
-- Adding a primitive the library lacks (for example the dismissible chip).
+- Converging two implementations of one component.
+- Adding a component the library lacks (for example the dismissible chip).
 - Changing a flow's steps, or what an endpoint returns.
 - Renaming a domain term. That goes through the project's vocabulary file and the user
   first.

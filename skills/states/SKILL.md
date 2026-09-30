@@ -1,11 +1,11 @@
 ---
 name: states
-description: Author, audit or complete the state matrix of a primitive, pattern or screen. Use when the user says "states", "nine states", "state matrix", "empty state", "edge cases", "unhappy path", "loading and error", "button states", "hover focus disabled", "what states does this need", or "did I forget a state".
+description: Author, audit or complete the state matrix of a component, pattern or screen. Use when the user says "states", "nine states", "state matrix", "empty state", "edge cases", "unhappy path", "loading and error", "button states", "hover focus disabled", "what states does this need", or "did I forget a state".
 ---
 
 # /bauhaus:states — the state matrix
 
-UI states are a core concept. A primitive or pattern is not done without its matrix. This skill authors, audits or completes it. Lead: `bauhaus:ux-designer` (lifecycle content).
+UI states are a core concept. A component or pattern is not done without its matrix. This skill authors, audits or completes it. Lead: `bauhaus:ux-designer` (lifecycle content).
 
 ## Loads
 
@@ -22,7 +22,7 @@ UI states are a core concept. A primitive or pattern is not done without its mat
 | Axis | States | Applies to |
 |---|---|---|
 | Lifecycle | nothing, loading, none, one, some, too-many, incorrect, correct, done | Patterns and screens that hold data or a task. |
-| Interaction | default, hover, focus-visible, active, disabled, loading, success, error, selected. Also read-only, indeterminate, expanded, current. | Primitives. |
+| Interaction | default, hover, focus-visible, active, disabled, loading, success, error, selected. Also read-only, indeterminate, expanded, current. | Components. |
 | View | The eight view states, crosswalked in `model.md`. | Screens. |
 
 ## Modes
@@ -32,7 +32,7 @@ Ask with `AskUserQuestion` when unclear: author (new matrix), audit (grade an ex
 ## Steps
 
 1. **Read the config.** Get `guide`, `components`, `storybook`, `rulebook`. Missing: infer, suggest `/bauhaus:init`.
-2. **Classify the target.** Primitive, pattern or screen. A primitive gets the interaction axis. A pattern or screen gets the lifecycle axis and the interaction states of its parts.
+2. **Classify the target.** Component, pattern or screen. A component gets the interaction axis. A pattern or screen gets the lifecycle axis and the interaction states of its parts.
 3. **List columns.** Columns are the variants (`primary`, `secondary`, sizes). Read them from the component source or stories.
 4. **Walk the rows.** Go through every state on the relevant axes, one at a time. Mark each cell:
    - `designed` — a look, copy and behaviour exist, with a story.
@@ -46,7 +46,7 @@ Ask with `AskUserQuestion` when unclear: author (new matrix), audit (grade an ex
 6. **Propose before you populate.** For each `missing` cell, put the design to the user with `AskUserQuestion` (2-4 options, cost stated). Batch trivial cells. Populate only after the answer.
 7. **Land the four artifacts** for the matrix:
    - **Tokens.** New state tokens (`color.action.primary.hover`) go through `/bauhaus:tokens`. No raw value in a state rule.
-   - **Styleguide.** Write the matrix table into section 4 (States) of the page of the primitive or pattern in `<config.guide>`. Rows = states, columns = variants, cell = designed, n/a with reason, or missing. Keep the six-section page order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Add state-specific Usage rules and Pitfalls, each with a basis.
+   - **Styleguide.** Write the matrix table into section 4 (States) of the page of the component or pattern in `<config.guide>`. Rows = states, columns = variants, cell = designed, n/a with reason, or missing. Keep the six-section page order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Add state-specific Usage rules and Pitfalls, each with a basis.
    - **Storybook.** In the States section of the page, one story per state, named after the state. Use forced-state helpers where the state cannot be reached by hand (hover, focus-visible). Follow `knowledge/tooling/storybook.md`.
    - **Rulebook.** One rule per designed state, id `<component>.state.<state>` (for example `button.state.disabled`). Verify mode `auto` when code or CSS settles it (a `:focus-visible` rule exists), `review` otherwise. Other state rules use `<component>.states.<slug>` (for example `button.states.tokens`); see `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/rulebook.md` § Rule id shapes. Ids are permanent.
 8. **Audit mode.** Do steps 3-5. Do not write. Report each `missing` cell as a finding. Basis: `knowledge/states/model.md`, plus a criterion when one applies (`WCAG 2.4.7 (AA)` for focus visible, `WCAG 4.1.3 (AA)` for status messages, `WCAG 1.4.1 (A)` when state uses colour alone). Check the number in `wcag-map.md` before you cite.
@@ -79,7 +79,7 @@ Ask with `AskUserQuestion` when unclear: author (new matrix), audit (grade an ex
 ## Output format
 
 ```
-States — <target> (<primitive|pattern|screen>)
+States — <target> (<component|pattern|screen>)
 Axes:    <lifecycle | interaction | view>
 Matrix:  <designed> designed · <n/a> n/a (with reason) · <missing> missing
 Landed:  <n stories> · <n rules> · <n tokens>

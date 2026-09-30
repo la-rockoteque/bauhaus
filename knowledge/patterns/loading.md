@@ -81,7 +81,7 @@ People tolerate about one second of delay before they notice it. At about ten se
 ## Misfiles
 
 - Duration and easing of the spinner animation belong in `foundations/motion.md`.
-- A primitive's own loading state belongs in `states/state-matrix.md`.
+- A component's own loading state belongs in `states/state-matrix.md`.
 
 ## See also
 

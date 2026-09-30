@@ -21,7 +21,7 @@ Writes `bauhaus.config.json` (validated against the schema), creates the token s
    - `stack.framework`: react, vue, svelte, angular, solid, web-components, native or none.
    - `stack.styling`: css, scss, tailwind, css-in-js, css-modules or native.
    - Say what you found and what you inferred. Mark guesses.
-3. **Find existing artifacts.** Search for a stylesheet of primitives, a styleguide (Markdown), a components folder, `.storybook/`, stories, and any `*.tokens.json`. Record found paths. Leave the key out when nothing exists.
+3. **Find existing artifacts.** Search for a stylesheet of components, a styleguide (Markdown), a components folder, `.storybook/`, stories, and any `*.tokens.json`. Record found paths. Leave the key out when nothing exists.
 4. **Ask the prefix.** Use `AskUserQuestion`. Offer 2-4 options from the project name (for example `ds`, and an initialism). The prefix must match `^[a-z][a-z0-9]{0,7}$`. It yields `--<prefix>-color-text` and `.<prefix>-btn`.
 5. **Ask the outputs.** Use `AskUserQuestion`. Suggest by stack:
    - Tailwind: `tailwind` + `css`.

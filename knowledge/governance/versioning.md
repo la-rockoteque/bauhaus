@@ -19,7 +19,7 @@ sources:
 ## Rules
 
 1. Version the system with Semantic Versioning: `MAJOR.MINOR.PATCH`. (semver.org: major for incompatible API changes, minor for compatible additions, patch for compatible fixes.)
-2. Treat the public surface as the API: token names and meanings, primitive names and props, rule ids, CSS class names if consumers use them. (Consumers depend on what they can name.)
+2. Treat the public surface as the API: token names and meanings, component names and props, rule ids, CSS class names if consumers use them. (Consumers depend on what they can name.)
 3. Classify each change as breaking, additive or fix before you merge it. Write the class in the changelog line. (A reader decides from the class.)
 4. Never remove or rename a public name in a minor or patch release. Deprecate first. (semver.org: deprecate in a minor release before removal in a major.)
 5. Keep an alias for every renamed token during the deprecation window. (An alias lets consumers move on their own schedule.)
@@ -40,17 +40,17 @@ sources:
 | Change a token's value so a contrast pair fails | **Fix**, and treat it as a bug | Breaks WCAG (1.4.3 or 1.4.11, AA). |
 | Change a foundation's scale (add or remove a step, change the ratio) | **Major** | Every token on the scale moves. |
 | Add a token or a step at the end of a scale | Minor | Additive. |
-| Remove or rename a primitive | **Major** | Import breaks. |
+| Remove or rename a component | **Major** | Import breaks. |
 | Remove or rename a prop | **Major** | Call sites break. |
 | Change a prop's default so output changes | **Major** if visible, else minor | Consumers relied on the default. |
 | Narrow a prop's accepted values | **Major** | Existing values now fail. |
 | Add an optional prop | Minor | Additive. |
-| Change a primitive's markup so selectors or tests break | **Major** if documented, else minor | Depends on what was promised. |
-| Add a new primitive or pattern | Minor | Additive. |
+| Change a component's markup so selectors or tests break | **Major** if documented, else minor | Depends on what was promised. |
+| Add a new component or pattern | Minor | Additive. |
 | Change a rule's id | **Major** | Advisories and reports cite ids. |
 | Add a rule | Minor | Additive, but it may add failures; list them as known violations. |
 | Tighten a rule's severity or expectation | Minor, with a note | Consumers may see new failures. |
-| Fix a bug in a primitive | Patch | No API change. |
+| Fix a bug in a component | Patch | No API change. |
 | Docs, Storybook or rulebook text only | Patch | No consumer effect. |
 
 Before 1.0.0, semver allows anything to change. Do not use that as an excuse. Reach 1.0.0 when the first product depends on the system.

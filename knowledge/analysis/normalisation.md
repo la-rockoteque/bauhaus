@@ -23,7 +23,7 @@ Phase 8 of the analyser (`normalise.mjs plan`) turns the artifacts of phases 3 t
 1. Give every value, component and pattern exactly one action from the list of nine. (§ Actions. An item with no action is a hidden decision.)
 2. State the delta of every `snap`, `alias` and `merge`: pixels, ΔE or call sites. (`docs/analysis.md` § Rules.)
 3. Rank by usage × severity ÷ effort. (§ Prioritisation.)
-4. Batch by layer first, then by folder. Order the layers foundation, token, primitive, pattern, docs. (`workflow.md` § Why this order.)
+4. Batch by layer first, then by folder. Order the layers foundation, token, component, pattern, docs. (`workflow.md` § Why this order.)
 5. Keep a batch reviewable: about 400 changed lines or 20 files, whichever comes first. Split larger ones. (House size. A reviewer cannot judge more in one pass. `contribution.md` rule 8: one change, one layer.)
 6. Deprecate before you delete. Keep an alias for one release cycle at least. (`knowledge/governance/versioning.md`.)
 7. Pair every batch with a ratchet on its debt count. (`knowledge/governance/rulebook.md` § Ratchets.)
@@ -40,8 +40,8 @@ Phase 8 of the analyser (`normalise.mjs plan`) turns the artifacts of phases 3 t
 | **snap** | value | A literal is near a scale step. Replace it with the token. | px or ΔE |
 | **alias** | value, token, component | The old name must keep working while callers move. The old points to the new. | none, or the snap delta |
 | **merge** | component | Near-duplicates exist. One keeper absorbs the rest. | call sites, and visible difference |
-| **promote** | value, component | An off-scale value with 2 or more uses becomes a step. A local component with a second folder of use becomes a primitive. | uses or folders |
-| **demote** | component | A "primitive" is used once, or names a business object. It leaves the library. | call sites |
+| **promote** | value, component | An off-scale value with 2 or more uses becomes a step. A local component with a second folder of use becomes a component. | uses or folders |
+| **demote** | component | A "component" is used once, or names a business object. It leaves the library. | call sites |
 | **deprecate** | token, component, prop | A replacement exists and callers remain. Mark it, do not remove it. | call sites left |
 | **document** | component, pattern | It is sound and reused but has no page. Write its page. | none |
 | **drop** | value, component | It has no callers, or it is a one-off with no need. Delete it. | call sites (0) |
@@ -90,7 +90,7 @@ priority = usage × severity ÷ effort
 Rules for the score:
 
 1. A `HIGH` severity item (breaks WCAG A or AA, blocks a user) goes first, whatever its score. (Access before tidiness.)
-2. Break ties by layer order: foundation before token before primitive before pattern.
+2. Break ties by layer order: foundation before token before component before pattern.
 3. Show the score in the plan next to the inputs. A score with no inputs cannot be checked.
 
 ## Batching
@@ -107,8 +107,8 @@ Suggested batch skeleton:
 |---|---|---|---|
 | b1 | foundation | `/bauhaus:foundation` | Accept the scales. Publish each foundation page |
 | b2 | token | `/bauhaus:tokens` | Write the token source. Alias old custom properties |
-| b3 to bn | token → primitive | `/bauhaus:tokens`, `/bauhaus:component` | Snap literals by folder. Merge duplicates one group at a time |
-| next | primitive | `/bauhaus:states` | Fill missing state cells |
+| b3 to bn | token → component | `/bauhaus:tokens`, `/bauhaus:component` | Snap literals by folder. Merge duplicates one group at a time |
+| next | component | `/bauhaus:states` | Fill missing state cells |
 | next | pattern | `/bauhaus:pattern` | Document and align patterns |
 | last | docs | `/bauhaus:styleguide`, `/bauhaus:storybook` | Resync the prose. Add the pages |
 
@@ -178,7 +178,7 @@ Rules for plain wording:
 
 ## Why
 
-- Layer-first batching follows the dependency of the layers. A primitive merged before its tokens exist carries raw values again.
+- Layer-first batching follows the dependency of the layers. A component merged before its tokens exist carries raw values again.
 - Small batches make review and rollback cheap. Large batches get skimmed.
 - Aliases keep the product working while callers move. Deleting first breaks builds. (`versioning.md`.)
 - A ratchet turns progress into a number that cannot slip back. (`rulebook.md`.)

@@ -25,14 +25,14 @@ sources:
 6. List a failing `auto` rule as a known violation, with an advisory, in the same change. Otherwise the build fails. (Debt is tracked, not hidden.)
 7. Closing an advisory means deleting it. Do not mark it "resolved" and keep it. (A list of dead notes hides the live ones.)
 8. Guard each debt count with a ratchet: it fails when the count rises, and fails when the count drops without the number being lowered. (Otherwise the count goes stale after the first fix.)
-9. Publish a "not graded" list: primitives with no rules. (A missing grade must be visible.)
+9. Publish a "not graded" list: components with no rules. (A missing grade must be visible.)
 10. A rule graded by a person names its owner agent. (A `review` rule with no owner never runs.)
 
 ## The pieces
 
 | Piece | What it is | Lives in |
 |---|---|---|
-| **Rule** | One expectation, with a permanent id | Rulebook source, one file per primitive |
+| **Rule** | One expectation, with a permanent id | Rulebook source, one file per component |
 | **Verify mode** | `auto` or `review` | A field on the rule |
 | **Advisory** | A standing finding drawn over the component by the dev overlay | Advisories file |
 | **Known violation** | An `auto` rule that fails today, tracked as debt | A list of rule ids |
@@ -62,7 +62,7 @@ type Verify = 'auto' | 'review'
 interface Rule {
   /** Stable, permanent. `<component>.<slug>` */
   id: string
-  /** The primitive it grades, spelled as in the component library. */
+  /** The component it grades, spelled as in the component library. */
   component: string
   /** The rubric section it comes from. Short. Example: "focus" or "§2.4 forms". */
   rubric: string
@@ -168,7 +168,7 @@ Be exact about levels. WCAG 2.5.8 Target Size (Minimum) is 24 by 24 CSS px at AA
 | Mode | Settled by | A violation is | Graded by |
 |---|---|---|---|
 | `auto` | Reading code or the stylesheet, asserted by a test | A test failure, or a known violation | A test |
-| `review` | Judgement: is this the right primitive? Does the disabled state explain itself? | An advisory | An agent, named as owner |
+| `review` | Judgement: is this the right component? Does the disabled state explain itself? | An advisory | An agent, named as owner |
 
 Write `auto` rules against the source text of the stylesheets. Asserting the declaration is stronger than measuring the pixel: it fails on the hard-coded value, not on what it produces. Typical checks: declares a property, omits a property, at least N px, has a focus ring, has no literal colour, contrast meets AA.
 
@@ -218,7 +218,7 @@ Good ratchet targets: raw colour literals, legacy tokens still in use, single-ca
 
 ## Coverage and the "not graded" list
 
-Publish each primitive with its rule count and its verdicts. A primitive with zero rules goes on the "not graded" list. That list is a debt count too. Ratchet it.
+Publish each component with its rule count and its verdicts. A component with zero rules goes on the "not graded" list. That list is a debt count too. Ratchet it.
 
 A rule that claims a checklist item (`covers`) turns the checklist into per-component coverage. An item that no rule claims is shown as "to verify". A `covers` id that names no item is refused by the test.
 
@@ -229,7 +229,7 @@ A rule that claims a checklist item (`covers`) turns the checklist into per-comp
 - `rulebook.known-violations-match` · auto · HIGH · The failing `auto` rules equal the known-violations list, both ways.
 - `rulebook.advisory-severity-matches` · auto · MEDIUM · Each advisory carries its rule's severity.
 - `rulebook.ratchet-both-ways` · auto · MEDIUM · Each ratchet fails on a rise and on an unlowered drop.
-- `rulebook.not-graded-listed` · auto · LOW · Primitives with no rules are listed.
+- `rulebook.not-graded-listed` · auto · LOW · Components with no rules are listed.
 - `rulebook.review-owner` · review · LOW · Every `review` rule names an owner agent.
 
 ## Misfiles

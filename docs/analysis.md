@@ -12,13 +12,15 @@ The workflow has no state file. `scripts/analyse.mjs status` derives progress fr
 | 2 | Values | `extract.mjs <dir> --out .bauhaus/analysis/02-values` | — | `02-values/{inventory,custom-properties,tokens.draft}.json`, `report.md` | — |
 | 3 | Foundations | `foundations.mjs` | ui-designer, motion-designer | `03-foundations.json`, `03-foundations.md` | One question per foundation: accept the inferred scale |
 | 4 | Tokens | `normalise.mjs tokens` | architect, ui-designer | `04-tokens/` (DTCG, tiered), `04-tokens.md` | Accept token set and names |
-| 5 | Components | `components.mjs <dir>` | architect, ux-designer | `05-components.json`, `05-components.md` | Accept primitive candidates and merges |
+| 5 | Components | `components.mjs <dir>` | architect, ux-designer | `05-components.json`, `05-components.md` | Accept component candidates and merges |
 | 6 | Patterns | `patterns.mjs` | architect, ux-designer | `06-patterns.json`, `06-patterns.md` | Accept pattern candidates |
 | 7 | Classification | — | architect | `07-classification.md` | — |
 | 8 | Normalisation | `normalise.mjs plan` | architect (+ all four specialists for their halves) | `08-normalisation.json`, `08-plan.md` | Accept the plan and its first batch |
 | 9 | Build-up | existing skills | all | `09-build.md` (log) | One gate per batch |
 
-Phase 9 hands each batch of the plan to an existing skill: `/bauhaus:init`, `/bauhaus:foundation`, `/bauhaus:tokens`, `/bauhaus:component`, `/bauhaus:states`, `/bauhaus:pattern`, `/bauhaus:styleguide`, `/bauhaus:storybook`. The order never changes: foundations → tokens → primitives → patterns → docs. It follows `knowledge/analysis/workflow.md`.
+Phase 9 hands each batch of the plan to an existing skill: `/bauhaus:init`, `/bauhaus:foundation`, `/bauhaus:tokens`, `/bauhaus:component`, `/bauhaus:states`, `/bauhaus:pattern`, `/bauhaus:styleguide`, `/bauhaus:storybook`. The order never changes: foundations → tokens → components → patterns → docs. It follows `knowledge/analysis/workflow.md`.
+
+Build-up starts with `/bauhaus:library init`. It scaffolds the isolated library (see `docs/library.md`). `08-plan.md` gives each component a target slice path from `node ${CLAUDE_PLUGIN_ROOT}/scripts/structure.mjs place --components 05-components.json`.
 
 ## Artifact shapes
 
@@ -93,7 +95,7 @@ All JSON is UTF-8, 2-space indented, keys in the order shown. File references ar
 
 - A phase never edits the repo's source. Only phase 9 does, through the existing skills, one approved batch at a time.
 - A value is promoted to a scale step only if it has 2 or more uses. One-offs are outliers.
-- A component is a primitive candidate only if it is used in 2 or more folders, is structural, and has one job (`knowledge/governance/contribution.md`).
+- A component is a component candidate only if it is used in 2 or more folders, is structural, and has one job (`knowledge/governance/contribution.md`).
 - A co-occurrence set is a pattern candidate only if its support is 2 or more.
 - Every merge or snap states its delta: pixels, ΔE, or call sites changed.
 - Every report carries a `## States` summary and uses the four layers.

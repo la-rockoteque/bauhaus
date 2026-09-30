@@ -1,6 +1,6 @@
 ---
 name: build
-description: Build a design system from scratch, layer by layer, in strict order. Use when the user says "build a design system", "create a DSM from scratch", "start a design system", "greenfield design system", "new design system for this product", or has no tokens, primitives or styleguide yet.
+description: Build a design system from scratch, layer by layer, in strict order. Use when the user says "build a design system", "create a DSM from scratch", "start a design system", "greenfield design system", "new design system for this product", or has no tokens, components or styleguide yet.
 ---
 
 # /bauhaus:build — a design system from scratch
@@ -16,16 +16,16 @@ Builds the system in six stages. The order is fixed. Each stage ends at a checkp
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/components/api-design.md`, `anatomy-and-states.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/contribution.md`, `rulebook.md`, `page-contract.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md`, `state-matrix.md`
-- Optional seed: `${CLAUDE_PLUGIN_ROOT}/kit/styleguide/design-system.md`. It is an upstream port pending pruning. The contract is `knowledge/governance/contribution.md` (three gates for a new primitive) and `knowledge/governance/page-contract.md`.
+- Optional seed: `${CLAUDE_PLUGIN_ROOT}/kit/styleguide/design-system.md`. It is an upstream port pending pruning. The contract is `knowledge/governance/contribution.md` (three gates for a new component) and `knowledge/governance/page-contract.md`.
 
 ## Hard rules
 
-1. **Order.** Principles, foundations, tokens, primitives, patterns, docs. Do not start a stage before the checkpoint of the previous one.
+1. **Order.** Principles, foundations, tokens, components, patterns, docs. Do not start a stage before the checkpoint of the previous one.
 2. **Classify first.** Before you create any artifact, run the decision tree. Name its layer.
-3. **Refuse misfiles.** Do not put a raw value in a pattern. Do not put a flow in a primitive. Cite the id from `misfiles.md` and send the work to the right layer.
+3. **Refuse misfiles.** Do not put a raw value in a pattern. Do not put a flow in a component. Cite the id from `misfiles.md` and send the work to the right layer.
 4. **Propose before you populate.** A foundation is a decision. Put it to the user with `AskUserQuestion`: one focused question, 2-4 options, cost stated. Populate only after the answer.
-5. **Four artifacts.** A foundation or primitive is done when tokens, styleguide section, Storybook page and rulebook entries ship together.
-6. **State matrix.** A primitive or pattern is not done without its matrix (`/bauhaus:states`). Each of the four artifacts carries the states: state tokens, matrix table, one story per state, rules `<component>.state.<state>`.
+5. **Four artifacts.** A foundation or component is done when tokens, styleguide section, Storybook page and rulebook entries ship together.
+6. **State matrix.** A component or pattern is not done without its matrix (`/bauhaus:states`). Each of the four artifacts carries the states: state tokens, matrix table, one story per state, rules `<component>.state.<state>`.
 7. **Page contract.** Every page has six sections in order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Every Usage rule and Pitfall names a basis (`knowledge/governance/page-contract.md`).
 8. **Slop check.** For each Usage and Pitfall line ask: "What is the basis?" and "Would this line be true of any design system?" No basis or generic: rewrite or cut.
 
@@ -54,31 +54,31 @@ For each foundation:
 6. **Checkpoint B.n** after each foundation. One line: artifacts written, checks passed.
 
 ### c. Tokens, tiered
-1. Primitive tier: raw scales from the accepted foundations. No intent in the name.
-2. Semantic tier: intents that alias primitives (`color.text.muted`). Call sites use only this tier.
-3. Component tier: only when a primitive needs one scoped decision. Optional.
+1. Primitive token tier: raw scales from the accepted foundations. No intent in the name.
+2. Semantic tier: intents that alias primitive tokens (`color.text.muted`). Call sites use only this tier.
+3. Component tier: only when a component needs one scoped decision. Optional.
 4. Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build` and `... check`. Both must pass.
 5. **Checkpoint C.** Show the tier counts and any alias chain deeper than two.
 
-### d. Primitives — the smallest viable set
-1. Ask what screens exist. List candidate primitives from `knowledge/components/catalog.md`.
+### d. Components — the smallest viable set
+1. Ask what screens exist. List candidate components from `knowledge/components/catalog.md`.
 2. Keep only those that pass the justification test (see `/bauhaus:component`): at least two places, structural, one job. On a new system the "two places" test applies to planned screens.
 3. Typical start: Button, Field (label, input, hint, error), Link, and one container. Add more only on demand.
 4. Build each with `/bauhaus:component`. Each consumes semantic tokens only.
-5. Dispatch `bauhaus:ux-designer` per primitive for keyboard and ARIA. Run `/bauhaus:states` per primitive for the interaction matrix.
-6. **Checkpoint D.** List primitives, matrix status per primitive (designed, n/a, missing), open advisories.
+5. Dispatch `bauhaus:ux-designer` per component for keyboard and ARIA. Run `/bauhaus:states` per component for the interaction matrix.
+6. **Checkpoint D.** List components, matrix status per component (designed, n/a, missing), open advisories.
 
 ### e. Patterns
-1. Add a pattern only when a real screen needs it and existing primitives compose it.
+1. Add a pattern only when a real screen needs it and existing components compose it.
 2. Build with `/bauhaus:pattern`. A pattern that needs a new token or raw value stops. Go back to stage b or c.
 3. Each pattern carries its lifecycle matrix (`/bauhaus:states`): nothing, loading, none, one, some, too-many, incorrect, correct, done.
 3. **Checkpoint E.**
 
 ### f. Styleguide, Storybook, rulebook
 1. `/bauhaus:styleguide` — resync the prose against tokens and components.
-2. `/bauhaus:storybook` — install or adapt the kit. Every foundation, primitive and pattern gets a page.
+2. `/bauhaus:storybook` — install or adapt the kit. Every foundation, component and pattern gets a page.
 3. Every page passes the page contract and the slop check.
-4. Rulebook — every primitive has rules with ids, verify modes and severities. Seed from `knowledge/governance/rulebook.md`. Write `auto` rules as tests where the stack allows.
+4. Rulebook — every component has rules with ids, verify modes and severities. Seed from `knowledge/governance/rulebook.md`. Write `auto` rules as tests where the stack allows.
 5. Dispatch `bauhaus:responsive-reviewer` on the built pages.
 6. Run `/bauhaus:audit` on the whole system.
 7. **Final checkpoint.**
@@ -87,9 +87,9 @@ For each foundation:
 
 - `tokens.mjs check` exits 0.
 - No raw colour, size or duration outside the token source.
-- Every foundation and primitive has all four artifacts.
-- Every pattern lists the primitives it composes and adds no token.
-- Every primitive and pattern has a state matrix with no unexplained `missing` cell.
+- Every foundation and component has all four artifacts.
+- Every pattern lists the components it composes and adds no token.
+- Every component and pattern has a state matrix with no unexplained `missing` cell.
 - Every page has six sections in order and every Usage and Pitfall line has a basis.
 
 ## Output format
@@ -97,8 +97,8 @@ For each foundation:
 ```
 Bauhaus build — <name>
 Stage:     a b c d e f (done: <list>)
-Layers:    <n foundations> · <n tokens: p/s/c> · <n primitives> · <n patterns>
-Artifacts: <n of 4> complete per foundation and primitive
+Layers:    <n foundations> · <n tokens: p/s/c> · <n components> · <n patterns>
+Artifacts: <n of 4> complete per foundation and component
 States:    <designed> designed · <n/a> n/a · <missing> missing
 Pages:     <n>/<total> meet the page contract
 Refused:   <n> misfiles (ids)

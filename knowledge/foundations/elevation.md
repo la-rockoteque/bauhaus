@@ -118,7 +118,7 @@ An elevation page carries these six sections. (Order: `docs/architecture.md` § 
 ## Misfiles
 
 - The border of a card is shape, not elevation. (`shape.md`)
-- A "toast" and its queue are a primitive and a pattern. Only its z-index rung and shadow come from here.
+- A "toast" and its queue are a component and a pattern. Only its z-index rung and shadow come from here.
 - Focus ring appearance is `shape.md`. Only obscuring of focus is covered here.
 - Animation of a surface entering is `motion.md`.
 

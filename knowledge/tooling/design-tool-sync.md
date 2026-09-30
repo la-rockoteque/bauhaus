@@ -22,8 +22,8 @@ sources:
 2. Make the DTCG JSON file the source unless the team cannot edit files. Generate every other artifact from it. (Basis: `tokens/architecture.md`; a file is diffable and reviewable in a pull request.)
 3. If the design tool is the source, export to DTCG JSON on a schedule or on publish. Review the export as a diff. (Basis: same.)
 4. Never edit a generated file by hand. (Basis: single source of truth.)
-5. Map tiers one to one: primitive tokens to a Figma primitive collection, semantic tokens to a semantic collection that aliases it. (Basis: `tokens/architecture.md`.)
-6. Model each theme as a mode of the semantic collection. Primitives have no modes. (Basis: `tokens/theming.md`; "primitives never change per theme".)
+5. Map tiers one to one: primitive tokens to a Figma primitive-token collection, semantic tokens to a semantic collection that aliases it. (Basis: `tokens/architecture.md`.)
+6. Model each theme as a mode of the semantic collection. Primitive tokens have no modes. (Basis: `tokens/theming.md`; "primitive tokens never change per theme".)
 7. Keep names identical in design and code. Map path segments to slashes in Figma and dots in DTCG. (Basis: Nielsen 4 Consistency and standards.)
 8. Publish design components from a library file. Keep component names equal to code names. (Basis: shared vocabulary.)
 9. Link design components to code with Code Connect, so Dev Mode shows the real snippet. (Basis: one component reference.)
@@ -65,7 +65,7 @@ Pick A or B when you can. Option C works, but needs a strict export and review s
 
 ## Code Connect
 
-- Write one mapping per primitive. It maps Figma component props to code props.
+- Write one mapping per component. It maps Figma component props to code props.
 - Keep the variant names the same on both sides, so mapping is trivial.
 - Run the publish step in CI after a release.
 - Treat a missing mapping as a gap in the four artifacts.
@@ -81,7 +81,7 @@ A brand colour changed in one place and missed in the other is the most common d
 - `sync.names-match` · auto · MEDIUM · Token and component names match across design and code.
 - `sync.no-drift` · auto · HIGH · CI fails when a token exists on one side only.
 - `sync.figma-bound` · review · MEDIUM · Design files bind to variables, not raw values.
-- `sync.code-connect` · review · LOW · Each primitive has a Code Connect mapping.
+- `sync.code-connect` · review · LOW · Each component has a Code Connect mapping.
 
 ## Misfiles
 

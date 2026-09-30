@@ -82,7 +82,7 @@ This example switches theme by the color scheme. If the design system uses a `da
 
 ## What to snapshot
 
-- Each primitive, per state, per theme.
+- Each component, per state, per theme.
 - One composed pattern per shelf item (a table, a form, an empty state).
 - The long tail: dialogs open, menus open, focus ring visible, error message shown.
 

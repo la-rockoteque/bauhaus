@@ -20,7 +20,7 @@ sources:
 1. Build each hue as a tonal ramp of 10 to 12 steps (for example `50` to `950`). Hold the hue fixed and vary lightness. (Consistent ramps make contrast predictable.)
 2. Define ramps in OKLCH, not HSL. Equal lightness steps in OKLCH look equally spaced to the eye. In HSL they do not. (CSS Color 4 defines `oklch()` as a perceptually uniform space.)
 3. Check every OKLCH value against the sRGB gamut. Clamp chroma when a colour falls outside it. Keep a hex or `rgb()` fallback if you support old browsers. (Out-of-gamut colours render differently per device.)
-4. Primitive colour tokens hold ramps. Semantic tokens name roles. Call sites use roles only. (See `tokens/architecture.md`.)
+4. Primitive tokens hold colour ramps. Semantic tokens name roles. Call sites use roles only. (See `tokens/architecture.md`.)
 5. Define these semantic groups, and no more until a use case forces one:
    - **Text:** `primary`, `muted`, `subtle` (placeholder, metadata), `disabled`, `inverse`, `link`, `on-accent`.
    - **Surface:** `canvas`, `raised`, `sunken`, `overlay`.
@@ -42,7 +42,7 @@ sources:
 ## Dark mode
 
 1. Re-derive dark values. Do not invert the light theme. Pick each dark semantic token from the ramp and test it again.
-2. Change semantic tokens per theme. Do not change primitives. (See `tokens/theming.md`.)
+2. Change semantic tokens per theme. Do not change primitive tokens. (See `tokens/theming.md`.)
 3. Make raised surfaces lighter than the canvas in a dark theme. Shadows read poorly on dark surfaces. (See `elevation.md`.)
 4. Lower the chroma of saturated accents and status colours on dark surfaces. Full-chroma colours vibrate against dark grounds. Re-test the ratio after the change.
 5. Avoid pure black and pure white as the two extremes for surface and text. Use near-black and near-white steps from the ramp. This is a comfort practice, not a WCAG requirement.
@@ -67,7 +67,7 @@ sources:
 
 ```css
 :root {
-  /* Primitive ramp, OKLCH. Tier 1: never used at a call site. */
+  /* Primitive token ramp, OKLCH. Tier 1: never used at a call site. */
   --ds-color-blue-600: oklch(0.45 0.10 255);
   --ds-color-blue-700: oklch(0.38 0.09 255);
   --ds-color-gray-900: oklch(0.27 0.03 250);
@@ -125,7 +125,7 @@ A colour page in the styleguide and in Storybook carries these six sections. (Or
 - Show the palette as ramps and as roles side by side.
 
 ### 2. Tokens
-- Primitive ramps: `--ds-color-<hue>-<step>`. Show the OKLCH value and the hex.
+- Primitive token ramps: `--ds-color-<hue>-<step>`. Show the OKLCH value and the hex.
 - Semantic groups: text, surface, border, accent, status, data. One row per token: value, intent, allowed surfaces.
 - State tokens: state layers, `*.disabled`, `border.focus`.
 - Show the measured contrast ratio beside each text and surface pair, and the level it meets. (WCAG 1.4.3, AA; 1.4.6, AAA)
@@ -172,7 +172,7 @@ A colour page in the styleguide and in Storybook carries these six sections. (Or
 ## Misfiles
 
 - A button's background colour is a component token that aliases a semantic token. It is not a foundation. (`tokens/architecture.md`)
-- "Success banner" styling belongs to a primitive. (`taxonomy/layers.md`)
+- "Success banner" styling belongs to a component. (`taxonomy/layers.md`)
 - The focus ring colour is a semantic border token. Its thickness and offset belong to `shape.md`.
 - Chart series colours used in one dashboard are a pattern concern. (`patterns/dashboards-charts.md`)
 

@@ -5,7 +5,7 @@ description: Write or resync the prose styleguide against tokens, CSS, component
 
 # /bauhaus:styleguide — the prose spec
 
-The styleguide is the prose spec: philosophy, token tables, per-primitive anatomy, Do/Don't, composition. One Markdown file or folder at `<config.guide>`. This skill writes it or resyncs it, and detects prose rot. Lead: `bauhaus:design-system-architect`.
+The styleguide is the prose spec: philosophy, token tables, per-component anatomy, Do/Don't, composition. One Markdown file or folder at `<config.guide>`. This skill writes it or resyncs it, and detects prose rot. Lead: `bauhaus:design-system-architect`.
 
 ## Loads
 
@@ -22,7 +22,7 @@ The styleguide is the prose spec: philosophy, token tables, per-primitive anatom
 1 Philosophy (principles, users)
 2 Foundations   one page each
 3 Tokens        token groups, tables generated from source
-4 Primitives    one page each
+4 Components    one page each
 5 Patterns      one page each
 6 Contributing  the four artifacts, the >= 2 rule, rulebook, review flow
 ```
@@ -32,7 +32,7 @@ The styleguide is the prose spec: philosophy, token tables, per-primitive anatom
 Every page has these sections, in this order:
 
 1. **Introduction** — what it is, its job, its layer. Plain words first.
-2. **Tokens** — defined (foundation, token group) or consumed (primitive, pattern), with values and intent.
+2. **Tokens** — defined (foundation, token group) or consumed (component, pattern), with values and intent.
 3. **Anatomy** — named parts, required or optional. For a foundation: the scale.
 4. **States** — the state matrix. A foundation or token group lists the states it provides tokens for.
 5. **Usage** — when to use, when not and the alternative, and how: variants, composition, content, responsive, accessibility.
@@ -43,7 +43,7 @@ Every Usage rule and Pitfall names its basis. A line with no basis, or one that 
 ## Steps: write
 
 1. **Read the config.** Get `guide`, `tokens`, `stylesheet`, `components`, `storybook`, `rulebook`. Missing `guide`: ask where to put it (`docs/design-system.md` or `docs/design-system/`). Write it into the config.
-2. **Inventory.** List foundations (from token families), token groups, primitives (from `<config.components>` and the stylesheet), patterns (from Storybook and code).
+2. **Inventory.** List foundations (from token families), token groups, components (from `<config.components>` and the stylesheet), patterns (from Storybook and code).
 3. **Draft from sources, not memory.** Token tables come from the DTCG source. Anatomy and variants come from component code. States come from the state matrix. Never type a value that exists in a token file. Render it from the source, or cite the token name.
 4. **Write each page** to the contract. Plain words first in the Introduction. Ask the specialists for content they own:
    - `bauhaus:ui-designer` — token tables, look rules, contrast.
@@ -58,7 +58,7 @@ Every Usage rule and Pitfall names its basis. A line with no basis, or one that 
 1. **Diff prose against sources.** Check each of these and list every mismatch:
    - Token names and values in tables against `<config.tokens.source>`. Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check` first.
    - Class names, props and variants against `<config.stylesheet>` and `<config.components>`.
-   - Primitives with no section. Sections with no primitive.
+   - Components with no section. Sections with no component.
    - Storybook pages with no section, and sections with no page.
    - Rule ids cited in prose against `<config.rulebook.rules>`.
    - Counts written in prose ("12 steps") against reality.
@@ -70,7 +70,7 @@ Every Usage rule and Pitfall names its basis. A line with no basis, or one that 
 ## Verify
 
 - Every token in the tables exists in the source. No token in source is missing from the tables.
-- Every primitive and pattern has a page with all six sections.
+- Every component and pattern has a page with all six sections.
 - No basis-less Usage or Pitfall line.
 - Links to Storybook pages and rule ids resolve.
 
@@ -82,7 +82,7 @@ Every Usage rule and Pitfall names its basis. A line with no basis, or one that 
 
 ```
 Styleguide — <write | resync> · <config.guide>
-Pages:    <n> foundations · <n> tokens · <n> primitives · <n> patterns
+Pages:    <n> foundations · <n> tokens · <n> components · <n> patterns
 Contract: <n>/<total> pages have 6/6 sections
 Rot:      <n> stale values · <n> missing · <n> dead · <n> basis-less lines
 Worst:    <page> (<n>), <page> (<n>), <page> (<n>)

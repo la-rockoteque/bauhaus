@@ -343,8 +343,8 @@ const PAGE_PATH = /(^|\/)(pages?|views?|routes?|screens?)\//i;
 const PAGE_NAME = /(Page|Screen|View|Route)$/;
 const SHARED_PATH = /(^|\/)(components?|ui|shared|common|design-system)\//i;
 
-/** Used from 2+ top-level folders, and not a page: worth a primitive review. */
-export const isPrimitiveCandidate = (c) => c.location === 'shared' && c.usedIn >= 2 && !PAGE_PATH.test(c.file) && !PAGE_NAME.test(c.name);
+/** Used from 2+ top-level folders, and not a page: worth a component review. */
+export const isComponentCandidate = (c) => c.location === 'shared' && c.usedIn >= 2 && !PAGE_PATH.test(c.file) && !PAGE_NAME.test(c.name);
 /** Sits in a shared folder but only one file uses it: local in practice. */
 export const isPageSpecific = (c) => c.location === 'local' && c.usedIn <= 1 && SHARED_PATH.test(c.file);
 
@@ -395,12 +395,12 @@ function stateSummary(components) {
 
 export function renderComponents({ components, groups }) {
   const byFramework = Object.entries(components.reduce((n, c) => ({ ...n, [c.framework]: (n[c.framework] ?? 0) + 1 }), {})).map(([f, n]) => `${f} ${n}`);
-  const primitives = components.filter(isPrimitiveCandidate);
+  const candidates = components.filter(isComponentCandidate);
   const rows = components.slice(0, 30).map((c) => [`\`${c.name}\``, c.framework, c.usages, c.usedIn, c.location, c.file]);
   return [
     '# Components',
     `${components.length} components (${byFramework.join(', ') || 'none'}). ${groups.length} near-duplicate groups.`,
-    `## Layers\n\nPrimitive layer. ${primitives.length} components are used from 2 or more top-level folders and are not pages. They are primitive candidates. Judge each for structure and one job at the gate. Pattern candidates come from \`06-patterns.md\`.\n\n${primitives.slice(0, 15).map((c) => `- \`${c.name}\`: ${c.usages} usages in ${c.usedIn} files (${c.file})`).join('\n') || 'None.'}`,
+    `## Layers\n\nComponent layer. ${candidates.length} components are used from 2 or more top-level folders and are not pages. They are component candidates. Judge each for structure and one job at the gate. Pattern candidates come from \`06-patterns.md\`.\n\n${candidates.slice(0, 15).map((c) => `- \`${c.name}\`: ${c.usages} usages in ${c.usedIn} files (${c.file})`).join('\n') || 'None.'}`,
     `## Groups\n\nNear-duplicates to merge. Similarity is name 60% plus props 40%.\n\n${groups.length ? table(['Group', 'Members', 'Signals', 'Similarity'], groups.map((g) => [g.id, list(g.members), g.reason.join(', '), g.similarity])) : 'None.'}`,
     `## States\n\nComponents that expose each state, by prop, class or aria attribute.\n\n${stateSummary(components)}`,
     `## Most used\n\n${table(['Name', 'Framework', 'Usages', 'Files', 'Location', 'Defined at'], rows)}`,

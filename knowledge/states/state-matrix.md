@@ -14,11 +14,11 @@ sources:
 
 > A checklist on a clipboard: for every situation the component can be in, one box. Each box is ticked (designed), crossed with a note (does not apply, because…), or empty (forgotten). Empty boxes are the bugs users find for you.
 
-The state matrix is the artifact that makes states real. Every primitive, pattern and screen has one. It lives in the **States** section of the page (`../governance/page-contract.md`), in Storybook as one story per state, and in the rulebook as one rule per state.
+The state matrix is the artifact that makes states real. Every component, pattern and screen has one. It lives in the **States** section of the page (`../governance/page-contract.md`), in Storybook as one story per state, and in the rulebook as one rule per state.
 
 ## Rules
 
-1. Give every primitive, pattern and screen a state matrix before it ships. (Speelman 2015)
+1. Give every component, pattern and screen a state matrix before it ships. (Speelman 2015)
 2. Mark each cell `designed`, `n/a` with a reason, or `missing`. A blank cell is `missing`. (Speelman: a conscious decision to ignore a state is still a decision)
 3. Back each `designed` cell with one story, built with realistic data. (Speelman 2015 § Too many; Figma, "Button states")
 4. Start from the required-rows table. Justify every `n/a`. (Speelman 2015)
@@ -86,7 +86,7 @@ Not every state applies to every kind. Start from this table, then justify any `
 | Container (card, dialog, panel) | loading, none, some, too many (content overflow), incorrect | hover and focus only if the whole container is interactive |
 | Feedback (toast, banner, alert) | some, too many (stacking), done (dismissed) | focus on its actions |
 | Navigation (tabs, breadcrumb, nav, pager) | one, some, too many | hover, focus, active, current/selected, disabled |
-| Screen or pattern | all nine | inherited from its primitives |
+| Screen or pattern | all nine | inherited from its components |
 
 ## In Storybook
 
@@ -124,7 +124,7 @@ Each ✗ becomes a finding with its rule id.
 | `n/a` with no reason | Hides a forgotten state as a decision. | Speelman 2015 |
 | States designed only in the design file | The code drifts and nobody sees it. | Four artifacts rule, `../governance/contribution.md` |
 | One "Error" story for both user and system errors | They need different content and recovery. | `lifecycle-states.md` § Incorrect; Nielsen 9 |
-| Matrix per screen but not per primitive | Each screen reinvents the primitive's states. | Nielsen 4, Consistency and standards |
+| Matrix per screen but not per component | Each screen reinvents the component's states. | Nielsen 4, Consistency and standards |
 | Short sample data | *Too many* never gets tested. | Speelman 2015 § Too many |
 
 ## Rulebook seeds
@@ -136,7 +136,7 @@ Each ✗ becomes a finding with its rule id.
 ## Misfiles
 
 - A state used as a matrix column. Columns are variants. A state is a row (`misfile.state-as-variant`).
-- A "States" page that lists state colours. That is the colour foundation's state-token table. States belong on each primitive's page.
+- A "States" page that lists state colours. That is the colour foundation's state-token table. States belong on each component's page.
 - A matrix that lives only in the design file. It belongs on the page and in Storybook too (four artifacts, `../governance/contribution.md`).
 
 ## See also

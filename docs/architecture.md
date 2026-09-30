@@ -24,16 +24,20 @@ bauhaus.config.schema.json
 
 | Layer | Question it answers | Lives in | Example |
 |---|---|---|---|
-| **Foundation** | Which families of values exist, and on what scale? | styleguide §Foundations, Storybook `Foundations/*` | "Spacing runs on a 4px grid, 12 steps." |
-| **Token** | What is this one named decision's value? | `tokens.source` (DTCG JSON), generated outputs | `space.3 = 12px`, `color.text.muted → gray.600` |
-| **Primitive** | Which reusable block does one job? | `components`, styleguide §Primitives, Storybook `Components/*` | Button, Field, Dialog |
-| **Pattern** | How do primitives compose to answer a recurring need? | styleguide §Patterns, Storybook `Patterns/*` | Filtering, empty state, wizard |
+| **Foundation** | Which families of values exist, and on what scale? | `foundations/<name>/` in the library | "Spacing runs on a 4px grid, 12 steps." |
+| **Token** | What is this one named decision's value? | `<slice>/<name>.tokens.json` (DTCG), generated outputs | `space.3 = 12px`, `color.text.muted → gray.600` |
+| **Component** | Which reusable block does one job, and can stand alone? | `primitives/<name>/` or `components/<family>/<name>/` in the library | Button, Text field, Dialog; primitives: Box, Text, Icon |
+| **Pattern** | How do components compose to answer a recurring need? | `patterns/<name>/` in the library | Filtering, empty state, wizard |
 
-A foundation is a family and its scale. A token is one member of it. A primitive consumes semantic tokens. A pattern composes primitives and never introduces its own token or its own raw value. `knowledge/taxonomy/` holds the decision tree and the catalogue of misclassifications. Every agent and skill that creates or reviews an artifact classifies it first.
+A foundation is a family and its scale. A token is one member of it. A component consumes semantic tokens. A primitive is a component other components are built from, not a layer. A pattern composes components and never introduces its own token or its own raw value. `knowledge/taxonomy/` holds the decision tree and the catalogue of misclassifications. Every agent and skill that creates or reviews an artifact classifies it first.
+
+## The library
+
+The design system is built as one package, isolated from the app, in screaming architecture and vertical slices. `docs/library.md` is the contract: root folders, slices, naming rules, isolation rules, extraction.
 
 ## UI states — a core concept
 
-Every primitive, pattern and screen has a **state matrix** (`knowledge/states/state-matrix.md`). Two axes:
+Every component, pattern and screen has a **state matrix** (`knowledge/states/state-matrix.md`). Two axes:
 
 - **Lifecycle states** — Speelman's nine: nothing, loading, none, one, some, too-many, incorrect, correct, done.
 - **Interaction states** — default, hover, focus-visible, active, disabled; functional: loading, success, error, selected; plus read-only, indeterminate, expanded, current.
@@ -42,10 +46,10 @@ Each cell is `designed`, `n/a` with a reason, or `missing`. A `missing` cell is 
 
 ## Page contract — every DSM page
 
-A page documents one foundation, token group, primitive or pattern, in the styleguide and in Storybook. It has these sections, in this order. `knowledge/governance/page-contract.md` holds the full spec per layer.
+A page documents one foundation, token group, component or pattern, in the styleguide and in Storybook. It has these sections, in this order. `knowledge/governance/page-contract.md` holds the full spec per layer.
 
 1. **Introduction** — what it is, the job it does, and the layer it belongs to. Plain words first.
-2. **Tokens** — the tokens it defines (foundation, token group) or consumes (primitive, pattern), with values and intent.
+2. **Tokens** — the tokens it defines (foundation, token group) or consumes (component, pattern), with values and intent.
 3. **Anatomy** — the named parts, and which are required or optional. For a foundation: the scale and its structure.
 4. **States** — the state matrix. For a foundation or token group: the states it provides tokens for.
 5. **Usage** — an exhaustive guide to when to use it, when not to, and what to use instead, and how to use it: variants, composition, content, responsive, accessibility.
@@ -66,7 +70,7 @@ Tokens are the tech-agnostic core: DTCG JSON (`$value`, `$type`, `$description`,
 id: foundations/color            # path without .md
 title: Colour
 shelf: foundations
-layer: foundation                 # foundation | token | primitive | pattern | cross-cutting
+layer: foundation                 # foundation | token | component | pattern | cross-cutting
 owner: ui-designer                # agent that cites it most
 tags: [contrast, palette, oklch]
 sources:

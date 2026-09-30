@@ -4,7 +4,7 @@ title: Contribution — how something enters the system
 shelf: governance
 layer: cross-cutting
 owner: design-system-architect
-tags: [contribution, four-artifacts, review, ownership, primitive-gates, propose-before-populate]
+tags: [contribution, four-artifacts, review, ownership, component-gates, propose-before-populate]
 sources:
   - Bauhaus architecture contract — docs/architecture.md
 ---
@@ -15,21 +15,21 @@ sources:
 
 ## Rules
 
-1. Ship the four artifacts together: tokens, styleguide section, Storybook page, rulebook entries. A foundation or a primitive is not done until all four exist. (Ubiquitous language: Four artifacts.)
+1. Ship the four artifacts together: tokens, styleguide section, Storybook page, rulebook entries. A foundation or a component is not done until all four exist. (Ubiquitous language: Four artifacts.)
 2. Each of the four artifacts carries the state matrix. A missing state is a visible blank, not a silent gap. (See [../states/state-matrix.md](../states/state-matrix.md); a state omitted in one artifact drifts from the others.)
-3. A new primitive needs two or more occurrences, a structural reason and one job.
+3. A new component needs two or more occurrences, a structural reason and one job.
 4. Propose a foundation before you populate it. Write the rationale, the scale and the limits. Then add tokens. (A token with no scale is an arbitrary number.)
 5. Fix in place what is a defect. Recommend what is a judgement or a ripple.
-6. Migrate the first call site in the same change. (An unused primitive is a guess.)
+6. Migrate the first call site in the same change. (An unused component is a guess.)
 7. Classify the artifact before the work starts. Put the one-line classification in the change description. (See [../taxonomy/decision-tree.md](../taxonomy/decision-tree.md).)
-8. One change, one layer where possible. Do not mix a scale change with a new primitive. (Reviewers cannot judge two layers at once.)
+8. One change, one layer where possible. Do not mix a scale change with a new component. (Reviewers cannot judge two layers at once.)
 9. A review cites a rule id or a basis for every requested change. (A comment with no basis is an opinion.)
 
 ## The four artifacts
 
-| Artifact | Holds | For a foundation | For a primitive |
+| Artifact | Holds | For a foundation | For a component |
 |---|---|---|---|
-| **Tokens** | Named values in the DTCG source | The scale's tier-1 tokens and the semantic tokens that name intents | Semantic state tokens the primitive reads; optional component tokens |
+| **Tokens** | Named values in the DTCG source | The scale's tier-1 tokens and the semantic tokens that name intents | Semantic state tokens the component reads; optional component tokens |
 | **Styleguide section** | The prose spec | Scale, rationale, usage rules, limits | Anatomy, states, usage, do and don't |
 | **Storybook page** | The running spec | Visual scale and live token table | One story per state and per variant |
 | **Rulebook entries** | Graded expectations | Review rules (scale closed, rationale present) | Auto and review rules, each with a stable id |
@@ -43,7 +43,7 @@ Every page in the four artifacts follows [page-contract.md](page-contract.md): i
 - Storybook: one story per state. A state that cannot render in a story is shown as a labelled facsimile.
 - Rulebook: at least one rule per state that carries a WCAG duty (focus visible, 2.4.7 AA; not colour alone, 1.4.1 A).
 
-## Adding a primitive
+## Adding a component
 
 Check three gates before you write code.
 
@@ -74,7 +74,7 @@ A proposal contains:
 2. **Scale.** The steps, the growth rule, the limits. State that the scale is closed.
 3. **Rationale.** The evidence: a WCAG criterion with its level, a published system, or a measured result.
 4. **Tokens.** The tier-1 and semantic names it will create.
-5. **Impact.** Which primitives and patterns change. Whether it breaks (see [versioning.md](versioning.md)).
+5. **Impact.** Which components and patterns change. Whether it breaks (see [versioning.md](versioning.md)).
 6. **Migration.** Aliases, codemod, window.
 
 Nothing is populated before the proposal is accepted. A token added ahead of its foundation is a misfile (`misfile.token-without-foundation`).
@@ -88,14 +88,14 @@ Fix in place, with no permission. These are defects.
 - An interactive element with no hover or focus state.
 - An arbitrary shadow, a scattered z-index, a fifth status colour.
 - A guide that describes something the code no longer does.
-- A primitive with no Storybook page.
+- A component with no Storybook page.
 - A state modelled as a variant (`misfile.state-as-variant`), when the fix is local.
 
 Recommend, do not do. These are judgements or ripples.
 
 - Rename or remove a token. Change a scale. (Breaking. See [versioning.md](versioning.md).)
-- Raise a size that ripples across many primitives.
-- Introduce a theme, a new family of primitives or a dependency.
+- Raise a size that ripples across many components.
+- Introduce a theme, a new family of components or a dependency.
 - Any change that moves a ratchet by a large amount.
 - A change to a foundation's rationale.
 
@@ -103,7 +103,7 @@ Recommend, do not do. These are judgements or ripples.
 
 ```
 1 Classify        → one-line classification in the change description
-2 Gate check      → primitive gates, or foundation proposal
+2 Gate check      → component gates, or foundation proposal
 3 Four artifacts  → all four present, state matrix filled
 4 Auto rules      → tests pass; new failures are known violations with advisories
 5 Review rules    → the owning agent grades and cites a basis
@@ -120,7 +120,7 @@ Separate the authoring pass from the review pass. The author does not approve th
 | Agent | Owns | Reads | Hands off to |
 |---|---|---|---|
 | **design-system-architect** | The four layers, classification, the foundations' structure, versioning, the rulebook shape, maturity, metrics | `taxonomy/*`, `governance/*`, `tokens/*` | The specialists below for the measurable and the judgemental halves |
-| **ui-designer** | The measurable half: tokens, primitives, typography, spacing, radius, elevation, colour and contrast, focus appearance, iconography, density. Writes the `auto` rules | `foundations/*`, `components/*`, `accessibility/wcag-map.md` | ux-designer for flow and wording; motion-designer for motion |
+| **ui-designer** | The measurable half: tokens, components, typography, spacing, radius, elevation, colour and contrast, focus appearance, iconography, density. Writes the `auto` rules | `foundations/*`, `components/*`, `accessibility/wcag-map.md` | ux-designer for flow and wording; motion-designer for motion |
 | **ux-designer** | The judgement half: flows, states, wording, keyboard journeys, whether a data shape wants a table. Grades `review` rules | `patterns/*`, `accessibility/apg-patterns.md` | ui-designer for a token or a look |
 | **motion-designer** | Durations, easing, choreography, reduced motion | `foundations/motion.md` | ui-designer for tokens; ux-designer for whether the motion helps |
 | **responsive-reviewer** | Breakpoints, reflow, target sizes across widths, density modes | `foundations/spacing-layout.md`, `patterns/responsive.md` | ui-designer for a token or a scale change |
@@ -129,17 +129,17 @@ The split between `auto` and `review` is not administrative. It is the differenc
 
 ## Rulebook seeds
 
-- `contribution.four-artifacts` · auto · MEDIUM · Every primitive has tokens, a styleguide section, a Storybook page and rulebook entries.
-- `contribution.state-matrix` · review · MEDIUM · Each artifact carries the primitive's state matrix.
-- `contribution.primitive-gates` · review · MEDIUM · A new primitive attaches two call sites, a structural reason and a one-sentence job.
+- `contribution.four-artifacts` · auto · MEDIUM · Every component has tokens, a styleguide section, a Storybook page and rulebook entries.
+- `contribution.state-matrix` · review · MEDIUM · Each artifact carries the component's state matrix.
+- `contribution.component-gates` · review · MEDIUM · A new component attaches two call sites, a structural reason and a one-sentence job.
 - `contribution.foundation-proposal` · review · MEDIUM · A new or changed foundation has an accepted proposal.
-- `contribution.first-adopter` · auto · LOW · A new primitive has at least one migrated call site.
+- `contribution.first-adopter` · auto · LOW · A new component has at least one migrated call site.
 
 ## Misfiles
 
-- A pattern promoted to a primitive after one use (`misfile.pattern-promoted-to-primitive`).
+- A pattern promoted to a component after one use (`misfile.pattern-promoted-to-component`).
 - Tokens added before their foundation (`misfile.token-without-foundation`).
-- A primitive with CSS but no page or rules (`misfile.partial-four-artifacts`).
+- A component with CSS but no page or rules (`misfile.partial-four-artifacts`).
 
 ## See also
 
@@ -149,4 +149,4 @@ The split between `auto` and `review` is not administrative. It is the differenc
 - [maturity.md](maturity.md) — where contribution fits on the ladder.
 - [../taxonomy/decision-tree.md](../taxonomy/decision-tree.md) — classify first.
 - [../states/state-matrix.md](../states/state-matrix.md) — the matrix each artifact carries.
-- [../components/api-design.md](../components/api-design.md) — when to add a primitive.
+- [../components/api-design.md](../components/api-design.md) — when to add a component.

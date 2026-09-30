@@ -87,17 +87,17 @@ In plain words: a builder inherits a house with no plans. She measures every wal
 - **Agents:** `bauhaus:design-system-architect` checks tiers and names. `bauhaus:ui-designer` checks values and contrast pairs.
 - **Knowledge:** `tokens/architecture.md`, `tokens/naming.md`, `analysis/scale-inference.md` § Colour.
 - **Writes:** `04-tokens/` (tiered DTCG), `04-tokens.md`. Validate the draft with `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check`.
-- **Gate:** "Accept these `<p>` primitive and `<s>` semantic tokens and their names?" Options: accept; rename first; drop a family. State the count.
+- **Gate:** "Accept these `<p>` primitive token and `<s>` semantic tokens and their names?" Options: accept; rename first; drop a family. State the count.
 - **Say:** "Each accepted value gets one name. Screens will use the name, not the number."
 
 ### 5. Components
 
-- **Goal:** find primitive candidates and near-duplicates.
+- **Goal:** find component candidates and near-duplicates.
 - **Command:** `node ${CLAUDE_PLUGIN_ROOT}/scripts/components.mjs <dir> --out .bauhaus/analysis`
-- **Agents, in parallel:** `bauhaus:design-system-architect` runs the three gates (two places, structural, one job), separates primitive, page-local and feature components, and picks the keeper of each group. `bauhaus:ux-designer` reads state coverage and keyboard and ARIA of each keeper.
+- **Agents, in parallel:** `bauhaus:design-system-architect` runs the three gates (two places, structural, one job), separates shared components, page-local components and feature components, and picks the keeper of each group. `bauhaus:ux-designer` reads state coverage and keyboard and ARIA of each keeper.
 - **Knowledge:** `analysis/component-mining.md`, `governance/contribution.md`, `taxonomy/decision-tree.md`, `states/state-matrix.md`.
 - **Writes:** `05-components.json`, `05-components.md` with a `## States` summary.
-- **Gate:** one per group: "Merge `Btn`, `SubmitButton` into `Button`? 17 call sites change." Options: merge; keep both (name the reason); merge later. Also one question to accept the primitive list.
+- **Gate:** one per group: "Merge `Btn`, `SubmitButton` into `Button`? 17 call sites change." Options: merge; keep both (name the reason); merge later. Also one question to accept the component list.
 - **Say:** "You have 5 buttons that do one job. I suggest keeping the one everybody already uses."
 
 ### 6. Patterns
@@ -123,25 +123,32 @@ In plain words: a builder inherits a house with no plans. She measures every wal
 ### 8. Normalisation
 
 - **Goal:** one action per finding, ranked, in reviewable batches.
-- **Command:** `node ${CLAUDE_PLUGIN_ROOT}/scripts/normalise.mjs plan --analysis .bauhaus/analysis`
+- **Commands:**
+  ```
+  node ${CLAUDE_PLUGIN_ROOT}/scripts/normalise.mjs plan --analysis .bauhaus/analysis
+  node ${CLAUDE_PLUGIN_ROOT}/scripts/structure.mjs place --components .bauhaus/analysis/05-components.json
+  ```
+  `place` proposes a slice path in the library for each shared component and each merge keeper (`docs/library.md`).
 - **Agents:** `bauhaus:design-system-architect` writes the plan. `bauhaus:ui-designer`, `bauhaus:ux-designer`, `bauhaus:motion-designer` and `bauhaus:responsive-reviewer` each review their half. Launch them in parallel.
 - **Knowledge:** `analysis/normalisation.md`, `governance/maturity.md`, `governance/versioning.md`, `governance/rulebook.md`, `governance/page-contract.md`.
 - **Writes:** `08-normalisation.json` and `08-plan.md`. The plan holds:
   1. **Findings** by severity, capped at ten per layer. Say how many were cut.
   2. **Normalisation advice** per layer, in two registers: plain, then precise.
-  3. **Batch plan:** id, layer, title, items, files, risk, effort, skill. Ordered foundation, token, primitive, pattern, docs.
+  3. **Batch plan:** id, layer, title, items, files, risk, effort, skill. Ordered foundation, token, component, pattern, docs.
   4. **Maturity before and after:** name the level with evidence, and the level the plan reaches.
   5. **States summary:** designed, n/a, missing.
   6. **Page-contract gaps:** which of the six sections each existing page lacks.
+  7. **Library placement:** the target slice of each component, grouped by family, and the unplaced ones with a question for each.
 - **Gate:** "Accept the plan and start with batch b1 (`<title>`, `<n>` files, risk `<r>`)?" Options: accept the plan and b1; accept the plan, hold b1; change the plan (say what).
 - **Say:** "Here is the whole tidy-up in `<n>` steps. Nothing changes until you approve step 1."
 
 ### 9. Build-up
 
 - **Goal:** apply the plan, one batch at a time.
-- **Hand each batch, in order, to the existing skill:** `/bauhaus:init` (config, first), `/bauhaus:foundation`, `/bauhaus:tokens`, `/bauhaus:component`, `/bauhaus:states`, `/bauhaus:pattern`, `/bauhaus:styleguide`, `/bauhaus:storybook`. The order never changes: foundations, tokens, primitives, patterns, docs.
+- **First, the library.** Run `/bauhaus:library options` if the project has not chosen where the DS lives, then `/bauhaus:library init`. Every later batch writes into the library, never into the app (`docs/library.md`).
+- **Hand each batch, in order, to the existing skill:** `/bauhaus:init` (config, first), `/bauhaus:foundation`, `/bauhaus:tokens`, `/bauhaus:component` with `/bauhaus:library move` for each component, `/bauhaus:states`, `/bauhaus:pattern`, `/bauhaus:styleguide`, `/bauhaus:storybook`. The order never changes: foundations, tokens, components, patterns, docs.
 - **Before each batch:** snapshot the affected screens (`knowledge/tooling/visual-regression.md`) and set the ratchet number. Use a codemod when 10 or more places change.
-- **After each batch:** run the checks (`tokens.mjs check`, the tests, the snapshot compare). Compare the visual diff with the stated delta.
+- **After each batch:** run the checks (`tokens.mjs check`, `structure.mjs check <library>`, the tests, the snapshot compare). Compare the visual diff with the stated delta.
 - **Writes:** `09-build.md`: batch id, skill, result (`applied`, `skipped`, `reverted`), delta as measured, ratchet number, revert reference.
 - **Gate, one per batch:** "Batch `<id>` is ready: `<n>` files, delta `<d>`, checks `<pass/fail>`. Apply?" Options: apply; apply after edits (name them); skip; stop here. Never merge two batches into one gate. Never skip ahead of the order.
 - **On a failed check:** revert the batch. Do not patch forward. Re-plan the item.
@@ -154,10 +161,10 @@ Bauhaus analyse — <dir> (scope: <dir>)
 Phase:      <n> of 9 (done: <list>)
 Scanned:    <n files> · <n distinct values> · <n custom properties>
 Foundations: spacing <base> (fit <x>) · type <ratio> (fit <x>) · colour <n ramps> · other <n>
-Tokens:     <n primitive> · <n semantic> accepted
-Components: <n> found · <n primitive cand.> · <n groups> · <n merges accepted>
+Tokens:     <n primitive token> · <n semantic> accepted
+Components: <n> found · <n component cand.> · <n groups> · <n merges accepted>
 Patterns:   <n> candidates · <n> accepted · <n> missing patterns
-Layers:     <n foundation> · <n token> · <n primitive> · <n pattern> · <n not-DS>
+Layers:     <n foundation> · <n token> · <n component> · <n pattern> · <n not-DS>
 Misfiles:   <ids>
 States:     <designed> designed · <n/a> n/a · <missing> missing
 Maturity:   <level> → <level after plan> — <evidence>
@@ -174,9 +181,9 @@ Next:       <one step>
 ## Rules
 
 - No source edits before phase 9.
-- One-offs are never promoted to a step, a token, a primitive or a pattern.
+- One-offs are never promoted to a step, a token, a component or a pattern.
 - Every merge or snap states its delta.
 - A pattern never introduces a value. Send it back to phase 3 or 4.
-- Never skip the order of phase 9: foundations, tokens, primitives, patterns, docs.
+- Never skip the order of phase 9: foundations, tokens, components, patterns, docs.
 - Sort findings by severity descending. Cap at ten per layer.
 - Never invent a misfile id or a citation.

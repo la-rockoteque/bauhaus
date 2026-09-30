@@ -70,7 +70,7 @@ A foundation is a family of values and its scale. The scale is a decision, not a
 Foundation — <family> (<add | evolve>)
 Decision: <option chosen> (asked)
 Scale:    <n steps, rule>
-Tokens:   <n primitive · n semantic> · build pass · check pass
+Tokens:   <n primitive token · n semantic> · build pass · check pass
 Artifacts: tokens ✓ · styleguide ✓ · storybook ✓ · rulebook ✓ (<n rules>)
 Migrated: <first call site> · Ratchet: <count> raw values remain
 Next:     <one step>

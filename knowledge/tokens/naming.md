@@ -27,7 +27,7 @@ sources:
 4. Use lowercase letters, digits and hyphens inside a segment. Use dots between segments in the DTCG path. Do not use spaces, `{`, `}` or a leading `$`. (DTCG name restrictions.)
 5. Map the dot path to the CSS custom property by joining segments with hyphens and adding the project prefix. `color.text.muted` becomes `--ds-color-text-muted`. Take the prefix from `prefix` in `bauhaus.config.json`. (One rule, so the mapping is mechanical and a tool can do it.)
 6. Give every custom property and class the project prefix. Use the prefix `ds` in examples. (A prefix keeps the system out of the way of third-party CSS.)
-7. Name primitive scales by step, not by adjective. Use `blue.600` and `space.3`, not `blue.medium` or `space.regular`. Steps are ordered. Adjectives are not. (A step name can be extended without renaming.)
+7. Name primitive token scales by step, not by adjective. Use `blue.600` and `space.3`, not `blue.medium` or `space.regular`. Steps are ordered. Adjectives are not. (A step name can be extended without renaming.)
 8. Use numeric steps for scales that may grow (`space.1` to `space.8`). Use t-shirt sizes (`sm`, `md`, `lg`) for scales that stay short (radius, text). Do not mix both on one scale. (One scale, one naming style.)
 9. Name size steps by intent, not by pixel value. `text.md` survives a retune from 14px to 15px. `text.14` does not. (`foundations/typography.md`)
 10. Use singular category names. A token is one member of a set: `color`, `space`, `radius`. Use plural only in prose. (House convention: the path reads as "one colour", "one radius".)
@@ -119,7 +119,7 @@ A token-naming page carries these six sections. (Order: `docs/architecture.md` Â
 
 ## Misfiles
 
-- A CSS class name such as `.ds-btn--primary` is a primitive's API, not a token name. (`components/api-design.md`)
+- A CSS class name such as `.ds-btn--primary` is a component's API, not a token name. (`components/api-design.md`)
 - A Figma layer name is a tool label. Map it to a token, do not treat it as one.
 - A design-system-wide glossary belongs in `UBIQUITOUS-LANGUAGE.md`.
 

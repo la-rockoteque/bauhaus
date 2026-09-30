@@ -123,7 +123,7 @@ export function renderPatterns({ cooccurrence, signals }) {
   const rows = signals.map((s) => [s.kind, s.count, s.files.slice(0, 3).join(', ')]);
   return [
     '# Patterns',
-    'Layer: pattern. A pattern is a recurring composition of primitives. A set is a candidate when its support is 2 files or more.',
+    'Layer: pattern. A pattern is a recurring composition of components. A set is a candidate when its support is 2 files or more.',
     `## Co-occurrence\n\n${cooccurrence.length ? table(['Id', 'Components', 'Support', 'First files'], sets) : 'No set of components appears together in 2 or more files.'}`,
     `## Signals\n\nLines that match a recurring UI need. Counts are heuristics. Read the first files before you trust them.\n\n${table(['Signal', 'Lines', 'First hits'], rows)}`,
     `## States\n\nState handling seen in the code: ${count(signals, 'empty-state')} empty-state lines, ${count(signals, 'loading')} loading lines, ${count(signals, 'error')} error lines. A screen that shows data with none of the three has a missing state.`,

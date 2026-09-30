@@ -16,7 +16,7 @@ sources:
 
 ## Rules
 
-1. Treat density as a theme dimension. It overrides semantic tokens, like `space.inset.control` and `size.control.height`. It does not change primitives. (See `tokens/theming.md`.)
+1. Treat density as a theme dimension. It overrides semantic tokens, like `space.inset.control` and `size.control.height`. It does not change components. (See `tokens/theming.md`.)
 2. Offer two modes: `comfortable` (default) and `compact`. Add a third only when a real use needs it. (Each mode multiplies the test surface.)
 3. Set the default to comfortable. Let the user or the product choose compact. (Comfortable is safer for touch and for new users.)
 4. Density changes vertical space, control height and inline gaps. It does not change font size below the type scale minimum, colour, or contrast. (Compact must stay readable. See `typography.md`.)

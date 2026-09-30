@@ -26,12 +26,12 @@ Ask with `AskUserQuestion` if unclear: add, rename, deprecate, build-and-check.
 
 1. **Read the config.** Get `tokens.source`, `tokens.outputs`, `prefix`. Missing: run `/bauhaus:init`.
 2. **Classify.** Which tier?
-   - Primitive: a raw step on a scale. Name has no intent.
-   - Semantic: an intent that aliases a primitive. Call sites use it.
-   - Component: one scoped decision for one primitive. Add only when a semantic token would be too broad.
+   - Primitive token: a raw step on a scale. Name has no intent.
+   - Semantic: an intent that aliases a primitive token. Call sites use it.
+   - Component: one scoped decision for one component. Add only when a semantic token would be too broad.
 3. **Check the family.** A new value inside an existing scale is a token. A new family or a new scale is a foundation change: stop, run `/bauhaus:foundation`.
 4. **Name it** by the grammar in `naming.md`. Reject names that carry the value (`blue-dark`), the component (in the semantic tier), or the theme.
-5. **Write it** in the right file with `$value`, `$type`, `$description`. Aliases use `{color.gray.600}`. Semantic tokens alias primitives, never literals.
+5. **Write it** in the right file with `$value`, `$type`, `$description`. Aliases use `{color.gray.600}`. Semantic tokens alias primitive tokens, never literals.
 6. **Contrast.** For a colour pair, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/contrast.mjs <fg> <bg>`. Report the ratio and the AA/AAA verdict against `house.contrast`.
 7. Go to **Build and check**.
 
@@ -88,7 +88,7 @@ A token group has a page in the styleguide and in Storybook, to the page contrac
 ```
 Tokens — <mode>
 Changed:  <n added · n renamed · n deprecated>
-Tier:     <primitive|semantic|component> for each new token
+Tier:     <primitive token|semantic|component> for each new token
 Contrast: <pair> <ratio> <AA|AAA verdict>   (colour only)
 Build:    pass | fail
 Check:    pass | fail (<message>)

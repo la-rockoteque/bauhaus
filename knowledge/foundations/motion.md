@@ -91,7 +91,7 @@ Publish it as five primitive tokens and use the roles below at call sites.
 | `--ds-duration-deliberate` | 400ms | Full viewport only. The ceiling. |
 
 - Name tokens for intent, not for a curve. A token such as `--ds-ease: 160ms ease` bundles a duration into a curve name, so a call site cannot change one without the other.
-- Systems that ship semantic bundles (Atlassian: `motion.popup.enter` packages duration, curve and property) let call sites name the intent. Adopt that shape as a second tier once the primitives are stable. (`tokens/architecture.md`)
+- Systems that ship semantic bundles (Atlassian: `motion.popup.enter` packages duration, curve and property) let call sites name the intent. Adopt that shape as a second tier once the primitive tokens are stable. (`tokens/architecture.md`)
 
 ## Easing
 

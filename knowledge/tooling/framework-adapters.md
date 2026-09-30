@@ -15,13 +15,13 @@ sources:
 
 # Framework adapters
 
-> Tokens are plain data. Primitives are behaviour plus markup. Both can be delivered to any stack. Keep tokens as the shared core and write a thin adapter per framework.
+> Tokens are plain data. Components are behaviour plus markup. Both can be delivered to any stack. Keep tokens as the shared core and write a thin adapter per framework.
 
 ## Rules
 
 1. Build tokens once from DTCG JSON. Emit CSS custom properties for the web and native formats for the rest. (Basis: `tokens/pipelines.md`.)
-2. Let a primitive read semantic tokens as CSS custom properties: `var(--ds-color-text-muted)`. It works in every web framework. (Basis: CSS custom properties are inherited and framework-neutral.)
-3. Keep the rulebook and the styleguide framework-neutral. Only the primitives and the Storybook page are per framework. (Basis: `docs/architecture.md`.)
+2. Let a component read semantic tokens as CSS custom properties: `var(--ds-color-text-muted)`. It works in every web framework. (Basis: CSS custom properties are inherited and framework-neutral.)
+3. Keep the rulebook and the styleguide framework-neutral. Only the components and the Storybook page are per framework. (Basis: `docs/architecture.md`.)
 4. Port behaviour, not markup. Wrap a headless library in each framework for Dialog, Combobox, Menu, Tabs and Tooltip. (Basis: `components/api-design.md`; APG keyboard contracts are long.)
 5. Give each adapter the same prop names and the same variant enums. (Basis: Nielsen 4; one vocabulary.)
 6. Expose state as attributes (`aria-*`, `data-state`) that CSS selects. This works across frameworks. (Basis: one source of truth.)
@@ -30,7 +30,7 @@ sources:
 
 ## Map by stack
 
-| Stack | Tokens arrive as | Primitive layer | Headless options |
+| Stack | Tokens arrive as | Component layer | Headless options |
 |---|---|---|---|
 | React | CSS variables; a generated TS module for JS use | Function components, `forwardRef` or `ref` as prop | Radix Primitives, React Aria, Headless UI, Ark UI |
 | Vue | CSS variables | Single-file components, slots for parts | Reka UI (formerly Radix Vue), Headless UI, Ark UI |
@@ -57,7 +57,7 @@ sources:
 - Generate the theme from tokens. In Tailwind v3, build a preset that maps token names to `theme.extend`. In Tailwind v4, declare tokens as CSS variables in `@theme`. `scripts/tokens.mjs` emits a Tailwind preset.
 - Name utilities by semantic token: `text-muted`, `bg-surface`, not by hue.
 - Turn off default palette entries the system does not use, so raw colours cannot slip in.
-- Keep component classes for primitives. Long utility strings in call sites bypass the API. Use them inside the primitive.
+- Keep component classes for components. Long utility strings in call sites bypass the API. Use them inside the component.
 
 ## CSS-in-JS
 

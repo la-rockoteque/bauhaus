@@ -1,8 +1,8 @@
 ---
 id: components/catalog
-title: Primitive catalog
+title: Component catalog
 shelf: components
-layer: primitive
+layer: component
 owner: ux-designer
 tags: [catalog, button, field, dialog, table, checklist, apg]
 sources:
@@ -12,15 +12,15 @@ sources:
   - Carbon Design System components — https://carbondesignsystem.com/components/overview/
 ---
 
-# Primitive catalog
+# Component catalog
 
-> A checklist per common primitive: the job it does, its parts, the states it must show, the pattern it follows and the defects seen most often. Use it to build a primitive, to review one, or to seed the rulebook.
+> A checklist per common component: the job it does, its parts, the states it must show, the pattern it follows and the defects seen most often. Use it to build a component, to review one, or to seed the rulebook.
 
 ## Rules
 
-1. Check a primitive against its entry before you call it done. (Basis: four artifacts; `UBIQUITOUS-LANGUAGE.md`.)
+1. Check a component against its entry before you call it done. (Basis: four artifacts; `UBIQUITOUS-LANGUAGE.md`.)
 2. Name required states from `states/model.md`. The matrix lives in `states/state-matrix.md`. Ids follow `<component>.state.<state>`.
-3. Every interactive primitive needs the interaction states default, hover, focus-visible, active and disabled, unless the entry says otherwise. (Basis: WCAG 2.4.7 Focus Visible (AA).)
+3. Every interactive component needs the interaction states default, hover, focus-visible, active and disabled, unless the entry says otherwise. (Basis: WCAG 2.4.7 Focus Visible (AA).)
 4. Give each rulebook seed a stable id. Never rename an id once written. (Basis: `governance/rulebook.md`.)
 
 Each entry lists: job, anatomy (`?` = optional), required states, APG pattern, key WCAG, top 3 defects, rulebook seeds.
@@ -282,7 +282,7 @@ Each entry lists: job, anatomy (`?` = optional), required states, APG pattern, k
 
 ## Why
 
-Reviews of design systems find the same defects again and again: missing names, missing states, colour-only cues, focus mistakes. A short entry per primitive turns those into a checklist a person or an agent can run.
+Reviews of design systems find the same defects again and again: missing names, missing states, colour-only cues, focus mistakes. A short entry per component turns those into a checklist a person or an agent can run.
 
 ## Rulebook seeds
 

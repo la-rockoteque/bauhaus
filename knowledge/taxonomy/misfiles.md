@@ -4,11 +4,13 @@ title: Misfiles — wrong-layer artifacts
 shelf: taxonomy
 layer: cross-cutting
 owner: design-system-architect
-tags: [audit, misclassification, grep, foundation, token, primitive, pattern, state, theme]
+tags: [audit, misclassification, grep, foundation, token, component, pattern, state, theme]
 sources:
   - Bauhaus architecture contract — docs/architecture.md § The four layers
   - W3C Design Tokens Community Group, Design Tokens Format Module — https://www.w3.org/community/design-tokens/
   - WCAG 2.2 1.4.1 (A), 1.4.11 (AA), 2.4.7 (AA) — https://www.w3.org/TR/WCAG22/
+  - Robert C. Martin, "Screaming Architecture", 2011
+  - Jimmy Bogard, "Vertical Slice Architecture", 2018
 ---
 
 # Misfiles
@@ -79,7 +81,7 @@ Call sites are everything outside the token source and outside the semantic-toke
 ### misfile.component-token-as-semantic
 - **Symptom:** `--ds-button-radius` is read by `Input` and `Card`.
 - **Detect:** `grep -rEn 'var\(--ds-<component>-' <other components>` for each component token.
-- **Why it hurts:** Tier 3 belongs to one primitive. Reuse couples two primitives. Changing the button changes the input.
+- **Why it hurts:** Tier 3 belongs to one component. Reuse couples two components. Changing the button changes the input.
 - **Belongs:** A semantic token (`--ds-radius-control`) that both component tokens alias.
 - **Smallest fix:** Promote the shared decision to tier 2. Alias each component token to it.
 
@@ -131,8 +133,8 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Symptom:** The "Colours" page lists "button hover", "input error border", "tab active".
 - **Detect:** Foundation pages that name components.
 - **Why it hurts:** The foundation now changes whenever a component does. The family loses its shape.
-- **Belongs:** Component states live in the primitive's state matrix, styled by semantic state tokens. The colour page shows the ramp and the status set.
-- **Smallest fix:** Move each row into the primitive's page. Leave a link.
+- **Belongs:** Component states live in the component's state matrix, styled by semantic state tokens. The colour page shows the ramp and the status set.
+- **Smallest fix:** Move each row into the component's page. Leave a link.
 
 ### misfile.theme-as-foundation
 - **Symptom:** "Dark mode" is a foundation page with its own scale.
@@ -141,12 +143,12 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Belongs:** Theming, over semantic tokens (see [../tokens/theming.md](../tokens/theming.md)).
 - **Smallest fix:** Rename the section "Themes". Keep one token tree with per-theme overrides.
 
-### misfile.theme-overrides-primitives
+### misfile.theme-overrides-primitive-tokens
 - **Symptom:** The dark theme edits `Button` styles, or redefines `color.blue.600`.
 - **Detect:** A theme file that holds selectors, or overrides tier-1 or tier-3 tokens.
 - **Why it hurts:** Themes multiply components. The same blue now means two things.
 - **Belongs:** A theme overrides semantic tokens only.
-- **Smallest fix:** Move the override up to the semantic token. Delete the primitive-level override.
+- **Smallest fix:** Move the override up to the semantic token. Delete the override on the primitive token.
 
 ### misfile.value-only-in-docs
 - **Symptom:** A value appears in the styleguide prose (`spacing is 12px`) but not in tokens.
@@ -155,23 +157,23 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Belongs:** The token. The guide shows a generated table and explains the reason.
 - **Smallest fix:** Generate the table from tokens. Delete the hand-typed value.
 
-## Primitive confusion
+## Component confusion
 
-### misfile.primitive-encodes-business-flow
+### misfile.component-encodes-business-flow
 - **Symptom:** `ApproveShipmentButton`, or `Button` with `type="checkout"`.
-- **Detect:** Primitive names or props holding domain nouns. Imports of feature code inside the library.
+- **Detect:** Component names or props holding domain nouns. Imports of feature code inside the library.
 - **Why it hurts:** The library depends on the product. It cannot be reused or versioned alone.
 - **Belongs:** Feature code that uses `Button`.
-- **Smallest fix:** Move the component to the feature. Keep the library primitive generic.
+- **Smallest fix:** Move the component to the feature. Keep the library component generic.
 
-### misfile.primitive-two-jobs
+### misfile.component-two-jobs
 - **Symptom:** One component with five unrelated modifiers, or a `type` prop that switches the anatomy.
 - **Detect:** A prop with more than four values that change structure, not look. Docs that say "and".
 - **Why it hurts:** The API is hard to learn. Every change risks every case. (Gate 3: [contribution](../governance/contribution.md).)
-- **Belongs:** Two or more primitives with one job each.
+- **Belongs:** Two or more components with one job each.
 - **Smallest fix:** Split by job. Keep the old name as a thin wrapper during migration.
 
-### misfile.pattern-promoted-to-primitive
+### misfile.pattern-promoted-to-component
 - **Symptom:** A component added to the library after one use, because it "looks reusable".
 - **Detect:** A library component with one call site. `grep -rc '<Name' src` returns 1.
 - **Why it hurts:** The library grows by guess. Every entry costs docs, tests and rules. (Gate 1: [contribution](../governance/contribution.md).)
@@ -182,8 +184,8 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Symptom:** A component-scoped stylesheet sets colour, radius, shadow or type.
 - **Detect:** Non-layout properties (`color`, `background`, `border-radius`, `box-shadow`, `font-*`) in feature stylesheets.
 - **Why it hurts:** The look forks. Two screens drift apart.
-- **Belongs:** Layout stays local. Look belongs to a primitive.
-- **Smallest fix:** Use the primitive. If it lacks the look, extend the primitive, not the page.
+- **Belongs:** Layout stays local. Look belongs to a component.
+- **Smallest fix:** Use the component. If it lacks the look, extend the component, not the page.
 
 ### misfile.page-component-in-library
 - **Symptom:** `DashboardHeader` or `OrdersFilterBar` sits in the shared library.
@@ -198,21 +200,21 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Symptom:** A pattern sets `margin: 18px` between its parts.
 - **Detect:** Literal lengths in pattern stylesheets or inline styles.
 - **Why it hurts:** The spacing scale has a hole. The pattern ignores density modes.
-- **Belongs:** A spacing token, or a layout primitive (`Stack`) that owns the gap.
-- **Smallest fix:** Use `--ds-space-*` tokens through a `Stack` or `Grid` primitive.
+- **Belongs:** A spacing token, or a layout component (`Stack`) that owns the gap.
+- **Smallest fix:** Use `--ds-space-*` tokens through a `Stack` or `Grid` component.
 
 ### misfile.pattern-own-style
-- **Symptom:** A pattern introduces a tint, a border or a shadow no primitive has.
+- **Symptom:** A pattern introduces a tint, a border or a shadow no component has.
 - **Detect:** Pattern CSS with colour or shadow declarations.
 - **Why it hurts:** A pattern is composition, not decoration. The look is now invisible to the rulebook.
-- **Belongs:** A primitive (a new variant or state) with tokens.
-- **Smallest fix:** Add the look to the primitive. Let the pattern compose it.
+- **Belongs:** A component (a new variant or state) with tokens.
+- **Smallest fix:** Add the look to the component. Let the pattern compose it.
 
 ### misfile.recipe-under-components
 - **Symptom:** "Empty state" guidance sits under Storybook `Components/*`, or a wizard is listed beside `Button`.
 - **Detect:** Storybook titles under `Components/` whose page describes a flow or a user need.
 - **Why it hurts:** Readers look for parts and find recipes. Rules for parts get applied to recipes.
-- **Belongs:** `Patterns/*`. The primitive it composes (`EmptyState`) stays under `Components/*`.
+- **Belongs:** `Patterns/*`. The component it composes (`EmptyState`) stays under `Components/*`.
 - **Smallest fix:** Move the page. Add a link both ways.
 
 ## State confusion
@@ -221,21 +223,51 @@ Call sites are everything outside the token source and outside the semantic-toke
 - **Symptom:** `<Button variant="disabled">`, `variant="loading"`, `variant="selected"`.
 - **Detect:** `grep -rEn 'variant[=:]\s*["'"'"']?(disabled|loading|selected|active|error|hover|focus)' <components>` and union types holding state names.
 - **Why it hurts:** A variant is chosen by a designer. A state is imposed by the user or the data. Modelled as a variant, it skips ARIA (`aria-disabled`, `aria-busy`, `aria-selected`) and cannot combine (a disabled secondary button).
-- **Belongs:** A state of the primitive: a prop (`disabled`, `loading`) or a pseudo-class, styled by state tokens.
+- **Belongs:** A state of the component: a prop (`disabled`, `loading`) or a pseudo-class, styled by state tokens.
 - **Smallest fix:** Turn the variant into a boolean prop. Map it to the attribute and the state token. Keep a deprecated alias for one window.
 
 ### misfile.state-only-happy-path
-- **Symptom:** A primitive or pattern documents and tests only the ideal state. No empty, loading, error, too-many, disabled or focus story.
+- **Symptom:** A component or pattern documents and tests only the ideal state. No empty, loading, error, too-many, disabled or focus story.
 - **Detect:** A Storybook page with a single story. A state matrix with empty cells. Data-bearing components with no empty or error branch.
 - **Why it hurts:** Users meet the other states daily. Focus and error states carry WCAG duties (2.4.7 AA, 1.4.1 A).
-- **Belongs:** The state matrix of each primitive and the lifecycle states of each pattern. See [../states/state-matrix.md](../states/state-matrix.md), [../states/lifecycle-states.md](../states/lifecycle-states.md).
+- **Belongs:** The state matrix of each component and the lifecycle states of each pattern. See [../states/state-matrix.md](../states/state-matrix.md), [../states/lifecycle-states.md](../states/lifecycle-states.md).
 - **Smallest fix:** Fill the matrix. Mark each non-applicable cell "n/a" with a reason. Add one story per state.
+
+## Structure confusion
+
+### misfile.primitive-as-layer
+- **Symptom:** A doc, a folder tree or a Storybook sidebar treats "primitives" as a layer next to components.
+- **Detect:** `grep -rniE 'primitives? (layer|tier)|layers?:.*primitive' docs <library>` and a root `primitives/` listed beside `foundations/`, `components/` and `patterns/` as its own layer.
+- **Why it hurts:** The four layers blur into five. "Is it a primitive or a component?" has no answer, and the gates apply twice.
+- **Belongs:** A component kind. A base building block that other components are built from (`Box`, `Text`, `Icon`) lives in `primitives/` and is a component. "Primitive" otherwise names only the tier-1 primitive token.
+- **Smallest fix:** Rewrite the doc to say four layers. Keep `primitives/` as a folder of base components. Do not add a fifth layer.
+
+### misfile.folder-by-file-type
+- **Symptom:** Folders named `hooks/`, `utils/`, `helpers/`, `common/`, `shared/`, `types/`, `constants/`, `styles/` or `stories/`.
+- **Detect:** `find <library> -type d \( -name hooks -o -name utils -o -name helpers -o -name common -o -name shared -o -name types -o -name constants -o -name styles -o -name stories \)`
+- **Why it hurts:** The folder names a kind of file, not what the code does. Related files sit far apart. The folder grows into a dumping ground.
+- **Belongs:** Beside its consumer, or in the nearest common ancestor of its consumers, named for what it does (`use-press.ts` in `clickables/`).
+- **Smallest fix:** Move one file at a time. Name the new home for its job. Basis: Robert C. Martin, "Screaming Architecture", 2011; Jimmy Bogard, "Vertical Slice Architecture", 2018.
+
+### misfile.story-far-from-component
+- **Symptom:** Stories live in a separate tree (`stories/`, `.storybook/stories/`) away from the component.
+- **Detect:** `find <library> -name '*.stories.*'` where the story is not in the component's slice.
+- **Why it hurts:** Code and story drift apart. A rename or a delete leaves a dead story.
+- **Belongs:** `<name>.stories.tsx` in the component's slice.
+- **Smallest fix:** Move the file into the slice. Keep the Storybook title derived from the path.
+
+### misfile.library-imports-app
+- **Symptom:** The library imports app code, an i18n runtime, the router or an API client.
+- **Detect:** `grep -rEn "from '(@?app|\.\./\.\./app|react-router|i18next)|fetch\(" <library>`
+- **Why it hurts:** The library cannot be built, tested or versioned alone. Consumers pull code they never use.
+- **Belongs:** The app. The library takes text, callbacks and data as props.
+- **Smallest fix:** Replace the import with a prop. Move the logic to the caller. Basis: the isolation rules in `docs/library.md`.
 
 ## Governance confusion
 
 ### misfile.partial-four-artifacts
-- **Symptom:** A primitive has CSS but no styleguide section, no Storybook page or no rulebook entries.
-- **Detect:** Compare primitive names in `components` against styleguide headings, Storybook titles and rulebook component ids.
+- **Symptom:** A component has CSS but no styleguide section, no Storybook page or no rulebook entries.
+- **Detect:** Compare component names in `components` against styleguide headings, Storybook titles and rulebook component ids.
 - **Why it hurts:** It is used but not specified. It is graded by nobody.
 - **Belongs:** Tokens, styleguide, Storybook and rulebook, shipped together.
 - **Smallest fix:** Add the missing artifact. Start with a Storybook page and two rulebook entries.
@@ -247,12 +279,14 @@ Call sites are everything outside the token source and outside the semantic-toke
 - `misfile.media-query-literal` · auto · MEDIUM · No literal breakpoint in a media query.
 - `misfile.state-colour-literal` · auto · HIGH · No literal in a state rule.
 - `misfile.primitive-token-at-call-site` · auto · MEDIUM · Call sites use semantic tokens only.
-- `misfile.component-token-as-semantic` · auto · MEDIUM · A component token is read by its own primitive only.
+- `misfile.component-token-as-semantic` · auto · MEDIUM · A component token is read by its own component only.
 - `misfile.semantic-holds-raw-value` · auto · MEDIUM · Tier-2 tokens are aliases.
 - `misfile.token-named-after-value` · auto · MEDIUM · Semantic names carry no colour word or raw value.
 - `misfile.state-as-variant` · auto · MEDIUM · No state name in a variant type.
-- `misfile.pattern-promoted-to-primitive` · review · MEDIUM · Every library primitive has two or more call sites.
-- `misfile.state-only-happy-path` · review · MEDIUM · Every primitive has a filled state matrix.
+- `misfile.pattern-promoted-to-component` · review · MEDIUM · Every library component has two or more call sites.
+- `misfile.state-only-happy-path` · review · MEDIUM · Every component has a filled state matrix.
+- `misfile.folder-by-file-type` · auto · MEDIUM · No folder named for a kind of file.
+- `misfile.library-imports-app` · auto · HIGH · The library imports no app, i18n, router or API code.
 
 ## See also
 

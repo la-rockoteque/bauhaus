@@ -136,7 +136,7 @@ A typography page carries these six sections. (Order: `docs/architecture.md` § 
 ## Misfiles
 
 - Heading levels (`h1` to `h6`) are document structure, not scale steps. Do not pick a heading level for its size.
-- The label style of one form field is a primitive concern.
+- The label style of one form field is a component concern.
 - Copy length and tone belong to `patterns/content-writing.md`.
 
 ## See also

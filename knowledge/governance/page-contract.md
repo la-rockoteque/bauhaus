@@ -19,7 +19,7 @@ sources:
 
 > Every page in the design system, in the styleguide and in Storybook, answers six questions in the same order. What is this? Which values does it use? What are its parts? What conditions can it be in? When do I use it, and when not? What goes wrong? A reader who knows one page knows them all. A writer who cannot fill a section has found a gap in the design.
 
-The contract applies to a foundation, a token group, a primitive and a pattern. The sections are fixed. The content differs by layer.
+The contract applies to a foundation, a token group, a component and a pattern. The sections are fixed. The content differs by layer.
 
 ## Rules
 
@@ -35,11 +35,11 @@ The contract applies to a foundation, a token group, a primitive and a pattern. 
 
 ## What each section holds, per layer
 
-| Section | Foundation | Token group | Primitive | Pattern |
+| Section | Foundation | Token group | Component | Pattern |
 |---|---|---|---|---|
 | **1 Introduction** | What family, the job it does for users, the layer, plain words first | What decisions the group names, its tiers, plain words first | What the part is, its one job, the layer, plain words first | The user need, the recipe in one line, the layer, plain words first |
-| **2 Tokens** | **Defined**: the scale's tier-1 tokens and the semantic tokens that name intents | **Defined**: every token with tier, value or alias, and description | **Consumed**: semantic tokens read, optional component tokens | **Consumed**: layout and spacing tokens, through the primitives it composes; no token of its own |
-| **3 Anatomy** | The scale and its structure: steps, growth rule, limits, closed set | The tiers and the alias chains | Named parts, each marked required or optional, with slots | The primitives it composes and how they are arranged |
+| **2 Tokens** | **Defined**: the scale's tier-1 tokens and the semantic tokens that name intents | **Defined**: every token with tier, value or alias, and description | **Consumed**: semantic tokens read, optional component tokens | **Consumed**: layout and spacing tokens, through the components it composes; no token of its own |
+| **3 Anatomy** | The scale and its structure: steps, growth rule, limits, closed set | The tiers and the alias chains | Named parts, each marked required or optional, with slots | The components it composes and how they are arranged |
 | **4 States** | The states it supplies tokens for (hover layer, focus ring, disabled) | Same, per token | The full state matrix: lifecycle and interaction | The lifecycle states of the recipe (nothing, loading, none, too many, incorrect, done) |
 | **5 Usage** | When to use each step; when not, and what instead; how to combine, contrast and a11y constraints | Which token for which job; when not, and what instead | When to use; when not and what instead; how: variants, composition, content, responsive, accessibility | When to use; when not and what instead; how: content, order, responsive, accessibility |
 | **6 Pitfalls** | Off-scale values, mixing steps, skipping the rationale | Naming, tier and alias mistakes | Wrong element, missing states, local look | Own style, own spacing, missing lifecycle states |
@@ -57,7 +57,7 @@ The contract applies to a foundation, a token group, a primitive and a pattern. 
 <defined | consumed>: table of token · tier · value or alias · use.
 
 ## 3. Anatomy
-<parts, required or optional; scale and steps; tiers and aliases; composed primitives>.
+<parts, required or optional; scale and steps; tiers and aliases; composed components>.
 
 ## 4. States
 <state matrix: designed | n/a — reason | missing; link one story per state>.
@@ -73,7 +73,7 @@ Each rule ends with its basis in parentheses.
 | Don't | Why it fails | Basis | Rule id |
 ```
 
-## Worked example: a primitive (Button)
+## Worked example: a component (Button)
 
 ````markdown
 # Button
@@ -81,7 +81,7 @@ Each rule ends with its basis in parentheses.
 ## 1. Introduction
 **In plain words:** A button is the thing you press to make something happen.
 Save, send, delete. If pressing it takes you somewhere else, it is a link, not a button.
-**Precisely:** Primitive · triggers one action in the current view · not for navigation.
+**Precisely:** Component · triggers one action in the current view · not for navigation.
 
 ## 2. Tokens (consumed)
 | Token | Tier | Use |

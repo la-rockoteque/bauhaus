@@ -95,18 +95,18 @@ States are not a layer. They attach to the layer they are a state **of**. See `.
 
 | State kind | Owned by | Styled with | Example |
 |---|---|---|---|
-| Interaction state of a control | The **primitive** | Semantic **state tokens** (`color.state.hover-layer`, `color.action.primary.hover`, `focus.ring.color`, `color.state.disabled.text`; grammar in `../tokens/naming.md` § State tokens) | Button hover, Checkbox indeterminate |
+| Interaction state of a control | The **component** | Semantic **state tokens** (`color.state.hover-layer`, `color.action.primary.hover`, `focus.ring.color`, `color.state.disabled.text`; grammar in `../tokens/naming.md` § State tokens) | Button hover, Checkbox indeterminate |
 | The values state tokens take | The **foundation** (colour, elevation, motion) | Primitive tokens | "Hover darkens by one step on the ramp"; "state changes run at `duration.fast`" |
-| Lifecycle state of a data-bearing primitive | The **primitive** | Semantic tokens | Field incorrect, Select none, Table loading |
-| Lifecycle state of a screen or flow | The **pattern** | Composes primitives, no new token | Empty-results pattern using the EmptyState primitive |
-| Transition between two states | **Motion** foundation + the primitive | Motion tokens | Toast enter at `motion.duration.slow` |
+| Lifecycle state of a data-bearing component | The **component** | Semantic tokens | Field incorrect, Select none, Table loading |
+| Lifecycle state of a screen or flow | The **pattern** | Composes components, no new token | Empty-results pattern using the EmptyState component |
+| Transition between two states | **Motion** foundation + the component | Motion tokens | Toast enter at `motion.duration.slow` |
 
 Classification rules:
 
 1. A state is a **condition**, a variant is a **choice**. `disabled` is never a variant: a Button is primary *and* disabled. Misfile: `misfile.state-as-variant`.
 2. A state colour is a semantic token, never a literal. Misfile: `misfile.state-colour-literal`.
-3. "Empty state" names two things. The EmptyState **primitive** is a block (illustration slot, message, action). The empty-results **pattern** decides when it appears and what it says. See `../patterns/empty-and-error.md`.
-4. A primitive that documents only default and hover has shipped a happy path. Misfile: `misfile.state-only-happy-path`.
+3. "Empty state" names two things. The EmptyState **component** is a block (illustration slot, message, action). The empty-results **pattern** decides when it appears and what it says. See `../patterns/empty-and-error.md`.
+4. A component that documents only default and hover has shipped a happy path. Misfile: `misfile.state-only-happy-path`.
 
 ## Who does what
 
@@ -120,7 +120,7 @@ Classification rules:
 
 ## Rules
 
-1. Every primitive, pattern and screen has a state matrix before it ships (`state-matrix.md`). (Speelman 2015; `../governance/page-contract.md` §States)
+1. Every component, pattern and screen has a state matrix before it ships (`state-matrix.md`). (Speelman 2015; `../governance/page-contract.md` §States)
 2. Walk all nine lifecycle states and every applicable interaction state. Mark each designed, n/a with a reason, or missing. A cell left blank is missing. (Speelman: "Even if you make a conscious decision to ignore one of them…")
 3. Check *none*, *incorrect*, *too many* and disabled-with-reason first: they are the ones that ship missing. (Rendle 2021; Lapomeray 2024 on disabled: users must understand "why an action is disabled")
 4. Every lifecycle change the user caused is announced, not only shown. (WCAG 4.1.3 Status Messages, AA)
@@ -134,9 +134,9 @@ Classification rules:
 
 ## Misfiles
 
-- A "States" page in Storybook that lists colours: that is the colour foundation's state-token table. States belong on each primitive's page.
+- A "States" page in Storybook that lists colours: that is the colour foundation's state-token table. States belong on each component's page.
 - `Button variant="disabled"`: a state filed as a variant.
-- An empty-state illustration hardcoded inside a list component: the pattern leaked into the primitive.
+- An empty-state illustration hardcoded inside a list component: the pattern leaked into the component.
 
 ## See also
 

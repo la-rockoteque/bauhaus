@@ -44,7 +44,7 @@ file keeps the essentials inline so you can work without it.
 | Shelf | Config key | What it holds |
 |---|---|---|
 | Tokens | `<config.tokens.source>` | DTCG JSON. Motion tokens live here. Build with `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build`. |
-| Primitives stylesheet | `<config.stylesheet>` | Transitions, keyframes, the reduced-motion block. Prefix: `<config.prefix>`. |
+| Components stylesheet | `<config.stylesheet>` | Transitions, keyframes, the reduced-motion block. Prefix: `<config.prefix>`. |
 | The styleguide | `<config.guide>` | The Motion section. Yours to grow. |
 | Running pages | `<config.storybook.stories>` | The `Foundations/Motion` page. |
 | The rulebook | `<config.rulebook.rules>` | You own the motion rubric. |
@@ -59,18 +59,18 @@ Read the stylesheet as data. Parse it or grep it. Never transcribe values by han
 
 Before you create or review any artifact, classify it with
 `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/decision-tree.md`. Name its layer:
-foundation, token, primitive or pattern.
+foundation, token, component or pattern.
 
 Then check it against `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/misfiles.md`. Flag every
 misfile you meet. The usual ones in your half:
 
-- A literal duration or easing curve in a primitive or pattern. It belongs in a token.
+- A literal duration or easing curve in a component or pattern. It belongs in a token.
 - A component-scoped timing (`toast.slide-duration`) posing as a foundation. It is a
   component token that should alias a semantic motion token.
 - A primitive token (`duration.150`) at a call site. Call sites use the semantic token.
 - A keyframe named for its component (`toast-slide-in`) that is really a shared foundation
   keyframe.
-- Choreography invented inside a pattern instead of composed from primitive motion.
+- Choreography invented inside a pattern instead of composed from component motion.
 
 Hand a layer move to `design-system-architect`. State the layer in every finding.
 
@@ -78,7 +78,7 @@ Hand a layer move to `design-system-architect`. State the layer in every finding
 
 ## 2b. States first, and the page contract
 
-Before you grade or build the motion of a primitive, a pattern or a screen, build or read
+Before you grade or build the motion of a component, a pattern or a screen, build or read
 its **state matrix**: `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md`,
 `states/interaction-states.md`, `states/lifecycle-states.md`, `states/state-matrix.md`.
 **You own the transitions between states:** default to hover, hover to pressed, none to
@@ -211,7 +211,7 @@ Three structural agreements. They are the principles:
    Leaving does not.
 
 Atlassian's contribution is architectural, not numeric. Motion ships in **two tiers**:
-primitives (`duration.small`) plus semantic bundles (`motion.popup.enter`, which packages
+primitive tokens (`duration.small`) plus semantic bundles (`motion.popup.enter`, which packages
 duration, curve and property). **Call sites name the intent, not the number.** Adopt that
 shape. It matches the token tiers in `knowledge/tokens/architecture.md`.
 
@@ -263,12 +263,12 @@ with the same options.
 
 ### Landing it — four artifacts, or the foundation is not real
 
-A scale that lives only in the stylesheet is a scale nobody finds. A new primitive needs
+A scale that lives only in the stylesheet is a scale nobody finds. A new component needs
 four edits. A new **foundation** needs the same four, at foundation scope. Ship them
 together.
 
 **1. The tokens — `<config.tokens.source>`, built to `<config.stylesheet>` or the
-configured outputs.** Put the duration primitives, the three curves and the motion-shift
+configured outputs.** Put the duration primitive tokens, the three curves and the motion-shift
 distance in the DTCG source. Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build`,
 then `check`. Keep any legacy motion token beside them as an alias with a one-line comment
 naming the deprecation. Add the single reduced-motion block from section 8 right after the
@@ -408,7 +408,7 @@ That makes it one edit in one place, not one per component:
 ```
 
 In the token pipeline, this is a `reduced-motion` mode that overrides semantic tokens.
-Primitives never change per mode. See `knowledge/tokens/theming.md`.
+Primitive tokens never change per mode. See `knowledge/tokens/theming.md`.
 
 Three things this does not cover. Each needs its own handling:
 

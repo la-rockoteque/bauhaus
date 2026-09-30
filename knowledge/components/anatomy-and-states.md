@@ -2,9 +2,9 @@
 id: components/anatomy-and-states
 title: Anatomy, variants, props and states
 shelf: components
-layer: primitive
+layer: component
 owner: ux-designer
-tags: [anatomy, variants, props, states, primitive]
+tags: [anatomy, variants, props, states, component]
 sources:
   - Nielsen, 10 Usability Heuristics, 1 Visibility of system status — https://www.nngroup.com/articles/ten-usability-heuristics/
   - WCAG 2.2 4.1.2 Name, Role, Value (A), 1.4.1 Use of Color (A)
@@ -13,15 +13,15 @@ sources:
 
 # Anatomy, variants, props and states
 
-> Every primitive has parts (its anatomy), choices the caller makes (variants and props) and conditions the primitive is in (states). Mix them up and the API grows without end. Keep each apart.
+> Every component has parts (its anatomy), choices the caller makes (variants and props) and conditions the component is in (states). Mix them up and the API grows without end. Keep each apart.
 
 ## Rules
 
-1. Draw the anatomy of every primitive before you code it. Name each part. (Basis: Material 3 and Carbon publish anatomy per component; shared names let designers and engineers speak of the same part.)
+1. Draw the anatomy of every component before you code it. Name each part. (Basis: Material 3 and Carbon publish anatomy per component; shared names let designers and engineers speak of the same part.)
 2. A **variant** is a fixed visual or semantic choice the caller makes: `tone`, `size`, `emphasis`. It is an enum. (Basis: `components/api-design.md`.)
 3. A **prop** is data or behaviour the caller passes in: `label`, `disabled`, `onPress`. (Basis: same.)
-4. A **state** is a condition the primitive is in. The caller supplies some (`disabled`, `invalid`), and the browser supplies others (hover, focus, active). Never expose a state as a variant. (Basis: a variant is chosen once, a state changes at run time.)
-5. Every primitive names the states it supports. The full model lives in `states/model.md`. The per-component matrix lives in `states/state-matrix.md`. Do not restate them here.
+4. A **state** is a condition the component is in. The caller supplies some (`disabled`, `invalid`), and the browser supplies others (hover, focus, active). Never expose a state as a variant. (Basis: a variant is chosen once, a state changes at run time.)
+5. Every component names the states it supports. The full model lives in `states/model.md`. The per-component matrix lives in `states/state-matrix.md`. Do not restate them here.
 6. Empty, error and disabled are the states that ship missing. Check them first. (Basis: Nielsen 1 Visibility of system status, Nielsen 9 Help users recognise, diagnose and recover from errors.)
 7. A disabled control explains itself: why it is off, and what unlocks it. (Basis: Nielsen 1, Nielsen 9.)
 8. Each state differs by more than colour. Add an icon, text or a shape. (Basis: WCAG 1.4.1 Use of Color (A).)
@@ -29,7 +29,7 @@ sources:
 
 ## Anatomy in text
 
-Use one diagram per primitive. Number the parts. Mark optional parts with `?`.
+Use one diagram per component. Number the parts. Mark optional parts with `?`.
 
 ```
 Button
@@ -72,7 +72,7 @@ Card
   Whole card clickable: one link inside, stretched over the card.
 ```
 
-Each anatomy lists: part, job, required or optional, token that styles it. Put the diagram and the part table in the styleguide section of the primitive. The Storybook page repeats the diagram.
+Each anatomy lists: part, job, required or optional, token that styles it. Put the diagram and the part table in the styleguide section of the component. The Storybook page repeats the diagram.
 
 ## Variants, props and states
 
@@ -89,9 +89,9 @@ Test: if two values can hold at the same time (a danger button that is also disa
 
 ## States: short summary
 
-Lifecycle states describe the data: nothing, loading, none, one, some, too-many, incorrect, correct, done. Interaction states describe the control: default, hover, focus-visible, active, disabled, loading, success, error, selected. Full definitions: `states/model.md`. Which primitive needs which: `states/state-matrix.md`. Rule ids follow `<component>.state.<state>`.
+Lifecycle states describe the data: nothing, loading, none, one, some, too-many, incorrect, correct, done. Interaction states describe the control: default, hover, focus-visible, active, disabled, loading, success, error, selected. Full definitions: `states/model.md`. Which component needs which: `states/state-matrix.md`. Rule ids follow `<component>.state.<state>`.
 
-Minimum bar for a primitive page: show every state the matrix requires for that primitive, in every theme.
+Minimum bar for a component page: show every state the matrix requires for that component, in every theme.
 
 ## Why
 
@@ -109,7 +109,7 @@ Anatomy gives the team one vocabulary. The variant, prop and state split keeps t
 
 - A "loading variant" is a state. File it under `states/`.
 - A "dark variant" is a theme. File it under `tokens/theming.md`.
-- A layout with two primitives side by side is a pattern, not a bigger primitive.
+- A layout with two components side by side is a pattern, not a bigger component.
 
 ## See also
 

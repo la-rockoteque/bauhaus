@@ -120,7 +120,7 @@ A shape page carries these six sections. (Order: `docs/architecture.md` § Page 
 - A drop shadow is elevation, not shape. (`elevation.md`)
 - Icon stroke width is `iconography.md`.
 - The colour of a border is a semantic colour token. (`color.md`)
-- A "card" with its own padding, radius and border is a primitive. (`taxonomy/layers.md`)
+- A "card" with its own padding, radius and border is a component. (`taxonomy/layers.md`)
 
 ## See also
 

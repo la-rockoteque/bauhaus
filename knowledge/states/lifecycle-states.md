@@ -16,7 +16,7 @@ sources:
 
 > Think of a shop. Before opening: shutters down (*nothing*). Stocking shelves (*loading*). Open but empty shelves (*none*). One item left (*one*). A normal day (*some*). A queue out the door (*too many*). The card machine refuses a card (*incorrect*). The card is accepted (*correct*). The receipt is in your hand (*done*). A good shop has a plan for each one.
 
-The nine states come from Speelman (2015). This file gives each one a definition, what it must show, the primitives and patterns where it matters most, and its evidence. Order follows Speelman's lifecycle.
+The nine states come from Speelman (2015). This file gives each one a definition, what it must show, the components and patterns where it matters most, and its evidence. Order follows Speelman's lifecycle.
 
 ## Rules
 
@@ -62,7 +62,7 @@ The nine states come from Speelman (2015). This file gives each one a definition
 | 1 – 10 s | Skeleton that mirrors the real layout, or an in-place spinner. Determinate if the length is known. |
 | > 10 s | Percent done, or move it to the background and notify. |
 
-**Where it matters.** Every data-bearing primitive (Table, List, Select with remote options), every button that triggers a request (interaction state *loading*, see `interaction-states.md`).
+**Where it matters.** Every data-bearing component (Table, List, Select with remote options), every button that triggers a request (interaction state *loading*, see `interaction-states.md`).
 
 **Basis.** Nielsen 1, Visibility of system status. WCAG 2.2.2 Pause, Stop, Hide (A) for loops over five seconds. WCAG 4.1.3 Status Messages (AA): expose `aria-busy` and announce completion.
 
@@ -182,9 +182,9 @@ Every arrow is a transition the motion foundation must handle (`../foundations/m
 
 ## Misfiles
 
-- An "empty state" illustration hardcoded inside a list or table primitive. The empty-results decision belongs to a pattern, which composes the EmptyState primitive (`../patterns/empty-and-error.md`).
+- An "empty state" illustration hardcoded inside a list or table component. The empty-results decision belongs to a pattern, which composes the EmptyState component (`../patterns/empty-and-error.md`).
 - One "error" story or component that mixes user error and system error. They need different content and recovery: split them (`## 7. Incorrect`).
-- The `loading` of a button and the *loading* of a region as one thing. The first is an interaction state of the primitive. The second is a lifecycle state (`model.md` § Which layer owns which state).
+- The `loading` of a button and the *loading* of a region as one thing. The first is an interaction state of the component. The second is a lifecycle state (`model.md` § Which layer owns which state).
 
 ## See also
 

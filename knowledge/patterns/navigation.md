@@ -84,7 +84,7 @@ Keyboard and screen-reader users meet navigation on every page. A stable order a
 
 ## Misfiles
 
-- A dropdown of actions is a Menu Button primitive, not navigation.
+- A dropdown of actions is a Menu Button component, not navigation.
 - Step indicators of a wizard belong in the wizard pattern.
 - Breadcrumb visuals belong in `components/catalog.md`.
 

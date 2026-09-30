@@ -17,7 +17,7 @@ sources:
 
 > A light switch tells you three things without a word: it is there, it is on or off, and it moved when you pressed it. An interaction state is how a control does the same on screen: "you can use me", "you are pointing at me", "I felt that", "not now, and here is why".
 
-An interaction state is a **condition** of a primitive at this instant. It is never a variant (a variant is a design choice, such as primary or secondary). Every state is styled with semantic **state tokens**, never with literals. See `model.md` for the lifecycle axis.
+An interaction state is a **condition** of a component at this instant. It is never a variant (a variant is a design choice, such as primary or secondary). Every state is styled with semantic **state tokens**, never with literals. See `model.md` for the lifecycle axis.
 
 ## Rules
 
@@ -97,7 +97,7 @@ motion.duration.fast            hover / focus colour changes
 motion.duration.instant         press acknowledgement
 ```
 
-The values belong to the colour, elevation and motion foundations. The primitive only names which token each state uses.
+The values belong to the colour, elevation and motion foundations. The component only names which token each state uses.
 
 ## Motion between states
 
@@ -151,7 +151,7 @@ Owned by `motion-designer` (`../foundations/motion.md`):
 
 - `Button variant="disabled"`: a condition filed as a choice. It is `misfile.state-as-variant`. Use a `disabled` prop.
 - A hover colour written as `#1a3a5c` in a state rule: a semantic state token belongs there (`misfile.state-colour-literal`).
-- A "States" page that lists hover colours: that is the colour foundation's token table. Each primitive's page holds its own state matrix.
+- A "States" page that lists hover colours: that is the colour foundation's token table. Each component's page holds its own state matrix.
 - Hover-only row actions: an action, not a state. Give it a visible, keyboard-reachable control.
 
 ## See also

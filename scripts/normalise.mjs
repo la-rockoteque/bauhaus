@@ -16,7 +16,7 @@ import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { CATEGORIES, buildDraft, toPx } from './extract.mjs';
 import { luminance } from './contrast.mjs';
-import { isPageSpecific, isPrimitiveCandidate } from './components.mjs';
+import { isPageSpecific, isComponentCandidate } from './components.mjs';
 import { deltaE76, opaque } from './lib/color.mjs';
 import { UsageError, readJson, round, run, runIfMain, sum, table, uniq, writeArtifact } from './lib/analysis.mjs';
 import { flatten, loadTokens } from './lib/dtcg.mjs';
@@ -229,7 +229,7 @@ function planComponents({ components, groups }) {
   const single = (c, action) => ({ group: null, keep: c.name, merge: [], callSites: c.usages, action });
   return [
     ...out,
-    ...components.filter((c) => isPrimitiveCandidate(c) && !merged.has(c.name)).map((c) => single(c, 'promote')),
+    ...components.filter((c) => isComponentCandidate(c) && !merged.has(c.name)).map((c) => single(c, 'promote')),
     ...components.filter((c) => isPageSpecific(c) && !merged.has(c.name)).map((c) => single(c, 'demote')),
   ];
 }
@@ -255,19 +255,19 @@ function foundationBatches(rows) {
     .map(([family, r]) => batch('foundation', `Adopt ${FAMILY_LABEL[family]} scale`, sum(r, (x) => x.uses), filesOf(r).length, worst(r.map(deltaRisk)), '/bauhaus:foundation'));
 }
 
-function primitiveBatches(components, list) {
+function componentBatches(components, list) {
   const info = (name) => list.find((c) => c.name === name);
   const filesOfMerge = (c) => sum(c.merge, (m) => (info(m)?.usedIn ?? 0) + 1);
   const all = components.filter((c) => c.action === 'merge');
   // High-risk merges are reviewed one by one; low and medium ones are bundled per risk to keep the plan short.
   const single = all.filter((c) => callSiteRisk(c.callSites) === 'high').map((c) => batch(
-    'primitive', `Merge ${c.merge.join(', ')} into ${c.keep}`, c.callSites, filesOfMerge(c), 'high', '/bauhaus:component'));
+    'component', `Merge ${c.merge.join(', ')} into ${c.keep}`, c.callSites, filesOfMerge(c), 'high', '/bauhaus:component'));
   const bundles = ['low', 'medium'].map((risk) => [risk, all.filter((c) => callSiteRisk(c.callSites) === risk)]).filter(([, g]) => g.length)
-    .map(([risk, g]) => batch('primitive', `Merge ${g.length} ${risk}-risk duplicate groups`, sum(g, (c) => c.callSites), sum(g, filesOfMerge), risk, '/bauhaus:component'));
+    .map(([risk, g]) => batch('component', `Merge ${g.length} ${risk}-risk duplicate groups`, sum(g, (c) => c.callSites), sum(g, filesOfMerge), risk, '/bauhaus:component'));
   const merges = [...bundles, ...single];
   const byAction = (action, title) => {
     const n = components.filter((c) => c.action === action).length;
-    return n ? [batch('primitive', `${title} ${n} components`, n, n, 'low', '/bauhaus:component')] : [];
+    return n ? [batch('component', `${title} ${n} components`, n, n, 'low', '/bauhaus:component')] : [];
   };
   return [...merges, ...byAction('promote', 'Promote'), ...byAction('demote', 'Demote')];
 }
@@ -280,7 +280,7 @@ function planBatches({ rows, tokens, components, patterns, list }) {
   const all = [
     ...foundationBatches(rows),
     ...(tokens.length ? [batch('token', 'Publish token set and alias exact matches', tokens.length + sum(alias, (r) => r.uses), filesOf(alias).length, 'low', '/bauhaus:tokens')] : []),
-    ...primitiveBatches(components, list),
+    ...componentBatches(components, list),
     ...(patterns.cooccurrence.length ? [batch('pattern', `Document ${patterns.cooccurrence.length} patterns`, patterns.cooccurrence.length, patternFiles, 'low', '/bauhaus:pattern')] : []),
     ...(docsItems ? [batch('docs', 'Publish styleguide and Storybook', docsItems, 0, 'low', '/bauhaus:styleguide')] : []),
   ];
@@ -323,10 +323,10 @@ export function renderPlan(plan, components, patterns, foundations = null) {
     `## Summary\n\n${plan.values.length} values (${summarise(countBy(plan.values, 'action'))}). ${plan.components.length} component actions (${summarise(countBy(plan.components, 'action'))}). ${plan.patterns.length} patterns to document. ${plan.batches.length} batches. ${scale}\n\nActions: \`alias\` swaps an exact match, \`snap\` moves to the nearest token, \`keep\` has no close token, \`drop\` is a one-off far from any token. The agent enriches this file before the gate.`,
     `## Foundation\n\nLengths and durations. Delta is in px or ms.\n\n${valueTable(lengths)}`,
     `## Token\n\nColours. Delta is ΔE CIE76.\n\n${valueTable(plan.values.filter((v) => v.family === 'color'))}`,
-    `## Primitive\n\n### Merges\n\n${merges.length ? table(['Group', 'Keep', 'Merge', 'Call sites'], merges) : 'None.'}\n\n### Promote\n\n${componentRows(plan.components, 'promote').slice(0, 25).map((r) => `- ${r[1]} (${r[3]} usages)`).join('\n') || 'None.'}\n\n### Demote\n\n${componentRows(plan.components, 'demote').slice(0, 25).map((r) => `- ${r[1]}`).join('\n') || 'None.'}`,
+    `## Component\n\n### Merges\n\n${merges.length ? table(['Group', 'Keep', 'Merge', 'Call sites'], merges) : 'None.'}\n\n### Promote\n\n${componentRows(plan.components, 'promote').slice(0, 25).map((r) => `- ${r[1]} (${r[3]} usages)`).join('\n') || 'None.'}\n\n### Demote\n\n${componentRows(plan.components, 'demote').slice(0, 25).map((r) => `- ${r[1]}`).join('\n') || 'None.'}`,
     `## Pattern\n\n${plan.patterns.map((p) => `- \`${p.id}\`: ${p.action}`).join('\n') || 'None.'}`,
-    `## Batches\n\nOrder never changes: foundation, token, primitive, pattern, docs. Risk comes from the largest delta, or from call sites for merges. Effort comes from files.\n\n${plan.batches.length ? table(['Id', 'Layer', 'Title', 'Items', 'Files', 'Risk', 'Effort', 'Skill'], plan.batches.map((b) => [b.id, b.layer, b.title, b.items, b.files, b.risk, b.effort, `\`${b.skill}\``])) : 'None.'}`,
-    `## States\n\n${components.components?.filter((c) => Object.values(c.states).some(Boolean)).length ?? 0} components expose at least one state. Signals: ${signal('empty-state')} empty-state, ${signal('loading')} loading, ${signal('error')} error lines. Cover every state in each primitive before its batch closes.`,
+    `## Batches\n\nOrder never changes: foundation, token, component, pattern, docs. Risk comes from the largest delta, or from call sites for merges. Effort comes from files.\n\n${plan.batches.length ? table(['Id', 'Layer', 'Title', 'Items', 'Files', 'Risk', 'Effort', 'Skill'], plan.batches.map((b) => [b.id, b.layer, b.title, b.items, b.files, b.risk, b.effort, `\`${b.skill}\``])) : 'None.'}`,
+    `## States\n\n${components.components?.filter((c) => Object.values(c.states).some(Boolean)).length ?? 0} components expose at least one state. Signals: ${signal('empty-state')} empty-state, ${signal('loading')} loading, ${signal('error')} error lines. Cover every state in each component before its batch closes.`,
   ].join('\n\n') + '\n';
 }
 

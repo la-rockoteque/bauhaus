@@ -131,7 +131,7 @@ export default {
 
 - Tokens Studio stores tokens in JSON that resembles DTCG. Confirm the export format and the version before you treat it as DTCG. Convert with Style Dictionary or a script when the shapes differ.
 - One direction of sync per token: the repo is the source. Figma is a consumer. Two-way editing needs an agreed owner per token set. (Two owners produce merge conflicts in a generated file.)
-- Map Figma modes to themes. Map collections to token groups. Map a Figma variable to a semantic token, not to a primitive, so that modes work. (`theming.md`)
+- Map Figma modes to themes. Map collections to token groups. Map a Figma variable to a semantic token, not to a primitive token, so that modes work. (`theming.md`)
 
 ## CI check for drift
 
@@ -174,7 +174,7 @@ A pipelines page carries these six sections. (Order: `docs/architecture.md` § P
 - Two outputs to one path overwrite each other silently.
 - Committed outputs with no CI check drift from the source.
 - Resolving all aliases in CSS removes theme override flow. Keep `var()` references.
-- Syncing Figma variables to primitives breaks modes. Sync to semantic tokens.
+- Syncing Figma variables to primitive tokens breaks modes. Sync to semantic tokens.
 - Composites sent to a platform that cannot read them fail without a warning.
 
 ## Why
@@ -198,7 +198,7 @@ A pipelines page carries these six sections. (Order: `docs/architecture.md` § P
 
 - The choice of Figma as a design tool belongs to `tooling/design-tool-sync.md`.
 - Framework glue such as a React theme provider belongs to `tooling/framework-adapters.md`.
-- A stylesheet of primitives written by hand (`<config.stylesheet>`) is not an output. It consumes the outputs.
+- A stylesheet of components written by hand (`<config.stylesheet>`) is not an output. It consumes the outputs.
 
 ## See also
 

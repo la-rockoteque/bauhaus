@@ -2,7 +2,7 @@
 id: accessibility/apg-patterns
 title: ARIA Authoring Practices patterns
 shelf: accessibility
-layer: primitive
+layer: component
 owner: ux-designer
 tags: [apg, aria, keyboard, widgets, roles]
 sources:
@@ -19,7 +19,7 @@ sources:
 
 1. Use a native element first. `<button>`, `<a href>`, `<details>`, `<dialog>`, `<input type="checkbox">`, `<select>` and `<input type="date">` ship with correct keyboard and semantics. (Basis: ARIA "first rule of ARIA use".)
 2. Reach for an APG pattern only when no native element does the job. (Basis: APG "No ARIA is better than bad ARIA".)
-3. When a primitive implements a pattern, follow the APG keyboard table exactly. (Basis: WCAG 2.1.1 Keyboard (A), 4.1.2 Name, Role, Value (A).)
+3. When a component implements a pattern, follow the APG keyboard table exactly. (Basis: WCAG 2.1.1 Keyboard (A), 4.1.2 Name, Role, Value (A).)
 4. Give every widget an accessible name, a role and its state. (Basis: WCAG 4.1.2 (A).)
 5. A composite widget (tabs, menu, listbox, grid, radio group, toolbar, tree) has one Tab stop. Arrow keys move inside it. (Basis: APG roving tabindex and `aria-activedescendant`.)
 6. Never trap focus, except in a modal dialog. Esc closes the modal and focus returns to the trigger. (Basis: WCAG 2.1.2 No Keyboard Trap (A), 2.4.3 Focus Order (A).)
@@ -90,7 +90,7 @@ Widgets built from `div` elements have no keyboard behaviour and no semantics un
 
 ## Misfiles
 
-- A pure-CSS state (hover style) is a token or primitive matter, not a pattern here.
+- A pure-CSS state (hover style) is a token or component matter, not a pattern here.
 - A screen-level flow (wizard, filtering) belongs in `patterns/`.
 - `role="menu"` for site navigation is a misuse. Use `<nav>` with a list and a disclosure.
 

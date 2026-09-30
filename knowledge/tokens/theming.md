@@ -18,7 +18,7 @@ sources:
 
 ## Rules
 
-1. A theme overrides semantic tokens only. Primitives never change per theme. Call sites never name a theme. (`architecture.md`; `UBIQUITOUS-LANGUAGE.md` § Theme)
+1. A theme overrides semantic tokens only. Primitive tokens never change per theme. Call sites never name a theme. (`architecture.md`; `UBIQUITOUS-LANGUAGE.md` § Theme)
 2. Treat each theme as a separate dimension: colour scheme (light, dark), contrast (default, more), brand, and density. Combine them. Do not build one theme per combination by hand. (A dimension per concern avoids a combinatorial file set.)
 3. Define the default theme in `tokens.source`. Define each other theme as a folder of overrides that lists only the semantic tokens that differ. (`bauhaus.config.schema.json` § tokens.themes)
 4. A theme must define a value for every token in the semantic set it overrides. A theme with a gap silently inherits a value that may fail contrast. Add a build check for coverage. (WCAG 1.4.3, AA)
@@ -137,7 +137,7 @@ A theming page carries these six sections. (Order: `docs/architecture.md` § Pag
 ### 6. Pitfalls and don'ts
 - Inverting light values gives ratios that nobody checked. (WCAG 1.4.3, AA)
 - Reusing light shadows on dark leaves no visible elevation. (`foundations/elevation.md`)
-- Overriding a primitive per theme breaks every other theme that shares it.
+- Overriding a primitive token per theme breaks every other theme that shares it.
 - Removing borders because "the background shows the edge" fails in forced-colors. (WCAG 1.4.11, AA)
 - `forced-color-adjust: none` on a whole page throws away the user's setting.
 - A theme with missing tokens inherits values that may fail contrast.

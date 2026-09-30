@@ -53,14 +53,14 @@ Precise: `color.text.muted` on `color.surface.soft` measures 3.8:1. WCAG 1.4.3 (
 |---|---|---|---|
 | **Foundation** | The grammar of a language. Or the measuring system of a city: metres, not "about this long". | It sets what is allowed and why, before any word is said. | Grammar has no single value; a foundation does have a scale. |
 | **Token** | A word in the dictionary. Or a paint swatch with a name on the tin: "Harbour Blue". | One name, one meaning, used everywhere. Change the tin and every wall changes. | A word has no "value". A swatch has one. |
-| **Primitive** | A LEGO brick. Or a kitchen utensil: a whisk whisks. | One job, a known shape, reusable, fits with others. | A brick has no states; a primitive has hover, focus and disabled. |
+| **Component** | A LEGO brick. Or a kitchen utensil: a whisk whisks. | One job, a known shape, reusable, fits with others. | A brick has no states; a component has hover, focus and disabled. |
 | **Pattern** | A recipe. Or a floor plan for a common room, such as a kitchen. | It says which bricks to use, and in what order, for a known need. | A recipe adds no new ingredient. That is the rule: a pattern adds no new value. |
 
 One sentence per layer for a mixed audience:
 
 - Foundation: "The rules of the game: which sizes, colours and steps exist, and why."
 - Token: "A named choice, like 'main text colour'. Written once. Used everywhere."
-- Primitive: "A small part that does one job, like a button."
+- Component: "A small part that does one job, like a button."
 - Pattern: "A tested way to combine parts for a common need, like a list with a search box."
 
 ## Analogies for the other terms
@@ -114,7 +114,7 @@ See [../states/model.md](../states/model.md) for the full state model.
 | Component token | A token used by one part only. |
 | Alias | A token that points to another token. |
 | Theme | A swap of some semantic tokens, for example dark mode. |
-| Primitive | A small reusable part with one job. |
+| Component | A small reusable part with one job. |
 | Pattern | A recipe that combines parts for a common need. |
 | Variant | A look you choose for a part, like "primary" or "secondary". |
 | State | The condition a part is in right now: hovered, disabled, loading. |

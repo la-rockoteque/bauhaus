@@ -18,9 +18,9 @@ sources:
 
 ## Rules
 
-1. Run axe-core on every primitive story and every route. Zero violations is the gate. (Basis: axe-core covers part of WCAG A and AA.)
+1. Run axe-core on every component story and every route. Zero violations is the gate. (Basis: axe-core covers part of WCAG A and AA.)
 2. Never claim "accessible" from a green axe run. Automated rules cover roughly a third of issues. (Basis: Deque coverage studies; treat the figure as an estimate.)
-3. Walk every interactive primitive with the keyboard alone. (Basis: WCAG 2.1.1 Keyboard (A), 2.4.7 Focus Visible (AA).)
+3. Walk every interactive component with the keyboard alone. (Basis: WCAG 2.1.1 Keyboard (A), 2.4.7 Focus Visible (AA).)
 4. Smoke-test each new pattern with one screen reader: VoiceOver on macOS or iOS, NVDA on Windows. (Basis: WCAG 4.1.2 Name, Role, Value (A).)
 5. Emulate `prefers-reduced-motion: reduce` and confirm that motion stops or shrinks. (Basis: WCAG 2.3.3 (AAA).)
 6. Probe at 320 px for a second scroll axis. (Basis: WCAG 1.4.10 Reflow (AA).)
@@ -159,7 +159,7 @@ Automated rules read the DOM and computed styles. They cannot judge intent or in
 ## Rulebook seeds
 
 - `a11y.axe-clean` · auto · HIGH · Each story and route has zero axe violations at A and AA.
-- `a11y.keyboard-walk` · review · HIGH · Each interactive primitive passes the keyboard walk. WCAG 2.1.1 (A).
+- `a11y.keyboard-walk` · review · HIGH · Each interactive component passes the keyboard walk. WCAG 2.1.1 (A).
 - `a11y.sr-smoke` · review · MEDIUM · Each new pattern has a screen reader smoke note.
 - `a11y.reduced-motion-probe` · auto · MEDIUM · No running transform animation under `reduce`. WCAG 2.3.3 (AAA).
 - `a11y.reflow-320` · auto · HIGH · No overflow at 320 px. WCAG 1.4.10 (AA).

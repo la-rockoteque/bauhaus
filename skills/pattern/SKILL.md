@@ -1,11 +1,11 @@
 ---
 name: pattern
-description: Add or evolve a pattern (filtering, empty state, wizard, data table...) that composes existing primitives. Use when the user says "add a pattern", "new pattern", "design a filter bar", "document this composition", "wizard pattern", "evolve the data table pattern", or "this screen part repeats".
+description: Add or evolve a pattern (filtering, empty state, wizard, data table...) that composes existing components. Use when the user says "add a pattern", "new pattern", "design a filter bar", "document this composition", "wizard pattern", "evolve the data table pattern", or "this screen part repeats".
 ---
 
 # /bauhaus:pattern — add or evolve a pattern
 
-A pattern composes existing primitives to answer a recurring need. It introduces no token and no raw value. If it needs one, that is a foundation or token change first. Lead: `bauhaus:design-system-architect`. Supports: `bauhaus:ux-designer` (flow, states, copy, keyboard), `bauhaus:ui-designer` (spacing between parts), `bauhaus:motion-designer` (transitions), `bauhaus:responsive-reviewer` (phone floor).
+A pattern composes existing components to answer a recurring need. It introduces no token and no raw value. If it needs one, that is a foundation or token change first. Lead: `bauhaus:design-system-architect`. Supports: `bauhaus:ux-designer` (flow, states, copy, keyboard), `bauhaus:ui-designer` (spacing between parts), `bauhaus:motion-designer` (transitions), `bauhaus:responsive-reviewer` (phone floor).
 
 ## Loads
 
@@ -19,9 +19,9 @@ A pattern composes existing primitives to answer a recurring need. It introduces
 ## Steps
 
 1. **Read the config.** Get `components`, `guide`, `storybook`, `rulebook`. Missing: suggest `/bauhaus:init`.
-2. **Classify.** Run the decision tree. One block that does one job is a primitive: route to `/bauhaus:component`. A page or feature with business logic is not-DS.
+2. **Classify.** Run the decision tree. One block that does one job is a component: route to `/bauhaus:component`. A page or feature with business logic is not-DS.
 3. **Prove the need.** List two or more real screens that repeat the composition. One occurrence stays in the product.
-4. **List the parts.** Name every primitive the pattern uses. A missing primitive stops the work: run `/bauhaus:component` first.
+4. **List the parts.** Name every component the pattern uses. A missing component stops the work: run `/bauhaus:component` first.
 5. **Run the no-new-value check.**
    - Grep the draft for raw colours, sizes, durations, shadows. Any hit: stop.
    - Needs a new spacing step, colour or duration: that is a foundation or token change. Run `/bauhaus:foundation` or `/bauhaus:tokens`, then return.
@@ -32,7 +32,7 @@ A pattern composes existing primitives to answer a recurring need. It introduces
 9. **Land the artifacts to the page contract.** Each has six sections in order: Introduction, Tokens (consumed), Anatomy, States, Usage, Pitfalls and don'ts.
    - **Styleguide.** `<config.guide>` §Patterns section.
    - **Storybook.** A page under `Patterns/<Name>`, one story per lifecycle state.
-   - **Rulebook.** Review rules (`<pattern>.<rule>`), plus `<pattern>.state.<state>` per designed state. Most pattern rules are `review`. Make one `auto` rule: "uses only listed primitives and no raw value".
+   - **Rulebook.** Review rules (`<pattern>.<rule>`), plus `<pattern>.state.<state>` per designed state. Most pattern rules are `review`. Make one `auto` rule: "uses only listed components and no raw value".
    - **Tokens.** None new. The Tokens section lists consumed tokens.
 10. **Slop check.** For each line in Usage and each Pitfall ask: "What is the basis?" and "Would this line be true of any pattern?" No basis or generic: rewrite with a basis (WCAG number and level, APG, Nielsen heuristic by name, published system, research result) or cut it.
 11. **Migrate one screen** to the pattern. Record the rest with a ratchet.
@@ -45,9 +45,9 @@ A pattern composes existing primitives to answer a recurring need. It introduces
 
 ## Evolve
 
-- Swapping a primitive: update anatomy, stories, rules. Check the matrix.
+- Swapping a component: update anatomy, stories, rules. Check the matrix.
 - Removing a part: deprecate first (`knowledge/governance/versioning.md`).
-- A pattern that grows its own styles is turning into a primitive. Run the decision tree again.
+- A pattern that grows its own styles is turning into a component. Run the decision tree again.
 
 ## Writes
 
@@ -61,7 +61,7 @@ A pattern composes existing primitives to answer a recurring need. It introduces
 ```
 Pattern — <name> (<add | evolve>)
 Layer:    pattern · Seen on: <n screens>
-Composes: <primitives>
+Composes: <components>
 New tokens/values: none  (or STOP: <what, routed to skill>)
 Page:     6/6 sections · <n> usage rules · <n> pitfalls · all with basis
 States:   <designed> designed · <n/a> n/a · <missing> missing

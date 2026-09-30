@@ -20,7 +20,7 @@ sources:
 
 ## Rules
 
-1. Run the phases in order. Never start a phase before the artifacts of the phase before it exist. (Each phase reads the previous one: tokens need a scale, primitives need tokens, patterns need primitives. See § Why this order.)
+1. Run the phases in order. Never start a phase before the artifacts of the phase before it exist. (Each phase reads the previous one: tokens need a scale, components need tokens, patterns need components. See § Why this order.)
 2. Read and infer in phases 1 to 8. Edit source in phase 9 only. (A wrong inference costs nothing until code changes.)
 3. Put one gate after every phase that makes a decision: 1, 3, 4, 5, 6, 8 and each batch of 9. Ask one focused question with 2 to 4 options and state the cost. (`knowledge/governance/contribution.md`: propose before you populate.)
 4. Let scripts count and agents judge. An agent never counts by eye what a script can count. A script never decides a name or a merge. (Counts are reproducible. Judgement needs the user's product context.)
@@ -40,7 +40,7 @@ sources:
 | 2 | Values | foundation (raw) | `02-values/` holds the inventory, the custom properties and the draft tokens. The totals are stated. | none |
 | 3 | Foundations | foundation | `03-foundations.json` and `.md` exist. Every family has an accepted scale or an explicit "hand-tuned". | One question per foundation |
 | 4 | Tokens | token | `04-tokens/` builds and passes `tokens.mjs check`. Names are accepted. | Accept token set and names |
-| 5 | Components | primitive | `05-components.json` and `.md` exist. Every group has a keeper or a "keep both" reason. | Accept primitive candidates and merges |
+| 5 | Components | component | `05-components.json` and `.md` exist. Every group has a keeper or a "keep both" reason. | Accept component candidates and merges |
 | 6 | Patterns | pattern | `06-patterns.json` and `.md` exist. Every accepted candidate names its user need. | Accept pattern candidates |
 | 7 | Classification | all four | `07-classification.md` classifies every finding and lists misfiles by id. | none |
 | 8 | Normalisation | all four | `08-normalisation.json` and `08-plan.md` exist. The plan has batches, each of reviewable size. | Accept the plan and its first batch |
@@ -63,12 +63,12 @@ sources:
 The order is not a preference. Each layer consumes the one before it. (`knowledge/taxonomy/layers.md`.)
 
 1. **Foundations first.** A token is one member of a scale. With no scale, a token is an arbitrary number. (`knowledge/governance/contribution.md`: a token with no scale is an arbitrary number.)
-2. **Tokens second.** A primitive uses semantic tokens. With no tokens, a merged Button would carry raw values again. (`knowledge/tokens/architecture.md`.)
-3. **Primitives third.** A pattern composes primitives. With no primitives, a pattern is a page. (`knowledge/taxonomy/decision-tree.md`, Q4.)
+2. **Tokens second.** A component uses semantic tokens. With no tokens, a merged Button would carry raw values again. (`knowledge/tokens/architecture.md`.)
+3. **Components third.** A pattern composes components. With no components, a pattern is a page. (`knowledge/taxonomy/decision-tree.md`, Q4.)
 4. **Patterns fourth.** A pattern adds no value of its own. It needs the three layers below to exist. (`misfile.pattern-own-style`, `misfile.pattern-own-spacing`.)
 5. **Docs last.** A page documents what exists. (`knowledge/governance/page-contract.md`.)
 
-The same order is the Bauhaus one. Itten's Vorkurs taught material, form and colour before any student entered a workshop. The foundations are the Vorkurs. The primitives are the workshops. (`knowledge/bauhaus/principles.md` § The Vorkurs.)
+The same order is the Bauhaus one. Itten's Vorkurs taught material, form and colour before any student entered a workshop. The foundations are the Vorkurs. The components are the workshops. (`knowledge/bauhaus/principles.md` § The Vorkurs.)
 
 Scripts run early. Agents judge late. Phase 2 reads no meaning: it counts. Phase 3 asks what the counts mean. Phase 5 asks what a component is for. Meaning needs the layers below it.
 
@@ -106,7 +106,7 @@ A repo with thousands of files gives an inventory too big to judge. Cut it.
 2. **Run all nine phases on it.** Do not run phases 1 to 4 on the whole repo and phases 5 to 9 on a part. (Half-done layers give a plan nobody can apply.)
 3. **Keep vendored and generated code out.** `analyse.mjs init` lists ignored folders. Check the list. (Code the team does not own cannot be normalised.)
 4. **Widen in steps.** After phase 9 on the first scope, run `--scope <next-dir>`. Reuse the accepted foundations and tokens. Only new values and new components need new decisions. (The scale is a repo-wide decision. It should not be remade per folder.)
-5. **Split a shared package out.** If the repo has a UI package, analyse it as its own scope. Its exports are the primitive candidates.
+5. **Split a shared package out.** If the repo has a UI package, analyse it as its own scope. Its exports are the component candidates.
 6. **Record the scope in `01-scope.md`.** A later reader must know what the plan does not cover.
 
 A scope is right when phase 8 gives a plan of 3 to 8 batches. More means the scope is too wide.
@@ -119,7 +119,7 @@ A scope is right when phase 8 gives a plan of 3 to 8 batches. More means the sco
 
 ## Why
 
-- Foundations before tokens before primitives follows the dependency of the layers in `knowledge/taxonomy/layers.md`. Reversing it makes each later layer carry the earlier layer's missing decisions as raw values.
+- Foundations before tokens before components follows the dependency of the layers in `knowledge/taxonomy/layers.md`. Reversing it makes each later layer carry the earlier layer's missing decisions as raw values.
 - Read-only phases make a wrong guess free. Phase 9 is where risk starts, so it is the only phase with one gate per batch.
 - No state file means resume cannot lie. Progress is what exists.
 - A small first scope gives a finished loop. A finished loop teaches the team the process before the whole repo depends on it.

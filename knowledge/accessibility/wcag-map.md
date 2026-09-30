@@ -23,7 +23,7 @@ sources:
 4. Do not report 4.1.1 Parsing. WCAG 2.2 removed it. Cite 4.1.2 Name, Role, Value (A) for broken markup that affects assistive technology. (Basis: WCAG 2.2, "4.1.1 Parsing is obsolete and removed".)
 5. When a project sets a stricter house standard, name both figures. Example: 44 px is the house target, 2.5.5 Enhanced (AAA). 24 px is the floor, 2.5.8 Minimum (AA). (Basis: WCAG 2.2 2.5.5, 2.5.8.)
 6. Send each finding to the owner agent in the tables below. If the owner is not the caller, hand off in one line. (Basis: `docs/architecture.md` § Agent format.)
-7. A design system cannot pass a criterion alone. A primitive can make it easy, or hard, to pass. Write what the primitive guarantees and what the call site must supply. (Basis: WCAG 2.2 conformance applies to full pages.)
+7. A design system cannot pass a criterion alone. A component can make it easy, or hard, to pass. Write what the component guarantees and what the call site must supply. (Basis: WCAG 2.2 conformance applies to full pages.)
 
 ## Owner: ui-designer — what you see
 
@@ -37,7 +37,7 @@ These criteria are settled by reading the stylesheet or the tokens.
 | 1.4.10 | Reflow | AA | Content works at 320 CSS px wide with no second scroll axis. Shared with `responsive-reviewer`. |
 | 1.4.11 | Non-text Contrast | AA | Input borders, icons that carry meaning, focus rings and chart marks reach 3:1 against their neighbours. |
 | 1.4.12 | Text Spacing | AA | Layout survives line height 1.5, paragraph spacing 2x, letter spacing 0.12 em and word spacing 0.16 em. Do not fix heights on text containers. |
-| 2.4.7 | Focus Visible | AA | Every focusable element shows a focus indicator. The token for the ring exists once and every primitive uses it. |
+| 2.4.7 | Focus Visible | AA | Every focusable element shows a focus indicator. The token for the ring exists once and every component uses it. |
 | 2.4.11 | Focus Not Obscured (Minimum) | AA | A sticky header, footer or cookie bar never fully covers the focused element. Use `scroll-padding` equal to the sticky height. |
 | 2.4.13 | Focus Appearance | AAA | The indicator is at least 2 px thick, has 3:1 change of contrast, and encloses the element. Use it as the default ring spec. |
 | 2.5.5 | Target Size (Enhanced) | AAA | Targets are at least 44 x 44 CSS px. |
@@ -72,7 +72,7 @@ These criteria need judgement about flow, wording and semantics.
 | 2.2.1 | Timing Adjustable | A | A time limit can be turned off, adjusted or extended. A toast with an action does not vanish on a timer alone. |
 | 2.2.2 | Pause, Stop, Hide | A | Motion that starts by itself, lasts more than 5 s and sits beside other content has a pause control. Same for auto-updating content. |
 | 2.3.1 | Three Flashes or Below Threshold | A | Nothing flashes more than three times in one second. |
-| 2.3.3 | Animation from Interactions | AAA | Motion caused by interaction can be turned off. Honour `prefers-reduced-motion: reduce` in every animated primitive. |
+| 2.3.3 | Animation from Interactions | AAA | Motion caused by interaction can be turned off. Honour `prefers-reduced-motion: reduce` in every animated component. |
 
 ## Owner: responsive-reviewer — what fits
 
@@ -102,13 +102,13 @@ These criteria need judgement about flow, wording and semantics.
 
 ## Why
 
-WCAG 2.2 adds nine criteria to 2.1: 2.4.11 (AA), 2.4.12 (AAA), 2.4.13 (AAA), 2.5.7 (AA), 2.5.8 (AA), 3.2.6 (A), 3.3.7 (A), 3.3.8 (AA), 3.3.9 (AAA). Of these, the AA set matters most for a design system: sticky chrome, drag alternatives and target size are properties of primitives. Automated tools find only part of the failures. See `accessibility/testing.md`.
+WCAG 2.2 adds nine criteria to 2.1: 2.4.11 (AA), 2.4.12 (AAA), 2.4.13 (AAA), 2.5.7 (AA), 2.5.8 (AA), 3.2.6 (A), 3.3.7 (A), 3.3.8 (AA), 3.3.9 (AAA). Of these, the AA set matters most for a design system: sticky chrome, drag alternatives and target size are properties of components. Automated tools find only part of the failures. See `accessibility/testing.md`.
 
 ## Rulebook seeds
 
 - `a11y.contrast-text` · auto · HIGH · Every text token pair reaches 4.5:1 (3:1 large) in every theme. WCAG 1.4.3 (AA).
 - `a11y.contrast-ui` · auto · HIGH · Borders of controls, meaningful icons and focus rings reach 3:1. WCAG 1.4.11 (AA).
-- `a11y.focus-visible` · auto · HIGH · Every interactive primitive shows the shared focus ring. WCAG 2.4.7 (AA).
+- `a11y.focus-visible` · auto · HIGH · Every interactive component shows the shared focus ring. WCAG 2.4.7 (AA).
 - `a11y.focus-not-obscured` · review · HIGH · Sticky chrome sets `scroll-padding`. WCAG 2.4.11 (AA).
 - `a11y.target-min` · auto · HIGH · Targets are at least 24 x 24 px. WCAG 2.5.8 (AA).
 - `a11y.target-house` · auto · MEDIUM · Targets are at least 44 x 44 px on touch. WCAG 2.5.5 (AAA), house standard.

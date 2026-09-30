@@ -32,8 +32,8 @@ This file gives seven levels (0 to 6), the signals that show each one in a repo,
 | 0 | None | No shared styles. Each screen styles itself. |
 | 1 | Ad hoc styles | A global stylesheet or theme file exists. Values are repeated. |
 | 2 | Tokens exist | Named values live in one source. Some call sites use them. |
-| 3 | Primitives library | Shared parts with one job each. Call sites use them. |
-| 4 | Documented and visible | Styleguide and Storybook cover foundations, primitives and patterns. |
+| 3 | Component library | Shared parts with one job each. Call sites use them. |
+| 4 | Documented and visible | Styleguide and Storybook cover foundations, components and patterns. |
 | 5 | Enforced | A rulebook grades the parts. Ratchets stop debt from growing. |
 | 6 | Themed and multi-platform | Themes and several platforms build from one token source. |
 
@@ -69,31 +69,31 @@ This file gives seven levels (0 to 6), the signals that show each one in a repo,
 
 **Meaning:** decisions are named. Adoption is partial. The scale is not yet closed.
 
-**Next step:** write the foundations' scales and close them. Then build the first primitives that read only semantic tokens: Button, Field, Card. See [../taxonomy/layers.md](../taxonomy/layers.md).
+**Next step:** write the foundations' scales and close them. Then build the first components that read only semantic tokens: Button, Field, Card. See [../taxonomy/layers.md](../taxonomy/layers.md).
 
-## Level 3 — Primitives library
+## Level 3 — Component library
 
 **Signals**
-- A component library exists (`components` in project config). Each primitive has one job.
-- Primitives read semantic tokens. Few raw values remain.
+- A component library exists (`components` in project config). Each component has one job.
+- Components read semantic tokens. Few raw values remain.
 - Adoption is measurable and rising: most new screens use the library.
-- Documentation is thin: comments or a README, not one page per primitive.
+- Documentation is thin: comments or a README, not one page per component.
 
 **Meaning:** reuse works. The system is not yet visible or checkable.
 
-**Next step:** ship the four artifacts for each primitive, starting with the most used. Write the styleguide section and the Storybook page with every state. See [contribution.md](contribution.md).
+**Next step:** ship the four artifacts for each component, starting with the most used. Write the styleguide section and the Storybook page with every state. See [contribution.md](contribution.md).
 
 ## Level 4 — Documented and visible
 
 **Signals**
-- A styleguide with sections for foundations, primitives and patterns.
-- Storybook (or equivalent) with one page per foundation, primitive and pattern. States are shown, not only the default.
+- A styleguide with sections for foundations, components and patterns.
+- Storybook (or equivalent) with one page per foundation, component and pattern. States are shown, not only the default.
 - Each page follows the page contract ([page-contract.md](page-contract.md)).
 - No rulebook. Quality depends on review.
 
 **Meaning:** people can learn and see the system. Regressions still slip in, because nothing fails.
 
-**Next step:** write the rulebook for the three most used primitives. Make the `auto` rules run in tests. List today's failures as known violations. Add one ratchet on the biggest debt count. See [rulebook.md](rulebook.md).
+**Next step:** write the rulebook for the three most used components. Make the `auto` rules run in tests. List today's failures as known violations. Add one ratchet on the biggest debt count. See [rulebook.md](rulebook.md).
 
 ## Level 5 — Enforced
 
@@ -106,7 +106,7 @@ This file gives seven levels (0 to 6), the signals that show each one in a repo,
 
 **Meaning:** the system defends itself. Debt can only go down.
 
-**Next step:** add coverage for the primitives not yet graded (the "not graded" list). Then, if the product needs it, add a second theme through semantic-token overrides.
+**Next step:** add coverage for the components not yet graded (the "not graded" list). Then, if the product needs it, add a second theme through semantic-token overrides.
 
 ## Level 6 — Themed and multi-platform
 
@@ -129,7 +129,7 @@ Run these checks in order. Stop at the first "no". The level is the last "yes".
 | 1 | Is there a shared stylesheet or theme? | Look for a global CSS, SCSS or theme file. |
 | 2 | Is there a token source with semantic names? | Look for `tokens.source` in `bauhaus.config.json`, or `tokens/*.json`, or `$value` keys. |
 | 3 | Is there a components library with several call sites per part? | Count imports of each library component across `src`. |
-| 4 | Are there styleguide sections and Storybook pages per part, with states? | Compare primitive names against headings and story titles. |
+| 4 | Are there styleguide sections and Storybook pages per part, with states? | Compare component names against headings and story titles. |
 | 5 | Is there a rulebook with tests and a ratchet? | Look for rule ids, `KNOWN_VIOLATIONS` or equivalent, and a test that fails on a count change. |
 | 6 | Are there two themes or two platform outputs from one token source? | Look for theme override files and multiple build targets. |
 
@@ -137,7 +137,7 @@ Run these checks in order. Stop at the first "no". The level is the last "yes".
 
 Real repos straddle levels. Report the lowest complete level and name the part that is ahead.
 
-Example: "Level 2. Tokens exist and coverage is 71%. A Storybook already covers four primitives (level 4 signal), but the library has no shared owner (level 3 gap)."
+Example: "Level 2. Tokens exist and coverage is 71%. A Storybook already covers four components (level 4 signal), but the library has no shared owner (level 3 gap)."
 
 ## Rulebook seeds
 
@@ -148,7 +148,7 @@ Example: "Level 2. Tokens exist and coverage is 71%. A Storybook already covers 
 
 - Equating maturity with size. A small system with a ratchet outranks a large one with no checks.
 - Counting a Figma library as level 3. The signal is code that consumers import.
-- Treating themes as level 6 when primitives are overridden per theme. That is a misfile (`misfile.theme-overrides-primitives`).
+- Treating themes as level 6 when primitive tokens are overridden per theme. That is a misfile (`misfile.theme-overrides-primitive-tokens`).
 
 ## See also
 

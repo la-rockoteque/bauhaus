@@ -1,10 +1,10 @@
 ---
 id: analysis/component-mining
-title: Component mining — finding primitives in existing code
+title: Component mining — finding components in existing code
 shelf: analysis
-layer: primitive
+layer: component
 owner: design-system-architect
-tags: [analysis, components, primitives, duplicates, usage, merge, states, classification]
+tags: [analysis, components, duplicates, usage, merge, states, classification]
 sources:
   - Bauhaus contribution rules — knowledge/governance/contribution.md
   - Bauhaus decision tree — knowledge/taxonomy/decision-tree.md
@@ -21,7 +21,7 @@ Phase 5 of the analyser (`scripts/components.mjs`) lists every component, counts
 
 1. Detect components by the framework's own definition, then confirm by use. (A file with a capital name is not proof. Use counts are.)
 2. Count two numbers per component: `usages` (call sites) and `usedIn` (distinct folders that use it). (Many uses in one folder is a local part. Uses across folders is a shared one.)
-3. Call a component a primitive candidate only when it passes three gates: used in 2 or more places, structural, one job. (`knowledge/governance/contribution.md` § Adding a primitive.)
+3. Call a component a component candidate only when it passes three gates: used in 2 or more places, structural, one job. (`knowledge/governance/contribution.md` § Adding a component.)
 4. Attach evidence to each gate: the two call sites, one sentence on what breaks if unshared, and the job in one sentence with no "and". (`contribution.md`.)
 5. Keep a failed candidate in the candidate list. Do not add it to the library. (`contribution.md`.)
 6. Classify by what the component is, not by its name or folder. Run the decision tree on each. (`knowledge/taxonomy/decision-tree.md`.)
@@ -48,20 +48,20 @@ Notes:
 - Skip tests, stories and mocks when you count usage. Count them separately. (A component used only in its own story is unused.)
 - Record whether a component is exported. An unexported component is `local` by definition.
 
-## Primitive, page-local or feature
+## Component, page-local or feature
 
 | Kind | Signal | Layer | Action |
 |---|---|---|---|
-| **Primitive** | Used in 2 or more folders. No business words. One job. Props describe look and behaviour. | Primitive | Candidate for the library |
+| **Component** | Used in 2 or more folders. No business words. One job. Props describe look and behaviour. | Component | Candidate for the library |
 | **Page-local** | Used in one folder. Generic shape. | Not-DS for now | Keep local. Watch for a second use |
 | **Feature component** | Names a business object (`OrderCard`, `InvoiceRow`). Fetches or formats domain data. | Not-DS | Leave in the product. Extract only its generic parts |
 | **Layout or page** | Places other components. No look of its own. | Pattern candidate or Not-DS | Check phase 6 |
 
 Ask three questions, in order:
 
-1. Does its name or its props contain a business term? Yes: feature component. (`misfile.primitive-encodes-business-flow`.)
+1. Does its name or its props contain a business term? Yes: feature component. (`misfile.component-encodes-business-flow`.)
 2. Is it used in 2 or more folders? No: page-local.
-3. Does it do one job? No: split it. (`misfile.primitive-two-jobs`.)
+3. Does it do one job? No: split it. (`misfile.component-two-jobs`.)
 
 ## Finding near-duplicates
 
@@ -99,18 +99,18 @@ Rules for reading:
 
 - A missing prop is `missing`, not `n/a`. `n/a` needs a written reason. (`state-matrix.md` rule 4.)
 - A state colour written as a literal is `misfile.state-colour-literal`.
-- A primitive with only default and hover is `misfile.state-only-happy-path`.
-- Report the total: designed, n/a, missing, across all primitive candidates. (`## States` in `05-components.md`.)
+- A component with only default and hover is `misfile.state-only-happy-path`.
+- Report the total: designed, n/a, missing, across all component candidates. (`## States` in `05-components.md`.)
 
 ## Typical findings
 
 | Finding | Usually means | Smallest next step |
 |---|---|---|
-| Five buttons (`Button`, `Btn`, `SubmitButton`, `LinkButton`, `ActionBtn`) | One primitive grew forks | Merge into the keeper. Map variants to props. Keep the two with real difference |
+| Five buttons (`Button`, `Btn`, `SubmitButton`, `LinkButton`, `ActionBtn`) | One component grew forks | Merge into the keeper. Map variants to props. Keep the two with real difference |
 | Two modals (`Modal`, `Dialog`) | Two eras of the same block | Keep the one with focus trap and Escape. Deprecate the other |
-| A `Card` that shows an order or a user | A business view named like a primitive | Demote to a feature component. Extract a generic `Card` shell only if 2 or more folders need it |
-| An `Input` that also validates and fetches | A primitive with two jobs | Split into `Field` (label, input, hint, error) and product logic |
-| A `Wrapper` or `Container` per page | Layout copied per page | One layout primitive, or a pattern |
+| A `Card` that shows an order or a user | A business view named like a component | Demote to a feature component. Extract a generic `Card` shell only if 2 or more folders need it |
+| An `Input` that also validates and fetches | A component with two jobs | Split into `Field` (label, input, hint, error) and product logic |
+| A `Wrapper` or `Container` per page | Layout copied per page | One layout component, or a pattern |
 | A component used once | Local by nature | Keep local. Do not promote |
 | A component used many times in one folder | A local part | Keep local. Its reuse is real but not shared |
 | A component with literal colours and sizes | It has not met tokens yet | Snap after phase 4. Not a reason to merge |
@@ -144,16 +144,16 @@ Then:
 
 ## Rulebook seeds
 
-- `analysis.component.two-places` · auto · HIGH · A primitive candidate is used in 2 or more folders.
+- `analysis.component.two-places` · auto · HIGH · A component candidate is used in 2 or more folders.
 - `analysis.component.merge-delta` · review · MEDIUM · Every merge states keeper, members, call sites and delta.
 - `analysis.component.keeper-access` · review · HIGH · The keeper fails no WCAG A or AA duty that a merged member passes.
 - `analysis.component.states-read` · review · MEDIUM · Every candidate has a state summary.
 
 ## Misfiles
 
-- A business view in the library: `misfile.primitive-encodes-business-flow`, `misfile.page-component-in-library`.
-- A primitive with two jobs: `misfile.primitive-two-jobs`.
-- A pattern promoted to a primitive: `misfile.pattern-promoted-to-primitive`.
+- A business view in the library: `misfile.component-encodes-business-flow`, `misfile.page-component-in-library`.
+- A component with two jobs: `misfile.component-two-jobs`.
+- A pattern promoted to a component: `misfile.pattern-promoted-to-component`.
 - A state used as a variant: `misfile.state-as-variant`.
 
 ## See also

@@ -42,7 +42,7 @@ sources:
 | Icon component | One component per icon, inline SVG in the markup | Component frameworks with tree-shaking | Bundle grows with the icons used. Each icon is fully stylable. |
 | Icon font | Not allowed. See rule 15. | | |
 
-Choose one approach for the whole system. Expose it through one primitive (`Icon`) so call sites never paste raw SVG.
+Choose one approach for the whole system. Expose it through one component (`Icon`) so call sites never paste raw SVG.
 
 ## Example
 
@@ -97,7 +97,7 @@ An iconography page carries these six sections. (Order: `docs/architecture.md` Â
 ### 5. Usage
 - When to use an icon: a common action with a shared metaphor, or a label that can be shortened. Add a visible label for the rest.
 - When not to: a status that only an icon carries; decoration. Use text or drop it.
-- How: the `Icon` primitive, size from the scale, `currentColor`, name on the control. Informative icons reach 3:1. (WCAG 1.4.11, AA)
+- How: the `Icon` component, size from the scale, `currentColor`, name on the control. Informative icons reach 3:1. (WCAG 1.4.11, AA)
 - Accessibility: icon-only controls have a name and a target of at least 24 x 24 CSS px. (WCAG 4.1.2, A; 2.5.8, AA)
 
 ### 6. Pitfalls and don'ts
@@ -127,7 +127,7 @@ An iconography page carries these six sections. (Order: `docs/architecture.md` Â
 ## Misfiles
 
 - An illustration or a logo is not an icon. It belongs to brand assets, outside the foundations.
-- The icon button (padding, radius, hover) is a primitive. (`taxonomy/layers.md`)
+- The icon button (padding, radius, hover) is a component. (`taxonomy/layers.md`)
 - Emoji used as status markers are content, and screen readers read them aloud. Avoid them in UI chrome.
 
 ## See also

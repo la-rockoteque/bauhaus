@@ -24,7 +24,7 @@ sources:
    - **Inset:** space between a container's edge and its content (padding).
    - **Stack:** vertical space between siblings.
    - **Inline:** horizontal space between siblings.
-6. Give a stack one owner. Set gaps on the parent with `gap`, or with a stack primitive. Do not set margins on the children of a stack. (Child margins collide and leak into other contexts.)
+6. Give a stack one owner. Set gaps on the parent with `gap`, or with a stack component. Do not set margins on the children of a stack. (Child margins collide and leak into other contexts.)
 7. Use spacing to show grouping. The gap inside a group is smaller than the gap between groups. (Gestalt proximity.)
 8. Never use a raw pixel value for a gap at a call site. Use a scale token. Values inside one component's private layout may be explicit when no other component shares them. (Tier rule: call sites use semantic tokens, `tokens/architecture.md`.)
 9. Build the layout grid with CSS Grid or Flexbox. Use 12 columns for wide layouts and 4 for narrow ones. Set gutters from the spacing scale. (Material 3 layout uses 4 columns on compact windows and 12 on expanded ones.)
@@ -90,7 +90,7 @@ A spacing and layout page carries these six sections. (Order: `docs/architecture
 - Show the same layout in each breakpoint range.
 
 ### 5. Usage
-- When to use a token: every gap in a shared primitive or pattern. Private one-off layout inside one component may use an explicit value. (Tier rule, `tokens/architecture.md`)
+- When to use a token: every gap in a shared component or pattern. Private one-off layout inside one component may use an explicit value. (Tier rule, `tokens/architecture.md`)
 - When not to use one: sub-pixel optical corrections. Use a local value and comment it.
 - How: gap on the parent, mobile first, container queries for components, media queries for the page. (Proximity grouping; WCAG 1.4.10, AA)
 - Accessibility: no horizontal page scroll at 320 CSS px. Never block zoom. (WCAG 1.4.10, AA; 1.4.4, AA)
@@ -112,7 +112,7 @@ A spacing and layout page carries these six sections. (Order: `docs/architecture
 
 ## Rulebook seeds
 
-- `space.token-only` · auto · MEDIUM · Gaps and padding use scale tokens, not raw values, in shared primitives.
+- `space.token-only` · auto · MEDIUM · Gaps and padding use scale tokens, not raw values, in shared components.
 - `space.scale-steps` · auto · LOW · Token values sit on the 4px base.
 - `space.stack-owner` · review · LOW · Stack gaps come from the parent, not child margins.
 - `layout.reflow-320` · auto · HIGH · No horizontal page scroll at 320 CSS px. (1.4.10, AA)

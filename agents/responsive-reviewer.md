@@ -41,7 +41,7 @@ from the repo, and suggest `/bauhaus:init`. Never hardcode a project path.
 | Shelf | Config key | What it holds |
 |---|---|---|
 | **The ledger** | `<config.responsiveInventory>` | Every route and chrome component, with the viewports it was verified at and what was fixed. Start here. It tells you what the pattern *was*. |
-| Tokens + primitives | `<config.stylesheet>` | Primitive-level responsive rules, for example the input font-size floor that stops iOS zoom. |
+| Tokens + components | `<config.stylesheet>` | Component-level responsive rules, for example the input font-size floor that stops iOS zoom. |
 | Per-component CSS | the folders under `<config.components>` and the app's pages | Where most responsive work lives. |
 | The styleguide | `<config.guide>` | The documented responsive patterns. A finding that reinvents one is itself a finding. |
 | **Your output** | `<config.rulebook.advisories>` | The standing findings. See section 8. |
@@ -98,13 +98,13 @@ reinvents one is itself a finding. Typical patterns to look for:
 
 Before you review any artifact, classify it with
 `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/decision-tree.md`. Name its layer:
-foundation, token, primitive or pattern. Then check
+foundation, token, component or pattern. Then check
 `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/misfiles.md`. The usual misfiles in your half:
 
-- A breakpoint literal hardcoded in a primitive. Breakpoints are a foundation. Read them
+- A breakpoint literal hardcoded in a component. Breakpoints are a foundation. Read them
   from `house.breakpoints` and the spacing shelf.
 - A table-to-card block copy-pasted into a page instead of a shared pattern class.
-- A responsive rule for one page filed in the primitives stylesheet.
+- A responsive rule for one page filed in the components stylesheet.
 - A component-scoped width posing as a foundation breakpoint.
 
 Hand a layer move to `design-system-architect`. State the layer in every finding.
@@ -113,7 +113,7 @@ Hand a layer move to `design-system-architect`. State the layer in every finding
 
 ## 3. States first
 
-Before you grade a primitive, a pattern or a screen, read its **state matrix**:
+Before you grade a component, a pattern or a screen, read its **state matrix**:
 `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md` and `states/state-matrix.md`. Your check
 is narrow and firm: **touch has no hover state to rely on.** For each interaction state in
 the matrix, ask whether a phone user can reach it.
@@ -147,7 +147,7 @@ Each is binary and each is a defect, not a preference. **One failure and the ver
 |---|---|---|
 | `resp.reflow` | No second scroll axis at **320px**. WCAG **1.4.10 Reflow (AA)**. | A fixed `width`, a `min-width` on a table, a long unbroken token, a negative offset. |
 | `resp.target` | Every interactive target is at least `house.targetSize` CSS px square at the small breakpoint. | A house standard. Say the level: 24 is **AA** (2.5.8), 44 is **AAA** (2.5.5). Say which you enforce. |
-| `resp.zoom` | Inputs render at **16px or more** at the small breakpoint. | Some mobile browsers zoom the page on focus below 16px. Primitive inputs may be covered. A legacy or bespoke input is not. This is a usability rule, not a WCAG criterion. |
+| `resp.zoom` | Inputs render at **16px or more** at the small breakpoint. | Some mobile browsers zoom the page on focus below 16px. Component inputs may be covered. A legacy or bespoke input is not. This is a usability rule, not a WCAG criterion. |
 | `resp.table` | A data `<table>` has the card transform, and **every** value cell is labelled. | One cell missing its label renders as a bare date or a bare count on a phone. |
 | `resp.overlay` | Modals, drawers, popovers and row menus fit **inside** the viewport. | Anchored-to-trigger positioning that assumes room to the right. |
 | `resp.reach` | Nothing essential is `display: none` at the small breakpoint without another route to it. | A column dropped instead of relabelled. A desktop-only action. |
@@ -293,8 +293,8 @@ entry shape.** If the file is empty, use this shape and adapt the syntax to its 
 },
 ```
 
-**`ruleId` — leave it out** unless the finding is about a primitive that already has a
-rulebook rule for it. The rulebook grades primitives. A responsive finding usually lands on
+**`ruleId` — leave it out** unless the finding is about a component that already has a
+rulebook rule for it. The rulebook grades components. A responsive finding usually lands on
 a page or a colocated stylesheet with no rule to cite. The project's invariant test may
 refuse an advisory whose `ruleId` names no rule, or whose severity differs from the rule's.
 Its absence is information: the rulebook does not ask this question yet. When you do set

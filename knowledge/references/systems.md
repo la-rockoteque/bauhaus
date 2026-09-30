@@ -22,7 +22,7 @@ sources:
 
 ## Rules
 
-1. Study at least two systems before you design a new primitive or pattern. (Basis: `governance/contribution.md`, research before build.)
+1. Study at least two systems before you design a new component or pattern. (Basis: `governance/contribution.md`, research before build.)
 2. Borrow the reasoning: anatomy, states, keyboard contract, wording. Do not copy the visual style. (Basis: `bauhaus/principles.md`, form follows function.)
 3. Cite the system and the page when a rule comes from it: "Carbon, Filtering pattern". (Basis: `UBIQUITOUS-LANGUAGE.md` § Basis.)
 4. Read the current page, not memory. Systems rename and reorganise. (Basis: never invent a citation.)
@@ -38,7 +38,7 @@ sources:
 | Fluent 2 | Microsoft | https://fluent2.microsoft.design | Cross-platform: web, Windows, iOS, Android, macOS. | Global and alias token approach, platform mapping, density and focus guidance. |
 | Polaris | Shopify | https://polaris.shopify.com | Content and UX writing for merchants, patterns for common tasks. | Content guidelines, voice and tone, error and empty-state copy, task patterns. |
 | Atlassian Design System | Atlassian | https://atlassian.design | Token naming by role, elevation and spacing tokens, content guidelines, accessibility. | Semantic token names (for example `color.text.subtle`), elevation model, writing guidance. |
-| Primer | GitHub | https://primer.style | Accessibility depth, information-dense developer UI, design tokens (Primitives). | ARIA and keyboard guidance, accessibility audits per component, token structure. |
+| Primer | GitHub | https://primer.style | Accessibility depth, information-dense developer UI, design tokens (`@primer/primitives`). | ARIA and keyboard guidance, accessibility audits per component, token structure. |
 | Spectrum | Adobe | https://spectrum.adobe.com | Rigour on accessibility and internationalisation. Home of React Aria and React Spectrum. | Behaviour specs, i18n handling, headless behaviour layer (React Aria), interaction states. |
 | GOV.UK Design System | UK Government Digital Service | https://design-system.service.gov.uk | Research-backed patterns, tested with assistive technology, plain language, progressive enhancement. | Error summary, question pages, form patterns, content style, "start with a native element". |
 
@@ -67,7 +67,7 @@ A mature system carries years of user research and review. Reading it costs an h
 
 ## Rulebook seeds
 
-- `ref.two-systems-checked` · review · LOW · A new primitive cites at least two reference systems.
+- `ref.two-systems-checked` · review · LOW · A new component cites at least two reference systems.
 - `ref.cites-page` · review · LOW · A borrowed rule names the system and page.
 - `ref.a11y-cross-checked` · review · MEDIUM · A borrowed accessibility claim is checked against WCAG or the APG.
 

@@ -113,7 +113,7 @@ test('plan writes 08-normalisation.json with the contract shape and ordered batc
   assert.equal(merge.action, 'merge');
   assert.ok(merge.callSites >= 1);
   assert.ok(plan.patterns.some((p) => p.id === 'pattern.c1' && p.action === 'document'));
-  const order = ['foundation', 'token', 'primitive', 'pattern', 'docs'];
+  const order = ['foundation', 'token', 'component', 'pattern', 'docs'];
   const layers = plan.batches.map((b) => order.indexOf(b.layer));
   assert.ok(layers.every((l) => l >= 0));
   assert.deepEqual(layers, [...layers].sort((a, b) => a - b));
@@ -125,7 +125,7 @@ test('plan writes 08-normalisation.json with the contract shape and ordered batc
     assert.match(b.skill, /^\/bauhaus:/);
   }
   const md = fs.readFileSync(path.join(out, '08-plan.md'), 'utf8');
-  for (const h of ['# Normalisation plan', '## Summary', '## Foundation', '## Token', '## Primitive', '## Pattern', '## Batches', '## States']) assert.ok(md.includes(h), h);
+  for (const h of ['# Normalisation plan', '## Summary', '## Foundation', '## Token', '## Component', '## Pattern', '## Batches', '## States']) assert.ok(md.includes(h), h);
 });
 
 const plan = (spacing) => planNormalisation({
@@ -184,7 +184,7 @@ test('plan bundles low and medium merges into one batch per risk, high merges st
     comp('C', 50, 10, 'shared'), comp('C2', 30, 12, 'shared')];
   const groups = [['A', 'A2'], ['B', 'B2'], ['C', 'C2']].map(([k, m], i) => ({ id: `group.${i}`, members: [k, m], reason: ['name'], similarity: 0.8 }));
   const plan = planNormalisation({ inventory: {}, tokens: [], components: { components: list, groups }, patterns: NO_PATTERNS });
-  const mergeBatches = plan.batches.filter((b) => b.layer === 'primitive' && b.title.startsWith('Merge'));
+  const mergeBatches = plan.batches.filter((b) => b.layer === 'component' && b.title.startsWith('Merge'));
   assert.equal(mergeBatches.length, 2);
   assert.ok(mergeBatches.some((b) => b.risk === 'low' && b.title.includes('2 ')));
   assert.ok(mergeBatches.some((b) => b.risk === 'high' && b.title.includes('C2')));

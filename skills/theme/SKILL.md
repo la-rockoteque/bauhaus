@@ -5,7 +5,7 @@ description: Add a theme (dark, brand, high contrast, density) as semantic-token
 
 # /bauhaus:theme — add a theme
 
-A theme is a set of semantic-token overrides chosen at runtime. Primitives never change per theme. Lead: `bauhaus:design-system-architect`. Values: `bauhaus:ui-designer`. Motion under reduced motion: `bauhaus:motion-designer`.
+A theme is a set of semantic-token overrides chosen at runtime. Primitive tokens never change per theme. Lead: `bauhaus:design-system-architect`. Values: `bauhaus:ui-designer`. Motion under reduced motion: `bauhaus:motion-designer`.
 
 ## Loads
 
@@ -33,7 +33,7 @@ A theme is a set of semantic-token overrides chosen at runtime. Primitives never
 2. **Classify.** A theme touches semantic tokens only. A change to a primitive token or a new scale is a foundation change: route to `/bauhaus:foundation`.
 3. **Inventory the semantic tier.** List every semantic token and its default value. Each must be overridden, or the default must be proven fine. Include state tokens: hover, active, disabled, focus, selected, error, success.
 4. **Propose before you populate.** Dispatch `bauhaus:ui-designer` for a draft. Show it with `AskUserQuestion` (2-4 options: the palette direction, the surface ladder, the accent). Populate after the answer.
-5. **Write the overrides.** Create the theme folder and register it in `config.tokens.themes` (`"dark": "design/tokens/themes/dark"`). Override by aliasing a different primitive. Add a new primitive only when the scale lacks a step. That addition is a token change: follow `/bauhaus:tokens`.
+5. **Write the overrides.** Create the theme folder and register it in `config.tokens.themes` (`"dark": "design/tokens/themes/dark"`). Override by aliasing a different primitive token. Add a new primitive token only when the scale lacks a step. That addition is a token change: follow `/bauhaus:tokens`.
 6. **Dark: rebuild shadows and surfaces.** Shadows alone do not show depth on dark surfaces. Raise the surface lightness by elevation step, and lighten or thin the shadow. State the rule in `elevation.md` terms. Avoid pure black surfaces with pure white text where glare is a concern.
 7. **Contrast check every pair.** Build a `pairs.json` of foreground/background pairs (text on each surface, muted text, placeholder, borders of controls, focus ring, icons, every state). Run:
    ```
@@ -49,9 +49,9 @@ A theme is a set of semantic-token overrides chosen at runtime. Primitives never
    node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check
    ```
 11. **Wire the switch.** Say how the theme is selected in this stack: a `data-theme` attribute, a class, `prefers-color-scheme`, or the framework's provider. Respect the user's system preference as the default. Persist an explicit choice.
-12. **Four artifacts.** Tokens (the overrides). Styleguide: a Themes section with the override table, the contrast table and the selection rule. Storybook: a theme switcher in the toolbar and a page showing each foundation per theme. Rulebook: rules such as `theme.<name>.contrast` (`auto`, HIGH) and `theme.<name>.no-primitive-override` (`auto`).
+12. **Four artifacts.** Tokens (the overrides). Styleguide: a Themes section with the override table, the contrast table and the selection rule. Storybook: a theme switcher in the toolbar and a page showing each foundation per theme. Rulebook: rules such as `theme.<name>.contrast` (`auto`, HIGH) and `theme.<name>.no-component-override` (`auto`).
 13. **Slop check.** Each Usage and Pitfall line in the Themes page needs a basis and must not fit any DS unchanged.
-14. **Verify visually.** Walk the primitives and patterns in the theme, states included (`/bauhaus:states` matrices). Dispatch `bauhaus:ui-designer` for the walk.
+14. **Verify visually.** Walk the components and patterns in the theme, states included (`/bauhaus:states` matrices). Dispatch `bauhaus:ui-designer` for the walk.
 
 ## Writes
 
@@ -63,7 +63,7 @@ A theme is a set of semantic-token overrides chosen at runtime. Primitives never
 
 ```
 Theme — <name> (<kind>)
-Overrides: <n semantic tokens> · new primitives: <n>
+Overrides: <n semantic tokens> · new components: <n>
 Contrast:  <pairs checked> · pass <a> · fail <b>  (target <AA|AAA>)
 Build:     pass | fail · Check: pass | fail
 Switch:    <mechanism> · default: <system pref | light>

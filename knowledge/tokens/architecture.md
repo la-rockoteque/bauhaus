@@ -19,17 +19,17 @@ sources:
 
 1. Store every design decision as a token in DTCG JSON. It is the only place a raw value may appear. (`UBIQUITOUS-LANGUAGE.md` § Token)
 2. Use three tiers and no more:
-   - **Primitive (tier 1):** a raw value on a scale, such as `color.blue.600` or `duration.150`.
-   - **Semantic (tier 2):** an intent that aliases a primitive or another semantic token, such as `color.text.muted`.
-   - **Component (tier 3, optional):** a semantic token scoped to one primitive, such as `button.radius`.
+   - **Primitive token (tier 1):** a raw value on a scale, such as `color.blue.600` or `duration.150`.
+   - **Semantic (tier 2):** an intent that aliases a primitive token or another semantic token, such as `color.text.muted`.
+   - **Component (tier 3, optional):** a semantic token scoped to one component, such as `button.radius`.
    (Two tiers cannot express themes cleanly. A fourth tier adds indirection with no new decision.)
-3. Call sites use semantic tokens only. A call site is any stylesheet rule, template or component that is not itself a token file. Call sites never use primitive tokens. (Themes override semantic tokens. A primitive at a call site cannot follow a theme. See `theming.md`.)
-4. A component may use its own component tokens. A component token must alias a semantic token, not a primitive. (The alias chain stays theme-aware.)
-5. Create a component token only when a primitive has a decision that no semantic token expresses, or when several variants of one primitive need to be tuned together. Otherwise use semantic tokens directly. (Optional tier: every extra token is a maintenance cost.)
-6. A semantic token aliases a primitive or another semantic token. A primitive holds a literal value and never aliases. (One direction of flow.)
-7. Keep alias chains short. Three hops from component to primitive is a soft limit. (Long chains hide the real value.)
+3. Call sites use semantic tokens only. A call site is any stylesheet rule, template or component that is not itself a token file. Call sites never use primitive tokens. (Themes override semantic tokens. A component at a call site cannot follow a theme. See `theming.md`.)
+4. A component may use its own component tokens. A component token must alias a semantic token, not a primitive token. (The alias chain stays theme-aware.)
+5. Create a component token only when a component has a decision that no semantic token expresses, or when several variants of one component need to be tuned together. Otherwise use semantic tokens directly. (Optional tier: every extra token is a maintenance cost.)
+6. A semantic token aliases a primitive token or another semantic token. A primitive token holds a literal value and never aliases. (One direction of flow.)
+7. Keep alias chains short. Three hops from component to primitive token is a soft limit. (Long chains hide the real value.)
 8. Never create a cycle. Build tools reject them. A build that resolves aliases must fail on a cycle or on a reference that does not exist. (DTCG: aliases must resolve.)
-9. Themes override semantic tokens only. Primitives never change per theme. (`UBIQUITOUS-LANGUAGE.md` § Theme)
+9. Themes override semantic tokens only. Primitive tokens never change per theme. (`UBIQUITOUS-LANGUAGE.md` § Theme)
 10. Add a token when a value appears in two or more places with the same intent. Do not add a token for a single use. (Governance: the two-occurrence rule, `governance/contribution.md`.)
 11. Give every token a `$description` that states its intent in one sentence. A token with no stated intent is a value in disguise. (DTCG `$description`.)
 12. Describe deprecation in the token file, not in a chat message. Keep a deprecated token as an alias to its replacement until the last caller moves. (See `governance/versioning.md`.)
@@ -41,7 +41,7 @@ sources:
   "color": {
     "$type": "color",
     "gray": {
-      "600": { "$value": "#5a6b80", "$description": "Mid gray. Primitive." },
+      "600": { "$value": "#5a6b80", "$description": "Mid gray. Primitive token." },
       "900": { "$value": "#213547" }
     },
     "blue": {
@@ -165,7 +165,7 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 
 ### 2. Tokens
 - The token groups the system defines, one table per foundation: name, tier, `$type`, value, `$description`.
-- The tier of each row is shown. Primitive rows are marked "not for call sites".
+- The tier of each row is shown. Primitive token rows are marked "not for call sites".
 
 ### 3. Anatomy
 - A token: name (path), `$value`, `$type`, `$description`, optional `$extensions` and `$deprecated`. `$value` is required. The rest are optional. (DTCG)
@@ -181,12 +181,12 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 ### 5. Usage
 - When to add a token: the value recurs with one intent. (Two-occurrence rule, `governance/contribution.md`)
 - When not to: a one-off value inside one component. Keep it local and comment it.
-- How: primitive first, then the semantic alias, then a component token only if needed. Write `$description`. Run the build and the drift check. (`pipelines.md`)
+- How: primitive token first, then the semantic alias, then a component token only if needed. Write `$description`. Run the build and the drift check. (`pipelines.md`)
 - Accessibility: contrast is checked on semantic pairs, per theme. (WCAG 1.4.3, AA; 1.4.11, AA)
 
 ### 6. Pitfalls and don'ts
-- A primitive at a call site cannot follow a theme. (Tier rule, `theming.md`)
-- A component token aliasing a primitive skips the semantic layer and breaks dark mode.
+- A primitive token at a call site cannot follow a theme. (Tier rule, `theming.md`)
+- A component token aliasing a primitive token skips the semantic layer and breaks dark mode.
 - A token named for its value (`--ds-blue-light`) lies after the first retune. (`naming.md`)
 - A cycle or a missing alias target breaks every output. (DTCG: aliases must resolve.)
 - A token with no `$description` cannot be audited for intent.
@@ -202,7 +202,7 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 ## Rulebook seeds
 
 - `token.no-raw-value` · auto · MEDIUM · Raw colour, size and time values appear only in token files.
-- `token.call-site-semantic` · auto · MEDIUM · Call sites reference semantic or component tokens, never primitives.
+- `token.call-site-semantic` · auto · MEDIUM · Call sites reference semantic or component tokens, never primitive tokens.
 - `token.component-aliases-semantic` · auto · MEDIUM · Component tokens alias semantic tokens.
 - `token.alias-resolves` · auto · HIGH · Every alias resolves and none is circular.
 - `token.description` · auto · LOW · Every semantic token has a `$description`.
@@ -213,7 +213,7 @@ A token-architecture page carries these six sections. (Order: `docs/architecture
 ## Misfiles
 
 - A scale (which values exist) is a foundation. A token is one member of it. (`taxonomy/layers.md`)
-- A style rule such as `.ds-btn { ... }` is a primitive, not a token.
+- A style rule such as `.ds-btn { ... }` is a component, not a token.
 - A Figma style or a Sass mixin is an output or a tool feature, not a token.
 - The value of a token, such as the exact blue, belongs to the foundation file. (`foundations/color.md`)
 

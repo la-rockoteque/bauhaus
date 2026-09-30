@@ -9,7 +9,7 @@ Bauhaus helps agents build, extract, audit, evolve and advise on a design system
 
 ## What Bauhaus is, in plain words
 
-A design system is a shared kitchen. Foundations are the pantry: which ingredients exist. Tokens are the labelled jars: each has one name and one amount. Primitives are the tools: knife, pan, whisk. Patterns are the recipes: they combine tools and jars, and they add no new ingredient.
+A design system is a shared kitchen. Foundations are the pantry: which ingredients exist. Tokens are the labelled jars: each has one name and one amount. Components are the tools: knife, pan, whisk. Patterns are the recipes: they combine tools and jars, and they add no new ingredient.
 
 ## The four layers
 
@@ -19,14 +19,14 @@ Never mix them. Terms come from `${CLAUDE_PLUGIN_ROOT}/UBIQUITOUS-LANGUAGE.md`.
 |---|---|---|
 | Foundation | Which families of values exist, and on what scale? | Spacing runs on a 4px grid. |
 | Token | What is this one named decision's value? | `space.3 = 12px` |
-| Primitive | Which reusable block does one job? | Button, Field, Dialog |
-| Pattern | How do primitives compose to answer a recurring need? | Filtering, empty state |
+| Component | Which reusable block does one job? | Button, Field, Dialog |
+| Pattern | How do components compose to answer a recurring need? | Filtering, empty state |
 
-Plus the four artifacts that make a foundation or a primitive real: tokens, styleguide section, Storybook page, rulebook entries.
+Plus the four artifacts that make a foundation or a component real: tokens, styleguide section, Storybook page, rulebook entries.
 
 ## Core concepts
 
-- **UI states.** Every primitive, pattern and screen has a state matrix. Two axes: lifecycle (nothing, loading, none, one, some, too-many, incorrect, correct, done) and interaction (default, hover, focus-visible, active, disabled, loading, success, error, selected, and more). Each cell is designed, n/a with a reason, or missing. A primitive or pattern without its matrix is not done. See `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md`.
+- **UI states.** Every component, pattern and screen has a state matrix. Two axes: lifecycle (nothing, loading, none, one, some, too-many, incorrect, correct, done) and interaction (default, hover, focus-visible, active, disabled, loading, success, error, selected, and more). Each cell is designed, n/a with a reason, or missing. A component or pattern without its matrix is not done. See `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md`.
 - **Page contract.** Every page, in the styleguide and in Storybook, has six sections in order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Every Usage rule and Pitfall names a basis. Generic lines are cut. See `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md`.
 
 ## Steps
@@ -38,7 +38,7 @@ Plus the four artifacts that make a foundation or a primitive real: tokens, styl
    - Token source folder (`config.tokens.source`), and whether `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check` exits 0.
    - Styleguide (`config.guide`), stylesheet (`config.stylesheet`), components (`config.components`).
    - Storybook config and stories (`config.storybook`).
-   - State matrices: how many primitives and patterns have one, and how many cells are `missing`.
+   - State matrices: how many components and patterns have one, and how many cells are `missing`.
    - Rulebook rules and advisories (`config.rulebook`).
 3. **Guess maturity.** Load `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/maturity.md` and name one level with two lines of evidence. Label it a guess.
 4. **Route the intent.** Match the user's words to the table below. Ask one `AskUserQuestion` (2-4 options) when two rows fit.
@@ -57,9 +57,9 @@ Plus the four artifacts that make a foundation or a primitive real: tokens, styl
 | Grade a component, a page or the working changes | `/bauhaus:audit` |
 | Add, rename, deprecate or build tokens | `/bauhaus:tokens` |
 | Add or evolve a foundation (colour, motion...) | `/bauhaus:foundation` |
-| Add or evolve a primitive | `/bauhaus:component` |
+| Add or evolve a component | `/bauhaus:component` |
 | Add or evolve a pattern | `/bauhaus:pattern` |
-| Author or complete the states of a primitive, pattern or screen (empty, loading, hover, disabled, edge cases) | `/bauhaus:states` |
+| Author or complete the states of a component, pattern or screen (empty, loading, hover, disabled, edge cases) | `/bauhaus:states` |
 | Add a theme (dark, brand, high contrast, density) | `/bauhaus:theme` |
 | Write or resync the prose styleguide | `/bauhaus:styleguide` |
 | Install or adapt Storybook | `/bauhaus:storybook` |
@@ -81,8 +81,8 @@ Bauhaus status — <config.name or "no config">
 Config:    present | missing (suggest /bauhaus:init)
 Tokens:    <n files> · check: pass | fail | not run
 Guide:     present | missing
-Primitives: <n> · Storybook: yes | no · Rulebook: <n rules> | none
-States:    <n of m primitives/patterns with a complete matrix>
+Components: <n> · Storybook: yes | no · Rulebook: <n rules> | none
+States:    <n of m components/patterns with a complete matrix>
 Maturity (guess): <level> — <evidence 1>; <evidence 2>
 Next step: /bauhaus:<skill> — <one-line reason>
 ```

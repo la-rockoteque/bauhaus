@@ -30,20 +30,20 @@ Six measures. Each has a definition, a command, a caveat and a target direction.
 
 | Metric | Definition | Direction | Cheapest source |
 |---|---|---|---|
-| **Adoption** | Share of call sites that use a primitive rather than raw markup or local styles | Up | `grep` on markup |
+| **Adoption** | Share of call sites that use a component rather than raw markup or local styles | Up | `grep` on markup |
 | **Token coverage** | Share of style values that are tokens rather than literals | Up | `grep` on stylesheets |
-| **Single-caller share** | Library primitives with fewer than two call sites | Down | `grep` on imports |
-| **Rulebook coverage** | Rules per primitive; primitives with no rules ("not graded") | Up; not-graded down | Rulebook source |
+| **Single-caller share** | Library components with fewer than two call sites | Down | `grep` on imports |
+| **Rulebook coverage** | Rules per component; components with no rules ("not graded") | Up; not-graded down | Rulebook source |
 | **A11y checklist coverage** | Checklist items claimed by at least one rule | Up | Rulebook `covers` field |
 | **Debt counts** | Known violations, advisories, aliases, legacy tokens | Down | Rulebook and tokens |
 
 ## 1. Adoption
 
-**Definition.** Primitive call sites divided by primitive call sites plus raw equivalents.
+**Definition.** Component call sites divided by component call sites plus raw equivalents.
 
 `adoption = uses of <Button> / (uses of <Button> + uses of <button>)`
 
-Do this per primitive that has a raw HTML twin (button, input, select, textarea, dialog, a, table).
+Do this per component that has a raw HTML twin (button, input, select, textarea, dialog, a, table).
 
 ```sh
 P=$(grep -rEoh '<Button\b' src --include='*.tsx' | wc -l)
@@ -51,12 +51,12 @@ R=$(grep -rEoh '<button\b' src --include='*.tsx' | wc -l)
 awk -v p=$P -v r=$R 'BEGIN{printf "Button adoption: %.0f%%\n", 100*p/(p+r)}'
 ```
 
-Fixture result: 2 primitive uses, 1 raw use, `67%`.
+Fixture result: 2 component uses, 1 raw use, `67%`.
 
 **Caveats.**
-- The pattern is case-sensitive: `<Button` is the primitive, `<button` the raw element. It suits JSX and similar. For other stacks, match the equivalent tag or class (`class="btn"` versus `<button`).
-- Primitives that wrap raw elements inside the library also count as raw. Exclude the library folder: add `--exclude-dir=components`.
-- Adoption of a pattern is harder to count. Track the primitive's parts, or count imports of the pattern component.
+- The pattern is case-sensitive: `<Button` is the component, `<button` the raw element. It suits JSX and similar. For other stacks, match the equivalent tag or class (`class="btn"` versus `<button`).
+- Components that wrap raw elements inside the library also count as raw. Exclude the library folder: add `--exclude-dir=components`.
+- Adoption of a pattern is harder to count. Track the component's parts, or count imports of the pattern component.
 
 **Also useful.** Share of screens or routes that import at least one library component.
 
@@ -97,7 +97,7 @@ Run the pattern with `grep -rEoh '<pattern>' src --include='*.css' | wc -l`. Exc
 
 ## 3. Single-caller share
 
-**Definition.** Library primitives with fewer than two call sites. A primitive needs two places to earn its place (gate 1, [contribution](contribution.md)).
+**Definition.** Library components with fewer than two call sites. A component needs two places to earn its place (gate 1, [contribution](contribution.md)).
 
 ```sh
 for f in src/components/*.tsx; do
@@ -109,15 +109,15 @@ done
 
 Fixture result: `Button 1`, `Card 1`, `Tabs 0`. Each is below two files.
 
-Files that import the primitive are counted, not uses. Change the pattern to `-rEo "<$n\b" | wc -l` to count uses.
+Files that import the component are counted, not uses. Change the pattern to `-rEo "<$n\b" | wc -l` to count uses.
 
 **Ratchet it.** Pin the count of single-caller families held in the shared sheet: the test fails when the count rises and when it drops without the number being lowered. See [rulebook.md](rulebook.md).
 
 ## 4. Rulebook coverage
 
-**Definition.** For each primitive: how many rules grade it. The "not graded" list holds primitives with zero rules.
+**Definition.** For each component: how many rules grade it. The "not graded" list holds components with zero rules.
 
-A primitive with fifteen rules and no failure has been checked fifteen times. A primitive with no rules has never been checked.
+A component with fifteen rules and no failure has been checked fifteen times. A component with no rules has never been checked.
 
 ```sh
 node -e '
@@ -125,7 +125,7 @@ const fs = require("fs");
 const rb = JSON.parse(fs.readFileSync("rules.json", "utf8"));
 const by = {};
 for (const r of rb.rules) by[r.component] = (by[r.component] || 0) + 1;
-console.log("rules per primitive:", by);
+console.log("rules per component:", by);
 const comps = fs.readdirSync("src/components")
   .filter(f => f.endsWith(".tsx")).map(f => f.replace(".tsx", ""));
 console.log("not graded:", comps.filter(c => !by[c]));
@@ -137,7 +137,7 @@ Fixture result: `{ Button: 2, Card: 1 }` and `not graded: [ 'Tabs' ]`.
 Also report:
 - Share of rules that are `auto` versus `review`. Too few `auto` rules means the system relies on people.
 - Share of rules that have a basis. Target 100%.
-- Share of primitives with at least one rule for focus, target size and contrast. These are the WCAG-bearing rules (2.4.7 AA, 2.5.8 AA, 1.4.3 AA).
+- Share of components with at least one rule for focus, target size and contrast. These are the WCAG-bearing rules (2.4.7 AA, 2.5.8 AA, 1.4.3 AA).
 
 ## 5. Accessibility checklist coverage
 
@@ -155,7 +155,7 @@ console.log("to verify:", items.filter(i => !claimed.has(i)));
 
 Fixture result: `2/4`; to verify: `contrast-text`, `reflow`.
 
-Check that every `covers` id names a real item. A claim that names nothing is an error. Break down coverage per primitive when a checklist has component-scoped items.
+Check that every `covers` id names a real item. A claim that names nothing is an error. Break down coverage per component when a checklist has component-scoped items.
 
 Coverage is not conformance. A claimed item means a rule grades it, not that it passes. Report pass rate separately: rules passing divided by rules graded.
 
@@ -170,10 +170,10 @@ Debt is any tracked gap. Count each kind. Ratchet each one.
 | Legacy tokens still used | `grep -rEo 'var\(--legacy-[a-z-]+\)' src \| wc -l` (adapt the prefix) | Down |
 | Deprecated aliases still referenced | `grep -rEo '<alias-name>' src \| wc -l` per alias | Down to zero by removal date |
 | Raw colour literals | Section 2 | Down |
-| Primitives not graded | Section 4 | Down |
-| Single-caller primitives | Section 3 | Down |
-| Primitives without a Storybook page | Compare component names with story titles | Down |
-| Primitives with blank state-matrix cells | Count `missing` cells in the state matrices | Down |
+| Components not graded | Section 4 | Down |
+| Single-caller components | Section 3 | Down |
+| Components without a Storybook page | Compare component names with story titles | Down |
+| Components with blank state-matrix cells | Count `missing` cells in the state matrices | Down |
 
 Known violations, count:
 
@@ -205,7 +205,7 @@ Read metrics next to the maturity level ([maturity.md](maturity.md)). A level-2 
 
 - `metrics.method-recorded` · review · LOW · Each reported metric carries its command.
 - `metrics.debt-ratcheted` · auto · MEDIUM · Each debt count has a ratchet.
-- `metrics.not-graded-listed` · auto · LOW · Primitives with no rules are listed.
+- `metrics.not-graded-listed` · auto · LOW · Components with no rules are listed.
 - `metrics.a11y-claims-resolve` · auto · MEDIUM · Every `covers` id names a checklist item.
 
 ## Misfiles
@@ -219,5 +219,5 @@ Read metrics next to the maturity level ([maturity.md](maturity.md)). A level-2 
 - [rulebook.md](rulebook.md) — ratchets, known violations and the "not graded" list.
 - [maturity.md](maturity.md) — which metric matters at which level.
 - [versioning.md](versioning.md) — counting aliases and migration progress.
-- [contribution.md](contribution.md) — the gates that keep single-caller primitives out.
+- [contribution.md](contribution.md) — the gates that keep single-caller components out.
 - [../taxonomy/misfiles.md](../taxonomy/misfiles.md) — the misfile signals behind the debt counts.
