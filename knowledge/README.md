@@ -64,6 +64,13 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 - `governance/versioning.md` — semver for a DS, deprecation, migration, codemods.
 - `governance/metrics.md` — adoption, coverage, debt counts.
 
+## analysis/ — recovering a system from existing code
+- `analysis/workflow.md` — the nine analyser phases, why the order is fixed, gates, resume, cutting scope.
+- `analysis/scale-inference.md` — infer a spacing base, a type ratio, colour ramps and other scales; outliers and overrides.
+- `analysis/component-mining.md` — find primitives, near-duplicates and state gaps; choose the keeper.
+- `analysis/pattern-mining.md` — co-occurrence, signals, from candidate to pattern.
+- `analysis/normalisation.md` — the nine actions, deltas, prioritisation, batches, deprecation, ratchets, rollback, plain-word plans.
+
 ## tooling/
 - `tooling/storybook.md` — structure, doc pages, addons, the dev overlay.
 - `tooling/framework-adapters.md` — React, Vue, Svelte, Angular, web components, Tailwind, native.

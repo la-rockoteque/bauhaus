@@ -49,8 +49,9 @@ Plus the four artifacts that make a foundation or a primitive real: tokens, styl
 | The user wants to... | Skill |
 |---|---|
 | Opt a project in, write the config | `/bauhaus:init` |
-| Build a design system from nothing | `/bauhaus:build` |
-| Recover a design system from existing code | `/bauhaus:extract` |
+| Build a design system from nothing (from scratch) | `/bauhaus:build` |
+| Take an existing repo without a DSM to a full one: foundations, tokens, components, patterns, normalisation plan | `/bauhaus:analyse` |
+| Recover only the tokens from existing code | `/bauhaus:extract` |
 | Know which layer an artifact belongs to | `/bauhaus:classify` |
 | Ask a design-system question, get an explanation | `/bauhaus:advise` |
 | Grade a component, a page or the working changes | `/bauhaus:audit` |

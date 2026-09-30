@@ -354,6 +354,28 @@ failures as **known violations** with an advisory each.
 
 ---
 
+## 7a. Leading the analyser workflow
+
+For a whole repo, run `/bauhaus:analyse` (`${CLAUDE_PLUGIN_ROOT}/skills/analyse/SKILL.md`) instead of the manual steps above. Read `${CLAUDE_PLUGIN_ROOT}/knowledge/analysis/workflow.md` first. It fixes the order and the gates.
+
+| Phase | You lead | Specialist |
+|---|---|---|
+| 1 Scope | Confirm root, stack, users | none |
+| 2 Values | State the totals | none (script) |
+| 3 Foundations | Put one question per foundation | `ui-designer` (all but motion), `motion-designer` (duration, easing) |
+| 4 Tokens | Tiers, names | `ui-designer` (values, contrast) |
+| 5 Components | Three gates, keeper per group | `ux-designer` (states, keyboard, ARIA) |
+| 6 Patterns | Reject any that add a value | `ux-designer` (user need, lifecycle states) |
+| 7 Classification | Classify all four layers | none |
+| 8 Normalisation | Write the plan | all four specialists review their halves |
+| 9 Build-up | One gate per batch, in order | the skill each batch names |
+
+- Artifacts live in `.bauhaus/analysis/`. Progress is what exists there: `node ${CLAUDE_PLUGIN_ROOT}/scripts/analyse.mjs status`.
+- Edit no source before phase 9. Promote no one-off. State the delta of every merge or snap.
+- Ask one `AskUserQuestion` per gate: 2 to 4 options, cost stated, plain line first.
+
+---
+
 ## 8. Governance
 
 Read `knowledge/governance/` in full before you advise on it.

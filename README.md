@@ -25,9 +25,10 @@ claude plugin install bauhaus@bauhaus
 | Skill | Use it to |
 |---|---|
 | `/bauhaus:bauhaus` | Start here. See the project's status and pick a skill. |
+| `/bauhaus:analyse` | Take an existing repo with no DSM to a full one in nine phases: foundations, tokens, components, patterns, a normalisation plan, then the build-up. |
 | `/bauhaus:init` | Opt a project in: write `bauhaus.config.json` and seed tokens. |
 | `/bauhaus:build` | Build a DSM from scratch, layer by layer. |
-| `/bauhaus:extract` | Extract a DSM from an existing codebase. |
+| `/bauhaus:extract` | Extract tokens from an existing codebase (phases 2–4 of analyse). |
 | `/bauhaus:classify` | Sort artifacts into the four layers and flag misfiles. |
 | `/bauhaus:advise` | Ask any design-system question. Get a plain answer, then a precise one. |
 | `/bauhaus:audit` | Grade a component, a page or the working changes. |
@@ -57,7 +58,13 @@ Zero dependencies, Node 20 or later.
 ```bash
 node scripts/tokens.mjs build            # DTCG → outputs in bauhaus.config.json
 node scripts/tokens.mjs check            # validate, lint names, detect drift
+node scripts/analyse.mjs init src/       # scope the repo; `status` shows analysis progress
 node scripts/extract.mjs src/            # inventory literal values, draft tokens
+node scripts/foundations.mjs --inventory <file> --out <dir>   # infer scales from the inventory
+node scripts/normalise.mjs tokens --foundations <file> --out <dir>   # draft tiered tokens
+node scripts/components.mjs src/ --out <dir>   # list components, usages, near-duplicates
+node scripts/patterns.mjs --components <file> src/ --out <dir>   # co-occurrence and signals
+node scripts/normalise.mjs plan --analysis <dir>   # actions and batches
 node scripts/contrast.mjs '#6b7280' '#fff'
 npm test
 ```
@@ -66,7 +73,7 @@ npm test
 
 ```
 agents/      the five agents
-skills/      the fifteen skills
+skills/      the sixteen skills
 knowledge/   the knowledge base
 scripts/     token, extraction and contrast tools
 kit/         starter files: tokens, styleguide, Storybook (React)
