@@ -23,13 +23,13 @@ const VISUALLY_HIDDEN = 'primitives/visually-hidden/visually-hidden';
 const DIVIDER = 'primitives/divider/divider';
 const CALL_SITE = /^(?:primitives|components|patterns)\//;
 
-const px = (value: string | undefined): number | null => {
+export const px = (value: string | undefined): number | null => {
   const m = /^(-?\d*\.?\d+)px$/.exec(value?.trim() ?? '');
   return m ? Number(m[1]) : null;
 };
 
 /** The selector declares `property` and the value contains `expected`. */
-const uses = (path: string, selector: string, property: string, expected: string): Check => () => {
+export const uses = (path: string, selector: string, property: string, expected: string): Check => () => {
   const found = declarationsFor(rulesOf(path), selector);
   if (!found) return `${selector} is not in ${path}`;
   const value = found[property];
@@ -37,13 +37,13 @@ const uses = (path: string, selector: string, property: string, expected: string
   return value.includes(expected) ? null : `${selector} { ${property}: ${value} } does not use ${expected}`;
 };
 
-const sourceMatches = (path: string, pattern: RegExp, failure: string): Check => () => {
+export const sourceMatches = (path: string, pattern: RegExp, failure: string): Check => () => {
   const text = sourceOf(path);
   if (text === undefined) return `${path} not found`;
   return pattern.test(text) ? null : failure;
 };
 
-const all = (...checks: Check[]): Check => () => {
+export const all = (...checks: Check[]): Check => () => {
   for (const check of checks) {
     const failure = check();
     if (failure) return failure;
@@ -52,7 +52,7 @@ const all = (...checks: Check[]): Check => () => {
 };
 
 /** Every theme must pass; the first failure names the theme. */
-const eachTheme = (test: (theme: string) => string | null): Check => () => {
+export const eachTheme = (test: (theme: string) => string | null): Check => () => {
   for (const theme of THEMES) {
     const failure = test(theme);
     if (failure) return `${theme}: ${failure}`;
@@ -60,17 +60,17 @@ const eachTheme = (test: (theme: string) => string | null): Check => () => {
   return null;
 };
 
-const ratioAtLeast = (fg: string, bg: string, min: number) => (theme: string): string | null => {
+export const ratioAtLeast = (fg: string, bg: string, min: number) => (theme: string): string | null => {
   const ratio = contrastOf(theme, fg, bg);
   return ratio !== null && ratio >= min ? null : `${fg} on ${bg} is ${ratioText(ratio)}, needs ${min}:1`;
 };
 
-const pxAtLeast = (token: string, min: number): Check => () => {
+export const pxAtLeast = (token: string, min: number): Check => () => {
   const value = px(resolve(THEMES[0] ?? 'light', token));
   return value !== null && value >= min ? null : `${token} is ${value ?? 'not a px value'}px, needs ${min}px`;
 };
 
-const noLiteral = (path: string): Check => () => {
+export const noLiteral = (path: string): Check => () => {
   const bad = rulesOf(path).flatMap((rule) =>
     Object.entries(rule.declarations)
       .filter(([, value]) => /#[0-9a-f]{3,8}\b|\b(?:rgb|hsl|oklch)a?\(|(?<![\w.-])(?!0px)\d*\.?\d+px\b/i.test(value))
@@ -79,7 +79,7 @@ const noLiteral = (path: string): Check => () => {
   return bad.length ? `literal in ${path}: ${bad.join(' · ')}` : null;
 };
 
-const textRole = (role: string): Check =>
+export const textRole = (role: string): Check =>
   all(
     ...['size', 'weight', 'line-height'].map((part) =>
       uses(`${TEXT}.css`, `.ds-text--${role}`, part === 'size' ? 'font-size' : part === 'weight' ? 'font-weight' : 'line-height', `--ds-text-${role}-${part}`),

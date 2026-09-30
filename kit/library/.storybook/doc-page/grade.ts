@@ -1,4 +1,4 @@
-import { AUTO_CHECKS } from './auto-checks';
+import { ALL_CHECKS } from './all-checks';
 import { SOURCES } from './sources';
 import type { Rule } from './types';
 
@@ -17,7 +17,7 @@ export interface Graded {
 export function grade(rule: Rule): Graded {
   if (rule.verify === 'review') return { verdict: 'review' };
   if (SOURCES.size === 0) return { verdict: 'review', reason: 'Library sources did not load.' };
-  const check = AUTO_CHECKS[rule.id];
+  const check = ALL_CHECKS[rule.id];
   if (!check) return { verdict: 'review', reason: 'Marked auto, but this page has no check for it.' };
   try {
     const failure = check();
