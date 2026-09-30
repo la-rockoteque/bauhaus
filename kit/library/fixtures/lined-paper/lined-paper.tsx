@@ -7,21 +7,23 @@ import './lined-paper.css';
  */
 export function LinedPaper({ head, blank = 1, children }: { head?: ReactNode; blank?: number; children: ReactNode }) {
   return (
-    <div className="paper" style={{ '--paper-blank': blank } as CSSProperties}>
-      <span className="paper-hole" aria-hidden="true" />
-      <span className="paper-hole" aria-hidden="true" />
-      <span className="paper-hole" aria-hidden="true" />
-      {head && <div className="paper-head">{head}</div>}
-      <div className="paper-lines">{children}</div>
+    <div className="paper-sheet">
+      <div className="paper" style={{ '--paper-blank': blank } as CSSProperties}>
+        <span className="paper-hole" aria-hidden="true" />
+        <span className="paper-hole" aria-hidden="true" />
+        <span className="paper-hole" aria-hidden="true" />
+        {head && <div className="paper-head">{head}</div>}
+        <div className="paper-lines">{children}</div>
+      </div>
     </div>
   );
 }
 
-/** One line of writing, set on its rule. It never wraps: a long line scrolls the sheet sideways. */
+/** One line of writing, set on its rule; a long one wraps onto the next rules. `style` styles the writing, such as its face. */
 export function PaperLine({ style, children }: { style?: CSSProperties; children: ReactNode }) {
   return (
-    <p className="paper-line" style={style}>
-      <span>{children}</span>
+    <p className="paper-line">
+      <span style={style}>{children}</span>
     </p>
   );
 }

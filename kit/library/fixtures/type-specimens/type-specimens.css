@@ -2,7 +2,8 @@
 
 .spec-faces {
   display: grid;
-  gap: var(--ds-space-6);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--doc-card-min) * 2)), 1fr));
+  gap: var(--ds-space-3);
 }
 
 .spec-face-weight + .spec-face-weight {
