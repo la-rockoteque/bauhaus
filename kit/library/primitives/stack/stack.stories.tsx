@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Box } from '../box/box';
 import { Stack } from './stack';
 import { stackRules } from './stack.rules';
@@ -27,7 +28,7 @@ export const Showcase: StoryObj<typeof meta> = {
         note: 'The stack has no component tokens. It passes its gap to Box.',
         rows: [{ name: 'space.0 … space.12', tier: '1', use: 'The gap. The default is space.4' }],
       }}
-      anatomy={{
+      stage={{
         render: (
           <Stack direction="horizontal" gap={3}>
             <Chip>One</Chip>
@@ -42,6 +43,7 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
+        { label: 'Gap', property: 'gap', target: '.ds-stack', token: 'space.3', value: 'space.3 in this stage' },
         { label: 'Defaults', value: 'vertical · gap space.4 · align stretch · justify start · no wrap' },
         { label: 'Order', value: 'No reverse direction; visual order equals DOM order' },
         { label: 'Element', value: 'div; ul or ol for a list, with no markers and no padding, and role="list"' },
@@ -120,9 +122,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Add a margin to a child to space it.', basis: 'Project decision', rule: 'stack.gap-from-space' },
         { text: 'Use divs for a list of like items.', basis: 'WCAG 1.3.1 (A)', rule: 'stack.list-semantics' },
       ]}
-      rules={stackRules}
       guide="primitives-stack--docs"
       guideName="Stack"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Stack" layer="Primitive" rules={stackRules} guide="primitives-stack--docs" guideName="Stack" />,
 };

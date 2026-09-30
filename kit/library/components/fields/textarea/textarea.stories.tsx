@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Textarea } from './textarea';
 import { textareaRules } from './textarea.rules';
 
@@ -37,7 +38,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'size.control.md · radius.control', tier: '2', use: 'Minimum height; corner radius' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: cell(<Textarea label="Message" required description="Tell us what happened." maxLength={200} count={42} defaultValue="The lid arrived cracked." />),
         parts: [
           { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
@@ -48,8 +49,9 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Height', value: 'rows (default 4), at least size.control.md; resizable vertically' },
-        { label: 'Padding', value: 'space.control.inline inline · space.inset.sm block' },
-        { label: 'Radius', value: 'radius.control' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-textarea__input', token: 'space.control.inline' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-textarea__input', token: 'space.inset.sm' },
+        { label: 'Radius', property: 'radius', target: '.ds-textarea__input', token: 'radius.control' },
         { label: 'Value', value: 'text.body.*, 16px' },
         { label: 'Counter', value: 'text.caption.*, muted, at the end of the line' },
       ]}
@@ -93,9 +95,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Show an error by colour alone.', basis: 'WCAG 1.4.1 (A)', rule: 'textarea.error-bound' },
         { text: 'Write a colour or px literal in the stylesheet.', basis: 'misfile.raw-value-in-component', rule: 'textarea.no-literal' },
       ]}
-      rules={textareaRules}
       guide="fields-textarea--docs"
       guideName="Textarea"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Textarea" layer="Component" family="Fields" rules={textareaRules} guide="fields-textarea--docs" guideName="Textarea" />,
 };

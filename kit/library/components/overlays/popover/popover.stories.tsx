@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Text } from '../../../primitives/text/text';
@@ -51,7 +52,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'z.popover', tier: '2', use: 'Paint order, set by the overlay layer of React Aria' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Popover label="Filters"><Filters /></Popover>,
         parts: [
           { n: 1, label: 'Container', note: 'the anchored surface, required', target: '.ds-popover', at: 'top-start' },
@@ -63,7 +64,8 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Width', value: 'fits its content up to size.overlay.md (30rem), and never wider than the screen minus space.6' },
         { label: 'Height', value: 'limited to the free space in the viewport; the content scrolls inside' },
         { label: 'Position', value: 'Beside the trigger, 8px away. It flips to the opposite side at the viewport edge' },
-        { label: 'Radius and rung', value: 'radius.overlay · shadow.1' },
+        { label: 'Radius', property: 'radius', target: '.ds-popover', token: 'radius.overlay' },
+        { label: 'Rung', value: 'shadow.1' },
         { label: 'Dismiss', value: 'Escape, focus leaving (non-modal), an outside press (modal), or close() from inside' },
       ]}
       api={[
@@ -143,9 +145,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Use a popover for a one-line hint.', basis: 'Project decision', rule: 'popover.not-for-hints' },
         { text: 'Write a colour or px literal in popover.css.', basis: 'misfile.raw-value-in-component', rule: 'popover.no-literal' },
       ]}
-      rules={popoverRules}
       guide="overlays-popover--docs"
       guideName="Popover"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Popover" layer="Component" family="Overlays" rules={popoverRules} guide="overlays-popover--docs" guideName="Popover" />,
 };

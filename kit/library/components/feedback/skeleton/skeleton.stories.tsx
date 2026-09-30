@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Text } from '../../../primitives/text/text';
 import { Skeleton, SkeletonRegion } from './skeleton';
 import { skeletonRules } from './skeleton.rules';
@@ -64,7 +65,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'motion.duration.deliberate', tier: '2', use: 'A shimmer sweep is four times this duration, linear' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <ProfileSkeleton />,
         parts: [
           { n: 1, label: 'Region', note: 'aria-busy, plus one polite status line', target: '[role=status]', at: 'top-start' },
@@ -74,7 +75,9 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Shapes', value: 'text (space.3 high) · block (2 × space.12 high) · circle (space.10)' },
+        { label: 'Text height', property: 'height', target: '.ds-skeleton--text', token: 'space.3' },
+        { label: 'Block height', value: '2 × space.12' },
+        { label: 'Circle width', property: 'width', target: '.ds-skeleton--circle', token: 'space.10' },
         { label: 'Size', value: 'width and height props take a token expression' },
         { label: 'Shimmer', value: 'A highlight sweeps over the base, linear, 4 × motion.duration.deliberate' },
         { label: 'Reduced motion', value: 'No sweep. The placeholder is a flat block.' },
@@ -145,9 +148,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Use a skeleton for a wait over a few seconds.', basis: 'Nielsen response times', rule: 'skeleton.short-wait' },
         { text: 'Write a colour or px literal in skeleton.css.', basis: 'misfile.raw-value-in-component', rule: 'skeleton.no-literal' },
       ]}
-      rules={skeletonRules}
       guide="feedback-skeleton--docs"
       guideName="Skeleton"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Skeleton" layer="Component" family="Feedback" rules={skeletonRules} guide="feedback-skeleton--docs" guideName="Skeleton" />,
 };

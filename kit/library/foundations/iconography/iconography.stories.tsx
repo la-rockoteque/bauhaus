@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { GlyphGrid, GlyphSheet, IconCatalog, Keylines, SizePairing } from '../../fixtures/icon-catalog/icon-catalog';
 import { iconographyRules } from './iconography.rules';
 
@@ -33,7 +34,7 @@ export const Showcase: StoryObj = {
         ],
       }}
       specimens={<Keylines />}
-      anatomy={{
+      stage={{
         render: anatomyStage,
         parts: [
           { n: 1, label: 'Grid', note: '24 by 24 units, one unit per line', target: '.ds-glyph-grid__grid', at: 'top-start' },
@@ -74,9 +75,13 @@ export const Showcase: StoryObj = {
         { text: 'Let an icon alone say "error".', basis: 'WCAG 1.4.1 (A)', rule: 'iconography.no-colour-only' },
         { text: 'Ship a button that shows only an icon and has no name.', basis: 'WCAG 4.1.2 (A)', rule: 'iconography.icon-only-has-name' },
       ]}
-      rules={iconographyRules}
       guide="foundations-iconography--docs"
       guideName="Iconography"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Iconography" layer="Foundation" rules={iconographyRules} guide="foundations-iconography--docs" guideName="Iconography" />,
 };

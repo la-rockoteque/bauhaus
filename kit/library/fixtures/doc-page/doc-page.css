@@ -60,14 +60,31 @@
 
 /* Sections */
 
+/* Each section is a panel. Its own data-theme re-resolves every role inside it, so it paints its own surface and text. */
 .doc-section {
   margin-block-start: var(--ds-space-10);
+  padding: var(--ds-space-6);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface-sunken);
+  color: var(--ds-text-default);
 }
 
+.doc-section[data-theme="light"] { color-scheme: light; }
+.doc-section[data-theme="dark"] { color-scheme: dark; }
+
 .doc-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  margin-block-end: var(--ds-space-4);
+}
+
+.doc-section-title {
   display: grid;
   gap: var(--ds-space-1);
-  margin-block-end: var(--ds-space-4);
 }
 
 .doc-h2 {

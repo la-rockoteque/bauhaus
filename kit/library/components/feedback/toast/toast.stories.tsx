@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from '../../clickables/button/button';
 import { ToastRegion } from './toast';
 import type { ToastData } from './toast';
@@ -83,7 +84,7 @@ export const Showcase: StoryObj = {
           { name: 'space.inset.md · space.inline.md · space.stack.sm', tier: '2', use: 'Padding, icon gap, gap between toasts' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Specimen initial={[sample('success', 'Conversation archived.', { id: 'an', title: 'Archived', action: { label: 'Undo', onAction: () => {} } })]} />,
         parts: [
           { n: 1, label: 'Live region', note: 'role status or alert, always in the page', target: '.ds-toast-region__live', at: 'top-start' },
@@ -95,6 +96,10 @@ export const Showcase: StoryObj = {
       }}
       specs={[
         { label: 'Width', value: 'Up to size.overlay.sm, 20rem, fills a narrow screen' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-toast', token: 'space.inset.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-toast', token: 'space.inset.md' },
+        { label: 'Gap', property: 'gap', target: '.ds-toast', token: 'space.inline.md' },
+        { label: 'Radius', property: 'radius', target: '.ds-toast', token: 'radius.overlay' },
         { label: 'Position', value: 'Fixed at the bottom inline end, z.toast; static for a specimen' },
         { label: 'Time on screen', value: '5000 ms by default, set per region or per toast; null or an action keeps it' },
         { label: 'Pause', value: 'While hovered or holding focus; resumes with the time left' },
@@ -149,9 +154,13 @@ export const Showcase: StoryObj = {
         { text: 'Show the status by colour alone.', basis: 'WCAG 1.4.1 (A)', rule: 'toast.status-not-colour-alone' },
         { text: 'Slide the toast in under reduced motion.', basis: 'WCAG 2.3.3 (AAA)', rule: 'toast.reduced-motion' },
       ]}
-      rules={toastRules}
       guide="feedback-toast--docs"
       guideName="Toast"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Toast" layer="Component" family="Feedback" rules={toastRules} guide="feedback-toast--docs" guideName="Toast" />,
 };

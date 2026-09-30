@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Pagination, type PaginationProps } from './pagination';
 import { paginationRules } from './pagination.rules';
 
@@ -43,7 +44,7 @@ export const Showcase: StoryObj = {
           { name: 'radius.control', tier: '2', use: 'Corner radius' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: show({ pageSize: SIZE }),
         parts: [
           { n: 1, label: 'Landmark', note: 'nav with aria-label, required', target: '.ds-pagination', at: 'top-start' },
@@ -55,7 +56,8 @@ export const Showcase: StoryObj = {
       }}
       specs={[
         { label: 'Structure', value: 'nav[aria-label] > ul > li, plus a summary before the list' },
-        { label: 'Control target', value: 'size.target.min, 44px high and wide' },
+        { label: 'Control height', property: 'height', target: '.ds-pagination__item--current', token: 'size.target.min' },
+        { label: 'Control width', property: 'width', target: '.ds-pagination__item--current', token: 'size.target.min', value: 'a floor; a wide label such as Next grows past it' },
         { label: 'Current page', value: 'action.primary fill, border.strong outline, aria-current="page"' },
         { label: 'Range', value: 'first, last, current ± siblings (default 1), ellipsis for gaps; up to 7 slots' },
         { label: 'Ends', value: 'previous on page 1 and next on the last page are aria-disabled and keep focus' },
@@ -108,9 +110,13 @@ export const Showcase: StoryObj = {
         { text: 'Write a colour literal in pagination.css.', basis: 'misfile.raw-value-in-component', rule: 'pagination.no-literal' },
         { text: 'List every page of a long range.', basis: 'WCAG 1.4.10 (AA)', rule: 'pagination.ellipsis-decorative' },
       ]}
-      rules={paginationRules}
       guide="navigation-pagination--docs"
       guideName="Pagination"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Pagination" layer="Component" family="Navigation" rules={paginationRules} guide="navigation-pagination--docs" guideName="Pagination" />,
 };

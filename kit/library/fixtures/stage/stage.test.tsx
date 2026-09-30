@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { Stage } from './anatomy';
+import { Stage } from './stage';
 import { corner, leaders, OUTSET, type Point } from './leaders';
 
 type Segment = [number, number, number, number];
@@ -123,30 +123,69 @@ describe('Stage', () => {
     ],
   };
 
-  it('opens the parts panel by default and lists every part once', () => {
-    render(<Stage anatomy={anatomy} />);
-    const toggle = screen.getByRole('button', { name: 'Hide parts' });
-    expect(toggle.getAttribute('aria-expanded')).toBe('true');
-    expect(document.getElementById(toggle.getAttribute('aria-controls')!)).not.toBeNull();
+  const specs = [
+    { label: 'Padding', property: 'padding-inline' as const, target: '.sample', token: 'space.inline.lg' },
+    { label: 'Label', value: 'text.label.*' },
+  ];
+
+  const radio = (name: string) => screen.getByRole('radio', { name });
+
+  it('shows the anatomy by default, with a switch to the specs, and lists every part once', () => {
+    render(<Stage stage={anatomy} specs={specs} />);
+    expect(screen.getByRole('radiogroup', { name: 'Layer' })).toBeTruthy();
+    expect(radio('Anatomy').getAttribute('aria-checked')).toBe('true');
+    expect(radio('Specs').getAttribute('aria-checked')).toBe('false');
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
   });
 
-  it('shows numbered pins in number order when the panel is closed, and keeps the list for screen readers', () => {
-    render(<Stage anatomy={anatomy} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Hide parts' }));
-    const toggle = screen.getByRole('button', { name: 'Show parts' });
-    expect(toggle.getAttribute('aria-expanded')).toBe('false');
-    expect(screen.getAllByRole('button', { name: /^Part \d$/ }).map((pin) => pin.textContent)).toEqual(['1', '2']);
+  it('offers no switch when there is only one layer', () => {
+    render(<Stage stage={anatomy} />);
+    expect(screen.queryByRole('radiogroup', { name: 'Layer' })).toBeNull();
+  });
+
+  it('shows one layer at a time, and keeps the hidden one for screen readers', () => {
+    const { container } = render(<Stage stage={anatomy} specs={specs} />);
+    expect(container.querySelector('.doc-redlines')).toBeNull();
+    expect(screen.getByRole('table').closest('.ds-visually-hidden')).not.toBeNull();
+    fireEvent.click(radio('Specs'));
+    expect(container.querySelectorAll('.doc-dot, .doc-pin')).toHaveLength(0);
+    expect(container.querySelector('.doc-redlines')).not.toBeNull();
+    expect(screen.getByRole('table').closest('.ds-visually-hidden')).toBeNull();
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
+  });
+
+  it('measures a spec live and compares it with its token', () => {
+    const styled = { ...anatomy, render: <button type="button" className="sample" style={{ paddingLeft: 16, paddingRight: 16 }}>Save</button> };
+    render(<Stage stage={styled} specs={[{ label: 'Padding', property: 'padding-inline', target: '.sample', token: 'space.inline.lg' }, { label: 'Radius', property: 'radius', target: '.sample', token: 'space.inline.lg' }]} />);
+    const [padding, radius] = screen.getAllByRole('row').slice(1);
+    expect(padding.textContent).toContain('matches');
+    expect(radius.textContent).toContain('drift: token is');
+  });
+
+  it('adds a Tokens view that shows the component exploded, when a token paints a layer', () => {
+    const tokens = [{ name: 'surface.default', tier: 'role' as const, use: '', swatch: '--ds-surface-default' }];
+    const { container } = render(<Stage stage={anatomy} specs={specs} tokens={tokens} />);
+    expect(screen.getAllByRole('radio').map((r) => r.textContent)).toEqual(['Anatomy', 'Specs', 'Tokens']);
+    fireEvent.click(radio('Tokens'));
+    expect(container.querySelector('.doc-exploded')).not.toBeNull();
+    expect(container.querySelector<HTMLElement>('.doc-anatomy')!.hidden).toBe(true);
+  });
+
+  it('always shows a lone layer, even when another page chose the other one', () => {
+    window.localStorage.setItem('doc-stage-layer', 'specs');
+    const { container } = render(<Stage stage={anatomy} />);
+    expect(container.querySelectorAll('.doc-dot, .doc-pin')).toHaveLength(2);
+    window.localStorage.clear();
   });
 
   it('keeps the choice in localStorage and reads it back', () => {
-    const { unmount } = render(<Stage anatomy={anatomy} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Hide parts' }));
-    expect(window.localStorage.getItem('doc-anatomy-parts')).toBe('closed');
+    const { unmount } = render(<Stage stage={anatomy} specs={specs} />);
+    fireEvent.click(radio('Specs'));
+    expect(window.localStorage.getItem('doc-stage-layer')).toBe('specs');
     unmount();
-    render(<Stage anatomy={anatomy} />);
-    expect(screen.getByRole('button', { name: 'Show parts' })).toBeTruthy();
+    render(<Stage stage={anatomy} specs={specs} />);
+    expect(radio('Specs').getAttribute('aria-checked')).toBe('true');
+    window.localStorage.clear();
   });
 
   it('works when storage throws', () => {
@@ -156,9 +195,9 @@ describe('Stage', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new Error('blocked');
     });
-    render(<Stage anatomy={anatomy} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Hide parts' }));
-    expect(screen.getByRole('button', { name: 'Show parts' })).toBeTruthy();
+    render(<Stage stage={anatomy} specs={specs} />);
+    fireEvent.click(radio('Specs'));
+    expect(radio('Specs').getAttribute('aria-checked')).toBe('true');
     vi.restoreAllMocks();
   });
 });

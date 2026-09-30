@@ -51,7 +51,6 @@ export function themePage(guide: string, guideName: string): DocPageProps {
       { text: 'Write a hex value in a theme file.', basis: 'Bauhaus naming lint', rule: 'color.roles-alias-colors' },
       { text: 'Write a colour literal in a component "for dark mode".', basis: 'misfile.raw-value-in-component', rule: 'color.semantic-by-intent' },
     ],
-    rules: [],
     guide,
     guideName,
   };

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from '../../clickables/button/button';
 import { Text } from '../../../primitives/text/text';
 import { Card } from './card';
@@ -62,7 +63,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'motion.duration.deliberate', tier: '2', use: 'Skeleton shimmer period' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}>{project({ href: '#anatomy' })}</div>,
         parts: [
           { n: 1, label: 'Container', note: 'article with a border, required', target: '.ds-card', at: 'top-start' },
@@ -75,9 +76,11 @@ export const Showcase: StoryObj<typeof meta> = {
       specs={[
         { label: 'Elevation', value: 'level 0: a border, no shadow' },
         { label: 'Surface', value: 'surface.raised, border.default at size.border.thin' },
-        { label: 'Radius', value: 'radius.md' },
-        { label: 'Padding', value: 'space.inset.md' },
-        { label: 'Gaps', value: 'space.stack.sm between parts · space.stack.xs inside the body' },
+        { label: 'Radius', property: 'radius', target: '.ds-card', token: 'radius.md' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-card', token: 'space.inset.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-card', token: 'space.inset.md' },
+        { label: 'Gap between parts', property: 'gap', target: '.ds-card', token: 'space.stack.sm' },
+        { label: 'Gap inside the body', value: 'space.stack.xs' },
         { label: 'Selectable', value: 'n/a. A choice among cards is a checkbox or radio group whose items look like cards.' },
       ]}
       api={[
@@ -121,9 +124,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Use a card for many like rows or for values to compare.', basis: 'Nielsen 8', rule: 'card.right-shape' },
         { text: 'Write a colour or px literal in card.css.', basis: 'misfile.raw-value-in-component', rule: 'card.no-literal' },
       ]}
-      rules={cardRules}
       guide="data-structures-card--docs"
       guideName="Card"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Card" layer="Component" family="Data structures" rules={cardRules} guide="data-structures-card--docs" guideName="Card" />,
 };

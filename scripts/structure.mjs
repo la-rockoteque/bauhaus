@@ -22,7 +22,8 @@ const USAGE_TEXT = `Usage: structure.mjs check <package-dir> [--json]
        structure.mjs place --components <05-components.json> [--out .bauhaus/analysis/placement.json]
        structure.mjs scaffold <target-dir> --name <npm-name> [--prefix ds]`;
 
-const SKIP_DIRS = new Set(['node_modules', 'dist']);
+// Build output (`dist`, the `build-storybook` output) and installs are not source.
+const SKIP_DIRS = new Set(['node_modules', 'dist', 'storybook-static']);
 const LAYERS = ['foundations', 'themes', 'primitives', 'components', 'patterns'];
 // `fixtures` is a root that is not a layer: Storybook-only building blocks, sliced like components, never exported.
 const ROOTS = [...LAYERS, 'fixtures'];
@@ -213,7 +214,7 @@ const STORYBOOK_LITERAL = /#[0-9a-f]{3,8}\b|\b(?:rgb|hsl|oklch|hwb|lab)a?\(|(?<!
 
 function walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
-    if (e.name === 'node_modules') return [];
+    if (e.name === 'node_modules' || e.name === 'storybook-static') return [];
     const p = path.join(dir, e.name);
     return e.isDirectory() ? walk(p) : [p];
   });
@@ -369,7 +370,7 @@ export function scaffold(target, { name, prefix = 'ds' }) {
   if (!name) throw new UsageError('--name is required');
   if (!/^[a-z][a-z0-9]{0,7}$/.test(prefix)) throw new UsageError(`bad prefix "${prefix}": 1 to 8 lowercase letters and digits, starting with a letter`);
   if (fs.existsSync(target) && fs.readdirSync(target).length) throw new UsageError(`target is not empty: ${target}`);
-  fs.cpSync(KIT_LIBRARY, target, { recursive: true, filter: (src) => path.basename(src) !== 'node_modules' });
+  fs.cpSync(KIT_LIBRARY, target, { recursive: true, filter: (src) => !['node_modules', 'storybook-static'].includes(path.basename(src)) });
   const files = fs.readdirSync(target, { recursive: true }).map((r) => path.join(target, r)).filter((f) => fs.statSync(f).isFile());
   for (const f of files.filter((x) => TEXT_FILE.test(x))) {
     let text = fs.readFileSync(f, 'utf8').split('@acme/design-system').join(name);

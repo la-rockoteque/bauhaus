@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Switch } from './switch';
 import { switchRules } from './switch.rules';
 
@@ -35,7 +36,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'radius.full · motion.duration.base · motion.ease.standard', tier: '2', use: 'Pill shape; thumb slide' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: cell(<Switch label="Email alerts" description="Sent once a day." defaultChecked />),
         parts: [
           { n: 1, label: 'Target', note: '44px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
@@ -46,9 +47,13 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Target', value: 'size.target.min, 44px, the whole row' },
-        { label: 'Track', value: 'space.11 wide · space.6 high · radius.full' },
-        { label: 'Thumb', value: 'size.icon.sm; slides to the end when on; a check appears in it' },
+        { label: 'Target height', property: 'height', target: '.ds-field__choice-target', token: 'size.target.min', value: '44px, the whole row' },
+        { label: 'Target width', property: 'width', target: '.ds-field__choice-target', token: 'size.target.min' },
+        { label: 'Track width', property: 'width', target: '.ds-switch__track', token: 'space.11' },
+        { label: 'Track height', property: 'height', target: '.ds-switch__track', token: 'space.6' },
+        { label: 'Track radius', property: 'radius', target: '.ds-switch__track', token: 'radius.full' },
+        { label: 'Thumb height', property: 'height', target: '.ds-switch__thumb', token: 'size.icon.sm', value: 'slides to the end when on; a check appears in it' },
+        { label: 'Thumb width', property: 'width', target: '.ds-switch__thumb', token: 'size.icon.sm' },
         { label: 'Motion', value: 'motion.duration.base slide; dropped under reduced motion' },
         { label: 'Focus', value: 'ring 2px, offset 2px, around the track, on :focus-visible' },
       ]}
@@ -88,9 +93,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Build it from a div without the switch role.', basis: 'APG Switch; WCAG 4.1.2 (A)', rule: 'switch.role' },
         { text: 'Write a colour or px literal in the stylesheet.', basis: 'misfile.raw-value-in-component', rule: 'switch.no-literal' },
       ]}
-      rules={switchRules}
       guide="fields-switch--docs"
       guideName="Switch"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Switch" layer="Component" family="Fields" rules={switchRules} guide="fields-switch--docs" guideName="Switch" />,
 };

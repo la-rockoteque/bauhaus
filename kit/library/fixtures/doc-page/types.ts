@@ -49,7 +49,8 @@ export interface AnatomyPart {
   y?: string;
 }
 
-export interface Anatomy {
+/** The Stage: the component drawn once, with the anatomy layer (numbered parts) and the specs layer (measured redlines) over it. */
+export interface StageSpec {
   render: ReactNode;
   parts: readonly AnatomyPart[];
   /** Ignored: the stage spans the page column. Kept so older call sites still type-check. */
@@ -61,6 +62,24 @@ export interface Anatomy {
 export interface Row {
   label: string;
   value: string;
+}
+
+/** What the specs layer measures on a target and draws as a redline. */
+export type SpecProperty = 'height' | 'width' | 'padding-inline' | 'padding-block' | 'gap' | 'radius';
+
+/**
+ * One spec. With a `property`, the Stage measures it live on `target`, draws it and compares it with `token`.
+ * Without one, it is a line of text, as before.
+ */
+export interface Spec {
+  label: string;
+  /** For a text spec, the whole spec. For a measured one, an optional note. */
+  value?: string;
+  property?: SpecProperty;
+  /** CSS selector inside the rendered component. Default: the component's root element. */
+  target?: string;
+  /** Dotted token that sets the value, such as `size.target.min`. A measure that differs from it is flagged as drift. */
+  token?: string;
 }
 
 /** The nine lifecycle states and the six interaction states of the state matrix. */
@@ -140,10 +159,10 @@ export interface DocPageProps {
   /** Where it is used, for the "Used for" line. */
   usedFor?: string;
   tokens: TokensSpec;
-  anatomy?: Anatomy;
-  /** Live specimens for a foundation, shown at the top of Anatomy. */
+  stage?: StageSpec;
+  /** Live specimens for a foundation, shown at the top of the Stage section. */
   specimens?: ReactNode;
-  specs?: readonly Row[];
+  specs?: readonly Spec[];
   /** Public API, name to description. */
   api?: readonly Row[];
   states: StatesSpec;
@@ -151,8 +170,6 @@ export interface DocPageProps {
   extra?: readonly ExtraSection[];
   dos: readonly Guidance[];
   donts: readonly Guidance[];
-  /** The slice's `<name>.rules.ts` export. */
-  rules: readonly Rule[];
   /** Storybook id of the guide, such as `clickables-button--docs`. */
   guide: string;
   /** The guide's title in the sidebar, for the pointer line. */

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { FocusRing } from '../../fixtures/specimens/specimens';
 import { focusRules } from './focus.rules';
 
@@ -45,9 +46,13 @@ export const Showcase: StoryObj = {
         { text: 'Colour the ring like the fill.', basis: 'WCAG 1.4.11 (AA)', rule: 'focus.ring-contrast' },
         { text: 'Draw a 1px ring.', basis: 'House standard, 2px minimum', rule: 'focus.ring-min-width' },
       ]}
-      rules={focusRules}
       guide="foundations-focus--docs"
       guideName="Focus"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Focus" layer="Foundation" rules={focusRules} guide="foundations-focus--docs" guideName="Focus" />,
 };

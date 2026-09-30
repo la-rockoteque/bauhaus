@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { IconButton } from './icon-button';
 import { iconButtonRules } from './icon-button.rules';
 
@@ -37,7 +38,7 @@ export const Showcase: StoryObj = {
           { name: 'text.link', tier: 'role', use: 'Icon colour in the default tertiary variant, through currentColor', swatch: '--ds-text-link' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: close(),
         parts: [
           { n: 1, label: 'Button container', note: 'required', target: '.ds-icon-button', at: 'top-start' },
@@ -46,7 +47,9 @@ export const Showcase: StoryObj = {
         ],
       }}
       specs={[
-        { label: 'Hit area', value: 'size.target.min square, even when the icon is smaller' },
+        { label: 'Width', property: 'width', target: '.ds-icon-button', token: 'size.target.min', value: 'a square hit area, even when the icon is smaller' },
+        { label: 'Height', property: 'height', target: '.ds-icon-button', token: 'size.target.min', value: 'from the button' },
+        { label: 'Padding', property: 'padding-inline', target: '.ds-icon-button', token: 'space.inset.sm' },
         { label: 'Icon colour', value: 'currentColor, so it follows the text tokens and both themes' },
         { label: 'Default variant', value: 'tertiary' },
       ]}
@@ -96,9 +99,13 @@ export const Showcase: StoryObj = {
         { text: 'Ship a 24px icon with no padding.', basis: 'WCAG 2.5.8 (AA); house floor 44px', rule: 'icon-button.touch-target' },
         { text: 'Draw a custom symbol for a common action.', basis: 'Nielsen 6', rule: 'icon-button.known-icon' },
       ]}
-      rules={iconButtonRules}
       guide="clickables-icon-button--docs"
       guideName="Icon button"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Icon button" layer="Component" family="Clickables" rules={iconButtonRules} guide="clickables-icon-button--docs" guideName="Icon button" />,
 };

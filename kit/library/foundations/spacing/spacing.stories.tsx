@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { SpacingScale } from '../../fixtures/specimens/specimens';
 import { spacingRules } from './spacing.rules';
 
@@ -70,9 +71,13 @@ export const Showcase: StoryObj = {
         { text: 'Add a step "just this once".', basis: 'Closed scale', rule: 'spacing.scale-closed' },
         { text: 'Shrink a target below size.target.min to save room.', basis: 'WCAG 2.5.8 (AA); house floor 44px', rule: 'spacing.target-min' },
       ]}
-      rules={spacingRules}
       guide="foundations-spacing--docs"
       guideName="Spacing"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Spacing" layer="Foundation" rules={spacingRules} guide="foundations-spacing--docs" guideName="Spacing" />,
 };

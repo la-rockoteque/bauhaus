@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from './button';
 import { buttonRules } from './button.rules';
 
@@ -27,17 +28,18 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'border.strong', tier: 'role', use: 'Outline of the secondary variant', swatch: '--ds-border-strong' },
           { name: 'surface.default', tier: 'role', use: 'Secondary fill', swatch: '--ds-surface-default' },
           { name: 'text.default · text.link', tier: 'role', use: 'Secondary and tertiary labels', swatch: '--ds-text-link' },
-          { name: 'state.hover-layer · state.pressed-layer', tier: 'role', use: 'Hover and pressed fill of the secondary and tertiary variants', swatch: '--ds-state-hover-layer' },
+          { name: 'state.hover-layer · state.pressed-layer', tier: 'role', use: 'Hover and pressed fill of the secondary, tertiary and subtle variants', swatch: '--ds-state-hover-layer' },
           { name: 'disabled.text · disabled.surface · disabled.border', tier: 'role', use: 'Disabled label, fill and outline', swatch: '--ds-disabled-surface' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator', swatch: '--ds-focus-ring-color' },
           { name: 'text.label.*', tier: '2', use: 'Label size, weight and line height' },
           { name: 'space.inset.sm · space.inline.sm · space.inline.lg', tier: '2', use: 'Padding, and the gap between label and spinner' },
-          { name: 'size.target.min', tier: '2', use: 'Minimum height and width' },
+          { name: 'size.target.min', tier: '2', use: 'Minimum height and width, and the hit area of a narrow button' },
+          { name: 'size.control.narrow', tier: '2', use: 'Visible height of a narrow button' },
           { name: 'radius.control', tier: '2', use: 'Corner radius' },
           { name: 'motion.duration.deliberate', tier: '2', use: 'One turn of the spinner' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Button variant="primary" loading>Save changes</Button>,
         parts: [
           { n: 1, label: 'Container', note: 'native button, required', target: '.ds-button', at: 'top-start' },
@@ -46,15 +48,18 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Minimum size', value: 'size.target.min, 44px high and wide' },
-        { label: 'Padding', value: 'space.inset.sm block · space.inline.lg inline' },
-        { label: 'Radius', value: 'radius.control' },
+        { label: 'Height', property: 'height', target: '.ds-button', token: 'size.target.min', value: 'minimum; the width has the same floor' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-button', token: 'space.inline.lg' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-button', token: 'space.inset.sm' },
+        { label: 'Gap', value: 'space.inline.sm; the spinner overlays the label while loading, so no gap shows' },
+        { label: 'Radius', property: 'radius', target: '.ds-button', token: 'radius.control' },
         { label: 'Label', value: 'text.label.*, medium weight' },
         { label: 'Focus', value: 'ring 2px, offset 2px, on :focus-visible' },
         { label: 'Icon', value: 'no slot; use icon-button for an icon alone' },
       ]}
       api={[
-        { label: 'variant', value: '"primary" | "secondary" | "tertiary", default "primary". One primary per view region.' },
+        { label: 'variant', value: '"primary" | "secondary" | "tertiary" | "subtle", default "primary". One primary per view region. Subtle is the quietest: neutral text, no fill or outline until hover.' },
+        { label: 'size', value: '"default" | "narrow", default "default". Narrow draws at size.control.narrow (32px) for dense chrome; its hit area stays at size.target.min.' },
         { label: 'loading', value: 'The action is running. The label and width stay, aria-busy is set, presses are ignored.' },
         { label: 'type', value: '"button" | "submit" | "reset", default "button". A button in a form does not submit unless you ask.' },
         { label: '…props', value: 'Every native button attribute, such as disabled and onClick.' },
@@ -78,6 +83,8 @@ export const Showcase: StoryObj<typeof meta> = {
                 <Button variant="primary">Primary</Button>
                 <Button variant="secondary">Secondary</Button>
                 <Button variant="tertiary">Tertiary</Button>
+                <Button variant="subtle">Subtle</Button>
+                <Button variant="subtle" size="narrow">Narrow</Button>
               </div>
             ),
             trigger: 'variant',
@@ -104,9 +111,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Write a colour literal in button.css.', basis: 'misfile.raw-value-in-component', rule: 'button.no-literal' },
         { text: 'Label a button "Click here".', basis: 'WCAG 2.4.6 (AA)', rule: 'button.label-verb' },
       ]}
-      rules={buttonRules}
       guide="clickables-button--docs"
       guideName="Button"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Button" layer="Component" family="Clickables" rules={buttonRules} guide="clickables-button--docs" guideName="Button" />,
 };

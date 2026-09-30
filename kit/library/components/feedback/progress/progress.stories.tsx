@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Progress } from './progress';
 import { progressRules } from './progress.rules';
 
@@ -34,7 +35,7 @@ export const Showcase: StoryObj = {
           { name: 'radius.pill · motion.duration.base', tier: '2', use: 'Bar ends; the fill change, linear' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Progress label="Uploading report.pdf" value={40} valueText="40% · 4.2 of 10.5 MB" />,
         parts: [
           { n: 1, label: 'Label', note: 'visible, required', target: '.ds-progress__label', at: 'top-start' },
@@ -45,7 +46,7 @@ export const Showcase: StoryObj = {
       }}
       specs={[
         { label: 'Element', value: 'Native progress, labelled by a visible label element' },
-        { label: 'Height', value: 'space.2, 8px' },
+        { label: 'Height', property: 'height', target: '.ds-progress__bar', token: 'space.2', value: '8px' },
         { label: 'Fill', value: 'Linear easing only; changes over motion.duration.base' },
         { label: 'Indeterminate', value: 'A segment slides along the track, linear; static under reduced motion' },
         { label: 'Value text', value: 'Percent by default, or your own words' },
@@ -90,9 +91,13 @@ export const Showcase: StoryObj = {
         { text: 'Signal failure by colour alone.', basis: 'WCAG 1.4.1 (A)', rule: 'progress.error-in-text' },
         { text: 'Write a colour or px literal in progress.css.', basis: 'misfile.raw-value-in-component', rule: 'progress.no-literal' },
       ]}
-      rules={progressRules}
       guide="feedback-progress--docs"
       guideName="Progress"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Progress" layer="Component" family="Feedback" rules={progressRules} guide="feedback-progress--docs" guideName="Progress" />,
 };

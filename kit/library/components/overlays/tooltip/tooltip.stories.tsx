@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Button } from '../../clickables/button/button';
@@ -62,7 +63,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'z.tooltip', tier: '2', use: 'Paint order, set by the overlay layer of React Aria' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: open(),
         parts: [
           { n: 1, label: 'Trigger', note: 'a control with its own name, required', target: '.ds-icon-button' },
@@ -130,9 +131,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Hide the only copy of a rule or an error in a tooltip.', basis: 'WCAG 1.4.13 (AA)', rule: 'tooltip.no-essential-content' },
         { text: 'Write a colour or px literal in tooltip.css.', basis: 'misfile.raw-value-in-component', rule: 'tooltip.no-literal' },
       ]}
-      rules={tooltipRules}
       guide="overlays-tooltip--docs"
       guideName="Tooltip"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Tooltip" layer="Component" family="Overlays" rules={tooltipRules} guide="overlays-tooltip--docs" guideName="Tooltip" />,
 };

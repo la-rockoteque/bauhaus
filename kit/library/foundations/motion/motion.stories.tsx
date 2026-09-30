@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { MotionSwatches } from '../../fixtures/specimens/specimens';
 import { motionRules } from './motion.rules';
 
@@ -51,9 +52,13 @@ export const Showcase: StoryObj = {
         { text: 'Ship a spinner that ignores reduced motion.', basis: 'WCAG 2.3.3 (AAA)', rule: 'motion.reduced-motion' },
         { text: 'Animate to decorate.', basis: 'Nielsen 8' },
       ]}
-      rules={motionRules}
       guide="foundations-motion--docs"
       guideName="Motion"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Motion" layer="Foundation" rules={motionRules} guide="foundations-motion--docs" guideName="Motion" />,
 };

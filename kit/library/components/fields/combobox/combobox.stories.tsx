@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Combobox, ForceOpenContext } from './combobox';
 import { comboboxRules } from './combobox.rules';
 
@@ -63,7 +64,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'radius.control · radius.overlay · motion.duration.fast', tier: '2', use: 'Corners; popup fade' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: cell(<Combobox label="Country" required description="Start typing." options={COUNTRIES} />),
         parts: [
           { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
@@ -73,8 +74,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Input', value: 'as the text field: size.control.md, radius.control' },
-        { label: 'Toggle', value: '44px square at the end of the input, chevron-down, turns over when open' },
+        { label: 'Input height', property: 'height', target: '.ds-combobox__input', token: 'size.control.md', value: 'as the text field' },
+        { label: 'Input padding block', property: 'padding-block', target: '.ds-combobox__input', token: 'space.inset.sm' },
+        { label: 'Input radius', property: 'radius', target: '.ds-combobox__input', token: 'radius.control' },
+        { label: 'Toggle width', property: 'width', target: '.ds-combobox__button', token: 'size.target.min', value: 'at the end of the input, chevron-down, turns over when open' },
+        { label: 'Toggle radius', property: 'radius', target: '.ds-combobox__button', token: 'radius.control' },
         { label: 'Popup', value: 'width of the input · max size.overlay.md high, scrolls · overlay.surface · shadow.1 · z.dropdown' },
         { label: 'Option', value: 'at least 44px high · check mark for the selected one' },
         { label: 'Focus', value: 'stays in the input; the active option is set with aria-activedescendant' },
@@ -123,9 +127,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Skip the announcement of the result count.', basis: 'WCAG 4.1.3 (AA)', rule: 'combobox.count-announced' },
         { text: 'Write a colour or px literal in the stylesheet.', basis: 'misfile.raw-value-in-component', rule: 'combobox.no-literal' },
       ]}
-      rules={comboboxRules}
       guide="fields-combobox--docs"
       guideName="Combobox"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Combobox" layer="Component" family="Fields" rules={comboboxRules} guide="fields-combobox--docs" guideName="Combobox" />,
 };

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Link } from './link';
 import { linkRules } from './link.rules';
 
@@ -35,7 +36,7 @@ export const Showcase: StoryObj = {
           { name: 'size.icon.sm · space.inline.xs', tier: '2', use: 'External icon and its gap' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Link href={HREF} external>Read the WCAG guide</Link>,
         parts: [
           { n: 1, label: 'Text', note: 'children, required; underlined', target: '.ds-link', at: 'top-start' },
@@ -112,9 +113,13 @@ export const Showcase: StoryObj = {
         { text: 'Import a router in the link.', basis: 'docs/library.md isolation rule 4', rule: 'link.no-router' },
         { text: 'Write a colour literal in link.css.', basis: 'misfile.raw-value-in-component', rule: 'link.no-literal' },
       ]}
-      rules={linkRules}
       guide="clickables-link--docs"
       guideName="Link"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Link" layer="Component" family="Clickables" rules={linkRules} guide="clickables-link--docs" guideName="Link" />,
 };

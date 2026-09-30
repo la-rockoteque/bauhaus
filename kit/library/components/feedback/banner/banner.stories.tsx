@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from '../../clickables/button/button';
 import { Banner } from './banner';
 import { bannerRules } from './banner.rules';
@@ -44,7 +45,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'size.border.thin · radius.control', tier: '2', use: 'Border width and corner radius' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: (
           <Banner status="warning" title="Payment method expires soon" actions={<Button variant="secondary">Update card</Button>} onDismiss={() => {}} dismissLabel="Dismiss message">
             Your card ends in 4242 and expires on 31 October.
@@ -60,9 +61,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Padding', value: 'space.inset.md' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-banner', token: 'space.inset.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-banner', token: 'space.inset.md' },
+        { label: 'Gap', property: 'gap', target: '.ds-banner', token: 'space.inline.md' },
         { label: 'Border', value: 'size.border.thin, status.<s>-border' },
-        { label: 'Radius', value: 'radius.control' },
+        { label: 'Radius', property: 'radius', target: '.ds-banner', token: 'radius.control' },
         { label: 'Close target', value: 'size.target.min, 44px (icon button)' },
         { label: 'Role', value: 'status by default · alert only for an urgent error' },
         { label: 'Width', value: 'Fills its container; text wraps, never truncates' },
@@ -135,9 +138,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Write a colour literal in banner.css.', basis: 'misfile.raw-value-in-component', rule: 'banner.no-literal' },
         { text: 'Cover the content of a phone screen with a banner.', basis: 'WCAG 1.4.10 (AA)', rule: 'banner.no-blocking' },
       ]}
-      rules={bannerRules}
       guide="feedback-banner--docs"
       guideName="Banner"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Banner" layer="Component" family="Feedback" rules={bannerRules} guide="feedback-banner--docs" guideName="Banner" />,
 };

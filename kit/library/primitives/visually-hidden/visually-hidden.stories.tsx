@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { VisuallyHidden } from './visually-hidden';
 import { visuallyHiddenRules } from './visually-hidden.rules';
 
@@ -35,7 +36,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'text.label.* · radius.control · size.border.thin · space.inset.sm · space.inline.lg', tier: '2', use: 'Look of the focused skip link' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: skipLink,
         parts: [
           { n: 1, label: 'Element', note: 'span by default; a for a skip link', target: '.ds-visually-hidden', at: 'top-start' },
@@ -83,9 +84,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Let a sticky header cover the skip link.', basis: 'WCAG 2.4.11 (AA)', rule: 'visually-hidden.focusable-shows' },
         { text: 'Write a colour or px literal in the stylesheet.', basis: 'Project decision', rule: 'visually-hidden.no-literal' },
       ]}
-      rules={visuallyHiddenRules}
       guide="primitives-visually-hidden--docs"
       guideName="Visually hidden"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Visually hidden" layer="Primitive" rules={visuallyHiddenRules} guide="primitives-visually-hidden--docs" guideName="Visually hidden" />,
 };

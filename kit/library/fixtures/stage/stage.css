@@ -1,0 +1,306 @@
+/* Stage: the component with two layers shown one at a time, the anatomy (a parts panel floating over the stage's right side, below breakpoint.md under the stage) and the specs (redlines and a table). */
+
+.doc-stage-view {
+  display: grid;
+}
+
+.doc-anatomy[hidden] {
+  display: none;
+}
+
+.doc-anatomy {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--ds-space-4);
+}
+
+/* Wide, with parts: the panel floats over the stage, and the stage keeps the panel's room on its right in both layers,
+   so switching between anatomy and specs never moves or resizes the component. */
+.doc-anatomy[data-wide][data-parts] .doc-stage {
+  padding-inline-end: calc(var(--ds-size-overlay-sm) + 2 * var(--ds-space-6));
+}
+
+.doc-stage {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding: var(--ds-space-12);
+  overflow-x: auto;
+  background-color: var(--ds-surface-default);
+  background-image: linear-gradient(var(--doc-grid-line) var(--doc-hairline), transparent 0),
+    linear-gradient(90deg, var(--doc-grid-line) var(--doc-hairline), transparent 0);
+  background-size: var(--ds-space-2) var(--ds-space-2);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+/* Its own stacking context: a component's z-index (a toast, a popover) stays inside, under the overlays. */
+.doc-stage-inner {
+  position: relative;
+  isolation: isolate;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+}
+
+/* The anchor on a part: a dot while the lines show, a numbered pin otherwise. Both sit exactly on the point. */
+.doc-dot,
+.doc-pin,
+.doc-legend-num {
+  display: grid;
+  place-items: center;
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-series-color);
+  color: var(--ds-text-inverse);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: 1;
+}
+
+.doc-dot,
+.doc-pin {
+  position: absolute;
+  z-index: var(--ds-z-sticky);
+  box-shadow: 0 0 0 var(--ds-size-border-thick) var(--ds-surface-default);
+  translate: -50% -50%;
+}
+
+.doc-dot {
+  inline-size: var(--ds-space-2);
+  block-size: var(--ds-space-2);
+  transition: scale var(--ds-motion-duration-fast) var(--ds-motion-ease-standard);
+}
+
+.doc-dot.is-active {
+  scale: 2;
+}
+
+.doc-pin {
+  inline-size: var(--ds-space-5);
+  block-size: var(--ds-space-5);
+  padding: 0;
+  border: 0;
+  cursor: help;
+}
+
+.doc-pin:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.doc-legend-num {
+  flex: none;
+  inline-size: var(--ds-space-5);
+  block-size: var(--ds-space-5);
+}
+
+/* The parts panel */
+
+.doc-parts {
+  display: grid;
+  align-content: start;
+  gap: var(--ds-space-3);
+  min-inline-size: 0;
+}
+
+.doc-anatomy[data-wide] .doc-parts[data-open] {
+  position: absolute;
+  z-index: var(--ds-z-sticky);
+  inset-block-start: var(--ds-space-6);
+  inset-inline-end: var(--ds-space-6);
+  box-sizing: border-box;
+  inline-size: var(--ds-size-overlay-sm);
+  max-block-size: calc(100% - 2 * var(--ds-space-6));
+  overflow-y: auto;
+  padding: var(--ds-space-4);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+  background: color-mix(in oklab, var(--ds-surface-raised) 92%, transparent);
+  box-shadow: var(--ds-shadow-2);
+}
+
+.doc-parts-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+}
+
+.doc-parts-list {
+  display: grid;
+  gap: var(--ds-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-part {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+  font-size: var(--ds-font-size-sm);
+  line-height: var(--ds-font-line-height-normal);
+}
+
+.doc-part.is-active {
+  border-color: var(--ds-series-color);
+  box-shadow: inset 0 0 0 var(--ds-size-border-thin) var(--ds-series-color);
+}
+
+.doc-part:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.doc-legend-label {
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+/* Leader lines: dotted, drawn over the block, never in the way of a press. */
+.doc-leaders {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.doc-leaders path {
+  fill: none;
+  stroke: var(--ds-series-color);
+  stroke-width: var(--ds-size-border-thin);
+  stroke-dasharray: var(--ds-size-border-thick) var(--ds-size-border-thick);
+}
+
+.doc-leaders path.is-active {
+  stroke-width: var(--ds-size-border-thick);
+}
+
+/* The block: the layer switch, the stage with its parts panel, the specs table. */
+.doc-stage-block {
+  display: grid;
+  gap: var(--ds-space-4);
+}
+
+/* Specs layer. Two inks:
+   - the wireframe, teal at low opacity: the margin and padding rings of each measured target and its content box;
+   - the redlines, one matte red (status.error dulled with a muted role): dimension lines with end ticks,
+     dotted links to the component's edges, and each value written small on its line.
+   Never in the way of a press. */
+.doc-stage-block {
+  --doc-redline: color-mix(in oklab, var(--ds-status-error) 70%, var(--ds-text-muted));
+  --doc-wire: var(--ds-palette-teal-400);
+}
+
+/* Above everything the component paints, whatever its own z-index. */
+.doc-redlines {
+  position: absolute;
+  z-index: calc(var(--ds-z-tooltip) + 1);
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.doc-wire rect {
+  fill: none;
+  stroke: var(--doc-wire);
+  stroke-width: var(--ds-size-border-thin);
+  stroke-dasharray: var(--ds-size-border-thick) var(--ds-size-border-thick);
+  opacity: 0.6;
+}
+
+.doc-wire-margin rect,
+.doc-wire-padding rect {
+  stroke: none;
+}
+
+.doc-wire-padding rect {
+  fill: color-mix(in oklab, var(--doc-wire) 30%, transparent);
+}
+
+.doc-wire-margin rect {
+  fill: color-mix(in oklab, var(--doc-wire) 15%, transparent);
+}
+
+.doc-redline {
+  opacity: 0.7;
+}
+
+.doc-redline line {
+  stroke: var(--doc-redline);
+  stroke-width: var(--ds-size-border-thin);
+}
+
+.doc-redline .doc-redline-link {
+  stroke-dasharray: var(--ds-size-border-thin) var(--ds-size-border-thick);
+}
+
+/* The value: tiny, just beyond its bar. A halo of the stage surface keeps it clear of the grid and of a link it crosses. */
+.doc-redline text {
+  fill: var(--doc-redline);
+  font-family: var(--ds-text-code-family);
+  font-size: calc(var(--ds-font-size-xs) * 0.85);
+  font-weight: var(--ds-font-weight-semibold);
+  text-anchor: middle;
+  dominant-baseline: central;
+  paint-order: stroke;
+  stroke: var(--ds-surface-default);
+  stroke-width: var(--ds-size-border-thick);
+  stroke-linejoin: round;
+}
+
+.doc-redline .doc-redline-name {
+  font-family: var(--ds-text-label-family);
+  font-weight: var(--ds-font-weight-regular);
+}
+
+.doc-redline.is-active {
+  opacity: 1;
+}
+
+.doc-redline.is-active line {
+  stroke-width: var(--ds-size-border-thick);
+}
+
+.doc-specs {
+  display: grid;
+  gap: var(--ds-space-3);
+}
+
+/* Name, token and value stay on one line; on a narrow screen the table scrolls inside its region instead of breaking words. */
+.doc-spec-row th,
+.doc-spec-row td:nth-child(2),
+.doc-spec-row td:nth-child(3) {
+  white-space: nowrap;
+}
+
+.doc-spec-row td:last-child {
+  min-inline-size: var(--ds-size-overlay-sm);
+}
+
+.doc-spec-row.is-active {
+  background: color-mix(in oklab, var(--doc-redline) 10%, transparent);
+}
+
+.doc-spec-ok {
+  color: var(--ds-text-muted);
+}
+
+/* Drift is a word, not only a colour (WCAG 1.4.1). */
+.doc-spec-drift {
+  color: var(--ds-status-error-text);
+  font-weight: var(--ds-font-weight-semibold);
+}

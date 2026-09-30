@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Button } from '../../clickables/button/button';
@@ -90,7 +91,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'motion.duration.fast · motion.ease.enter · motion.ease.exit', tier: '2', use: 'Fade and small travel in and out' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Menu label="Project actions">{projectItems}</Menu>,
         parts: [
           { n: 1, label: 'Trigger', note: 'a button, the only tab stop, not drawn here', target: '.ds-menu__popover', at: 'top-start' },
@@ -103,7 +104,8 @@ export const Showcase: StoryObj<typeof meta> = {
       specs={[
         { label: 'Width', value: 'from half of size.overlay.sm to size.overlay.md, never wider than the screen minus space.6' },
         { label: 'Position', value: 'Below the trigger, 4px away, aligned to its start. It flips at the viewport edge' },
-        { label: 'Radius and rung', value: 'radius.overlay · shadow.1' },
+        { label: 'Radius', property: 'radius', target: '.ds-menu__popover', token: 'radius.overlay' },
+        { label: 'Rung', value: 'shadow.1' },
         { label: 'Keys', value: 'Enter, Space or Down opens · arrows move · a letter jumps · Enter or Space acts · Escape closes and returns focus' },
         { label: 'Selection', value: 'none (actions) · single (radio items) · multiple (checkbox items); a check marks the chosen items' },
       ]}
@@ -173,9 +175,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Let a list run off the screen at 320px.', basis: 'WCAG 1.4.10 (AA)', rule: 'menu.fits-viewport' },
         { text: 'Write a colour or px literal in menu.css.', basis: 'misfile.raw-value-in-component', rule: 'menu.no-literal' },
       ]}
-      rules={menuRules}
       guide="overlays-menu--docs"
       guideName="Menu"
     />
   ),
+};
+
+export const Advisories: StoryObj<typeof meta> = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Menu" layer="Component" family="Overlays" rules={menuRules} guide="overlays-menu--docs" guideName="Menu" />,
 };

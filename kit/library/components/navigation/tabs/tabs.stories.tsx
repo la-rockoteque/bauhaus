@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Tabs, type TabItem, type TabsProps } from './tabs';
 import { tabsRules } from './tabs.rules';
 
@@ -42,7 +43,7 @@ export const Showcase: StoryObj = {
           { name: 'size.icon.sm', tier: '2', use: 'Chevron of the scroll cue' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: demo({ tabs: THREE.slice(0, 2) }),
         parts: [
           { n: 1, label: 'Tab list', note: 'role tablist, required', target: '[role=tablist]', at: 'bottom-start' },
@@ -52,7 +53,7 @@ export const Showcase: StoryObj = {
         ],
       }}
       specs={[
-        { label: 'Tab target', value: 'size.target.min, 44px high and wide' },
+        { label: 'Tab height', property: 'height', target: '[role=tab][aria-selected=true]', token: 'size.target.min', value: 'a floor; the width also grows with the label' },
         { label: 'Keys', value: 'Left and Right (Up and Down when vertical) move and wrap · Home and End jump · Tab leaves to the panel' },
         { label: 'Tab stop', value: 'one: the selected tab, or the tab that holds focus' },
         { label: 'Activation', value: 'automatic (default) selects on focus · manual selects on Enter or Space' },
@@ -114,9 +115,13 @@ export const Showcase: StoryObj = {
         { text: 'Disable a tab with no reason.', basis: 'Nielsen 1', rule: 'tabs.state.disabled' },
         { text: 'Write a colour literal in tabs.css.', basis: 'misfile.raw-value-in-component', rule: 'tabs.no-literal' },
       ]}
-      rules={tabsRules}
       guide="navigation-tabs--docs"
       guideName="Tabs"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Tabs" layer="Component" family="Navigation" rules={tabsRules} guide="navigation-tabs--docs" guideName="Tabs" />,
 };

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
+import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Spinner } from './spinner';
 import { spinnerRules } from './spinner.rules';
 
@@ -33,7 +34,7 @@ export const Showcase: StoryObj = {
           { name: 'text.caption.* · space.control.gap', tier: '2', use: 'Visible label, and its gap to the ring' },
         ],
       }}
-      anatomy={{
+      stage={{
         render: <Spinner label="Loading orders" showLabel />,
         parts: [
           { n: 1, label: 'Status region', note: 'role status, required', target: '.ds-spinner', at: 'top-start' },
@@ -42,7 +43,7 @@ export const Showcase: StoryObj = {
         ],
       }}
       specs={[
-        { label: 'Sizes', value: 'sm 16px · md 20px · lg 24px (size.icon.*)' },
+        { label: 'Sizes', value: 'sm 16px · md 20px · lg 24px (size.icon.*); the turning ring cannot be measured' },
         { label: 'Turn', value: 'motion.duration.deliberate, linear, infinite' },
         { label: 'Reduced motion', value: 'The ring stops and stays as a static arc' },
         { label: 'Delay', value: 'None built in. The caller waits about 300 ms before it mounts the spinner.' },
@@ -98,9 +99,13 @@ export const Showcase: StoryObj = {
         { text: 'Keep the ring turning under reduced motion.', basis: 'WCAG 2.3.3 (AAA)', rule: 'spinner.reduced-motion' },
         { text: 'Write a colour or px literal in spinner.css.', basis: 'misfile.raw-value-in-component', rule: 'spinner.no-literal' },
       ]}
-      rules={spinnerRules}
       guide="feedback-spinner--docs"
       guideName="Spinner"
     />
   ),
+};
+
+export const Advisories: StoryObj = {
+  name: 'Advisories',
+  render: () => <AdvisoriesPage name="Spinner" layer="Component" family="Feedback" rules={spinnerRules} guide="feedback-spinner--docs" guideName="Spinner" />,
 };
