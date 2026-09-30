@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
-import { FontRoles, TypeScale, TypefaceSpecimens } from '../../fixtures/type-specimens/type-specimens';
-import { FontsOnPaper } from '../../fixtures/lined-paper/lined-paper';
+import { FontRoles, FontsOnPaper, TypeScale, TypefaceSpecimens } from '../../fixtures/type-specimens/type-specimens';
 import { Group } from '../../fixtures/specimens/specimens';
 import { typographyRules } from './typography.rules';
 

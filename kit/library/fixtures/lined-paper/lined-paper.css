@@ -2,15 +2,14 @@
 
 .paper {
   --paper-rule: var(--ds-space-8);
-  --paper-head: calc(var(--paper-rule) * 3);
+  --paper-head: calc(var(--paper-rule) * 2);
   --paper-margin: calc(var(--ds-space-12) * 2);
   --paper-line: var(--ds-size-border-thin);
   --paper-ink: var(--ds-status-info-border);
   --paper-color: var(--ds-surface-raised);
   position: relative;
   box-sizing: border-box;
-  min-block-size: calc(var(--paper-head) + var(--paper-rule) * 12);
-  padding: var(--paper-head) var(--ds-space-6) var(--paper-rule) calc(var(--paper-margin) + var(--ds-space-3));
+  padding: var(--paper-head) var(--ds-space-6) calc(var(--paper-rule) * var(--paper-blank, 1)) calc(var(--paper-margin) + var(--ds-space-3));
   line-height: var(--paper-rule);
   color: var(--ds-text-default);
   background:
@@ -37,6 +36,18 @@
 .paper-hole:nth-child(2) { inset-block-start: 50%; }
 .paper-hole:nth-child(3) { inset-block-start: 88%; }
 
+.paper-head {
+  position: absolute;
+  inset-block-start: var(--ds-space-3);
+  inset-inline-start: calc(var(--paper-margin) + var(--ds-space-3));
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-1) var(--ds-space-3);
+  align-items: baseline;
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-normal);
+}
+
 /* Each line is exactly one rule high, whatever fonts it mixes, so the lines never drift off the rules. */
 .paper-line {
   display: grid;
@@ -53,7 +64,7 @@
   text-box: trim-end alphabetic;
 }
 
-.paper-face {
+.paper-note {
   font-size: var(--ds-font-size-xs);
   color: var(--ds-text-muted);
 }

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { FontsOnPaper } from './lined-paper';
+import { FontsOnPaper } from '../type-specimens/type-specimens';
 
 // A fixture story shows the block on its own with sample props. It is not a DocPage. The font roles written on school paper.
 const meta = { title: 'Fixtures/Lined paper', parameters: { layout: 'fullscreen' } } satisfies Meta;
