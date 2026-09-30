@@ -21,8 +21,8 @@ export function managerValues(t) {
     appBorderColor: t.border.default,
     appBorderRadius: Number.parseInt(t.radius.md, 10),
 
-    fontBase: t.font.family.sans,
-    fontCode: t.font.family.mono,
+    fontBase: t.font.sans,
+    fontCode: t.font.mono,
 
     textColor: t.text.default,
     textInverseColor: t.text.inverse,

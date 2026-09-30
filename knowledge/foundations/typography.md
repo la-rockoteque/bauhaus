@@ -62,7 +62,7 @@ sources:
 }
 
 .ds-prose { max-width: 65ch; line-height: var(--ds-lh-normal); }
-.ds-value { font-family: var(--ds-font-mono); font-variant-numeric: tabular-nums; }
+.ds-value { font-family: var(--ds-text-code-family); font-variant-numeric: tabular-nums; }
 ```
 
 The family names above are examples. Use the families your project licenses and ships.

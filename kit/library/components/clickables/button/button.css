@@ -10,7 +10,7 @@
   padding-inline: var(--ds-space-inline-lg);
   border: var(--ds-focus-ring-width) solid transparent;
   border-radius: var(--ds-radius-control);
-  font-family: var(--ds-font-family-sans);
+  font-family: var(--ds-text-label-family);
   font-size: var(--ds-text-label-size);
   font-weight: var(--ds-text-label-weight);
   line-height: var(--ds-text-label-line-height);

@@ -1,22 +1,24 @@
 .ds-text {
   margin: 0;
-  font-family: var(--ds-font-family-sans);
   color: var(--ds-text-default);
 }
 
 .ds-text--body {
+  font-family: var(--ds-text-body-family);
   font-size: var(--ds-text-body-size);
   font-weight: var(--ds-text-body-weight);
   line-height: var(--ds-text-body-line-height);
 }
 
 .ds-text--caption {
+  font-family: var(--ds-text-caption-family);
   font-size: var(--ds-text-caption-size);
   font-weight: var(--ds-text-caption-weight);
   line-height: var(--ds-text-caption-line-height);
 }
 
 .ds-text--heading {
+  font-family: var(--ds-text-heading-family);
   font-size: var(--ds-text-heading-size);
   font-weight: var(--ds-text-heading-weight);
   line-height: var(--ds-text-heading-line-height);

@@ -22,8 +22,7 @@ export const Showcase: StoryObj<typeof meta> = {
       tokens={{
         mode: 'consumed',
         rows: [
-          { name: 'text.body.* · text.caption.* · text.heading.*', tier: '2', use: 'Size, weight and line height per variant' },
-          { name: 'font.family.sans', tier: '1', use: 'Typeface (no semantic alias exists yet)' },
+          { name: 'text.body.* · text.caption.* · text.heading.*', tier: '2', use: 'Family, size, weight and line height per variant' },
           { name: 'text.default · text.muted', tier: 'role', use: 'Tone', swatch: '--ds-text-muted' },
         ],
       }}

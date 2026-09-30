@@ -58,7 +58,7 @@ node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check [--config bauhaus.config.jso
 ```
 
 - `build` writes every output in `config.tokens.outputs` (css, scss, js, ts, json, tailwind), with themes.
-- `check` validates types, dangling aliases, cycles and naming. It asserts theme parity (the same role names in every theme) and warns when a component reads `palette.*` or `colors.*` directly. It also fails (exit 1) when outputs drift from the source.
+- `check` validates types, dangling aliases, cycles and naming. It asserts theme parity (the same role names in every theme) and warns when a component reads `palette.*` or `colors.*` directly. Two typography checks: `typography.fallback-generic` (error) fails when a font stack does not end in a CSS generic family (serif, sans-serif, monospace, cursive, system-ui and the rest); naming warnings fire when a text style aliases `typeface.*` directly (alias `font.<role>`), when a `font.*` role holds a raw stack, and when a family name appears in a `font.*` or text style token name (`font.inter`; name the role). Family names are correct in `typeface.*` only. `structure.mjs check` adds `misfile.typeface-at-call-site` for a component that reads `typeface.*` or `font.<role>`. It also fails (exit 1) when outputs drift from the source.
 - On failure: read the message, fix the source, rebuild. Do not edit generated outputs by hand.
 
 ## State roles
@@ -72,7 +72,8 @@ A token group has a page in the styleguide and in Storybook, to the page contrac
 ## Tier checks (run on every change)
 
 - No literal in the semantic tier.
-- No call site references a primitive token. For colour: no component or pattern reads `palette.*` or `colors.*`.
+- No call site references a primitive token. For colour: no component or pattern reads `palette.*` or `colors.*`. For type: no component reads `typeface.*` or `font.<role>`, only text styles.
+- Every font stack ends in a generic family.
 - Every theme defines the same role names.
 - No alias chain deeper than three hops.
 - Every semantic token has a `$description` that states intent.

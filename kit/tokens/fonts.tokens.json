@@ -1,0 +1,34 @@
+{
+  "font": {
+    "sans": {
+      "$type": "fontFamily",
+      "$description": "The sans role. Workhorse faces for UI, body text and headings.",
+      "$value": "{typeface.inter}"
+    },
+    "serif": {
+      "$type": "fontFamily",
+      "$description": "The serif role. Editorial and long-form reading faces.",
+      "$value": "{typeface.source-serif-4}"
+    },
+    "display": {
+      "$type": "fontFamily",
+      "$description": "The display role. High-impact faces for headlines and heroes. Large sizes only.",
+      "$value": "{typeface.fraunces}"
+    },
+    "mono": {
+      "$type": "fontFamily",
+      "$description": "The mono role. Fixed-width faces for code blocks, technical UI and developer docs.",
+      "$value": "{typeface.jetbrains-mono}"
+    },
+    "handwriting": {
+      "$type": "fontFamily",
+      "$description": "The handwriting role. Accent faces for personality. Short text only, used sparingly.",
+      "$value": "{typeface.caveat}"
+    },
+    "slab": {
+      "$type": "fontFamily",
+      "$description": "The slab role. Sturdy faces that bridge serif and display.",
+      "$value": "{typeface.bitter}"
+    }
+  }
+}

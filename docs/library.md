@@ -54,6 +54,18 @@ The layers are **foundation · component · pattern**. Tokens are not a layer: t
 
 `themes/` is itself a slice: one showcase and one guide for all themes, switched in place, never one page per theme. Each `themes/<name>/` holds only its tokens. Every theme file defines the same role names (Carbon: "Color token names and roles are the same across themes, only the assigned value will change"). `light` is the default and also renders as `:root`. Palette and colors never change per theme.
 
+### Typography: typefaces, fonts, text styles
+
+Typography follows the same chain as colour.
+
+| File | Holds | Tier | Who uses it |
+|---|---|---|---|
+| `foundations/typography/typefaces.tokens.json` | The named families the project owns, with full stacks: `typeface.inter = "Inter Variable", system-ui, sans-serif`. Every stack ends in a CSS generic family. | primitive | `fonts` only. Never a component. |
+| `foundations/typography/fonts.tokens.json` | The six roles: `font.sans`, `font.serif`, `font.display`, `font.mono`, `font.handwriting`, `font.slab`, each aliasing one typeface. | primitive (aliases) | Text styles. Swapping a family edits this file only. |
+| `foundations/typography/typography.tokens.json` | Text styles by purpose: `text.body.*`, `text.label.*`, `text.heading.*`, `text.display.*`, `text.code.*`, `text.accent.*`… each aliasing a `font.<role>` plus the size, weight and line-height scales. | semantic | Components. |
+
+A new design system gets all six roles, even if a project leaves some unused. `kit/typefaces/catalog.json` lists 45 verified open-licence families to choose from. `foundations/typography/fonts.css` self-hosts the chosen families; consumers import `./fonts.css` explicitly.
+
 "Primitive" means only two things: the **primitive-token** tier, and the `primitives/` folder of base building blocks.
 
 ## The slice

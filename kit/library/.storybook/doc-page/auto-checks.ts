@@ -90,6 +90,18 @@ const lineHeightMin: Check = () => {
   return null;
 };
 
+/** The CSS generic families. Kept in step with GENERIC_FAMILIES in scripts/lib/typography.mjs, which the package cannot import. */
+const GENERIC_FAMILIES = ['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui', 'ui-serif', 'ui-sans-serif', 'ui-monospace', 'ui-rounded', 'math', 'emoji', 'fangsong'];
+
+const lastFamily = (stack: string): string => (stack.split(',').at(-1) ?? '').trim().replace(/^["']|["']$/g, '').toLowerCase();
+
+const fallbackGeneric: Check = () => {
+  const stacks = Object.entries(themeTokens(THEMES[0] ?? 'light')).filter(([name]) => name.startsWith('--ds-typeface-'));
+  if (!stacks.length) return 'no --ds-typeface-* token found';
+  const bad = stacks.filter(([, stack]) => !GENERIC_FAMILIES.includes(lastFamily(stack))).map(([name, stack]) => `${name} ends in ${lastFamily(stack)}`);
+  return bad.length ? bad.join(' · ') : null;
+};
+
 const pairsAtLeast = (use: 'text' | 'non-text', min: number): Check =>
   eachTheme((theme) => {
     for (const pair of pairs.filter((p) => p.use === use)) {
@@ -99,9 +111,17 @@ const pairsAtLeast = (use: 'text' | 'non-text', min: number): Check =>
     return null;
   });
 
-const HUE_WORD = /(?:^|-)(?:red|blue|green|amber|teal|gray|grey|scarlet|orange|yellow|purple|pink)(?:-|$)/;
-
 const callSiteSources = (): [string, string][] => [...SOURCES].filter(([path]) => CALL_SITE.test(path));
+
+/** A typeface or a font role (not the size, weight and line-height scales) read outside a text style. */
+const TYPEFACE_READ = /var\(\s*--ds-(?:typeface-|font-(?!(?:size|weight|line-height|letter-spacing)\b))/;
+
+const typefaceAtCallSite: Check = () => {
+  const hit = callSiteSources().find(([, text]) => TYPEFACE_READ.test(text));
+  return hit ? `${hit[0]} reads a typeface or font role variable` : null;
+};
+
+const HUE_WORD = /(?:^|-)(?:red|blue|green|amber|teal|gray|grey|scarlet|orange|yellow|purple|pink)(?:-|$)/;
 
 const noPaletteAtCallSite: Check = () => {
   const hit = callSiteSources().find(([, text]) => /var\(\s*--ds-(?:palette|colors)-/.test(text));
@@ -215,6 +235,8 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
 
   'typography.body-min-size': bodyMinSize,
   'typography.line-height-min': lineHeightMin,
+  'typography.fallback-generic': fallbackGeneric,
+  'typography.typeface-at-call-site': typefaceAtCallSite,
 
   'shape.controls-use-control-radius': uses(`${BUTTON}.css`, '.ds-button', 'border-radius', '--ds-radius-control'),
 

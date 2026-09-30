@@ -246,6 +246,30 @@ test('check: the palette-at-call-site prefix comes from bauhaus.config.json', ()
   assert.match(hits[0].message, /--acme-colors-/);
 });
 
+test('check: misfile.typeface-at-call-site flags typeface and font role variables, not the font scales', () => {
+  const dir = tmpLibrary({
+    ...SLICE('primitives/box', 'box', { 'box.css': '.ds-box { font-family: var(--ds-typeface-inter); }' }),
+    ...SLICE('components/clickables/chip', 'chip', { 'chip.css': '.ds-chip { font-family: var( --ds-font-sans, sans-serif); }' }),
+    ...SLICE('components/clickables/pill', 'pill', { 'pill.tsx': "export const Pill = () => <i style={{ fontFamily: 'var(--ds-font-mono)' }} />;" }),
+    ...SLICE('components/clickables/tag', 'tag', { 'tag.css': '.ds-tag { font-family: var(--ds-text-label-family); font-size: var(--ds-font-size-sm); font-weight: var(--ds-font-weight-medium); line-height: var(--ds-font-line-height-tight); }' }),
+    ...SLICE('foundations/typography', 'typography', { 'typography.stories.tsx': "const a = 'var(--ds-typeface-inter)';", 'typography.tokens.json': '{}' }),
+    ...SLICE('patterns/empty', 'empty', { 'empty.css': '.ds-e { font-family: var(--ds-font-serif); }' }),
+  });
+  const hits = checkStructure(dir).filter((f) => f.id === 'misfile.typeface-at-call-site');
+  assert.deepEqual(hits.map((f) => f.path).sort(), ['components/clickables/chip/chip.css', 'components/clickables/pill/pill.tsx', 'patterns/empty/empty.css', 'primitives/box/box.css']);
+  assert.ok(hits.every((f) => f.severity === 'HIGH' && f.fix.includes('text style')));
+});
+
+test('check: the typeface-at-call-site prefix comes from bauhaus.config.json', () => {
+  const dir = tmpLibrary({
+    'bauhaus.config.json': JSON.stringify({ prefix: 'acme' }),
+    ...SLICE('primitives/box', 'box', { 'box.css': '.a { font-family: var(--ds-typeface-inter); font: var(--acme-font-serif); }' }),
+  });
+  const hits = checkStructure(dir).filter((f) => f.id === 'misfile.typeface-at-call-site');
+  assert.equal(hits.length, 1);
+  assert.match(hits[0].message, /--acme-font-/);
+});
+
 test('check: themes are one showcase and one guide at themes/, each theme folder holds only its tokens', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bauhaus-themes-'));
   const write = (rel, text = '') => { fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true }); fs.writeFileSync(path.join(root, rel), text); };

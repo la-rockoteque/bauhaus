@@ -5,31 +5,200 @@ import * as Stories from './typography.stories';
 
 # Typography
 
-The Showcase story holds the live type specimens, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+The Showcase story holds the live specimens of every typeface, font role and text style, the live rulebook and the accessibility coverage. This guide holds the reasoning and the reference prose.
 
 ## 1. Introduction
 
-**In plain words:** Typography is how words look: which typeface, how big, how heavy, how tall each line is. Four text roles cover the library, so a heading looks the same wherever it appears.
+**In plain words:** Typography is how words look: which typeface, how big, how heavy, how tall each line is. Typefaces are the fonts you own. Fonts are the jobs. Text styles are how a job looks at each size. A heading looks the same wherever it appears, and changing a family touches one line.
 
-**Precisely:** Foundation. Two typefaces (sans and mono), four sizes, three weights, two line heights, and four text roles built from them. It governs all text in the library.
+**Precisely:** Foundation. Typefaces (named families), fonts (the six roles that alias them) and text styles (the roles combined with the size, weight and line-height scales). It governs all text in the library.
 
-**Two tiers.** Tier 1 is the scale. Tier 2 is four roles, each with size, weight and line height: heading, body, caption and label. Label is for controls. The mono family serves identifiers, code and columns of figures, where each character must line up.
+**The three links.** Typography follows the same chain as colour: palette, colors, roles.
+
+1. **Typefaces** (`typefaces.tokens.json`). One token per family the project uses, named after the family: `typeface.inter`, `typeface.source-serif-4`. Each holds a full stack: the Fontsource family name, a system fallback, then a CSS generic family. This is the only place where a family name is correct. Components never read it.
+2. **Fonts** (`fonts.tokens.json`). Six roles alias a typeface: `font.sans`, `font.serif`, `font.display`, `font.mono`, `font.handwriting`, `font.slab`. This file is the swap point. To change a family, change one alias.
+3. **Text styles** (`typography.tokens.json`). A style is named by purpose: `text.body`, `text.heading`, `text.code`. Each has a family (an alias of a font role), a size, a weight and a line height. Components read text styles only.
+
+**Why this shape.** A family name in a component makes a rebrand a search and replace. A role name survives it. The chain keeps names of families in one file and names of jobs everywhere else. (typefaces.md rules 16 to 18.)
+
+### The six roles, and when to use each
+
+A design system built from scratch defines all six roles. A project may leave a role unused. An unused role ships no font file.
+
+- **Sans** is the default voice. It sets the interface, forms, labels and body text. Every project uses it. Pick a face with a high or medium x-height and distinct look-alike shapes (I, l, 1).
+- **Serif** sets long reading: articles, documentation prose, a literary tone. Use it when people read paragraphs, not when they scan.
+- **Display** sets a few big lines: a hero, a page title. Use it at large sizes only. It has irregular rhythm and low letter distinction at small sizes, so it never carries a sentence of body text.
+- **Mono** sets code, identifiers and columns of figures, where each character must line up. Use it for order numbers and API keys as well as code blocks.
+- **Handwriting** sets a short accent: a note beside a diagram, a signature, one callout. Use it once or twice per page. It never sets body text, UI labels, buttons, inputs or errors (`typography.handwriting-accent-only`).
+- **Slab** sits between serif and display. Use it for kickers, sturdy headings and callouts when the brand wants a solid, mechanical or editorial voice.
+
+Some text styles already read these roles: `text.prose` reads serif, `text.display` reads display, `text.code` reads mono, `text.accent` reads handwriting, `text.kicker` reads slab. The others read sans.
 
 ## 2. Usage
 
 ### When to use
 
 - Through the Text primitive for content, and through `text.label.*` for control labels.
+- Through a text style in any new stylesheet: `font-family: var(--ds-text-body-family)`, with the size, weight and line height of the same style.
 
 ### When not to use, and what to use instead
 
-- **For a display size above `text.heading`.** Propose a role. Do not enlarge a heading ad hoc.
+- **For a display size above `text.display`.** Propose a style. Do not enlarge a heading ad hoc.
+- **For a family in a component.** Read the text style. If none fits, add a text style. Do not read `font.*` or `typeface.*` (`misfile.typeface-at-call-site`).
 
 ### How
 
 - **Body.** Keep body at 16px or more and line height at 1.5 (WCAG 1.4.12 Text Spacing, AA: content must survive line height 1.5).
 - **Units.** Size text in a unit that follows the user setting (WCAG 1.4.4 Resize Text, AA).
 - **Structure.** Bold or size is not structure. Mark headings with heading elements (WCAG 1.3.1 Info and Relationships, A).
+
+### How to choose a family
+
+The catalog at `kit/typefaces/catalog.json` lists 45 open-licence families that are ready as Fontsource packages. Each entry holds the role, classification, axes, weights, subsets, tabular figures, x-height, best and worst uses, and pairings with a reason. The reference tables are at the end of this section.
+
+1. Pick by role, not by fashion. A family joins a project for a job in the list above.
+2. Check the x-height and the apertures (the openings of c, e, a and s). Open apertures stay readable at 12 to 16px.
+3. Check that I, l and 1, and O and 0, look different in the sans and the mono. Wrong reads cause errors in IDs and passwords.
+4. Require tabular figures for a sans that shows data, and for every mono. Turn them on with `font-variant-numeric: tabular-nums`.
+5. Check the script coverage. French needs `latin-ext` for its accents and the oe ligature. Every catalog family ships it.
+6. Prefer a variable font when you use three or more weights. One file replaces several.
+7. Do not pick a family because it "helps dyslexia". The evidence is mixed. Spacing, size and plain forms are the safe choices.
+
+Run `/bauhaus:foundation typography` to do this with a guide. It proposes the catalog default for each role plus two alternatives chosen by the tone of the project, and asks you to choose.
+
+### How to swap a family
+
+1. Find the new family in the catalog. Note its `package` and exact name.
+2. Add the package: `npm install @fontsource-variable/<id>`.
+3. In `typefaces.tokens.json`, add the typeface token with its stack: the family name as the package registers it (`"<Name> Variable"` for a variable package), the family's own fallback stack from the catalog, which follows its classification (Fraunces is a serif, so it falls back to serifs even in the display role), then a generic family.
+4. In `fonts.tokens.json`, change the alias of the role: `font.sans` now points to `{typeface.<new>}`.
+5. In `fonts.css`, change the import.
+6. Run the tokens build. No component and no text style changes.
+
+Then remove the old typeface token if no role reads it. `tokens.mjs check` fails when a stack does not end in a generic family (`typography.fallback-generic`). It warns when a text style aliases a typeface directly, when a font role holds a raw stack, and when a family name appears in a font role or text style name.
+
+### Pairing
+
+- Pair for contrast in structure and harmony in proportion: a sans with a serif, not two similar sans. Match x-height and width so the sizes feel equal.
+- Keep at most two text families plus mono on one surface (`typography.max-families`). A third needs a written reason.
+- When in doubt, use a superfamily. Source Sans, Source Serif and Source Code share proportions and metrics. So do IBM Plex Sans and Plex Mono, Noto Sans and Noto Serif, and Geist and Geist Mono.
+- Display and handwriting are accents, not a second or third body face. They count toward the limit when they carry a heading level.
+- Give each role one job on a page. Do not set the same text level in two roles.
+
+The `pairsWith` field of each catalog entry gives a reason for each pair.
+
+### Loading performance
+
+`fonts.css` loads the six default families from Fontsource packages. It is opt-in: the design system does not force-load six families. Import it from the package (`@acme/design-system/fonts.css`), and remove the imports of roles the project leaves unused.
+
+- **Self-host.** Serve the files from your own origin or package. A request to a third-party font CDN sends the visitor's IP address to that party. A Munich court found in 2022 that embedding Google Fonts from Google servers without consent breached the GDPR. That is one decision, not a universal rule. Ask your counsel. (`typography.self-hosted`)
+- **WOFF2 only.** All current browsers read it. Fontsource ships it.
+- **Subsets.** Each Fontsource package declares one `@font-face` per subset with a `unicode-range`. The browser downloads only the ranges the page uses. French and English text need `latin` and `latin-ext`.
+- **`font-display`.** Use `swap` for the body and interface faces, so text shows at once in the fallback. Use `optional` for non-critical faces (display, handwriting), so a slow font never swaps in late.
+- **Preload the critical face only.** That is the body face, the latin file, one weight or the variable file. Do not preload every file.
+- **Import only the axes you use.** The default variable file carries the `wght` axis. Load `opsz`, `wdth` or `SOFT` from the package axis files when a style needs them.
+
+### The metric-override fallback
+
+A web font that swaps in shifts the layout when it is wider or taller than the fallback. Reduce that shift with a local fallback face that has the same metrics:
+
+```css
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  size-adjust: 107%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+```
+
+Then put the fallback face after the web face in the stack: `"Inter Variable", "Inter Fallback", system-ui, …, sans-serif`. Compute the four values for each family with a tool. Do not copy them from another family. The numbers above only show the shape. (MDN `size-adjust`; Chrome for Developers, Improved font fallbacks.)
+
+### Accessibility
+
+- Text in every role must survive user spacing overrides: line height 1.5, paragraph spacing 2, letter spacing 0.12, word spacing 0.16 (as multiples of the font size). Do not use fixed-height text boxes. (WCAG 1.4.12, AA)
+- Size text in `rem` so it scales to 200% with no loss. (WCAG 1.4.4, AA)
+- Never set long text in a display or handwriting face. Limit them to a few words at large sizes.
+
+### The catalog, by role
+
+Reference data from `kit/typefaces/catalog.json`, checked on 2026-09-30. The default of each role is marked. The catalog also holds axes, weights, subsets, pairings and sources.
+
+#### Sans-serif (16)
+
+| Family | Classification | Best for |
+|---|---|---|
+| Inter (default) | neo-grotesque | UI, dashboards, data tables, forms |
+| Roboto Flex | neo-grotesque (multi-axis) | apps that need width or optical-size control, dense UI |
+| IBM Plex Sans | grotesque with humanist details | enterprise and technical products, docs |
+| Source Sans 3 | humanist sans | long UI text, documentation, forms |
+| Noto Sans | humanist sans | multilingual products, wide script coverage, fallback for missing glyphs |
+| Open Sans | humanist sans | general body and UI text, legacy-compatible layouts |
+| Work Sans | grotesque | headings and UI with a wide weight range |
+| DM Sans | geometric sans | friendly product UI and marketing pages |
+| Manrope | modern geometric sans | SaaS UI, headings, dashboards |
+| Plus Jakarta Sans | geometric sans | fintech and marketing UI, headings |
+| Figtree | friendly geometric sans | approachable apps, onboarding, marketing |
+| Public Sans | neo-grotesque | public-service, forms and accessible UI |
+| Nunito Sans | humanist sans | friendly UI, wide width and optical-size control |
+| Atkinson Hyperlegible Next | legibility-focused grotesque | forms, low-vision-friendly UI, places where similar letters must not be confused |
+| Hanken Grotesk | neo-grotesque | clean UI and marketing pages, wide weight range |
+| Geist | Swiss-style neo-grotesque | developer tools, dashboards, docs |
+
+#### Serif (9)
+
+| Family | Classification | Best for |
+|---|---|---|
+| Source Serif 4 (default) | transitional serif with optical size | long-form reading, documentation, articles |
+| Literata | contemporary text serif (e-reading) | books, long articles, reading apps |
+| Newsreader | transitional editorial serif with optical size | news, magazines, essays; optical sizes suit both text and headlines |
+| Lora | contemporary calligraphic serif | blogs, editorial body, quotes |
+| Merriweather | sturdy screen serif | on-screen reading at modest sizes, dense articles |
+| EB Garamond | old-style serif (Garamond revival) | literary and cultural long-form on large screens or print |
+| Crimson Pro | old-style serif | books, essays, refined body at 18 px and up |
+| Libre Baskerville | transitional serif (Baskerville, web-tuned) | body text at screen sizes, formal tone |
+| Noto Serif | neutral transitional serif | multilingual reading, documentation |
+
+#### Display (9)
+
+| Family | Classification | Best for |
+|---|---|---|
+| Fraunces (default) | soft old-style display serif (SOFT and WONK axes) | hero headlines with warmth and personality |
+| Playfair Display | high-contrast transitional (Didone-leaning) serif | elegant headlines, magazine and luxury tones |
+| Bricolage Grotesque | quirky grotesque with optical size and width | expressive headlines, brand-forward pages |
+| Unbounded | wide geometric sans | tech and web3-style hero titles, short headings |
+| Big Shoulders | condensed grotesque with optical size | sports, posters, tall narrow hero titles |
+| Abril Fatface | fat-face Didone | single-word headlines, posters |
+| DM Serif Display | high-contrast transitional display serif | elegant headlines, editorial hero |
+| Anton | condensed heavy gothic | impact headlines, banners, short calls |
+| Space Grotesk | quirky geometric grotesque | tech-brand headlines, short subheads |
+
+#### Monospace (4)
+
+| Family | Classification | Best for |
+|---|---|---|
+| JetBrains Mono (default) | developer monospace | code blocks, terminals, technical UI |
+| IBM Plex Mono | industrial monospace | code, IDs, data values; matches IBM Plex Sans |
+| Source Code Pro | humanist monospace | code blocks and docs; matches Source Sans |
+| Geist Mono | neo-grotesque monospace | code and technical UI; matches Geist |
+
+#### Handwriting (3)
+
+| Family | Classification | Best for |
+|---|---|---|
+| Caveat (default) | casual brush handwriting | short accents, annotations, signatures |
+| Kalam | casual marker handwriting | callouts, notes, quotes |
+| Patrick Hand | neat printed handwriting | short labels on playful surfaces, sticky-note styles |
+
+#### Slab serif (4)
+
+| Family | Classification | Best for |
+|---|---|---|
+| Bitter (default) | contemporary text slab serif | on-screen body text with a sturdy voice, headings |
+| Roboto Slab | geometric slab serif | headings, callouts, technical content |
+| Zilla Slab | humanist slab serif (Mozilla) | headings and short text with warmth |
+| Aleo | humanist slab serif | editorial headings and body with a soft slab voice |
 
 ## 3. Why the states look as they do
 
@@ -40,3 +209,9 @@ Type has no interaction state. Users may raise text size to 200% or raise text s
 - **Do not add a new font size for one screen.** The scale gains a step nobody can reuse. (Closed roles; `typography.roles-closed`)
 - **Do not set body text at 12px.** It is hard to read at arm's length. (Project decision, 16px floor; `typography.body-min-size`)
 - **Do not use a line height of 1.2 on paragraphs.** Lines crowd, and the 1.5 test fails. (WCAG 1.4.12, AA; `typography.line-height-min`)
+- **Do not set body text, labels or errors in the handwriting face.** Its rhythm is irregular and its letters are hard to tell apart. (typefaces.md rules 29 and 31; `typography.handwriting-accent-only`)
+- **Do not use more than two text families plus mono on one surface.** The page gets heavier and less coherent. (typefaces.md rule 12; `typography.max-families`)
+- **Do not end a font stack in a named family.** When nothing loads, the browser picks its own default. End every stack in a generic family. (CSS Fonts 4; `typography.fallback-generic`)
+- **Do not read a typeface or a font role in a component.** A component that names `font.sans` breaks when the role is swapped or a theme changes. Read the text style. (typefaces.md rule 18; `typography.typeface-at-call-site`, `misfile.typeface-at-call-site`)
+- **Do not name a font role or a text style after a family.** `font.inter` is wrong. `font.sans` is right. Family names live in `typeface.*` only.
+- **Do not load font files from a third-party CDN.** (typefaces.md rule 26; `typography.self-hosted`)

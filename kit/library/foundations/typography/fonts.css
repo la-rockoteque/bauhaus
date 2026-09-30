@@ -1,0 +1,12 @@
+/* Loads the six catalog default typefaces (see typefaces.tokens.json). Consumers opt in:
+   import '@acme/design-system/fonts.css'. The design system does not force-load six families.
+   Each package registers one @font-face per subset with a unicode-range, so the browser fetches
+   only the latin and latin-ext files that French and English text use. font-display is swap.
+   Variable files carry the weights 400, 500 and 600 that the text styles use.
+   To swap a family, change the import and the stack in typefaces.tokens.json. */
+@import '@fontsource-variable/inter/wght.css';
+@import '@fontsource-variable/source-serif-4/wght.css';
+@import '@fontsource-variable/fraunces/wght.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+@import '@fontsource-variable/caveat/wght.css';
+@import '@fontsource-variable/bitter/wght.css';

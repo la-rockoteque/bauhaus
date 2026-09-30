@@ -14,7 +14,7 @@ const cssVar = (role: string): string => `--ds-${role.replace(/\./g, '-')}`;
 const dotted = (text: string): string => text.replace(/var\((.+)\)/, '$1').replace('--ds-', '').replace('-', '.');
 const title = (text: string): string => text.charAt(0).toUpperCase() + text.slice(1);
 
-function Group({ name, children }: { name: string; children: ReactNode }) {
+export function Group({ name, children }: { name: string; children: ReactNode }) {
   return (
     <div className="spec-group">
       <Text as="h3" className="doc-h3">
@@ -120,7 +120,7 @@ export function ContrastPairs() {
   );
 }
 
-// ---------- spacing, shape, type ----------
+// ---------- spacing, shape ----------
 
 const STEPS = Array.from({ length: 13 }, (_, n) => n);
 const SEMANTIC_GAPS = ['inset', 'stack', 'inline'].flatMap((kind) => ['xs', 'sm', 'md', 'lg', 'xl'].map((size) => `${kind}-${size}`));
@@ -156,39 +156,6 @@ export function RadiusTiles() {
           <span className="spec-radius" style={{ borderRadius: `var(--ds-radius-${step})` }} />
           <code>{`radius.${step}`}</code>
           <code className="doc-muted">{resolve('light', `--ds-radius-${step}`)}</code>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-const ROLE_SAMPLE = 'Your order ships on Friday.';
-
-export function TypeScale() {
-  return (
-    <div className="spec-rows">
-      {['heading', 'body', 'caption', 'label'].map((role) => (
-        <div key={role} className="spec-type">
-          <div className="spec-type-spec">
-            <code>{`text.${role}`}</code>
-            <code className="doc-muted">{`${resolve('light', `--ds-text-${role}-size`)} · ${resolve('light', `--ds-text-${role}-weight`)} · ${resolve('light', `--ds-text-${role}-line-height`)}`}</code>
-          </div>
-          <p
-            className="spec-type-sample"
-            style={{ fontSize: `var(--ds-text-${role}-size)`, fontWeight: `var(--ds-text-${role}-weight)`, lineHeight: `var(--ds-text-${role}-line-height)` }}
-          >
-            {ROLE_SAMPLE}
-          </p>
-        </div>
-      ))}
-      {['sans', 'mono'].map((family) => (
-        <div key={family} className="spec-type">
-          <div className="spec-type-spec">
-            <code>{`font.family.${family}`}</code>
-          </div>
-          <p className="spec-type-sample" style={{ fontFamily: `var(--ds-font-family-${family})` }}>
-            {family === 'sans' ? ROLE_SAMPLE : 'ORD-20418  0O 1lI  {"qty": 12}'}
-          </p>
         </div>
       ))}
     </div>

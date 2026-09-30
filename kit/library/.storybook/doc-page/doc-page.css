@@ -11,7 +11,7 @@
   --doc-card-min: calc(var(--ds-space-12) * 5);
   box-sizing: border-box;
   color: var(--ds-text-default);
-  font-family: var(--ds-font-family-sans);
+  font-family: var(--ds-text-body-family);
 }
 
 .doc {
@@ -22,7 +22,7 @@
 
 .doc code,
 .doc-guide-page code {
-  font-family: var(--ds-font-family-mono);
+  font-family: var(--ds-text-code-family);
   font-size: var(--ds-font-size-sm);
 }
 
@@ -87,7 +87,7 @@
 
 .doc-num {
   color: var(--ds-text-muted);
-  font-family: var(--ds-font-family-mono);
+  font-family: var(--ds-text-code-family);
   font-size: var(--ds-font-size-md);
   font-weight: var(--ds-font-weight-medium);
 }
@@ -170,7 +170,7 @@
 }
 
 .doc-table-rows td {
-  font-family: var(--ds-font-family-mono);
+  font-family: var(--ds-text-code-family);
 }
 
 .doc-table-api td {
@@ -815,6 +815,7 @@
 }
 
 .doc-guide-page code {
+  color: var(--ds-text-default);
   padding: 0 var(--ds-space-1);
   border-radius: var(--ds-radius-sm);
   background: var(--ds-surface-default);
@@ -831,4 +832,71 @@
   padding-inline-start: var(--ds-space-4);
   border-inline-start: var(--ds-space-1) solid var(--ds-border-strong);
   color: var(--ds-text-muted);
+}
+
+/* Typography specimens: typefaces, fonts, text styles */
+
+.spec-faces {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--doc-card-min) * 2), 1fr));
+  gap: var(--ds-space-3);
+}
+
+.spec-face {
+  display: grid;
+  align-content: start;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-4);
+  background: var(--ds-surface-default);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+}
+
+.spec-face-head {
+  display: grid;
+  gap: var(--ds-space-1);
+  font-size: var(--ds-font-size-xs);
+}
+
+.spec-face p {
+  margin: 0;
+}
+
+.spec-face-pangram {
+  font-size: var(--ds-font-size-xl);
+  line-height: var(--ds-font-line-height-tight);
+}
+
+.spec-face-french,
+.spec-face-confusable,
+.spec-face-figures,
+.spec-face-ramp {
+  font-size: var(--ds-font-size-md);
+}
+
+.spec-face-ramp {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-4);
+}
+
+.spec-face-figures {
+  display: grid;
+  gap: var(--ds-space-1);
+}
+
+.spec-face-none {
+  font-size: var(--ds-font-size-xs);
+}
+
+.spec-role-row {
+  display: grid;
+  grid-template-columns: calc(var(--ds-space-12) * 3) minmax(0, 1fr);
+  gap: var(--ds-space-1) var(--ds-space-4);
+  align-items: baseline;
+  font-size: var(--ds-font-size-sm);
+}
+
+.spec-role-row .doc-muted {
+  grid-column: 2;
 }

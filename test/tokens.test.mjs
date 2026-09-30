@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { buildOutputs, checkProject, lintNames, main } from '../scripts/tokens.mjs';
+import { buildOutputs, checkProject, lintNames, lintTypography, main, typographyErrors } from '../scripts/tokens.mjs';
+import { flatten, resolveTokens } from '../scripts/lib/dtcg.mjs';
 
 const PRIMITIVES = {
   color: { $type: 'color', gray: { 100: { $value: '#f3f4f6' }, 600: { $value: '#4b5563' }, 900: { $value: '#111827' } }, white: { $value: '#ffffff' } },
@@ -289,4 +290,65 @@ test('no defaultTheme: themes stay overrides of the base (backward compatible)',
   const { root, config } = siblingProject({ defaultTheme: null });
   const errors = buildOutputs(config, root).errors;
   assert.ok(errors.length && errors.every((e) => /overrides unknown token/.test(e)), errors.join('\n'));
+});
+
+// ---------- typography: typefaces -> fonts -> text styles ----------
+
+const STACK = ['Inter Variable', 'system-ui', 'sans-serif'];
+const chain = (over = {}) => resolveTokens(flatten({
+  typeface: { $type: 'fontFamily', inter: { $value: STACK } },
+  font: { $type: 'fontFamily', sans: { $value: '{typeface.inter}' } },
+  text: { body: { family: { $type: 'fontFamily', $value: '{font.sans}' } } },
+  ...over,
+})).tokens;
+
+test('typographyErrors: a clean typeface, font and text style chain has no error', () => {
+  assert.deepEqual(typographyErrors(chain()), []);
+});
+
+test('typographyErrors: typography.fallback-generic flags a stack that does not end in a generic family', () => {
+  const tokens = chain({ typeface: { $type: 'fontFamily', inter: { $value: ['Inter Variable', 'Arial'] }, mono: { $value: 'Menlo, monospace' }, bare: { $value: 'Inter' } } });
+  assert.deepEqual(typographyErrors(tokens).map((e) => e.split(':')[0]), ['typography.fallback-generic typeface.inter', 'typography.fallback-generic typeface.bare']);
+});
+
+test('typographyErrors: every CSS generic family ends a stack', () => {
+  for (const generic of ['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui', 'ui-serif', 'ui-sans-serif', 'ui-monospace', 'ui-rounded', 'math', 'emoji', 'fangsong']) {
+    assert.deepEqual(typographyErrors(chain({ typeface: { $type: 'fontFamily', inter: { $value: ['Inter', generic] } } })), [], generic);
+  }
+});
+
+test('typographyErrors: an alias is not checked twice', () => {
+  const tokens = chain({ typeface: { $type: 'fontFamily', inter: { $value: ['Inter'] } } });
+  assert.equal(typographyErrors(tokens).length, 1);
+});
+
+test('lintTypography: a text style that aliases a typeface directly warns', () => {
+  const tokens = chain({ text: { body: { family: { $type: 'fontFamily', $value: '{typeface.inter}' } } } });
+  assert.deepEqual(lintTypography(tokens), ['text.body.family: text style aliases typeface.inter directly; alias font.<role> instead']);
+});
+
+test('lintTypography: a font role that holds a raw stack warns', () => {
+  const tokens = chain({ font: { $type: 'fontFamily', sans: { $value: STACK } } });
+  assert.deepEqual(lintTypography(tokens), ['font.sans: font role holds a raw stack; alias a typeface.* token instead']);
+});
+
+test('lintTypography: a family name in a font or text style token name warns, in typeface it does not', () => {
+  const tokens = chain({
+    font: { $type: 'fontFamily', inter: { $value: '{typeface.inter}' } },
+    text: { 'source-serif-4': { family: { $type: 'fontFamily', $value: '{font.inter}' } } },
+  });
+  assert.deepEqual(lintTypography(tokens), [
+    'font.inter: name contains the family "inter"; name the role (sans, serif, display, mono, handwriting, slab)',
+    'text.source-serif-4.family: name contains the family "source-serif-4"; name the style by purpose',
+  ]);
+});
+
+test('checkProject reports the typography error and warnings', () => {
+  const { root, config, write } = siblingProject();
+  write('tokens/typefaces.tokens.json', { typeface: { $type: 'fontFamily', inter: { $value: ['Inter'] } } });
+  write('tokens/fonts.tokens.json', { font: { $type: 'fontFamily', sans: { $value: '{typeface.inter}' } } });
+  write('tokens/typography.tokens.json', { text: { body: { family: { $type: 'fontFamily', $value: '{typeface.inter}' } } } });
+  const { errors, warnings } = checkProject(config, root);
+  assert.deepEqual(errors, ['typography.fallback-generic typeface.inter: the stack ends in "Inter"; end it with a generic family (serif, sans-serif, monospace, cursive, fantasy, system-ui, ui-serif, ui-sans-serif, ui-monospace, ui-rounded, math, emoji, fangsong)']);
+  assert.ok(warnings.includes('text.body.family: text style aliases typeface.inter directly; alias font.<role> instead'));
 });

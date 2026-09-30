@@ -16,6 +16,7 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { cleanSource } from './extract.mjs';
 import { UsageError, readJson, requireDir, run, runIfMain, table, writeArtifact } from './lib/analysis.mjs';
+import { FONT_GROUP, FONT_SCALES, TYPEFACE_GROUP } from './lib/typography.mjs';
 
 const USAGE_TEXT = `Usage: structure.mjs check <package-dir> [--json]
        structure.mjs place --components <05-components.json> [--out .bauhaus/analysis/placement.json]
@@ -166,13 +167,27 @@ function prefixOf(root) {
   }
 }
 
-/** Components read roles only: a palette or colors variable in a component, primitive or pattern is a misfile. */
-function paletteChecks({ root, files }) {
-  const use = new RegExp(`var\\(\\s*(--${prefixOf(root)}-(?:palette|colors)-)`);
+/** One finding per call-site file whose text (comments stripped) matches `use`; `hit[1]` is the variable prefix found. */
+function callSiteReads({ root, files }, use, id, describe, fix) {
   return [...files].filter((f) => CALL_SITE.test(f)).flatMap((f) => {
     const hit = use.exec(fs.readFileSync(path.join(root, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, ''));
-    return hit ? [finding('misfile.palette-at-call-site', 'HIGH', f, `Reads ${hit[1]}…, a palette or colors variable; components use roles only.`, 'Use a role (var(--ds-text-default), var(--ds-action-primary)). If no role fits, add a role to every theme; do not read the palette.')] : [];
+    return hit ? [finding(id, 'HIGH', f, describe(hit[1]), fix)] : [];
   });
+}
+
+/** Components read roles only: a palette or colors variable in a component, primitive or pattern is a misfile. */
+function paletteChecks(ctx) {
+  const use = new RegExp(`var\\(\\s*(--${prefixOf(ctx.root)}-(?:palette|colors)-)`);
+  return callSiteReads(ctx, use, 'misfile.palette-at-call-site', (v) => `Reads ${v}…, a palette or colors variable; components use roles only.`,
+    'Use a role (var(--ds-text-default), var(--ds-action-primary)). If no role fits, add a role to every theme; do not read the palette.');
+}
+
+/** Components read text styles only: a typeface or font role variable is a misfile. The font scales (size, weight, line height) are not roles. */
+function typefaceChecks(ctx) {
+  const prefix = prefixOf(ctx.root);
+  const use = new RegExp(`var\\(\\s*(--${prefix}-(?:${TYPEFACE_GROUP}-|${FONT_GROUP}-(?!(?:${FONT_SCALES.join('|')})\\b)))`);
+  return callSiteReads(ctx, use, 'misfile.typeface-at-call-site', (v) => `Reads ${v}…, a typeface or font role variable; components use text styles only.`,
+    `Use a text style (var(--${prefix}-text-body-family), var(--${prefix}-text-code-family)). If no style fits, add a text style; do not read the typeface or the font role.`);
 }
 
 // ---------- Storybook dogfoods the design system ----------
@@ -241,7 +256,7 @@ function importChecks({ root, files }) {
 export function checkStructure(dir) {
   const tree = listTree(dir);
   const ctx = { root: dir, dirs: tree.dirs, files: new Set(tree.files) };
-  const all = [folderChecks, sliceChecks, storyChecks, patternStyleChecks, paletteChecks, storybookChecks, importChecks].flatMap((c) => c(ctx));
+  const all = [folderChecks, sliceChecks, storyChecks, patternStyleChecks, paletteChecks, typefaceChecks, storybookChecks, importChecks].flatMap((c) => c(ctx));
   return all.sort((a, b) => RANK[a.severity] - RANK[b.severity] || a.path.localeCompare(b.path) || a.id.localeCompare(b.id));
 }
 

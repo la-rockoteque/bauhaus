@@ -53,10 +53,19 @@ For each foundation:
 5. Colour: run `node ${CLAUDE_PLUGIN_ROOT}/scripts/contrast.mjs <fg> <bg>` for each text and border pair.
 6. **Checkpoint B.n** after each foundation. One line: artifacts written, checks passed.
 
+#### Typography: the typeface step
+When the foundation is typography, add this step to the steps above.
+1. Load `${CLAUDE_PLUGIN_ROOT}/knowledge/foundations/typefaces.md` and `${CLAUDE_PLUGIN_ROOT}/kit/typefaces/catalog.json`. Typography runs typefaces, fonts, text styles, like colour runs palette, colors, roles. A design system built from scratch defines all six roles: sans, serif, display, mono, handwriting, slab. A project may leave one unused; say so and skip it.
+2. For each role, propose the catalog `essentialDefault` (inter, source-serif-4, fraunces, jetbrains-mono, caveat, bitter) plus two alternatives of the same role, chosen by the tone of the project (read `bestFor`, `avoidFor`, `pairsWith`). Put the recommended option first and say why.
+3. Ask with `AskUserQuestion`: one question per role, or one call of up to 4 questions. Wait for the answers.
+4. Write `typefaces.tokens.json` (one `typeface.<family-id>` token per chosen family: the exact Fontsource `font-family` name, then the family's own `fallback` stack from the catalog, which follows its classification (a serif display face falls back to serifs), ending in a generic family), `fonts.tokens.json` (`font.<role>` aliasing `{typeface.<id>}`) and the text styles in `typography.tokens.json` (`text.<style>.family` aliasing `{font.<role>}`). Only `typeface.*` is named after a family.
+5. Add the Fontsource packages from the catalog `package` field to `package.json` dependencies, and write `fonts.css` with one `@import '<package>/wght.css'` per family. Consumers opt in by importing it; the design system does not force-load six families.
+6. Run `tokens.mjs build` and `check`. `check` fails when a stack does not end in a generic family (`typography.fallback-generic`) and warns on a text style that aliases a typeface directly.
+
 ### c. Tokens, tiered
 Tokens are the storage of the accepted foundations, not a layer. This stage writes them down.
-1. Primitive token tier: raw scales from the accepted foundations. No intent in the name. Colour: `palette.tokens.json` (named hues, grades 100 to 900) and `colors.tokens.json` (primary, secondary, error, success, warning, info, neutral, aliasing the palette).
-2. Semantic tier: intents that alias primitive tokens (`space.inset.md`). Colour: the roles in `themes/light` (default) and `themes/dark` (`text.muted`, `surface.raised`, `action.primary`). Call sites use only this tier. Both themes define the same roles.
+1. Primitive token tier: raw scales from the accepted foundations. No intent in the name. Colour: `palette.tokens.json` (named hues, grades 100 to 900) and `colors.tokens.json` (primary, secondary, error, success, warning, info, neutral, aliasing the palette). Typography: `typefaces.tokens.json` (`typeface.<family>`, full stacks) and `fonts.tokens.json` (`font.<role>` aliasing a typeface).
+2. Semantic tier: intents that alias primitive tokens (`space.inset.md`). Colour: the roles in `themes/light` (default) and `themes/dark` (`text.muted`, `surface.raised`, `action.primary`). Call sites use only this tier. Both themes define the same roles. Typography: the text styles in `typography.tokens.json` (`text.body.family` aliasing `{font.sans}`, plus size, weight, line height).
 3. Component tier: only when a component needs one scoped decision. Optional.
 4. Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs build` and `... check`. Both must pass.
 5. **Checkpoint C.** Show the tier counts, the theme parity result and any alias chain deeper than three.

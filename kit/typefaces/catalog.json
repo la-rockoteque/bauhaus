@@ -5,7 +5,8 @@
     "tabularFigures is true when the Fontsource latin woff2 has a tnum GSUB feature or gives all ten digits one advance width (checked with fontTools). It describes the file Fontsource ships.",
     "xHeight is an editorial judgement, not a measurement.",
     "axes lists the main axes from api.fontsource.org/v1/variable/<id>. The default latin-wght file carries wght only; load other axes from the package axis files.",
-    "variable is false for families with only static files; package is then @fontsource/<id>."
+    "variable is false for families with only static files; package is then @fontsource/<id>.",
+    "Each family's `fallback` follows its own classification, not its role: a serif display face (Fraunces, Playfair Display) falls back to serifs, so a failed web font keeps the letter shapes close."
   ],
   "roles": {
     "sans": {
@@ -13,7 +14,7 @@
       "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
       "essentialDefault": "inter",
       "tokens": [
-        "font.family.sans"
+        "font.sans"
       ]
     },
     "serif": {
@@ -21,7 +22,7 @@
       "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
       "essentialDefault": "source-serif-4",
       "tokens": [
-        "font.family.serif"
+        "font.serif"
       ]
     },
     "display": {
@@ -29,7 +30,7 @@
       "fallback": "system-ui, -apple-system, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
       "essentialDefault": "fraunces",
       "tokens": [
-        "font.family.display"
+        "font.display"
       ]
     },
     "mono": {
@@ -37,7 +38,7 @@
       "fallback": "ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace",
       "essentialDefault": "jetbrains-mono",
       "tokens": [
-        "font.family.mono"
+        "font.mono"
       ]
     },
     "handwriting": {
@@ -45,7 +46,7 @@
       "fallback": "\"Segoe Print\", \"Bradley Hand\", \"Comic Sans MS\", cursive",
       "essentialDefault": "caveat",
       "tokens": [
-        "font.family.handwriting"
+        "font.handwriting"
       ]
     },
     "slab": {
@@ -53,7 +54,7 @@
       "fallback": "Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif",
       "essentialDefault": "bitter",
       "tokens": [
-        "font.family.slab"
+        "font.slab"
       ]
     }
   },
@@ -115,7 +116,8 @@
         "https://api.fontsource.org/v1/fonts/inter",
         "https://fontsource.org/fonts/inter",
         "https://fonts.google.com/specimen/Inter"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "roboto-flex",
@@ -173,7 +175,8 @@
         "https://api.fontsource.org/v1/fonts/roboto-flex",
         "https://fontsource.org/fonts/roboto-flex",
         "https://fonts.google.com/specimen/Roboto+Flex"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "ibm-plex-sans",
@@ -225,7 +228,8 @@
         "https://api.fontsource.org/v1/fonts/ibm-plex-sans",
         "https://fontsource.org/fonts/ibm-plex-sans",
         "https://fonts.google.com/specimen/IBM+Plex+Sans"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "source-sans-3",
@@ -278,7 +282,8 @@
         "https://api.fontsource.org/v1/fonts/source-sans-3",
         "https://fontsource.org/fonts/source-sans-3",
         "https://fonts.google.com/specimen/Source+Sans+3"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "noto-sans",
@@ -334,7 +339,8 @@
         "https://api.fontsource.org/v1/fonts/noto-sans",
         "https://fontsource.org/fonts/noto-sans",
         "https://fonts.google.com/specimen/Noto+Sans"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "open-sans",
@@ -389,7 +395,8 @@
         "https://api.fontsource.org/v1/fonts/open-sans",
         "https://fontsource.org/fonts/open-sans",
         "https://fonts.google.com/specimen/Open+Sans"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "work-sans",
@@ -439,7 +446,8 @@
         "https://api.fontsource.org/v1/fonts/work-sans",
         "https://fontsource.org/fonts/work-sans",
         "https://fonts.google.com/specimen/Work+Sans"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "dm-sans",
@@ -489,7 +497,8 @@
         "https://api.fontsource.org/v1/fonts/dm-sans",
         "https://fontsource.org/fonts/dm-sans",
         "https://fonts.google.com/specimen/DM+Sans"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "manrope",
@@ -540,7 +549,8 @@
         "https://api.fontsource.org/v1/fonts/manrope",
         "https://fontsource.org/fonts/manrope",
         "https://fonts.google.com/specimen/Manrope"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "plus-jakarta-sans",
@@ -589,7 +599,8 @@
         "https://api.fontsource.org/v1/fonts/plus-jakarta-sans",
         "https://fontsource.org/fonts/plus-jakarta-sans",
         "https://fonts.google.com/specimen/Plus+Jakarta+Sans"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "figtree",
@@ -636,7 +647,8 @@
         "https://api.fontsource.org/v1/fonts/figtree",
         "https://fontsource.org/fonts/figtree",
         "https://fonts.google.com/specimen/Figtree"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "public-sans",
@@ -686,7 +698,8 @@
         "https://api.fontsource.org/v1/fonts/public-sans",
         "https://fontsource.org/fonts/public-sans",
         "https://fonts.google.com/specimen/Public+Sans"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "nunito-sans",
@@ -739,7 +752,8 @@
         "https://api.fontsource.org/v1/fonts/nunito-sans",
         "https://fontsource.org/fonts/nunito-sans",
         "https://fonts.google.com/specimen/Nunito+Sans"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "atkinson-hyperlegible-next",
@@ -786,7 +800,8 @@
         "https://api.fontsource.org/v1/fonts/atkinson-hyperlegible-next",
         "https://fontsource.org/fonts/atkinson-hyperlegible-next",
         "https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "hanken-grotesk",
@@ -837,7 +852,8 @@
         "https://api.fontsource.org/v1/fonts/hanken-grotesk",
         "https://fontsource.org/fonts/hanken-grotesk",
         "https://fonts.google.com/specimen/Hanken+Grotesk"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "geist",
@@ -889,7 +905,8 @@
         "https://api.fontsource.org/v1/fonts/geist",
         "https://fontsource.org/fonts/geist",
         "https://fonts.google.com/specimen/Geist"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "source-serif-4",
@@ -942,7 +959,8 @@
         "https://api.fontsource.org/v1/fonts/source-serif-4",
         "https://fontsource.org/fonts/source-serif-4",
         "https://fonts.google.com/specimen/Source+Serif+4"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "literata",
@@ -996,7 +1014,8 @@
         "https://api.fontsource.org/v1/fonts/literata",
         "https://fontsource.org/fonts/literata",
         "https://fonts.google.com/specimen/Literata"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "newsreader",
@@ -1045,7 +1064,8 @@
         "https://api.fontsource.org/v1/fonts/newsreader",
         "https://fontsource.org/fonts/newsreader",
         "https://fonts.google.com/specimen/Newsreader"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "lora",
@@ -1094,7 +1114,8 @@
         "https://api.fontsource.org/v1/fonts/lora",
         "https://fontsource.org/fonts/lora",
         "https://fonts.google.com/specimen/Lora"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "merriweather",
@@ -1146,7 +1167,8 @@
         "https://api.fontsource.org/v1/fonts/merriweather",
         "https://fontsource.org/fonts/merriweather",
         "https://fonts.google.com/specimen/Merriweather"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "eb-garamond",
@@ -1196,7 +1218,8 @@
         "https://api.fontsource.org/v1/fonts/eb-garamond",
         "https://fontsource.org/fonts/eb-garamond",
         "https://fonts.google.com/specimen/EB+Garamond"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "crimson-pro",
@@ -1245,7 +1268,8 @@
         "https://api.fontsource.org/v1/fonts/crimson-pro",
         "https://fontsource.org/fonts/crimson-pro",
         "https://fonts.google.com/specimen/Crimson+Pro"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "libre-baskerville",
@@ -1289,7 +1313,8 @@
         "https://api.fontsource.org/v1/fonts/libre-baskerville",
         "https://fontsource.org/fonts/libre-baskerville",
         "https://fonts.google.com/specimen/Libre+Baskerville"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "noto-serif",
@@ -1345,7 +1370,8 @@
         "https://api.fontsource.org/v1/fonts/noto-serif",
         "https://fontsource.org/fonts/noto-serif",
         "https://fonts.google.com/specimen/Noto+Serif"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "fraunces",
@@ -1398,7 +1424,8 @@
         "https://api.fontsource.org/v1/fonts/fraunces",
         "https://fontsource.org/fonts/fraunces",
         "https://fonts.google.com/specimen/Fraunces"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "playfair-display",
@@ -1446,7 +1473,8 @@
         "https://api.fontsource.org/v1/fonts/playfair-display",
         "https://fontsource.org/fonts/playfair-display",
         "https://fonts.google.com/specimen/Playfair+Display"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "bricolage-grotesque",
@@ -1496,7 +1524,8 @@
         "https://api.fontsource.org/v1/fonts/bricolage-grotesque",
         "https://fontsource.org/fonts/bricolage-grotesque",
         "https://fonts.google.com/specimen/Bricolage+Grotesque"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "unbounded",
@@ -1547,7 +1576,8 @@
         "https://api.fontsource.org/v1/fonts/unbounded",
         "https://fontsource.org/fonts/unbounded",
         "https://fonts.google.com/specimen/Unbounded"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "big-shoulders",
@@ -1598,7 +1628,8 @@
         "https://api.fontsource.org/v1/fonts/big-shoulders",
         "https://fontsource.org/fonts/big-shoulders",
         "https://fonts.google.com/specimen/Big+Shoulders"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "abril-fatface",
@@ -1637,7 +1668,8 @@
         "https://api.fontsource.org/v1/fonts/abril-fatface",
         "https://fontsource.org/fonts/abril-fatface",
         "https://fonts.google.com/specimen/Abril+Fatface"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "dm-serif-display",
@@ -1676,7 +1708,8 @@
         "https://api.fontsource.org/v1/fonts/dm-serif-display",
         "https://fontsource.org/fonts/dm-serif-display",
         "https://fonts.google.com/specimen/DM+Serif+Display"
-      ]
+      ],
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif"
     },
     {
       "id": "anton",
@@ -1716,7 +1749,8 @@
         "https://api.fontsource.org/v1/fonts/anton",
         "https://fontsource.org/fonts/anton",
         "https://fonts.google.com/specimen/Anton"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "space-grotesk",
@@ -1762,7 +1796,8 @@
         "https://api.fontsource.org/v1/fonts/space-grotesk",
         "https://fontsource.org/fonts/space-grotesk",
         "https://fonts.google.com/specimen/Space+Grotesk"
-      ]
+      ],
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"
     },
     {
       "id": "jetbrains-mono",
@@ -1814,7 +1849,8 @@
         "https://api.fontsource.org/v1/fonts/jetbrains-mono",
         "https://fontsource.org/fonts/jetbrains-mono",
         "https://fonts.google.com/specimen/JetBrains+Mono"
-      ]
+      ],
+      "fallback": "ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace"
     },
     {
       "id": "ibm-plex-mono",
@@ -1862,7 +1898,8 @@
         "https://api.fontsource.org/v1/fonts/ibm-plex-mono",
         "https://fontsource.org/fonts/ibm-plex-mono",
         "https://fonts.google.com/specimen/IBM+Plex+Mono"
-      ]
+      ],
+      "fallback": "ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace"
     },
     {
       "id": "source-code-pro",
@@ -1915,7 +1952,8 @@
         "https://api.fontsource.org/v1/fonts/source-code-pro",
         "https://fontsource.org/fonts/source-code-pro",
         "https://fonts.google.com/specimen/Source+Code+Pro"
-      ]
+      ],
+      "fallback": "ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace"
     },
     {
       "id": "geist-mono",
@@ -1968,7 +2006,8 @@
         "https://api.fontsource.org/v1/fonts/geist-mono",
         "https://fontsource.org/fonts/geist-mono",
         "https://fonts.google.com/specimen/Geist+Mono"
-      ]
+      ],
+      "fallback": "ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace"
     },
     {
       "id": "caveat",
@@ -2014,7 +2053,8 @@
         "https://api.fontsource.org/v1/fonts/caveat",
         "https://fontsource.org/fonts/caveat",
         "https://fonts.google.com/specimen/Caveat"
-      ]
+      ],
+      "fallback": "\"Segoe Print\", \"Bradley Hand\", \"Comic Sans MS\", cursive"
     },
     {
       "id": "kalam",
@@ -2056,7 +2096,8 @@
         "https://api.fontsource.org/v1/fonts/kalam",
         "https://fontsource.org/fonts/kalam",
         "https://fonts.google.com/specimen/Kalam"
-      ]
+      ],
+      "fallback": "\"Segoe Print\", \"Bradley Hand\", \"Comic Sans MS\", cursive"
     },
     {
       "id": "patrick-hand",
@@ -2096,7 +2137,8 @@
         "https://api.fontsource.org/v1/fonts/patrick-hand",
         "https://fontsource.org/fonts/patrick-hand",
         "https://fonts.google.com/specimen/Patrick+Hand"
-      ]
+      ],
+      "fallback": "\"Segoe Print\", \"Bradley Hand\", \"Comic Sans MS\", cursive"
     },
     {
       "id": "bitter",
@@ -2148,7 +2190,8 @@
         "https://api.fontsource.org/v1/fonts/bitter",
         "https://fontsource.org/fonts/bitter",
         "https://fonts.google.com/specimen/Bitter"
-      ]
+      ],
+      "fallback": "Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif"
     },
     {
       "id": "roboto-slab",
@@ -2202,7 +2245,8 @@
         "https://api.fontsource.org/v1/fonts/roboto-slab",
         "https://fontsource.org/fonts/roboto-slab",
         "https://fonts.google.com/specimen/Roboto+Slab"
-      ]
+      ],
+      "fallback": "Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif"
     },
     {
       "id": "zilla-slab",
@@ -2245,7 +2289,8 @@
         "https://api.fontsource.org/v1/fonts/zilla-slab",
         "https://fontsource.org/fonts/zilla-slab",
         "https://fonts.google.com/specimen/Zilla+Slab"
-      ]
+      ],
+      "fallback": "Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif"
     },
     {
       "id": "aleo",
@@ -2295,7 +2340,8 @@
         "https://api.fontsource.org/v1/fonts/aleo",
         "https://fontsource.org/fonts/aleo",
         "https://fonts.google.com/specimen/Aleo"
-      ]
+      ],
+      "fallback": "Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif"
     }
   ]
 }

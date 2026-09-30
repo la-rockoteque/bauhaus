@@ -32,8 +32,8 @@ test('every manager colour is a token value', () => {
 
 test('the manager fonts and radii are the typography and shape tokens', () => {
   const values = managerValues(tokens);
-  assert.equal(values.fontBase, tokens.font.family.sans);
-  assert.equal(values.fontCode, tokens.font.family.mono);
+  assert.equal(values.fontBase, tokens.font.sans);
+  assert.equal(values.fontCode, tokens.font.mono);
   assert.equal(values.appBorderRadius, Number.parseInt(tokens.radius.md, 10));
   assert.equal(values.inputBorderRadius, Number.parseInt(tokens.radius.control, 10));
 });

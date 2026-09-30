@@ -2,6 +2,7 @@ import type { Preview } from '@storybook/react-vite';
 import { GLOBALS_UPDATED, SET_GLOBALS } from 'storybook/internal/core-events';
 import { addons } from 'storybook/preview-api';
 import '../dist/tokens.css';
+import '../foundations/typography/fonts.css';
 import './doc-page/doc-page.css';
 import { GuideContainer } from './guide';
 

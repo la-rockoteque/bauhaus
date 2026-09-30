@@ -216,15 +216,19 @@ export const tokens = {
     }
   },
   "font": {
-    "family": {
-      "sans": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
-      "mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
-    },
+    "sans": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+    "serif": "\"Source Serif 4 Variable\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
+    "display": "\"Fraunces Variable\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
+    "mono": "\"JetBrains Mono Variable\", ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace",
+    "handwriting": "\"Caveat Variable\", \"Segoe Print\", \"Bradley Hand\", \"Comic Sans MS\", cursive",
+    "slab": "\"Bitter Variable\", Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif",
     "size": {
       "xs": "12px",
       "sm": "14px",
       "md": "16px",
-      "xl": "24px"
+      "lg": "18px",
+      "xl": "24px",
+      "2xl": "36px"
     },
     "weight": {
       "regular": 400,
@@ -236,26 +240,68 @@ export const tokens = {
       "normal": 1.5
     }
   },
+  "typeface": {
+    "inter": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+    "source-serif-4": "\"Source Serif 4 Variable\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
+    "fraunces": "\"Fraunces Variable\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
+    "jetbrains-mono": "\"JetBrains Mono Variable\", ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace",
+    "caveat": "\"Caveat Variable\", \"Segoe Print\", \"Bradley Hand\", \"Comic Sans MS\", cursive",
+    "bitter": "\"Bitter Variable\", Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif"
+  },
   "text": {
     "body": {
+      "family": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
       "size": "16px",
       "weight": 400,
       "line-height": 1.5
     },
     "caption": {
+      "family": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
       "size": "14px",
       "weight": 400,
       "line-height": 1.5
     },
     "heading": {
+      "family": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
       "size": "24px",
       "weight": 600,
       "line-height": 1.25
     },
     "label": {
+      "family": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
       "size": "16px",
       "weight": 500,
       "line-height": 1.25
+    },
+    "prose": {
+      "family": "\"Source Serif 4 Variable\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
+      "size": "18px",
+      "weight": 400,
+      "line-height": 1.5
+    },
+    "display": {
+      "family": "\"Fraunces Variable\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
+      "size": "36px",
+      "weight": 600,
+      "line-height": 1.25
+    },
+    "code": {
+      "family": "\"JetBrains Mono Variable\", ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace",
+      "size": "14px",
+      "weight": 400,
+      "line-height": 1.5
+    },
+    "accent": {
+      "family": "\"Caveat Variable\", \"Segoe Print\", \"Bradley Hand\", \"Comic Sans MS\", cursive",
+      "size": "24px",
+      "weight": 400,
+      "line-height": 1.25
+    },
+    "kicker": {
+      "family": "\"Bitter Variable\", Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif",
+      "size": "14px",
+      "weight": 600,
+      "line-height": 1.5
     },
     "default": "#121416",
     "muted": "#5f6165",

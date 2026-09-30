@@ -10,6 +10,9 @@ One term per concept. Agents, skills, knowledge files and reports use these word
 | **Token** | A named design decision, stored as DTCG JSON: the storage and delivery format of foundation and component decisions, not a layer. The only place a raw value may appear. | "variable" (a variable is one output of a token) |
 | **Palette** | The colour foundation's primitive tokens: named hues with grades, `palette.scarlet.600`. File `palette.tokens.json`. Never used by a component. | "colors" (in this system, colors is the role scales) |
 | **Colors** | The role scales: `colors.primary.600 → {palette.dark-blue.600}`. File `colors.tokens.json`. The rebrand point: which hue plays primary, secondary, error… | "brand palette" |
+| **Typeface** | A named font family the project owns, with its full stack: `typeface.inter`. File `typefaces.tokens.json`. The palette of typography: never used by a component. | "font" |
+| **Font** | A typography role: `font.sans`, `font.serif`, `font.display`, `font.mono`, `font.handwriting`, `font.slab`, aliasing one typeface. File `fonts.tokens.json`. The swap point. | "family" |
+| **Text style** | A semantic typography token by purpose: `text.body.md`, `text.heading.lg`, aliasing a font role plus size, weight and line height. What components use. | "type style" |
 | **Role** | A flat semantic colour named by purpose, defined per theme: `action.primary`, `text.default`, `surface.raised`. What components use. | "semantic colour" |
 | **Primitive token** | Tier 1. A raw value on a scale: `color.blue.600`, `duration.150`. Never used by a call site. | "global token" |
 | **Semantic token** | Tier 2. An intent that aliases a primitive: `color.text.muted`, `motion.duration.fast`. What call sites use. | "alias token" |

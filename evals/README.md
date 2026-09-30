@@ -1,6 +1,6 @@
 # Bauhaus evals
 
-This folder holds the `claude plugin eval` suite for the Bauhaus plugin. It has 59 cases.
+This folder holds the `claude plugin eval` suite for the Bauhaus plugin. It has 61 cases.
 Each case is a folder with a `prompt.md` and a `graders/` folder. Cases that need a fixture repo also hold a `case.yaml` and a `fixture.sh`.
 
 The suite tests the target model in `docs/architecture.md`, `docs/library.md`, `docs/analysis.md` and `UBIQUITOUS-LANGUAGE.md`. The main points:
@@ -75,21 +75,21 @@ Tag `read-only` marks a case that needs nothing beyond the read-only tools. Tags
 
 | Tag | Cases |
 |---|---|
-| `read-only` | 52 |
+| `read-only` | 54 |
 | `routing` | 20 |
 | `taxonomy` | 11 |
 | `accessibility` | 10 |
 | `governance` | 9 |
-| `tokens` | 9 |
+| `tokens` | 11 |
 | `components` | 8 |
-| `precision` | 8 |
+| `precision` | 9 |
 | `structure` | 8 |
 | `needs-bash` | 7 |
 | `states` | 7 |
 | `color-model` | 6 |
 | `needs-scaffold` | 6 |
 | `smoke` | 6 |
-| `foundations` | 5 |
+| `foundations` | 7 |
 | `library` | 5 |
 | `analyse` | 4 |
 | `motion` | 4 |
@@ -149,6 +149,8 @@ Runs is the default `runs` value. Cases with a judge rubric run twice, determini
 | `tokens-primitive-at-call-site` | tokens, color-model | Call sites use semantic tokens, not primitives. | nothing | 1 |
 | `governance-rename-token-breaking` | governance, tokens | Renaming a public token is breaking: alias, deprecation with a removal date, codemod. | nothing | 2 |
 | `foundations-spacing-snap-delta` | foundations, tokens, precision | Infer a spacing scale from counts and state the delta of every snap. | nothing | 2 |
+| `typefaces-pick-roles` | tokens, foundations | A from-scratch typography request defines all six roles: typefaces named by family, fonts named by role, generic-ended stacks, catalog families. | nothing | 2 |
+| `typefaces-misuse` | tokens, foundations, precision | Caveat on body text and a bare `Inter` stack are flagged with `typography.handwriting-accent-only` and `typography.fallback-generic`. | nothing | 1 |
 | `motion-bounce-hover` | motion, accessibility | A slow bouncing hover transition with no reduced-motion handling. | nothing | 2 |
 | `motion-focus-ring-transition` | motion, accessibility | A transition on the focus indicator is a HIGH finding. | nothing | 1 |
 | `a11y-target-size-aa-claim` | accessibility, precision, smoke | The user wrongly says 44px is the AA target size. | nothing | 2 |

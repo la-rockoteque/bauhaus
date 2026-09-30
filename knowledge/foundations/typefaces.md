@@ -27,12 +27,12 @@ A new design system defines all six roles. A project may leave a role unused. An
 
 | Role | Token | Job | A project uses it when |
 |---|---|---|---|
-| Sans-serif | `font.family.sans` | UI, body text, headings, forms | Always. It is the default voice. |
-| Serif | `font.family.serif` | Editorial and long-form reading | The product has articles, docs prose, or a literary tone. |
-| Display | `font.family.display` | Hero and page-title headlines at large sizes | The brand needs impact in a few big lines. |
-| Monospace | `font.family.mono` | Code blocks, IDs, technical UI, dev docs | The product shows code, IDs or aligned values. |
-| Handwriting | `font.family.handwriting` | Short accents: an annotation, a signature, a callout | The brand wants a human touch, in one or two spots. |
-| Slab serif | `font.family.slab` | Sturdy headings and callouts between serif and display | The brand wants a solid, mechanical or editorial-heavy voice. |
+| Sans-serif | `font.sans` | UI, body text, headings, forms | Always. It is the default voice. |
+| Serif | `font.serif` | Editorial and long-form reading | The product has articles, docs prose, or a literary tone. |
+| Display | `font.display` | Hero and page-title headlines at large sizes | The brand needs impact in a few big lines. |
+| Monospace | `font.mono` | Code blocks, IDs, technical UI, dev docs | The product shows code, IDs or aligned values. |
+| Handwriting | `font.handwriting` | Short accents: an annotation, a signature, a callout | The brand wants a human touch, in one or two spots. |
+| Slab serif | `font.slab` | Sturdy headings and callouts between serif and display | The brand wants a solid, mechanical or editorial-heavy voice. |
 
 Handwriting is for accents only. Never set body text, UI labels, buttons, inputs or errors in it.
 
@@ -61,38 +61,39 @@ Handwriting is for accents only. Never set body text, UI labels, buttons, inputs
 
 ### Tokens
 
-16. Define one primitive token per role: `font.family.<role>`. Its value is a full stack: the web family, then a metric-matched fallback, then a system stack, then a generic family. (A missing font must not break layout. `typography.md` rule 16.)
-17. Name tokens after the role, never the family. `font.family.sans`, not `font.family.inter`. (A rebrand then changes one value. `tokens/naming.md`.)
-18. Make semantic typography tokens reference the primitives. Components use only the semantic tokens.
+Typography mirrors the colour chain. Colour runs palette, colors, roles. Typography runs typefaces, fonts, text styles.
+
+16. Define one token per named family in `typefaces.tokens.json`: `typeface.<family-id>`. Its value is a full stack: the web family, then a fallback stack of the same classification (serif for a serif face, whatever its role), then a generic family. The catalog gives each family its `fallback`. (A missing font must not break layout. `typography.md` rule 16.) Family names are correct here and nowhere else.
+17. Define the six roles in `fonts.tokens.json` as aliases: `font.sans` is `{typeface.inter}`. Name roles after the job, never the family: `font.sans`, not `font.inter`. (A rebrand then changes one alias. `tokens/naming.md`.)
+18. Define text styles in `typography.tokens.json` (`text.body`, `text.code`, `text.kicker`). Each style has a family that aliases `font.<role>`, plus size, weight and line height. Components read text styles only. A text style never aliases `typeface.*` directly.
 19. End every stack in a generic family: `sans-serif`, `serif`, `monospace` or `cursive`. (CSS Fonts 4: the generic is the last resort when nothing else loads.)
 
 ```json
 {
-  "font": { "family": {
-    "sans": { "$type": "fontFamily",
-      "$value": ["Inter Variable", "Inter Fallback", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"] },
-    "serif": { "$type": "fontFamily",
-      "$value": ["Source Serif 4 Variable", "Source Serif 4 Fallback", "Iowan Old Style", "Georgia", "serif"] },
-    "mono": { "$type": "fontFamily",
-      "$value": ["JetBrains Mono Variable", "JetBrains Mono Fallback", "ui-monospace", "Menlo", "Consolas", "monospace"] }
-  } },
-  "typography": {
-    "body":     { "$type": "typography", "$value": { "fontFamily": "{font.family.sans}",  "fontSize": "{font.size.lg}", "fontWeight": 400, "lineHeight": 1.5 } },
-    "heading":  { "$type": "typography", "$value": { "fontFamily": "{font.family.sans}",  "fontSize": "{font.size.2xl}", "fontWeight": 600, "lineHeight": 1.25 } },
-    "code":     { "$type": "typography", "$value": { "fontFamily": "{font.family.mono}",  "fontSize": "{font.size.md}", "fontWeight": 400, "lineHeight": 1.5 } },
-    "editorial":{ "$type": "typography", "$value": { "fontFamily": "{font.family.serif}", "fontSize": "{font.size.lg}", "fontWeight": 400, "lineHeight": 1.6 } }
+  "typeface": { "$type": "fontFamily",
+    "inter": { "$value": ["Inter Variable", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"] },
+    "jetbrains-mono": { "$value": ["JetBrains Mono Variable", "ui-monospace", "SF Mono", "Menlo", "Consolas", "DejaVu Sans Mono", "monospace"] }
+  },
+  "font": { "$type": "fontFamily",
+    "sans": { "$value": "{typeface.inter}" },
+    "mono": { "$value": "{typeface.jetbrains-mono}" }
+  },
+  "text": {
+    "body": { "family": { "$type": "fontFamily", "$value": "{font.sans}" }, "size": { "$type": "dimension", "$value": "{font.size.md}" } },
+    "code": { "family": { "$type": "fontFamily", "$value": "{font.mono}" }, "size": { "$type": "dimension", "$value": "{font.size.sm}" } }
   }
 }
 ```
 
-Each Fontsource variable package registers the family as `<Name> Variable`. Static packages register `<Name>`. The `<Name> Fallback` entries are local `@font-face` rules built for that family. See the next section.
+Each Fontsource variable package registers the family as `<Name> Variable`. Static packages register `<Name>`. Check the package CSS for the exact `font-family` name. A metric-matched `<Name> Fallback` face can sit after it in the stack. See the next section.
 
-The same value as CSS:
+The same values as CSS:
 
 ```css
 :root {
-  --ds-font-family-sans: "Inter Variable", "Inter Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --ds-font-family-mono: "JetBrains Mono Variable", "JetBrains Mono Fallback", ui-monospace, Menlo, Consolas, monospace;
+  --ds-typeface-inter: "Inter Variable", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ds-font-sans: var(--ds-typeface-inter);
+  --ds-text-body-family: var(--ds-font-sans);
 }
 ```
 
@@ -129,7 +130,7 @@ The full data lives in `kit/typefaces/catalog.json`: 45 families, all open licen
 
 ### Sans-serif (16)
 
-Default: `inter`. Token: `font.family.sans`.
+Default: `inter`. Token: `font.sans`.
 
 | Name | Classification | Variable | Best for | Pairs with |
 |---|---|---|---|---|
@@ -152,7 +153,7 @@ Default: `inter`. Token: `font.family.sans`.
 
 ### Serif (9)
 
-Default: `source-serif-4`. Token: `font.family.serif`.
+Default: `source-serif-4`. Token: `font.serif`.
 
 | Name | Classification | Variable | Best for | Pairs with |
 |---|---|---|---|---|
@@ -168,7 +169,7 @@ Default: `source-serif-4`. Token: `font.family.serif`.
 
 ### Display (9)
 
-Default: `fraunces`. Token: `font.family.display`.
+Default: `fraunces`. Token: `font.display`.
 
 | Name | Classification | Variable | Best for | Pairs with |
 |---|---|---|---|---|
@@ -184,7 +185,7 @@ Default: `fraunces`. Token: `font.family.display`.
 
 ### Monospace (4)
 
-Default: `jetbrains-mono`. Token: `font.family.mono`.
+Default: `jetbrains-mono`. Token: `font.mono`.
 
 | Name | Classification | Variable | Best for | Pairs with |
 |---|---|---|---|---|
@@ -195,7 +196,7 @@ Default: `jetbrains-mono`. Token: `font.family.mono`.
 
 ### Handwriting (3)
 
-Default: `caveat`. Token: `font.family.handwriting`.
+Default: `caveat`. Token: `font.handwriting`.
 
 | Name | Classification | Variable | Best for | Pairs with |
 |---|---|---|---|---|
@@ -205,7 +206,7 @@ Default: `caveat`. Token: `font.family.handwriting`.
 
 ### Slab serif (4)
 
-Default: `bitter`. Token: `font.family.slab`.
+Default: `bitter`. Token: `font.slab`.
 
 | Name | Classification | Variable | Best for | Pairs with |
 |---|---|---|---|---|
@@ -223,16 +224,16 @@ Notes on the data:
 
 ## Rulebook seeds
 
-- `typography.family-role-named` · auto · HIGH · Font-family tokens are named `font.family.<role>` with a role from the six. No token name contains a family name. (Rule 17.)
+- `typography.typeface-at-call-site` · auto · HIGH · A primitive, component or pattern reads a text style, never `typeface.*` or `font.<role>` (`misfile.typeface-at-call-site`). (Rules 17 and 18.)
 - `typography.fallback-generic` · auto · HIGH · Every font stack ends in a generic family: `sans-serif`, `serif`, `monospace` or `cursive`. (Rule 19; CSS Fonts 4.)
-- `typography.handwriting-accent-only` · review · MEDIUM · `font.family.handwriting` appears only on short accent text, never on body, UI labels, inputs or errors. (Rules 29 and 31.)
+- `typography.handwriting-accent-only` · review · MEDIUM · `font.handwriting` appears only on short accent text, never on body, UI labels, inputs or errors. (Rules 29 and 31.)
 - `typography.max-families` · review · MEDIUM · A project uses at most two text families plus one mono. A further role needs a written reason. (Rule 12; `typography.md` rule 1.)
 - `typography.self-hosted` · review · MEDIUM · Font files come from the project's own origin or package, not a third-party font CDN. (Rule 26.)
 
 ## Misfiles
 
-- A family name used as a token name (`font.family.inter`). It belongs to the role: `font.family.sans`. Family names live only in the token value.
-- A display face used for body text. Move it to `font.family.display` for large headlines and use sans or serif for text.
+- A family name used as a token name (`font.inter`). Name the role: `font.sans`.
+- A display face used for body text. Move it to `font.display` for large headlines and use sans or serif for text.
 - The size scale, line height and weights. They belong to `typography.md`.
 - Icon fonts and symbol sets. They belong to `iconography.md`.
 - Logo lettering and wordmarks. They are brand assets, not font tokens.
