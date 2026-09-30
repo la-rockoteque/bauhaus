@@ -5,29 +5,16 @@
   "tokens": {
     "source": "tokens",
     "themes": {
+      "light": "tokens/themes/light",
       "dark": "tokens/themes/dark"
     },
+    "defaultTheme": "light",
     "outputs": [
-      {
-        "format": "css",
-        "path": "build/tokens.css"
-      },
-      {
-        "format": "scss",
-        "path": "build/_tokens.scss"
-      },
-      {
-        "format": "ts",
-        "path": "build/tokens.ts"
-      },
-      {
-        "format": "json",
-        "path": "build/tokens.json"
-      },
-      {
-        "format": "tailwind",
-        "path": "build/tailwind.preset.js"
-      }
+      { "format": "css", "path": "build/tokens.css" },
+      { "format": "scss", "path": "build/_tokens.scss" },
+      { "format": "ts", "path": "build/tokens.ts" },
+      { "format": "json", "path": "build/tokens.json" },
+      { "format": "tailwind", "path": "build/tailwind.preset.js" }
     ]
   },
   "stack": {

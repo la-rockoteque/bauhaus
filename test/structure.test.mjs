@@ -170,3 +170,48 @@ test('place: a named glyph goes to the iconography foundation, the Icon componen
   assert.equal(to.Icon, 'primitives/icon/icon.tsx');
   assert.equal(to.IconButton, 'components/clickables/icon-button/icon-button.tsx');
 });
+
+// ---------- colour foundation ----------
+
+function tmpLibrary(files) {
+  const dir = tmp();
+  for (const [rel, text] of Object.entries(files)) {
+    fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+    fs.writeFileSync(path.join(dir, rel), text);
+  }
+  return dir;
+}
+const SLICE = (dir, name, extra = {}) => Object.fromEntries(Object.entries({
+  [`${name}.stories.tsx`]: '', [`${name}.mdx`]: '', [`${name}.rules.ts`]: '', [`${name}.test.tsx`]: '', [`${name}.tsx`]: '', ...extra,
+}).map(([f, t]) => [`${dir}/${f}`, t]));
+
+test('check: a foundation slice accepts any *.tokens.json (color has palette and colors)', () => {
+  const dir = tmpLibrary(SLICE('foundations/color', 'color', { 'palette.tokens.json': '{}', 'colors.tokens.json': '{}' }));
+  assert.deepEqual(checkStructure(dir).filter((f) => f.id === 'slice.tokens'), []);
+  const none = tmpLibrary(SLICE('foundations/color', 'color'));
+  assert.deepEqual(checkStructure(none).filter((f) => f.id === 'slice.tokens').map((f) => f.path), ['foundations/color']);
+});
+
+test('check: misfile.palette-at-call-site flags palette and colors variables in components, primitives and patterns', () => {
+  const dir = tmpLibrary({
+    ...SLICE('primitives/box', 'box', { 'box.css': '.ds-box { color: var(--ds-palette-gray-900); }' }),
+    ...SLICE('components/clickables/chip', 'chip', { 'chip.css': '.ds-chip { background: var(--ds-colors-primary-600, red); }' }),
+    ...SLICE('components/clickables/pill', 'pill', { 'pill.tsx': "export const Pill = () => <i style={{ color: 'var(--ds-palette-teal-500)' }} />;" }),
+    ...SLICE('components/clickables/tag', 'tag', { 'tag.css': '.ds-tag { color: var(--ds-text-default); background: var(--ds-action-primary); }' }),
+    ...SLICE('foundations/color', 'color', { 'color.stories.tsx': "const a = 'var(--ds-palette-gray-100)';", 'color.tokens.json': '{}' }),
+    ...SLICE('patterns/empty', 'empty', { 'empty.css': '.ds-e { color: var(--ds-palette-gray-100); }' }),
+  });
+  const hits = checkStructure(dir).filter((f) => f.id === 'misfile.palette-at-call-site');
+  assert.deepEqual(hits.map((f) => f.path).sort(), ['components/clickables/chip/chip.css', 'components/clickables/pill/pill.tsx', 'patterns/empty/empty.css', 'primitives/box/box.css']);
+  assert.ok(hits.every((f) => f.severity === 'HIGH' && f.fix.includes('role')));
+});
+
+test('check: the palette-at-call-site prefix comes from bauhaus.config.json', () => {
+  const dir = tmpLibrary({
+    'bauhaus.config.json': JSON.stringify({ prefix: 'acme' }),
+    ...SLICE('primitives/box', 'box', { 'box.css': '.a { color: var(--ds-palette-gray-900); background: var(--acme-colors-primary-100); }' }),
+  });
+  const hits = checkStructure(dir).filter((f) => f.id === 'misfile.palette-at-call-site');
+  assert.equal(hits.length, 1);
+  assert.match(hits[0].message, /--acme-colors-/);
+});

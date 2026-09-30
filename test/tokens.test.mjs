@@ -195,3 +195,98 @@ test('checkProject returns drifted files and warnings', () => {
   assert.deepEqual(errors, []);
   assert.equal(drift.length, 6);
 });
+
+// ---------- defaultTheme: sibling themes ----------
+
+const PALETTE = { palette: { $type: 'color', gray: { 100: { $value: '#f3f4f6' }, 900: { $value: '#111827' } } } };
+const COLORS = { colors: { $type: 'color', neutral: { 100: { $value: '{palette.gray.100}' }, 900: { $value: '{palette.gray.900}' } } } };
+const role = (fg, bg) => ({ text: { $type: 'color', default: { $value: `{colors.neutral.${fg}}` } }, surface: { $type: 'color', default: { $value: `{colors.neutral.${bg}}` } } });
+
+function siblingProject({ light = role(900, 100), dark = role(100, 900), defaultTheme = 'light', outputs = ALL } = {}) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bauhaus-sibling-'));
+  const write = (rel, data) => {
+    fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
+    fs.writeFileSync(path.join(root, rel), JSON.stringify(data));
+  };
+  write('tokens/palette.tokens.json', PALETTE);
+  write('tokens/colors.tokens.json', COLORS);
+  write('tokens/space.tokens.json', { space: { $type: 'dimension', 1: { $value: '4px' } } });
+  write('tokens/themes/light/light.tokens.json', light);
+  write('tokens/themes/dark/dark.tokens.json', dark);
+  const config = {
+    name: 'T', prefix: 'ds',
+    tokens: { source: 'tokens', themes: { light: 'tokens/themes/light', dark: 'tokens/themes/dark' }, ...(defaultTheme ? { defaultTheme } : {}), outputs },
+  };
+  write('bauhaus.config.json', config);
+  return { root, config, write };
+}
+
+test('defaultTheme: default roles land in :root and every theme gets its own block', () => {
+  const { root, config } = siblingProject();
+  const { outputs, errors } = buildOutputs(config, root);
+  assert.deepEqual(errors, []);
+  const css = outputOf(outputs, 'out/tokens.css');
+  const rootBlock = css.slice(css.indexOf(':root'), css.indexOf('[data-theme="light"]'));
+  assert.match(rootBlock, /--ds-palette-gray-900: #111827;/);
+  assert.match(rootBlock, /--ds-colors-neutral-900: var\(--ds-palette-gray-900\);/);
+  assert.match(rootBlock, /--ds-text-default: var\(--ds-colors-neutral-900\);/);
+  assert.match(rootBlock, /--ds-surface-default: var\(--ds-colors-neutral-100\);/);
+  const light = css.slice(css.indexOf('[data-theme="light"]'), css.indexOf('[data-theme="dark"]'));
+  assert.match(light, /--ds-text-default: var\(--ds-colors-neutral-900\);/);
+  assert.doesNotMatch(light, /--ds-palette/, 'themes hold roles only');
+  const dark = css.slice(css.indexOf('[data-theme="dark"]'));
+  assert.match(dark, /--ds-text-default: var\(--ds-colors-neutral-100\);/);
+  assert.match(dark, /--ds-surface-default: var\(--ds-colors-neutral-900\);/);
+});
+
+test('defaultTheme: js, ts, json, scss and tailwind use the default theme values', () => {
+  const { root, config } = siblingProject();
+  const { outputs } = buildOutputs(config, root);
+  assert.equal(JSON.parse(outputOf(outputs, 'out/tokens.json'))['text.default'], '#111827');
+  assert.match(outputOf(outputs, 'out/tokens.scss'), /\$ds-text-default: #111827;/);
+  const js = outputOf(outputs, 'out/tokens.js');
+  assert.equal(JSON.parse(js.slice(js.indexOf('{'), js.lastIndexOf('}') + 1)).surface.default, '#f3f4f6');
+});
+
+test('defaultTheme: dark as default swaps :root', () => {
+  const { root, config } = siblingProject({ defaultTheme: 'dark' });
+  const css = outputOf(buildOutputs(config, root).outputs, 'out/tokens.css');
+  assert.match(css.slice(0, css.indexOf('[data-theme')), /--ds-text-default: var\(--ds-colors-neutral-100\);/);
+});
+
+test('defaultTheme must be a key of tokens.themes', () => {
+  const { root, config } = siblingProject({ defaultTheme: 'sepia' });
+  assert.match(buildOutputs(config, root).errors.join('\n'), /defaultTheme "sepia" is not a theme \(light, dark\)/);
+});
+
+test('parity: a role missing from a theme is an error', () => {
+  const { root, config } = siblingProject({ dark: { text: role(100, 900).text } });
+  const errors = buildOutputs(config, root).errors;
+  assert.deepEqual(errors, ['theme dark: missing role surface.default (defined in light)']);
+  assert.equal(main(['check', '--config', path.join(root, 'bauhaus.config.json')], quiet), 1);
+});
+
+test('parity: an extra role in a theme is an error', () => {
+  const dark = { ...role(100, 900), border: { $type: 'color', default: { $value: '{colors.neutral.900}' } } };
+  const { root, config } = siblingProject({ dark });
+  assert.deepEqual(buildOutputs(config, root).errors, ['theme dark: extra role border.default (not in light)']);
+});
+
+test('parity: also holds when the default theme has the gap', () => {
+  const { root, config } = siblingProject({ light: { text: role(900, 100).text } });
+  assert.deepEqual(buildOutputs(config, root).errors, ['theme dark: extra role surface.default (not in light)']);
+});
+
+test('check warns when a theme role aliases the palette directly', () => {
+  const dark = { ...role(100, 900), text: { $type: 'color', default: { $value: '{palette.gray.100}' } } };
+  const { root, config } = siblingProject({ dark });
+  const { errors, warnings } = checkProject(config, root);
+  assert.deepEqual(errors, []);
+  assert.deepEqual(warnings, ['theme dark: role text.default aliases the palette directly; alias colors.* instead']);
+});
+
+test('no defaultTheme: themes stay overrides of the base (backward compatible)', () => {
+  const { root, config } = siblingProject({ defaultTheme: null });
+  const errors = buildOutputs(config, root).errors;
+  assert.ok(errors.length && errors.every((e) => /overrides unknown token/.test(e)), errors.join('\n'));
+});

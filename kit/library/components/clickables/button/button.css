@@ -22,37 +22,37 @@
 }
 
 .ds-button--primary {
-  background: var(--ds-color-accent-default);
-  color: var(--ds-color-text-on-accent);
+  background: var(--ds-action-primary);
+  color: var(--ds-action-primary-text);
 }
 
 .ds-button--secondary {
-  background: var(--ds-color-surface-default);
-  border-color: var(--ds-color-border-strong);
-  color: var(--ds-color-text-default);
+  background: var(--ds-surface-default);
+  border-color: var(--ds-border-strong);
+  color: var(--ds-text-default);
 }
 
 .ds-button--tertiary {
   background: transparent;
-  color: var(--ds-color-text-link);
+  color: var(--ds-text-link);
 }
 
-.ds-button--primary:hover { background: var(--ds-color-accent-hover); }
-.ds-button--primary:active { background: var(--ds-color-accent-active); }
-.ds-button--secondary:hover { background: var(--ds-color-surface-soft); }
-.ds-button--secondary:active { background: var(--ds-color-surface-sunken); }
-.ds-button--tertiary:hover { background: var(--ds-color-accent-subtle); }
-.ds-button--tertiary:active { background: var(--ds-color-surface-sunken); }
+.ds-button--primary:hover { background: var(--ds-action-primary-hover); }
+.ds-button--primary:active { background: var(--ds-action-primary-pressed); }
+.ds-button--secondary:hover { background: var(--ds-state-hover-layer); }
+.ds-button--secondary:active { background: var(--ds-state-pressed-layer); }
+.ds-button--tertiary:hover { background: var(--ds-state-hover-layer); }
+.ds-button--tertiary:active { background: var(--ds-state-pressed-layer); }
 
 .ds-button:focus-visible {
-  outline: var(--ds-focus-ring-width) solid var(--ds-color-focus-ring);
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
   outline-offset: var(--ds-focus-ring-offset);
 }
 
 .ds-button:disabled {
-  background: var(--ds-color-surface-soft);
-  border-color: var(--ds-color-border-subtle);
-  color: var(--ds-color-text-disabled);
+  background: var(--ds-disabled-surface);
+  border-color: var(--ds-disabled-border);
+  color: var(--ds-disabled-text);
   cursor: not-allowed;
 }
 

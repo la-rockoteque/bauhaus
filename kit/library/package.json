@@ -2,14 +2,24 @@
   "name": "@acme/design-system",
   "version": "0.0.0",
   "type": "module",
-  "sideEffects": ["*.css"],
-  "files": ["dist"],
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist"
+  ],
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
     "./tokens.css": "./dist/tokens.css",
     "./style.css": "./dist/style.css"
   },
-  "//": "BAUHAUS_PLUGIN is the folder of the bauhaus plugin (the one holding scripts/). Set it once in your shell or CI. tokens.css holds the light tokens and the [data-theme=dark] block, so a consumer on another stack imports one file.",
+  "//": "BAUHAUS_PLUGIN is the folder of the bauhaus plugin (the one holding scripts/). Set it once in your shell or CI. tokens.css holds :root (the default theme, light) and one [data-theme] block per theme, so a consumer on another stack imports one file.",
   "scripts": {
     "tokens": "node $BAUHAUS_PLUGIN/scripts/tokens.mjs build --config bauhaus.config.json",
     "check-tokens": "node $BAUHAUS_PLUGIN/scripts/tokens.mjs check --config bauhaus.config.json",

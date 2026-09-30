@@ -5,7 +5,7 @@ Starter files that Bauhaus skills copy into a project.
 | Folder | Content | Status |
 |---|---|---|
 | `library/` | The isolated library template (`docs/library.md`): one example slice per root folder. Passes `structure.mjs check` and `tokens.mjs check`. | Generic. |
-| `tokens/` | Seed DTCG tokens: primitives, semantic, a dark theme, contrast pairs. | Generic. |
+| `tokens/` | Seed DTCG tokens for `/bauhaus:init`: `palette` and `colors` (palette → colors), non-colour primitives and semantic tokens, sibling themes `light` (default) and `dark`, contrast pairs. | Generic. |
 | `bauhaus.config.example.json` | A valid project config, prefix `ds`. | Generic. |
 | `styleguide/` | `design-system.md` and `responsive-inventory.md` from moship. | Verbatim port. To prune. |
 | `storybook/` | Storybook config, doc pages, foundation / component / pattern stories, the rulebook benchmark, the dev overlay, `design-system.css` and the UI primitives from moship-web (React 19, Storybook 10, Vite 7, Vitest 4, axe-core). | Verbatim port. To prune. |

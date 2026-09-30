@@ -16,7 +16,7 @@ export const buttonRules = [
     rubric: 'focus',
     severity: 'HIGH',
     expectation: 'The button shows a visible focus ring on keyboard focus.',
-    expected: '--ds-color-focus-ring',
+    expected: '--ds-focus-ring-color',
     verify: 'auto',
     covers: ['focus-visible'],
     basis: 'WCAG 2.4.7 Focus Visible (AA)',

@@ -4,12 +4,32 @@
   "prefix": "ds",
   "tokens": {
     "source": "foundations",
-    "themes": { "dark": "themes/dark" },
-    "outputs": [{ "format": "css", "path": "dist/tokens.css" }]
+    "themes": {
+      "light": "themes/light",
+      "dark": "themes/dark"
+    },
+    "defaultTheme": "light",
+    "outputs": [
+      {
+        "format": "css",
+        "path": "dist/tokens.css"
+      }
+    ]
   },
   "components": ".",
-  "storybook": { "config": ".storybook", "stories": "." },
-  "rulebook": { "rules": "." },
-  "stack": { "framework": "react", "styling": "css" },
-  "house": { "contrast": "AA", "targetSize": 44 }
+  "storybook": {
+    "config": ".storybook",
+    "stories": "."
+  },
+  "rulebook": {
+    "rules": "."
+  },
+  "stack": {
+    "framework": "react",
+    "styling": "css"
+  },
+  "house": {
+    "contrast": "AA",
+    "targetSize": 44
+  }
 }

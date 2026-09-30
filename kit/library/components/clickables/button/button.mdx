@@ -15,13 +15,14 @@ import * as Stories from './button.stories';
 
 | Token | Tier | Use |
 |---|---|---|
-| `color.accent.default`, `.hover`, `.active` | 2 | Fill of the primary variant and its pressed states |
-| `color.text.on-accent` | 2 | Label on the primary fill; the pair reaches 4.5:1 |
-| `color.border.strong` | 2 | Outline of the secondary variant |
-| `color.surface.default`, `.soft`, `.sunken` | 2 | Secondary fill, hover and active; disabled fill |
-| `color.text.link`, `color.accent.subtle` | 2 | Tertiary label and its hover fill |
-| `color.text.disabled`, `color.border.subtle` | 2 | Disabled label and outline |
-| `color.focus.ring`, `focus.ring.width`, `focus.ring.offset` | 2 | Focus indicator |
+| `action.primary`, `action.primary-hover`, `action.primary-pressed` | role | Fill of the primary variant and its hover and pressed states |
+| `action.primary-text` | role | Label on the primary fill; the pair reaches 4.5:1 in both themes |
+| `border.strong` | role | Outline of the secondary variant |
+| `surface.default` | role | Secondary fill |
+| `text.default`, `text.link` | role | Secondary and tertiary labels |
+| `state.hover-layer`, `state.pressed-layer` | role | Hover and pressed fill of the secondary and tertiary variants |
+| `disabled.text`, `disabled.surface`, `disabled.border` | role | Disabled label, fill and outline |
+| `focus.ring.color`, `focus.ring.width`, `focus.ring.offset` | role | Focus indicator |
 | `text.label.*` | 2 | Label size, weight and line height |
 | `space.inset.sm`, `space.inline.sm`, `space.inline.lg` | 2 | Padding and gap between label and spinner |
 | `size.target.min` | 2 | Minimum height and width |

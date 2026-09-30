@@ -17,7 +17,7 @@ import * as Stories from './focus.stories';
 |---|---|---|
 | `focus.ring.width` | 2 | 2px |
 | `focus.ring.offset` | 2 | 2px |
-| `color.focus.ring` | 2 | Defined in Color: `{color.accent.default}` |
+| `focus.ring.color` | role | Defined per theme in `themes/light` and `themes/dark`; aliases `colors.primary.*` |
 
 ## 3. Anatomy
 
@@ -41,7 +41,7 @@ The ring is the focus-visible state of every component. Mouse presses do not sho
 
 ### How
 
-- Draw the outline with the three tokens: `outline: var(--ds-focus-ring-width) solid var(--ds-color-focus-ring)` and `outline-offset` from the offset token.
+- Draw the outline with the three tokens: `outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color)` and `outline-offset` from the offset token.
 - Keep the ring at 3:1 against the surface in both themes (WCAG 1.4.11, AA).
 - Keep a focused control from hiding under a sticky header (WCAG 2.4.11 Focus Not Obscured, AA).
 

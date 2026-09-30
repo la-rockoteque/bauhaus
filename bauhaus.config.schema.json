@@ -22,8 +22,12 @@
         "source": { "type": "string", "description": "Folder of *.tokens.json files (DTCG format)." },
         "themes": {
           "type": "object",
-          "description": "Theme name to folder of semantic overrides. The default theme is tokens.source itself.",
+          "description": "Theme name to folder. With defaultTheme, each folder is a full set of roles and every theme defines the same token paths. Without it, each folder holds overrides of tokens.source.",
           "additionalProperties": { "type": "string" }
+        },
+        "defaultTheme": {
+          "type": "string",
+          "description": "Key of tokens.themes. Its tokens merge into the base and render as :root; every theme also renders as [data-theme=\"<name>\"]. Themes must then define the same token paths."
         },
         "outputs": {
           "type": "array",

@@ -170,32 +170,52 @@ const RENDERERS = {
 
 // ---------- model ----------
 
-function loadTheme(name, dir, baseTree, baseTokens, baseErrors) {
+function loadTheme(name, dir, baseTree, baseTokens, baseErrors, { siblings }) {
   const themeTree = loadTree(dir);
   const merged = resolveTokens(flatten(deepMerge(baseTree, themeTree)));
   const overridden = new Set(flatten(themeTree).map((t) => t.path));
   const known = new Set(baseTokens.map((t) => t.path));
   const tokens = merged.tokens.filter((t) => overridden.has(t.path));
   const errors = [
-    ...[...overridden].filter((p) => !known.has(p)).map((p) => `theme ${name}: overrides unknown token ${p}`),
+    // With sibling themes, a role the default theme lacks is reported by the parity check instead.
+    ...(siblings ? [] : [...overridden].filter((p) => !known.has(p)).map((p) => `theme ${name}: overrides unknown token ${p}`)),
     ...merged.errors.filter((e) => !baseErrors.includes(e)).map((e) => `theme ${name}: ${e}`),
     ...validateTokens(tokens.filter((t) => known.has(t.path))).map((e) => `theme ${name}: ${e}`),
   ];
-  return { theme: { name, tokens: tokens.filter((t) => known.has(t.path)) }, errors };
+  return { theme: { name, tokens: tokens.filter((t) => known.has(t.path)) }, paths: overridden, errors };
 }
 
-/** Load default tokens and themes. Returns {model, errors}. Paths in config are relative to `root`. */
+/** Every theme must define the same paths as the default theme. */
+function parityErrors(themes, defaultTheme) {
+  const ref = themes.find((t) => t.theme.name === defaultTheme).paths;
+  return themes.filter((t) => t.theme.name !== defaultTheme).flatMap(({ theme, paths }) => [
+    ...[...ref].filter((p) => !paths.has(p)).map((p) => `theme ${theme.name}: missing role ${p} (defined in ${defaultTheme})`),
+    ...[...paths].filter((p) => !ref.has(p)).map((p) => `theme ${theme.name}: extra role ${p} (not in ${defaultTheme})`),
+  ]);
+}
+
+/**
+ * Load default tokens and themes. Returns {model, errors}. Paths in config are relative to `root`.
+ * With `tokens.defaultTheme`, themes are siblings: the default theme merges into the base (so `:root`)
+ * and every theme must define the same paths. Without it, a theme only overrides base tokens.
+ */
 export function loadModel(config, root) {
   const at = (p) => path.resolve(root, p);
   const themeDirs = Object.entries(config.tokens.themes ?? {});
+  const defaultTheme = config.tokens.defaultTheme;
   for (const [name, dir] of themeDirs) if (!fs.existsSync(at(dir))) throw new Error(`theme "${name}": folder ${dir} does not exist`);
-  const baseTree = loadTree(at(config.tokens.source), { skip: [at(path.join(config.tokens.source, 'themes')), ...themeDirs.map(([, d]) => at(d))] });
+  if (defaultTheme !== undefined && !themeDirs.some(([name]) => name === defaultTheme)) {
+    return { model: { tokens: [], themes: [] }, errors: [`defaultTheme "${defaultTheme}" is not a theme (${themeDirs.map(([n]) => n).join(', ') || 'none'})`] };
+  }
+  const sourceTree = loadTree(at(config.tokens.source), { skip: [at(path.join(config.tokens.source, 'themes')), ...themeDirs.map(([, d]) => at(d))] });
+  const defaultDir = themeDirs.find(([name]) => name === defaultTheme)?.[1];
+  const baseTree = defaultDir ? deepMerge(sourceTree, loadTree(at(defaultDir))) : sourceTree;
   const base = resolveTokens(flatten(baseTree));
   const baseErrors = [...base.errors, ...validateTokens(base.tokens)];
-  const themes = themeDirs.map(([name, dir]) => loadTheme(name, at(dir), baseTree, base.tokens, baseErrors));
+  const themes = themeDirs.map(([name, dir]) => loadTheme(name, at(dir), baseTree, base.tokens, baseErrors, { siblings: defaultDir !== undefined }));
   return {
     model: { tokens: base.tokens, themes: themes.map((t) => t.theme) },
-    errors: [...baseErrors, ...themes.flatMap((t) => t.errors)],
+    errors: [...baseErrors, ...themes.flatMap((t) => t.errors), ...(defaultDir ? parityErrors(themes, defaultTheme) : [])],
   };
 }
 
@@ -239,11 +259,18 @@ export function lintNames(tokens) {
 
 const readOrNull = (file) => (fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : null);
 
+/** A theme role reads the palette directly (heuristic: its alias target starts with `palette.`). Themes alias colors.*. */
+export function lintThemes(themes) {
+  return themes.flatMap((theme) => theme.tokens
+    .filter((t) => t.aliasOf?.startsWith('palette.'))
+    .map((t) => `theme ${theme.name}: role ${t.path} aliases the palette directly; alias colors.* instead`));
+}
+
 /** Validation errors, drifted output paths, naming warnings. */
 export function checkProject(config, root) {
   const { outputs, errors, model } = buildOutputs(config, root);
   const drift = outputs.filter((o) => readOrNull(path.resolve(root, o.path)) !== o.content).map((o) => o.path);
-  return { errors, drift, warnings: lintNames(model.tokens) };
+  return { errors, drift, warnings: [...lintNames(model.tokens), ...lintThemes(model.themes)] };
 }
 
 function readConfig(file) {

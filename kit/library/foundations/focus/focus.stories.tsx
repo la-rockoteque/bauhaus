@@ -12,7 +12,7 @@ export const Ring: Story = {
       type="button"
       style={{
         padding: 'var(--ds-space-inset-md)',
-        outline: 'var(--ds-focus-ring-width) solid var(--ds-color-focus-ring)',
+        outline: 'var(--ds-focus-ring-width) solid var(--ds-focus-ring-color)',
         outlineOffset: 'var(--ds-focus-ring-offset)',
       }}
     >

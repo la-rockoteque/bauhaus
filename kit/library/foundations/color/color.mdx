@@ -7,55 +7,67 @@ import * as Stories from './color.stories';
 
 ## 1. Introduction
 
-**In plain words:** Color tells users what things are for: text, surface, border, the main action. Components ask for a job ("text on the default surface"), never for a shade of blue.
+**In plain words:** Color tells users what things are for: text, surface, border, the main action. Components ask for a job ("text on the default surface"), never for a shade of blue. Three steps stand between a hex value and a component, so a rebrand or a dark theme changes one step and no component.
 
-**Precisely:** Foundation · a grey ramp, a blue ramp, and semantic tokens for text, surface, border, accent and focus · the source of every colour in the library.
+**Precisely:** Foundation · palette (named hues with grades), colors (role scales over the palette) and, per theme, roles (flat, named by purpose) · the source of every colour in the library.
 
 ## 2. Tokens (defined)
 
-| Token | Tier | Value | Use |
+| Token | Tier | Value | Who reads it |
 |---|---|---|---|
-| `color.gray.50` … `900`, `color.blue.*`, `white`, `black` | 1 | Ramps | Raw palette. Components never read it. |
-| `color.text.default`, `muted`, `disabled`, `inverse`, `link`, `on-accent` | 2 | Aliases into the ramps | Text roles |
-| `color.surface.default`, `soft`, `raised`, `sunken`, `inverse` | 2 | Aliases | Backgrounds |
-| `color.border.subtle`, `default`, `strong` | 2 | Aliases | Outlines and dividers |
-| `color.accent.default`, `hover`, `active`, `subtle` | 2 | Aliases | The main action colour and its states |
-| `color.focus.ring` | 2 | `{color.accent.default}` | Focus outline colour |
+| `palette.scarlet`, `dark-blue`, `teal`, `amber`, `green`, `gray` `.100` … `.900` | primitive | Raw hex values, 100 lightest to 900 darkest | `colors` only |
+| `colors.primary`, `secondary`, `error`, `success`, `warning`, `info`, `neutral` `.100` … `.900` | primitive (aliases) | `{palette.<hue>.<grade>}` | Theme roles; charts and illustrations that need a scale |
+| `text.*`, `surface.*`, `border.*`, `action.*`, `status.*`, `focus.ring.color`, `disabled.*`, `state.*` | semantic | `{colors.<role>.<grade>}`, one value per theme | Components |
 
-The dark theme overrides tier 2 only.
+The role names are the same in `themes/light` and `themes/dark`. Only the values change. Light is the default theme and also renders as `:root`. The build checks that every theme defines the same roles (`tokens.mjs check`).
 
 ## 3. Anatomy
 
-Two tiers. Tier 1 is the ramp: ten steps of grey, eight of blue. Tier 2 is a closed set of roles. Status colours (ready, warning, error) are not in this template; add them with a scale proposal.
+Three steps, then the theme:
 
-<Canvas of={Stories.Semantic} />
+1. **Palette** (`palette.tokens.json`). Six named hues, nine grades each. Named by colour, not by job. Palette values never change per theme.
+2. **Colors** (`colors.tokens.json`). Seven role scales alias the palette: `primary` → dark-blue, `secondary` → teal, `error` → scarlet, `success` → green, `warning` → amber, `info` → dark-blue, `neutral` → gray. This file is the rebrand point.
+3. **Roles** (`themes/<name>/<name>.tokens.json`). Flat names that say the job: `text.default`, `action.primary-hover`, `status.error-surface`. Each aliases a `colors.*` grade. A theme never aliases the palette directly.
+
+The approach follows the systems Bauhaus studied. Material 3 goes from a key colour to a tonal palette to a role, and its components use roles: "Color roles are mapped to Material Components". Carbon keeps the palette apart from the theme: "Tokens are role-based, and themes specify the color values that serve those roles in the UI." Primer forbids reading the base tokens: "Base color tokens don't respect color modes and should never be used directly in code or design."
+
+<Canvas of={Stories.Palette} />
+<Canvas of={Stories.Colors} />
+<Canvas of={Stories.Roles} />
 
 ## 4. States
 
-Color supplies the state colours: accent `hover` and `active`, text `disabled`, and the focus colour. Each state colour differs from its base in lightness and never carries meaning alone (WCAG 1.4.1 Use of Color, A).
+Roles carry the interaction states: `action.primary` with `-hover` and `-pressed`, `state.hover-layer`, `state.pressed-layer`, `state.selected`, `disabled.*` and `focus.ring.color`. Each state colour differs from its base in lightness and never carries meaning alone (WCAG 1.4.1 Use of Color, A). Layers are opaque tints, because a token cannot alias a colour with an alpha.
+
+Disabled roles are exempt from contrast (WCAG 1.4.3 and 1.4.11 exempt inactive components) and border.default is a decorative divider. Neither is in `pairs.json`.
 
 ## 5. Usage
 
 ### When to use
 
-- Read a tier 2 token for every colour in a stylesheet (project decision: components read semantic tokens).
+- Read a role for every colour in a stylesheet (project decision: components read roles).
+- Read a `colors.*` scale only where a scale is the point: a chart series, an illustration.
 
 ### When not to use — and what instead
 
 - For a status such as an error: do not tint text red alone; add an icon or text (WCAG 1.4.1, A).
-- For a brand colour needed once: propose a token; do not add a literal.
+- For a brand colour needed once: propose a role; do not add a literal.
+- For a new brand: edit `colors.tokens.json` (which hue plays `primary`), not the components. Add a palette hue only if none fits.
 
 ### How
 
-- Keep text at 4.5:1 against its surface, and borders and focus rings at 3:1 (WCAG 1.4.3 and 1.4.11, AA).
-- Check every pair in both themes; the dark values are chosen, not computed (project decision).
-- Name a token for its job. `color.text.link` is correct; `color.text.blue` is not (Bauhaus naming lint).
+- Alias `colors.*` from a theme role. The check warns when a role aliases `palette.*` directly.
+- Keep text at 4.5:1 against its surface, and borders, action fills and the focus ring at 3:1 (WCAG 1.4.3 and 1.4.11, AA). `pairs.json` lists every pair; run `contrast.mjs` once per theme.
+- Re-derive dark roles from the scales; do not invert the light ones. Dark uses other grades of the same scales (project decision).
+- Name a role for its job. `text.link` is correct; `text.blue` is not (Bauhaus naming lint).
 
 ## 6. Pitfalls and don'ts
 
 | Don't | Why it fails | Basis | Rule id |
 |---|---|---|---|
 | A hex value in a component | The dark theme cannot reach it | `misfile.raw-value-in-component` | `color.semantic-by-intent` |
-| Reading `color.blue.600` from a component | Ties the component to one hue; a rebrand breaks it | Tier rule (this page) | `color.semantic-by-intent` |
+| `var(--ds-palette-*)` or `var(--ds-colors-*)` in a component | Ties the component to one hue; a rebrand and the dark theme both break it | `misfile.palette-at-call-site`; Primer: base tokens "should never be used directly" | `color.no-palette-at-call-site` |
+| A theme role that aliases `palette.*` | The rebrand point is bypassed | `tokens.mjs check` warning | `color.roles-alias-colors` |
+| A role missing from one theme | That theme shows the wrong colour or none | Carbon: "Color token names and roles are the same across themes" | `color.theme-parity` |
 | Red as the only sign of an error | Colour-blind users miss it | WCAG 1.4.1 (A) | `color.ui-contrast` |
 | Grey text tuned by eye | Fails 4.5:1 for low-vision users | WCAG 1.4.3 (AA) | `color.text-contrast` |

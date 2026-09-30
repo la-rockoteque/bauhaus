@@ -13,7 +13,7 @@ export const Radius: Story = {
     <ul style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--ds-space-inline-lg)', listStyle: 'none', padding: 0 }}>
       {STEPS.map((step) => (
         <li key={step} style={{ display: 'grid', gap: 'var(--ds-space-stack-xs)' }}>
-          <span style={{ display: 'block', inlineSize: 'var(--ds-space-12)', blockSize: 'var(--ds-space-12)', background: 'var(--ds-color-accent-subtle)', border: '2px solid var(--ds-color-accent-default)', borderRadius: `var(--ds-radius-${step})` }} />
+          <span style={{ display: 'block', inlineSize: 'var(--ds-space-12)', blockSize: 'var(--ds-space-12)', background: 'var(--ds-state-selected)', border: '2px solid var(--ds-action-primary)', borderRadius: `var(--ds-radius-${step})` }} />
           <code>radius.{step}</code>
         </li>
       ))}

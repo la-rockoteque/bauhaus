@@ -1,0 +1,124 @@
+{
+  "text": {
+    "$type": "color",
+    "default": {
+      "$value": "{colors.neutral.900}"
+    },
+    "muted": {
+      "$value": "{colors.neutral.600}"
+    },
+    "inverse": {
+      "$value": "{colors.neutral.100}"
+    },
+    "link": {
+      "$value": "{colors.primary.700}"
+    }
+  },
+  "surface": {
+    "$type": "color",
+    "default": {
+      "$value": "{colors.neutral.100}"
+    },
+    "raised": {
+      "$value": "{colors.neutral.100}"
+    },
+    "sunken": {
+      "$value": "{colors.neutral.200}"
+    }
+  },
+  "border": {
+    "$type": "color",
+    "default": {
+      "$value": "{colors.neutral.300}"
+    },
+    "strong": {
+      "$value": "{colors.neutral.500}"
+    }
+  },
+  "action": {
+    "$type": "color",
+    "primary": {
+      "$value": "{colors.primary.600}"
+    },
+    "primary-hover": {
+      "$value": "{colors.primary.700}"
+    },
+    "primary-pressed": {
+      "$value": "{colors.primary.800}"
+    },
+    "primary-text": {
+      "$value": "{colors.neutral.100}"
+    },
+    "secondary": {
+      "$value": "{colors.secondary.600}"
+    },
+    "secondary-hover": {
+      "$value": "{colors.secondary.700}"
+    },
+    "secondary-pressed": {
+      "$value": "{colors.secondary.800}"
+    },
+    "secondary-text": {
+      "$value": "{colors.neutral.100}"
+    }
+  },
+  "status": {
+    "$type": "color",
+    "error": {
+      "$value": "{colors.error.600}"
+    },
+    "error-surface": {
+      "$value": "{colors.error.100}"
+    },
+    "success": {
+      "$value": "{colors.success.600}"
+    },
+    "success-surface": {
+      "$value": "{colors.success.100}"
+    },
+    "warning": {
+      "$value": "{colors.warning.600}"
+    },
+    "warning-surface": {
+      "$value": "{colors.warning.100}"
+    },
+    "info": {
+      "$value": "{colors.info.600}"
+    },
+    "info-surface": {
+      "$value": "{colors.info.100}"
+    }
+  },
+  "focus": {
+    "$type": "color",
+    "ring": {
+      "color": {
+        "$value": "{colors.primary.600}"
+      }
+    }
+  },
+  "disabled": {
+    "$type": "color",
+    "text": {
+      "$value": "{colors.neutral.400}"
+    },
+    "surface": {
+      "$value": "{colors.neutral.200}"
+    },
+    "border": {
+      "$value": "{colors.neutral.300}"
+    }
+  },
+  "state": {
+    "$type": "color",
+    "hover-layer": {
+      "$value": "{colors.primary.100}"
+    },
+    "pressed-layer": {
+      "$value": "{colors.primary.200}"
+    },
+    "selected": {
+      "$value": "{colors.primary.200}"
+    }
+  }
+}

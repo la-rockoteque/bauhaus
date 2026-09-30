@@ -1,0 +1,216 @@
+{
+  "colors": {
+    "$type": "color",
+    "$description": "Primitive tier (aliases). Role scales over the palette. The rebrand point: change which hue plays each role here and nothing else.",
+    "primary": {
+      "100": {
+        "$value": "{palette.dark-blue.100}"
+      },
+      "200": {
+        "$value": "{palette.dark-blue.200}"
+      },
+      "300": {
+        "$value": "{palette.dark-blue.300}"
+      },
+      "400": {
+        "$value": "{palette.dark-blue.400}"
+      },
+      "500": {
+        "$value": "{palette.dark-blue.500}"
+      },
+      "600": {
+        "$value": "{palette.dark-blue.600}"
+      },
+      "700": {
+        "$value": "{palette.dark-blue.700}"
+      },
+      "800": {
+        "$value": "{palette.dark-blue.800}"
+      },
+      "900": {
+        "$value": "{palette.dark-blue.900}"
+      },
+      "$description": "The brand action hue."
+    },
+    "secondary": {
+      "100": {
+        "$value": "{palette.teal.100}"
+      },
+      "200": {
+        "$value": "{palette.teal.200}"
+      },
+      "300": {
+        "$value": "{palette.teal.300}"
+      },
+      "400": {
+        "$value": "{palette.teal.400}"
+      },
+      "500": {
+        "$value": "{palette.teal.500}"
+      },
+      "600": {
+        "$value": "{palette.teal.600}"
+      },
+      "700": {
+        "$value": "{palette.teal.700}"
+      },
+      "800": {
+        "$value": "{palette.teal.800}"
+      },
+      "900": {
+        "$value": "{palette.teal.900}"
+      },
+      "$description": "The supporting hue."
+    },
+    "error": {
+      "100": {
+        "$value": "{palette.scarlet.100}"
+      },
+      "200": {
+        "$value": "{palette.scarlet.200}"
+      },
+      "300": {
+        "$value": "{palette.scarlet.300}"
+      },
+      "400": {
+        "$value": "{palette.scarlet.400}"
+      },
+      "500": {
+        "$value": "{palette.scarlet.500}"
+      },
+      "600": {
+        "$value": "{palette.scarlet.600}"
+      },
+      "700": {
+        "$value": "{palette.scarlet.700}"
+      },
+      "800": {
+        "$value": "{palette.scarlet.800}"
+      },
+      "900": {
+        "$value": "{palette.scarlet.900}"
+      },
+      "$description": "Failure and destruction."
+    },
+    "success": {
+      "100": {
+        "$value": "{palette.green.100}"
+      },
+      "200": {
+        "$value": "{palette.green.200}"
+      },
+      "300": {
+        "$value": "{palette.green.300}"
+      },
+      "400": {
+        "$value": "{palette.green.400}"
+      },
+      "500": {
+        "$value": "{palette.green.500}"
+      },
+      "600": {
+        "$value": "{palette.green.600}"
+      },
+      "700": {
+        "$value": "{palette.green.700}"
+      },
+      "800": {
+        "$value": "{palette.green.800}"
+      },
+      "900": {
+        "$value": "{palette.green.900}"
+      },
+      "$description": "Completion and confirmation."
+    },
+    "warning": {
+      "100": {
+        "$value": "{palette.amber.100}"
+      },
+      "200": {
+        "$value": "{palette.amber.200}"
+      },
+      "300": {
+        "$value": "{palette.amber.300}"
+      },
+      "400": {
+        "$value": "{palette.amber.400}"
+      },
+      "500": {
+        "$value": "{palette.amber.500}"
+      },
+      "600": {
+        "$value": "{palette.amber.600}"
+      },
+      "700": {
+        "$value": "{palette.amber.700}"
+      },
+      "800": {
+        "$value": "{palette.amber.800}"
+      },
+      "900": {
+        "$value": "{palette.amber.900}"
+      },
+      "$description": "Caution that needs attention."
+    },
+    "info": {
+      "100": {
+        "$value": "{palette.dark-blue.100}"
+      },
+      "200": {
+        "$value": "{palette.dark-blue.200}"
+      },
+      "300": {
+        "$value": "{palette.dark-blue.300}"
+      },
+      "400": {
+        "$value": "{palette.dark-blue.400}"
+      },
+      "500": {
+        "$value": "{palette.dark-blue.500}"
+      },
+      "600": {
+        "$value": "{palette.dark-blue.600}"
+      },
+      "700": {
+        "$value": "{palette.dark-blue.700}"
+      },
+      "800": {
+        "$value": "{palette.dark-blue.800}"
+      },
+      "900": {
+        "$value": "{palette.dark-blue.900}"
+      },
+      "$description": "Neutral information."
+    },
+    "neutral": {
+      "100": {
+        "$value": "{palette.gray.100}"
+      },
+      "200": {
+        "$value": "{palette.gray.200}"
+      },
+      "300": {
+        "$value": "{palette.gray.300}"
+      },
+      "400": {
+        "$value": "{palette.gray.400}"
+      },
+      "500": {
+        "$value": "{palette.gray.500}"
+      },
+      "600": {
+        "$value": "{palette.gray.600}"
+      },
+      "700": {
+        "$value": "{palette.gray.700}"
+      },
+      "800": {
+        "$value": "{palette.gray.800}"
+      },
+      "900": {
+        "$value": "{palette.gray.900}"
+      },
+      "$description": "Text, surfaces and borders."
+    }
+  }
+}

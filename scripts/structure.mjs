@@ -112,7 +112,9 @@ function sliceChecks({ dirs, files }) {
     need('slice.page', 'MEDIUM', has(dir, 'mdx'), `${name}.mdx`);
     need('slice.rules', 'MEDIUM', layer === 'themes' || has(dir, 'rules.ts'), `${name}.rules.ts`);
     need('slice.test', 'MEDIUM', !component || STORY_EXT.some((e) => files.has(`${dir}/${name}.test.${e}`)), `${name}.test.tsx`);
-    need('slice.tokens', 'MEDIUM', !['foundations', 'themes'].includes(layer) || has(dir, 'tokens.json'), `${name}.tokens.json`);
+    // A foundation may split its tokens over several files (color: palette + colors); a theme has one.
+    const anyTokens = [...files].some((f) => path.posix.dirname(f) === dir && f.endsWith('.tokens.json'));
+    need('slice.tokens', 'MEDIUM', !['foundations', 'themes'].includes(layer) || (layer === 'foundations' ? anyTokens : has(dir, 'tokens.json')), `${name}.tokens.json`);
   }
   return out;
 }
@@ -136,6 +138,29 @@ function patternStyleChecks({ root, files }) {
   return [...files].filter((f) => f.startsWith('patterns/') && f.endsWith('.css')).flatMap((f) => {
     const text = fs.readFileSync(path.join(root, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
     return LITERAL.test(text) ? [finding('pattern.no-styles', 'MEDIUM', f, 'A pattern stylesheet holds a literal colour or px value; patterns carry no values.', 'Compose components that own the style, or use a semantic token (var(--ds-...)).')] : [];
+  });
+}
+
+// ---------- colour at the call site ----------
+
+const CALL_SITE = /^(?:primitives|components|patterns)\/.*\.(?:css|tsx)$/;
+
+/** The CSS prefix from the package's bauhaus.config.json, `ds` when absent or invalid. */
+function prefixOf(root) {
+  try {
+    const { prefix } = JSON.parse(fs.readFileSync(path.join(root, 'bauhaus.config.json'), 'utf8'));
+    return /^[a-z][a-z0-9]{0,7}$/.test(prefix) ? prefix : 'ds';
+  } catch {
+    return 'ds';
+  }
+}
+
+/** Components read roles only: a palette or colors variable in a component, primitive or pattern is a misfile. */
+function paletteChecks({ root, files }) {
+  const use = new RegExp(`var\\(\\s*(--${prefixOf(root)}-(?:palette|colors)-)`);
+  return [...files].filter((f) => CALL_SITE.test(f)).flatMap((f) => {
+    const hit = use.exec(fs.readFileSync(path.join(root, f), 'utf8').replace(/\/\*[\s\S]*?\*\//g, ''));
+    return hit ? [finding('misfile.palette-at-call-site', 'HIGH', f, `Reads ${hit[1]}…, a palette or colors variable; components use roles only.`, 'Use a role (var(--ds-text-default), var(--ds-action-primary)). If no role fits, add a role to every theme; do not read the palette.')] : [];
   });
 }
 
@@ -176,7 +201,7 @@ function importChecks({ root, files }) {
 export function checkStructure(dir) {
   const tree = listTree(dir);
   const ctx = { root: dir, dirs: tree.dirs, files: new Set(tree.files) };
-  const all = [folderChecks, sliceChecks, storyChecks, patternStyleChecks, importChecks].flatMap((c) => c(ctx));
+  const all = [folderChecks, sliceChecks, storyChecks, patternStyleChecks, paletteChecks, importChecks].flatMap((c) => c(ctx));
   return all.sort((a, b) => RANK[a.severity] - RANK[b.severity] || a.path.localeCompare(b.path) || a.id.localeCompare(b.id));
 }
 

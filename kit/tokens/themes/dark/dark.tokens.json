@@ -120,5 +120,14 @@
     "selected": {
       "$value": "{colors.primary.800}"
     }
+  },
+  "elevation": {
+    "1": {
+      "$value": "{shadow.dark.1}"
+    },
+    "2": {
+      "$value": "{shadow.dark.2}"
+    },
+    "$type": "shadow"
   }
 }

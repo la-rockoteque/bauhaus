@@ -1,176 +1,5 @@
 {
-  "color": {
-    "$type": "color",
-    "white": {
-      "$value": "#ffffff"
-    },
-    "black": {
-      "$value": "#000000"
-    },
-    "gray": {
-      "50": {
-        "$value": "#f9fafb"
-      },
-      "100": {
-        "$value": "#f3f4f6"
-      },
-      "200": {
-        "$value": "#e5e7eb"
-      },
-      "300": {
-        "$value": "#d1d5db"
-      },
-      "400": {
-        "$value": "#9ca3af"
-      },
-      "500": {
-        "$value": "#6b7280"
-      },
-      "600": {
-        "$value": "#4b5563"
-      },
-      "700": {
-        "$value": "#374151"
-      },
-      "800": {
-        "$value": "#1f2937"
-      },
-      "900": {
-        "$value": "#111827"
-      }
-    },
-    "blue": {
-      "50": {
-        "$value": "#eff6ff"
-      },
-      "100": {
-        "$value": "#dbeafe"
-      },
-      "200": {
-        "$value": "#bfdbfe"
-      },
-      "300": {
-        "$value": "#93c5fd"
-      },
-      "400": {
-        "$value": "#60a5fa"
-      },
-      "500": {
-        "$value": "#3b82f6"
-      },
-      "600": {
-        "$value": "#2563eb"
-      },
-      "700": {
-        "$value": "#1d4ed8"
-      },
-      "800": {
-        "$value": "#1e40af"
-      },
-      "900": {
-        "$value": "#1e3a8a"
-      }
-    },
-    "green": {
-      "50": {
-        "$value": "#f0fdf4"
-      },
-      "100": {
-        "$value": "#dcfce7"
-      },
-      "200": {
-        "$value": "#bbf7d0"
-      },
-      "300": {
-        "$value": "#86efac"
-      },
-      "400": {
-        "$value": "#4ade80"
-      },
-      "500": {
-        "$value": "#22c55e"
-      },
-      "600": {
-        "$value": "#16a34a"
-      },
-      "700": {
-        "$value": "#15803d"
-      },
-      "800": {
-        "$value": "#166534"
-      },
-      "900": {
-        "$value": "#14532d"
-      }
-    },
-    "amber": {
-      "50": {
-        "$value": "#fffbeb"
-      },
-      "100": {
-        "$value": "#fef3c7"
-      },
-      "200": {
-        "$value": "#fde68a"
-      },
-      "300": {
-        "$value": "#fcd34d"
-      },
-      "400": {
-        "$value": "#fbbf24"
-      },
-      "500": {
-        "$value": "#f59e0b"
-      },
-      "600": {
-        "$value": "#d97706"
-      },
-      "700": {
-        "$value": "#b45309"
-      },
-      "800": {
-        "$value": "#92400e"
-      },
-      "900": {
-        "$value": "#78350f"
-      }
-    },
-    "red": {
-      "50": {
-        "$value": "#fef2f2"
-      },
-      "100": {
-        "$value": "#fee2e2"
-      },
-      "200": {
-        "$value": "#fecaca"
-      },
-      "300": {
-        "$value": "#fca5a5"
-      },
-      "400": {
-        "$value": "#f87171"
-      },
-      "500": {
-        "$value": "#ef4444"
-      },
-      "600": {
-        "$value": "#dc2626"
-      },
-      "700": {
-        "$value": "#b91c1c"
-      },
-      "800": {
-        "$value": "#991b1b"
-      },
-      "900": {
-        "$value": "#7f1d1d"
-      }
-    }
-  },
   "space": {
-    "$type": "dimension",
-    "$description": "4px grid, step n = n x 4px.",
     "0": {
       "$value": "0px"
     },
@@ -209,7 +38,9 @@
     },
     "12": {
       "$value": "48px"
-    }
+    },
+    "$type": "dimension",
+    "$description": "4px grid, step n = n x 4px."
   },
   "radius": {
     "$type": "dimension",
@@ -311,7 +142,6 @@
     }
   },
   "duration": {
-    "$type": "duration",
     "50": {
       "$value": "50ms"
     },
@@ -326,7 +156,8 @@
     },
     "400": {
       "$value": "400ms"
-    }
+    },
+    "$type": "duration"
   },
   "easing": {
     "$type": "cubicBezier",
@@ -357,7 +188,6 @@
     }
   },
   "shadow": {
-    "$type": "shadow",
     "1": {
       "$value": {
         "color": "rgba(17, 24, 39, 0.10)",
@@ -384,6 +214,37 @@
           "spread": "-2px"
         }
       ]
+    },
+    "$type": "shadow",
+    "dark": {
+      "1": {
+        "$value": {
+          "color": "rgba(0, 0, 0, 0.40)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "3px",
+          "spread": "0px"
+        }
+      },
+      "2": {
+        "$value": [
+          {
+            "color": "rgba(0, 0, 0, 0.50)",
+            "offsetX": "0px",
+            "offsetY": "4px",
+            "blur": "6px",
+            "spread": "-1px"
+          },
+          {
+            "color": "rgba(0, 0, 0, 0.35)",
+            "offsetX": "0px",
+            "offsetY": "2px",
+            "blur": "4px",
+            "spread": "-2px"
+          }
+        ]
+      },
+      "$description": "Dark-theme shadows: stronger and blacker, because a dark surface hides a soft shadow. Elevation in dark also comes from a lighter raised surface."
     }
   },
   "z": {

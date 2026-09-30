@@ -15,7 +15,7 @@ export const Scale: Story = {
       {STEPS.map((n) => (
         <li key={n} style={{ display: 'flex', alignItems: 'center', gap: 'var(--ds-space-inline-lg)' }}>
           <code style={{ inlineSize: 'var(--ds-space-12)' }}>space.{n}</code>
-          <span style={{ display: 'block', inlineSize: `var(--ds-space-${n})`, blockSize: 'var(--ds-space-3)', background: 'var(--ds-color-accent-default)' }} />
+          <span style={{ display: 'block', inlineSize: `var(--ds-space-${n})`, blockSize: 'var(--ds-space-3)', background: 'var(--ds-action-primary)' }} />
         </li>
       ))}
     </ul>
@@ -29,7 +29,7 @@ export const SemanticGaps: Story = {
       {ROLES.map((role) => (
         <li key={role} style={{ display: 'flex', alignItems: 'center', gap: 'var(--ds-space-inline-lg)' }}>
           <code style={{ inlineSize: 'var(--ds-space-12)' }}>space.{role.replace('-', '.')}</code>
-          <span style={{ display: 'block', inlineSize: `var(--ds-space-${role})`, blockSize: 'var(--ds-space-3)', background: 'var(--ds-color-accent-default)' }} />
+          <span style={{ display: 'block', inlineSize: `var(--ds-space-${role})`, blockSize: 'var(--ds-space-3)', background: 'var(--ds-action-primary)' }} />
         </li>
       ))}
     </ul>

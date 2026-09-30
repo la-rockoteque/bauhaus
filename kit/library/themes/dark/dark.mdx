@@ -7,28 +7,30 @@ import * as Stories from './dark.stories';
 
 ## 1. Introduction
 
-**In plain words:** The dark theme swaps the light colours for dark ones. Components do not change. They read the same names, and the names point to different values.
+**In plain words:** The dark theme gives every role a value for a dark page. Components do not change. They read the same names, and the names point to different values.
 
-**Precisely:** Theme · overrides the semantic colour tokens under `[data-theme="dark"]` · adds no token and changes no component.
+**Precisely:** Theme · a full set of role values, sibling of `themes/light` (not an override of it) · defines every role name in `foundations/color` and adds none · renders as `[data-theme="dark"]`.
 
-## 2. Tokens (overridden)
+## 2. Tokens (defined)
 
-| Token group | Tier | Change |
+| Token group | Tier | Value |
 |---|---|---|
-| `color.text.*` | 2 | Light greys on dark surfaces; `text.on-accent` becomes dark |
-| `color.surface.*` | 2 | Gray 900 default, lighter grays for raised layers |
-| `color.border.*` | 2 | Darker subtle border, lighter strong border |
-| `color.accent.*` | 2 | One step lighter, so the fill still contrasts with the surface |
+| `text.*` | semantic | Light neutrals: `colors.neutral.100` default, `300` muted; `text.link` is `colors.primary.300` |
+| `surface.*` | semantic | Dark neutrals by tone: `800` default, `700` raised, `900` sunken |
+| `border.*` | semantic | `colors.neutral.600` default, `400` strong |
+| `action.*` | semantic | One step lighter (`400`, `300` hover, `200` pressed) with a dark label |
+| `status.*` | semantic | `300` of each status scale for text and icon, `900` for the surface |
+| `focus.ring.color`, `disabled.*`, `state.*` | semantic | `colors.primary.300`; mid neutrals; dark primary tints |
 
-Tier 1 colours, spacing and type are not overridden.
+The palette and the colors do not change per theme. Dark picks other grades of the same scales.
 
 ## 3. Anatomy
 
-One file, `dark.tokens.json`. Each override names a semantic token that exists in `foundations/color`; the build refuses an unknown one.
+One file, `dark.tokens.json`. It defines the same role names as `light.tokens.json`. The build refuses a missing or extra role, and warns when a role aliases the palette.
 
 ## 4. States
 
-The theme is a state of the whole page: light (default) and dark. Pair contrast is re-checked in both. Forced-colors and high-contrast modes are n/a here: they replace author colours and are handled by the browser.
+The theme is a state of the whole page: light (default) or dark. Pair contrast is re-checked in each: the dark values are chosen, not computed. Forced-colors and high-contrast modes are n/a here: they replace author colours and are handled by the browser.
 
 ## 5. Usage
 
@@ -38,14 +40,15 @@ The theme is a state of the whole page: light (default) and dark. Pair contrast 
 
 ### When not to use — and what instead
 
-- For a brand variant or a per-customer palette: add a separate theme; do not stretch this one.
+- For a brand variant or a per-customer palette: add a separate sibling theme; do not stretch this one.
 - For one dark panel on a light page: pin `data-theme="dark"` on that element, as the Panel story does.
 
 ### How
 
-- Override semantic tokens only. A tier 1 override would recolour every theme (project decision, tier rule).
+- Define roles only, and alias `colors.*`. A palette edit would recolour every theme (project decision, tier rule).
+- Re-derive from the scales; do not invert the light values by formula.
 - Re-check every text and border pair at 4.5:1 and 3:1 (WCAG 1.4.3 and 1.4.11, AA).
-- Use `color.surface.sunken` for wells only; page and card surfaces stay at `default` and `raised` so layers remain distinct (Material 3 elevation-by-tone, adapted; project decision).
+- Show elevation by tone: `surface.raised` is lighter than `surface.default`, and `surface.sunken` is darker (Material 3 elevation-by-tone, adapted; project decision). If the kit adds shadows, re-tune them for dark; do not reuse the light values.
 
 <Canvas of={Stories.Panel} />
 
@@ -55,4 +58,5 @@ The theme is a state of the whole page: light (default) and dark. Pair contrast 
 |---|---|---|---|
 | A colour literal in a component for "dark mode" | The token system is bypassed and the theme drifts | Bauhaus `misfile.raw-value-in-component` | `color.semantic-by-intent` |
 | Inverting the light values by formula | Contrast pairs break; each pair must be checked | WCAG 1.4.3 (AA) | `color.text-contrast` |
-| Overriding a token that no light value defines | The build fails: a theme cannot invent tokens | Bauhaus `tokens.mjs check` | none |
+| A role that `light` does not define | The build fails: every theme defines the same roles | Bauhaus `tokens.mjs check` (theme parity) | `color.theme-parity` |
+| A role that aliases `palette.*` | The rebrand point is bypassed | Bauhaus `tokens.mjs check` warning | `color.roles-alias-colors` |

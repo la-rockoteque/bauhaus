@@ -15,7 +15,7 @@ export const Durations: Story = {
         <li key={step}>
           <code>motion.duration.{step}</code>
           <div
-            style={{ blockSize: 'var(--ds-space-3)', background: 'var(--ds-color-accent-default)', inlineSize: 'var(--ds-space-8)', transition: `inline-size var(--ds-motion-duration-${step}) linear` }}
+            style={{ blockSize: 'var(--ds-space-3)', background: 'var(--ds-action-primary)', inlineSize: 'var(--ds-space-8)', transition: `inline-size var(--ds-motion-duration-${step}) linear` }}
             onMouseEnter={(e) => { e.currentTarget.style.inlineSize = '100%'; }}
             onMouseLeave={(e) => { e.currentTarget.style.inlineSize = ''; }}
           />

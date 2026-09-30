@@ -1,7 +1,7 @@
 .ds-text {
   margin: 0;
   font-family: var(--ds-font-family-sans);
-  color: var(--ds-color-text-default);
+  color: var(--ds-text-default);
 }
 
 .ds-text--body {
@@ -23,5 +23,5 @@
 }
 
 .ds-text--muted {
-  color: var(--ds-color-text-muted);
+  color: var(--ds-text-muted);
 }
