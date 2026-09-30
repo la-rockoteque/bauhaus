@@ -1,0 +1,13 @@
+/* A token in prose. A dotted underline says there is more on hover or focus. */
+.doc-token-name {
+  text-decoration: underline dotted;
+  text-decoration-color: var(--ds-text-muted);
+  text-underline-offset: var(--ds-space-1);
+  cursor: help;
+}
+
+.doc-token-name:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+  border-radius: var(--ds-radius-sm);
+}

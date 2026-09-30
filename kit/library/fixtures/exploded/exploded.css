@@ -1,0 +1,157 @@
+/* Exploded view: the component's layers lifted apart in an isometric projection, labelled on the right. */
+
+.doc-exploded {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: auto minmax(0, auto);
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-12);
+  padding: var(--ds-space-6);
+  overflow-x: auto;
+  background-color: var(--ds-surface-default);
+  background-image: linear-gradient(var(--doc-grid-line) var(--doc-hairline), transparent 0),
+    linear-gradient(90deg, var(--doc-grid-line) var(--doc-hairline), transparent 0);
+  background-size: var(--ds-space-2) var(--ds-space-2);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+  min-block-size: 50vh;
+}
+
+.doc-exploded-scene {
+  display: grid;
+  place-items: center;
+  perspective: none;
+}
+
+/* Isometric: tilt the plane back, then turn it a quarter towards the viewer. Layers stay flat and parallel. */
+.doc-exploded-stack {
+  display: grid;
+  transform: rotateX(55deg) rotateZ(-45deg);
+  transform-style: preserve-3d;
+}
+
+.doc-exploded-stack > * {
+  grid-area: 1 / 1;
+}
+
+/* The page the component sits on: a faint plane under the stack. */
+.doc-exploded-ground {
+  margin: calc(var(--ds-space-6) * -1);
+  border: var(--ds-size-border-thin) dashed var(--ds-border-default);
+  background: color-mix(in oklab, var(--ds-surface-sunken) 60%, transparent);
+}
+
+/* Each layer rises by one step. Its footprint is outlined, so a layer that paints little still reads as a plane. */
+.doc-exploded-layer {
+  position: relative;
+  transform: translateZ(calc(var(--k) * var(--ds-space-10)));
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.doc-exploded-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: var(--ds-size-border-thin) dashed color-mix(in oklab, var(--ds-palette-teal-400) 60%, transparent);
+}
+
+/* Zero-size markers on the layer's corners: the stage reads where they land to start the label lines. */
+.doc-exploded-corner {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+}
+
+.doc-exploded-corner[data-at^="top"] { inset-block-start: 0; }
+.doc-exploded-corner[data-at^="bottom"] { inset-block-end: 0; }
+.doc-exploded-corner[data-at$="start"] { inset-inline-start: 0; }
+.doc-exploded-corner[data-at$="end"] { inset-inline-end: 0; }
+
+/* Each copy keeps one layer's paint and drops the rest. */
+.doc-exploded-layer--elevation,
+.doc-exploded-layer--elevation * {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: transparent !important;
+  outline: none !important;
+}
+
+.doc-exploded-layer--surface,
+.doc-exploded-layer--surface * {
+  border-color: transparent !important;
+  color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  text-decoration-color: transparent !important;
+}
+
+.doc-exploded-layer--border,
+.doc-exploded-layer--border * {
+  background: transparent !important;
+  color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.doc-exploded-layer--content,
+.doc-exploded-layer--content * {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.doc-exploded-layer--focus,
+.doc-exploded-layer--focus * {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* The focus layer draws the ring from its tokens around the component. */
+.doc-exploded-layer--focus > :first-child {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color) !important;
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.doc-exploded-legend {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-exploded-label {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-default);
+  font-size: var(--ds-font-size-sm);
+}
+
+.doc-exploded-name {
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-exploded-leaders {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.doc-exploded-leaders path {
+  fill: none;
+  stroke: var(--ds-text-muted);
+  stroke-width: var(--ds-size-border-thin);
+  stroke-dasharray: var(--ds-size-border-thin) var(--ds-size-border-thick);
+}

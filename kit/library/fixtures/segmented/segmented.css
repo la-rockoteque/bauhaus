@@ -1,0 +1,22 @@
+/* One compact track: subtle, narrow segments in a sunken well; the checked one is lifted onto the surface. */
+.doc-segmented {
+  display: inline-flex;
+  justify-self: start;
+  align-self: start;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-1);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface-sunken);
+}
+
+.doc-segmented .ds-button {
+  color: var(--ds-text-muted);
+}
+
+/* Checked: the surface, the default text and an outline, so the choice does not rest on colour alone. */
+.doc-segmented .ds-button[aria-checked="true"] {
+  background: var(--ds-surface-default);
+  border-color: var(--ds-border-strong);
+  color: var(--ds-text-default);
+}
