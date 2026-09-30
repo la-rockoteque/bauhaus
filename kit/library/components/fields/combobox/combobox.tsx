@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
-import { Button, ComboBox, ComboBoxStateContext, FieldError as AriaFieldError, Input, Label, ListBox, ListBoxItem, Popover, Text } from 'react-aria-components';
+import { Button, ComboBox, FieldError as AriaFieldError, Input, Label, ListBox, ListBoxItem, Popover, Text } from 'react-aria-components';
 import type { Key } from 'react-aria-components';
 import { Icon } from '../../../primitives/icon/icon';
 import { FieldMarker } from '../field';
@@ -42,19 +42,28 @@ export interface ComboboxProps {
 }
 
 /**
- * Showcase only, not exported from the package: a provider around a Combobox draws its list open, inline under the input, and keeps it open.
- * A real field opens on the user's action.
+ * Showcase only, not exported from the package: a provider around a Combobox draws a picture of its open list, inline under the input.
+ * The field itself stays closed: a really open combobox hides the rest of the page from screen readers, as it should, and a
+ * showcase cell must not. A real field opens on the user's action.
  */
 export const ForceOpenContext = createContext(false);
 
-/** Reopens the list whenever it closes. For showcases only. */
-function KeepOpen() {
-  const state = useContext(ComboBoxStateContext);
-  const isOpen = state?.isOpen;
-  useEffect(() => {
-    if (!isOpen) state?.open(null, 'input');
-  }, [isOpen, state]);
-  return null;
+/** The open list as a picture, with the listbox's own classes: the options the text matches, the first one active, the chosen one checked. */
+function ListPicture({ options, text, selected, empty }: { options: readonly ComboboxOption[]; text: string; selected?: string | null; empty: string }) {
+  const shown = options.filter((option) => option.label.toLowerCase().includes(text.toLowerCase()));
+  return (
+    <div className="ds-combobox__popover ds-combobox__popover--inline" aria-hidden="true">
+      <div className="ds-combobox__list">
+        {shown.length === 0 && <div className="ds-combobox__empty">{empty}</div>}
+        {shown.map((option, k) => (
+          <div key={option.id} className="ds-combobox__option" data-focused={k === 0 || undefined} data-selected={option.id === selected || undefined} data-disabled={option.disabled || undefined}>
+            <span className="ds-combobox__check">{option.id === selected && <Icon glyph="check" size="sm" />}</span>
+            <span className="ds-combobox__label">{option.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 /** React Aria ComboBox styled with tokens. Focus stays in the input; the list is a popup; the result count is announced. */
@@ -83,7 +92,7 @@ export function Combobox({
   );
   return (
     <ComboBox
-      className={['ds-field', 'ds-combobox', className].filter(Boolean).join(' ')}
+      className={['ds-field', 'ds-combobox', forceOpen && 'ds-combobox--open', className].filter(Boolean).join(' ')}
       defaultItems={options}
       name={name}
       selectedKey={selectedKey}
@@ -101,7 +110,6 @@ export function Combobox({
       allowsEmptyCollection
       aria-busy={loading || undefined}
     >
-      {forceOpen && <KeepOpen />}
       <Label className="ds-field__label">
         {label}
         <FieldMarker required={required} text={requiredText} />
@@ -113,9 +121,7 @@ export function Combobox({
           <Icon glyph="chevron-down" />
         </Button>
         {forceOpen && (
-          <div className="ds-combobox__popover ds-combobox__popover--inline">
-            {list}
-          </div>
+          <ListPicture options={options} text={inputValue ?? defaultInputValue ?? ''} selected={selectedKey ?? defaultSelectedKey} empty={loading ? loadingText : emptyText} />
         )}
       </div>
       <AriaFieldError className="ds-field__error">
