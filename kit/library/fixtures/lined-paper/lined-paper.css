@@ -1,0 +1,129 @@
+/* Lined paper: blue rules, a red margin line, punched holes and a torn bottom edge */
+
+/* The clip that tears the edge also clips a box shadow, so the shadow is a filter on this wrapper. */
+.paper-sheet {
+  filter: drop-shadow(0 var(--ds-size-border-thin) var(--ds-space-1) color-mix(in srgb, var(--ds-text-default) 20%, transparent));
+}
+
+.paper {
+  --paper-rule: var(--ds-space-8);
+  --paper-head: calc(var(--paper-rule) * 2);
+  --paper-margin: calc(var(--ds-space-12) * 2);
+  --paper-line: var(--ds-size-border-thin);
+  --paper-hole-gap: calc(var(--paper-rule) * 6);
+  --paper-tear: var(--ds-space-3);
+  --paper-ink: var(--ds-status-info-border);
+  --paper-color: var(--ds-surface-raised);
+  position: relative;
+  box-sizing: border-box;
+  block-size: 100%;
+  padding: var(--paper-head) var(--ds-space-6) calc(var(--paper-rule) * var(--paper-blank, 1)) calc(var(--paper-margin) + var(--ds-space-3));
+  color: var(--ds-text-default);
+  background:
+    linear-gradient(to right, transparent var(--paper-margin), var(--ds-status-error) var(--paper-margin) calc(var(--paper-margin) + var(--paper-line)), transparent 0),
+    linear-gradient(var(--paper-color) calc(var(--paper-head) - var(--paper-line)), transparent 0),
+    repeating-linear-gradient(transparent 0 calc(var(--paper-rule) - var(--paper-line)), var(--paper-ink) 0 var(--paper-rule)),
+    var(--paper-color);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--paper-tear) * 0.36),
+    98.4% calc(100% - var(--paper-tear) * 0.67),
+    97% calc(100% - var(--paper-tear) * 0.56),
+    94.9% calc(100% - var(--paper-tear) * 0.11),
+    92.3% calc(100% - var(--paper-tear) * 0.09),
+    90% calc(100% - var(--paper-tear) * 0.12),
+    88.6% calc(100% - var(--paper-tear) * 0.45),
+    85.2% calc(100% - var(--paper-tear) * 0.17),
+    83.5% calc(100% - var(--paper-tear) * 0.65),
+    79.8% calc(100% - var(--paper-tear) * 0.6),
+    77.6% calc(100% - var(--paper-tear) * 0.98),
+    76.2% calc(100% - var(--paper-tear) * 0.87),
+    74.3% calc(100% - var(--paper-tear) * 0.19),
+    72.8% calc(100% - var(--paper-tear) * 0.34),
+    69.5% calc(100% - var(--paper-tear) * 0.22),
+    66.7% calc(100% - var(--paper-tear) * 0.66),
+    64.6% calc(100% - var(--paper-tear) * 0.57),
+    63.2% calc(100% - var(--paper-tear) * 0.11),
+    61.5% calc(100% - var(--paper-tear) * 0.7),
+    59.2% calc(100% - var(--paper-tear) * 0.35),
+    56.4% calc(100% - var(--paper-tear) * 0.48),
+    54.5% calc(100% - var(--paper-tear) * 0.8),
+    51.4% calc(100% - var(--paper-tear) * 0.28),
+    48.8% calc(100% - var(--paper-tear) * 0.55),
+    45.3% calc(100% - var(--paper-tear) * 0.74),
+    43.3% calc(100% - var(--paper-tear) * 0.98),
+    41.8% calc(100% - var(--paper-tear) * 0.45),
+    38.7% calc(100% - var(--paper-tear) * 0.19),
+    36.2% calc(100% - var(--paper-tear) * 0.09),
+    33.2% calc(100% - var(--paper-tear) * 0.78),
+    30.6% calc(100% - var(--paper-tear) * 0.88),
+    28.5% calc(100% - var(--paper-tear) * 0.71),
+    25.8% calc(100% - var(--paper-tear) * 0.6),
+    23.4% calc(100% - var(--paper-tear) * 0.85),
+    19.8% calc(100% - var(--paper-tear) * 0.5),
+    16.8% calc(100% - var(--paper-tear) * 0.11),
+    13.8% calc(100% - var(--paper-tear) * 0.66),
+    10% calc(100% - var(--paper-tear) * 0.83),
+    8.1% calc(100% - var(--paper-tear) * 0.42),
+    5.1% calc(100% - var(--paper-tear) * 0.07),
+    2.7% calc(100% - var(--paper-tear) * 0.21),
+    1.2% calc(100% - var(--paper-tear) * 0.11),
+    0% calc(100% - var(--paper-tear) * 0.29)
+  );
+}
+
+/* Holes sit a fixed number of rules apart, starting in the middle of the head band; the torn edge clips any past the bottom. */
+.paper-hole {
+  position: absolute;
+  inset-inline-start: calc(var(--paper-margin) / 3);
+  inline-size: var(--ds-space-5);
+  aspect-ratio: 1;
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-surface-sunken);
+  box-shadow: inset 0 var(--paper-line) var(--ds-space-1) var(--ds-border-strong);
+  translate: -50% -50%;
+}
+
+.paper-hole:nth-child(1) { inset-block-start: calc(var(--paper-head) / 2); }
+.paper-hole:nth-child(2) { inset-block-start: calc(var(--paper-head) / 2 + var(--paper-hole-gap)); }
+.paper-hole:nth-child(3) { inset-block-start: calc(var(--paper-head) / 2 + var(--paper-hole-gap) * 2); }
+
+.paper-head {
+  position: absolute;
+  inset-block-start: var(--ds-space-3);
+  inset-inline-start: calc(var(--paper-margin) + var(--ds-space-3));
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-1) var(--ds-space-3);
+  align-items: baseline;
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-normal);
+}
+
+/*
+ * Every line box is one rule tall, wrapped lines included: the body face is the strut at exactly one rule,
+ * and the writing on top adds no height of its own. The start trim puts the first cap top at the padding
+ * edge, so the first baseline lands on the first rule, one cap height lower.
+ */
+.paper-lines {
+  padding-block-start: calc(var(--paper-rule) - var(--paper-line) - 1cap);
+  font-family: var(--ds-text-body-family);
+  font-size: var(--ds-font-size-lg);
+  line-height: var(--paper-rule);
+  text-box: trim-start cap alphabetic;
+  overflow-wrap: anywhere;
+}
+
+.paper-line {
+  margin: 0;
+}
+
+.paper-line > span {
+  line-height: 0;
+}
+
+.paper-note {
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-text-muted);
+}

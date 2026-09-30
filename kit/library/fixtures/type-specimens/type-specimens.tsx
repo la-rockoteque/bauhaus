@@ -1,4 +1,5 @@
 import { Group } from '../specimens/specimens';
+import { LinedPaper, PaperLine, PaperNote } from '../lined-paper/lined-paper';
 import { alias, resolve, themeTokens } from '../rulebook/tokens';
 import './type-specimens.css';
 
@@ -57,50 +58,68 @@ const styleNames = (): string[] => names(/^--ds-text-[\w-]+-family$/).map((name)
 /** The text styles whose family aliases this role. */
 const stylesReading = (roleVar: string): string[] => styleNames().filter((style) => alias(THEME, `--ds-text-${style}-family`) === `var(${roleVar})`);
 
-function FaceCard({ roleVar }: { roleVar: string }) {
+/** One sheet per typeface: the pangram, the French line, the weight ramp, then look-alikes and figures where the role needs them. */
+function FaceSheet({ roleVar }: { roleVar: string }) {
   const role = tail(roleVar, '--ds-font-');
   const face = typefaceOf(roleVar);
   if (!face) return null;
   const style = { fontFamily: `var(${face})` };
   return (
-    <div className="spec-face">
-      <div className="spec-face-head">
-        <code>{dotted(face)}</code>
-        <span className="doc-muted">{`${familyName(resolve(THEME, face))} · read by font.${role}`}</span>
-      </div>
-      <p className="spec-face-pangram" style={style}>{PANGRAM}</p>
-      <p className="spec-face-french" style={style}>{FRENCH}</p>
-      <div className="spec-face-ramp" style={style}>
+    <LinedPaper
+      head={
+        <>
+          <code>{dotted(face)}</code>
+          <span className="doc-muted">{`${familyName(resolve(THEME, face))} · read by font.${role}`}</span>
+        </>
+      }
+    >
+      <PaperLine style={style}>{PANGRAM}</PaperLine>
+      <PaperLine style={style}>{FRENCH}</PaperLine>
+      <PaperLine style={style}>
         {weightVars().map((weight) => (
-          <span key={weight} style={{ fontWeight: `var(${weight})` }}>{`Aa ${resolve(THEME, weight)}`}</span>
+          <span key={weight} className="spec-face-weight" style={{ fontWeight: `var(${weight})` }}>{`Aa ${resolve(THEME, weight)}`}</span>
         ))}
-      </div>
+      </PaperLine>
       {CONFUSABLE_ROLES.includes(role) && (
-        <p className="spec-face-confusable" style={style}>
-          {CONFUSABLE}
-          <span className="doc-muted"> capital I, lowercase l, digit 1; capital O, digit 0</span>
-        </p>
+        <PaperLine style={style}>
+          {`${CONFUSABLE} `}
+          <PaperNote>capital I, lowercase l, digit 1; capital O, digit 0</PaperNote>
+        </PaperLine>
       )}
       {FIGURE_ROLES.includes(role) ? (
-        <div className="spec-face-figures" style={style}>
-          <span style={{ fontVariantNumeric: 'proportional-nums' }}>{'1 111 · 8 888 proportional'}</span>
-          <span style={{ fontVariantNumeric: 'tabular-nums' }}>{'1 111 · 8 888 tabular'}</span>
-        </div>
+        <>
+          <PaperLine style={{ ...style, fontVariantNumeric: 'proportional-nums' }}>{'1 111 · 8 888 '}<PaperNote>proportional</PaperNote></PaperLine>
+          <PaperLine style={{ ...style, fontVariantNumeric: 'tabular-nums' }}>{'1 111 · 8 888 '}<PaperNote>tabular</PaperNote></PaperLine>
+        </>
       ) : (
-        <p className="doc-muted spec-face-none">Figures: not used at this role's sizes.</p>
+        <PaperLine><PaperNote>Figures: not used at this role's sizes.</PaperNote></PaperLine>
       )}
-    </div>
+    </LinedPaper>
   );
 }
 
-/** Every named family: its stack's first name, a pangram, the weights the styles use, figures and look-alike characters. */
+/** Every named family on its own sheet: its stack's first name, a pangram, the weights the styles use, figures and look-alike characters. */
 export function TypefaceSpecimens() {
   return (
     <Group name="typeface.* · the fonts you own">
       <div className="spec-faces">
-        {roleVars().map((roleVar) => <FaceCard key={roleVar} roleVar={roleVar} />)}
+        {roleVars().map((roleVar) => <FaceSheet key={roleVar} roleVar={roleVar} />)}
       </div>
     </Group>
+  );
+}
+
+/** Each font role writes the pangram on its own line, in the typeface it reads. */
+export function FontsOnPaper() {
+  return (
+    <LinedPaper blank={6}>
+      {roleVars().map((roleVar) => (
+        <PaperLine key={roleVar} style={{ fontFamily: `var(${roleVar})` }}>
+          {`${PANGRAM} `}
+          <PaperNote>{`${familyName(resolve(THEME, typefaceOf(roleVar) ?? roleVar))} · font.${tail(roleVar, '--ds-font-')}`}</PaperNote>
+        </PaperLine>
+      ))}
+    </LinedPaper>
   );
 }
 

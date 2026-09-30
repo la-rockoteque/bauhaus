@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
-import { FontRoles, TypeScale, TypefaceSpecimens } from '../../fixtures/type-specimens/type-specimens';
+import { FontRoles, FontsOnPaper, TypeScale, TypefaceSpecimens } from '../../fixtures/type-specimens/type-specimens';
+import { Group } from '../../fixtures/specimens/specimens';
 import { typographyRules } from './typography.rules';
 
 const meta = { title: 'Foundations/Typography', parameters: { layout: 'fullscreen' } } satisfies Meta;
@@ -36,6 +37,9 @@ export const Showcase: StoryObj = {
       }}
       specimens={
         <>
+          <Group name="font.* · on paper">
+            <FontsOnPaper />
+          </Group>
           <TypefaceSpecimens />
           <FontRoles />
           <TypeScale />
