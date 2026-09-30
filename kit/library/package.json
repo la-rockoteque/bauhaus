@@ -28,6 +28,7 @@
     "check-structure": "node $BAUHAUS_PLUGIN/scripts/structure.mjs check .",
     "build": "vite build && npm run tokens",
     "test": "vitest run",
+    "test:report": "vitest run --reporter=default --reporter=json --outputFile.json=dist/test-results.json",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "storybook": "npm run tokens && storybook dev -p 6006",

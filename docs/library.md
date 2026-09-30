@@ -113,7 +113,7 @@ Delete a slice folder and the thing is gone everywhere. That is the test of a go
    - nothing imports `patterns/` except the app;
    - `fixtures/` imports foundations, themes, primitives, components, patterns and other fixtures, never `index.ts`;
    - only `*.stories.tsx`, `*.test.tsx`, `.storybook/` and other fixtures import `fixtures/` (`fixture.exposed`, HIGH).
-6. **The package tests, builds and runs Storybook alone.** `npm test`, `npm run build` and `npm run storybook` work from inside the package with the app absent.
+6. **The package tests, builds and runs Storybook alone.** `npm test`, `npm run build` and `npm run storybook` work from inside the package with the app absent. `npm run test:report` also writes `dist/test-results.json`; each slice's Advisories page shows its own tests from it.
 
 ## Storybook uses the design system's own styles
 
