@@ -1,0 +1,2301 @@
+{
+  "version": 1,
+  "source": "Fontsource API + Google Fonts, verified 2026-09-30",
+  "notes": [
+    "tabularFigures is true when the Fontsource latin woff2 has a tnum GSUB feature or gives all ten digits one advance width (checked with fontTools). It describes the file Fontsource ships.",
+    "xHeight is an editorial judgement, not a measurement.",
+    "axes lists the main axes from api.fontsource.org/v1/variable/<id>. The default latin-wght file carries wght only; load other axes from the package axis files.",
+    "variable is false for families with only static files; package is then @fontsource/<id>."
+  ],
+  "roles": {
+    "sans": {
+      "description": "Workhorse faces for UI, body text and headings.",
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "essentialDefault": "inter",
+      "tokens": [
+        "font.family.sans"
+      ]
+    },
+    "serif": {
+      "description": "Editorial and long-form reading faces.",
+      "fallback": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
+      "essentialDefault": "source-serif-4",
+      "tokens": [
+        "font.family.serif"
+      ]
+    },
+    "display": {
+      "description": "High-impact faces for headlines and heroes. Large sizes only.",
+      "fallback": "system-ui, -apple-system, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+      "essentialDefault": "fraunces",
+      "tokens": [
+        "font.family.display"
+      ]
+    },
+    "mono": {
+      "description": "Fixed-width faces for code blocks, technical UI and developer docs.",
+      "fallback": "ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace",
+      "essentialDefault": "jetbrains-mono",
+      "tokens": [
+        "font.family.mono"
+      ]
+    },
+    "handwriting": {
+      "description": "Accent faces for personality. Short text only, used sparingly.",
+      "fallback": "\"Segoe Print\", \"Bradley Hand\", \"Comic Sans MS\", cursive",
+      "essentialDefault": "caveat",
+      "tokens": [
+        "font.family.handwriting"
+      ]
+    },
+    "slab": {
+      "description": "Sturdy faces that bridge serif and display.",
+      "fallback": "Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif",
+      "essentialDefault": "bitter",
+      "tokens": [
+        "font.family.slab"
+      ]
+    }
+  },
+  "families": [
+    {
+      "id": "inter",
+      "name": "Inter",
+      "role": "sans",
+      "classification": "neo-grotesque",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/inter",
+      "variable": true,
+      "axes": [
+        "wght",
+        "opsz"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "greek-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "UI, dashboards, data tables, forms",
+      "avoidFor": "expressive brand headlines; it reads neutral",
+      "pairsWith": [
+        {
+          "id": "source-serif-4",
+          "reason": "structure contrast: neo-grotesque sans against a transitional serif"
+        },
+        {
+          "id": "jetbrains-mono",
+          "reason": "both drawn for screens, similar x-height"
+        },
+        {
+          "id": "fraunces",
+          "reason": "soft display serif gives the neutral sans a voice"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v20",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/inter",
+        "https://fontsource.org/fonts/inter",
+        "https://fonts.google.com/specimen/Inter"
+      ]
+    },
+    {
+      "id": "roboto-flex",
+      "name": "Roboto Flex",
+      "role": "sans",
+      "classification": "neo-grotesque (multi-axis)",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/roboto-flex",
+      "variable": true,
+      "axes": [
+        "wght",
+        "wdth",
+        "opsz",
+        "slnt",
+        "GRAD"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+        1000
+      ],
+      "italics": false,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "apps that need width or optical-size control, dense UI",
+      "avoidFor": "sites where one or two weights suffice; the axis payload is large",
+      "pairsWith": [
+        {
+          "id": "roboto-slab",
+          "reason": "same drawing lineage, slab contrast"
+        },
+        {
+          "id": "jetbrains-mono",
+          "reason": "matched screen-first proportions"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v30",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/roboto-flex",
+        "https://fontsource.org/fonts/roboto-flex",
+        "https://fonts.google.com/specimen/Roboto+Flex"
+      ]
+    },
+    {
+      "id": "ibm-plex-sans",
+      "name": "IBM Plex Sans",
+      "role": "sans",
+      "classification": "grotesque with humanist details",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/ibm-plex-sans",
+      "variable": true,
+      "axes": [
+        "wght",
+        "wdth"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "enterprise and technical products, docs",
+      "avoidFor": "soft, friendly consumer brands",
+      "pairsWith": [
+        {
+          "id": "ibm-plex-mono",
+          "reason": "same superfamily, matched metrics"
+        },
+        {
+          "id": "newsreader",
+          "reason": "editorial serif contrast for long reads"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v23",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/ibm-plex-sans",
+        "https://fontsource.org/fonts/ibm-plex-sans",
+        "https://fonts.google.com/specimen/IBM+Plex+Sans"
+      ]
+    },
+    {
+      "id": "source-sans-3",
+      "name": "Source Sans 3",
+      "role": "sans",
+      "classification": "humanist sans",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/source-sans-3",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "greek-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "long UI text, documentation, forms",
+      "avoidFor": "tight display settings; it is built for text",
+      "pairsWith": [
+        {
+          "id": "source-serif-4",
+          "reason": "same superfamily, one design language"
+        },
+        {
+          "id": "source-code-pro",
+          "reason": "same superfamily for code"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v19",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/source-sans-3",
+        "https://fontsource.org/fonts/source-sans-3",
+        "https://fonts.google.com/specimen/Source+Sans+3"
+      ]
+    },
+    {
+      "id": "noto-sans",
+      "name": "Noto Sans",
+      "role": "sans",
+      "classification": "humanist sans",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/noto-sans",
+      "variable": true,
+      "axes": [
+        "wght",
+        "wdth"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "devanagari",
+        "greek",
+        "greek-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "multilingual products, wide script coverage, fallback for missing glyphs",
+      "avoidFor": "brand-distinct identity; it is deliberately neutral",
+      "pairsWith": [
+        {
+          "id": "noto-serif",
+          "reason": "same superfamily, consistent across scripts"
+        },
+        {
+          "id": "jetbrains-mono",
+          "reason": "clear code face beside a neutral sans"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v42",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/noto-sans",
+        "https://fontsource.org/fonts/noto-sans",
+        "https://fonts.google.com/specimen/Noto+Sans"
+      ]
+    },
+    {
+      "id": "open-sans",
+      "name": "Open Sans",
+      "role": "sans",
+      "classification": "humanist sans",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/open-sans",
+      "variable": true,
+      "axes": [
+        "wght",
+        "wdth"
+      ],
+      "weights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "greek-ext",
+        "hebrew",
+        "latin",
+        "latin-ext",
+        "math",
+        "symbols",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "general body and UI text, legacy-compatible layouts",
+      "avoidFor": "brand-distinct identity; it is very common",
+      "pairsWith": [
+        {
+          "id": "merriweather",
+          "reason": "Merriweather is tuned for screens; warm structural contrast"
+        },
+        {
+          "id": "source-code-pro",
+          "reason": "clear code face for docs"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v44",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/open-sans",
+        "https://fontsource.org/fonts/open-sans",
+        "https://fonts.google.com/specimen/Open+Sans"
+      ]
+    },
+    {
+      "id": "work-sans",
+      "name": "Work Sans",
+      "role": "sans",
+      "classification": "grotesque",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/work-sans",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "headings and UI with a wide weight range",
+      "avoidFor": "very small text in the thinnest weights",
+      "pairsWith": [
+        {
+          "id": "lora",
+          "reason": "calligraphic serif contrast"
+        },
+        {
+          "id": "jetbrains-mono",
+          "reason": "tool and code pairing"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v24",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/work-sans",
+        "https://fontsource.org/fonts/work-sans",
+        "https://fonts.google.com/specimen/Work+Sans"
+      ]
+    },
+    {
+      "id": "dm-sans",
+      "name": "DM Sans",
+      "role": "sans",
+      "classification": "geometric sans",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/dm-sans",
+      "variable": true,
+      "axes": [
+        "wght",
+        "opsz"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "tabularFigures": false,
+      "xHeight": "medium",
+      "bestFor": "friendly product UI and marketing pages",
+      "avoidFor": "numeric tables; the Fontsource latin file shows no tabular figures",
+      "pairsWith": [
+        {
+          "id": "dm-serif-display",
+          "reason": "same foundry lineage, display contrast"
+        },
+        {
+          "id": "geist-mono",
+          "reason": "neutral mono beside a geometric sans"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v17",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/dm-sans",
+        "https://fontsource.org/fonts/dm-sans",
+        "https://fonts.google.com/specimen/DM+Sans"
+      ]
+    },
+    {
+      "id": "manrope",
+      "name": "Manrope",
+      "role": "sans",
+      "classification": "modern geometric sans",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/manrope",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "italics": false,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "SaaS UI, headings, dashboards",
+      "avoidFor": "long passages at small sizes",
+      "pairsWith": [
+        {
+          "id": "literata",
+          "reason": "reading serif contrast"
+        },
+        {
+          "id": "jetbrains-mono",
+          "reason": "developer pairing"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v20",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/manrope",
+        "https://fontsource.org/fonts/manrope",
+        "https://fonts.google.com/specimen/Manrope"
+      ]
+    },
+    {
+      "id": "plus-jakarta-sans",
+      "name": "Plus Jakarta Sans",
+      "role": "sans",
+      "classification": "geometric sans",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/plus-jakarta-sans",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "fintech and marketing UI, headings",
+      "avoidFor": "dense text in the lightest weights",
+      "pairsWith": [
+        {
+          "id": "lora",
+          "reason": "warm serif contrast"
+        },
+        {
+          "id": "geist-mono",
+          "reason": "tidy mono for values"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v12",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/plus-jakarta-sans",
+        "https://fontsource.org/fonts/plus-jakarta-sans",
+        "https://fonts.google.com/specimen/Plus+Jakarta+Sans"
+      ]
+    },
+    {
+      "id": "figtree",
+      "name": "Figtree",
+      "role": "sans",
+      "classification": "friendly geometric sans",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/figtree",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "approachable apps, onboarding, marketing",
+      "avoidFor": "formal or legal documents",
+      "pairsWith": [
+        {
+          "id": "newsreader",
+          "reason": "editorial serif contrast"
+        },
+        {
+          "id": "jetbrains-mono",
+          "reason": "code and IDs"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v9",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/figtree",
+        "https://fontsource.org/fonts/figtree",
+        "https://fonts.google.com/specimen/Figtree"
+      ]
+    },
+    {
+      "id": "public-sans",
+      "name": "Public Sans",
+      "role": "sans",
+      "classification": "neo-grotesque",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/public-sans",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "public-service, forms and accessible UI",
+      "avoidFor": "expressive brand voice",
+      "pairsWith": [
+        {
+          "id": "source-serif-4",
+          "reason": "transitional serif for long reads"
+        },
+        {
+          "id": "ibm-plex-mono",
+          "reason": "neutral mono for identifiers"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v21",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/public-sans",
+        "https://fontsource.org/fonts/public-sans",
+        "https://fonts.google.com/specimen/Public+Sans"
+      ]
+    },
+    {
+      "id": "nunito-sans",
+      "name": "Nunito Sans",
+      "role": "sans",
+      "classification": "humanist sans",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/nunito-sans",
+      "variable": true,
+      "axes": [
+        "wght",
+        "wdth",
+        "opsz"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "friendly UI, wide width and optical-size control",
+      "avoidFor": "dense display headlines; it is tuned for text",
+      "pairsWith": [
+        {
+          "id": "merriweather",
+          "reason": "sturdy serif contrast"
+        },
+        {
+          "id": "source-code-pro",
+          "reason": "neutral code face"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v19",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/nunito-sans",
+        "https://fontsource.org/fonts/nunito-sans",
+        "https://fonts.google.com/specimen/Nunito+Sans"
+      ]
+    },
+    {
+      "id": "atkinson-hyperlegible-next",
+      "name": "Atkinson Hyperlegible Next",
+      "role": "sans",
+      "classification": "legibility-focused grotesque",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/atkinson-hyperlegible-next",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "forms, low-vision-friendly UI, places where similar letters must not be confused",
+      "avoidFor": "brands that want a neutral typographic voice; its shapes are distinctive",
+      "pairsWith": [
+        {
+          "id": "lora",
+          "reason": "warm serif for long reads"
+        },
+        {
+          "id": "jetbrains-mono",
+          "reason": "clear I/l/1 and 0/O in code"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v7",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/atkinson-hyperlegible-next",
+        "https://fontsource.org/fonts/atkinson-hyperlegible-next",
+        "https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next"
+      ]
+    },
+    {
+      "id": "hanken-grotesk",
+      "name": "Hanken Grotesk",
+      "role": "sans",
+      "classification": "neo-grotesque",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/hanken-grotesk",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "clean UI and marketing pages, wide weight range",
+      "avoidFor": "high-density data screens in the thinnest weights",
+      "pairsWith": [
+        {
+          "id": "newsreader",
+          "reason": "editorial serif contrast"
+        },
+        {
+          "id": "ibm-plex-mono",
+          "reason": "neutral mono"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v12",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/hanken-grotesk",
+        "https://fontsource.org/fonts/hanken-grotesk",
+        "https://fonts.google.com/specimen/Hanken+Grotesk"
+      ]
+    },
+    {
+      "id": "geist",
+      "name": "Geist",
+      "role": "sans",
+      "classification": "Swiss-style neo-grotesque",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/geist",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "developer tools, dashboards, docs",
+      "avoidFor": "warm or editorial brand voice",
+      "pairsWith": [
+        {
+          "id": "geist-mono",
+          "reason": "same superfamily"
+        },
+        {
+          "id": "source-serif-4",
+          "reason": "long-form contrast"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v5",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/geist",
+        "https://fontsource.org/fonts/geist",
+        "https://fonts.google.com/specimen/Geist"
+      ]
+    },
+    {
+      "id": "source-serif-4",
+      "name": "Source Serif 4",
+      "role": "serif",
+      "classification": "transitional serif with optical size",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/source-serif-4",
+      "variable": true,
+      "axes": [
+        "wght",
+        "opsz"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "long-form reading, documentation, articles",
+      "avoidFor": "ornamental headline use at very large sizes",
+      "pairsWith": [
+        {
+          "id": "inter",
+          "reason": "neo-grotesque UI text"
+        },
+        {
+          "id": "source-sans-3",
+          "reason": "same superfamily"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v14",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/source-serif-4",
+        "https://fontsource.org/fonts/source-serif-4",
+        "https://fonts.google.com/specimen/Source+Serif+4"
+      ]
+    },
+    {
+      "id": "literata",
+      "name": "Literata",
+      "role": "serif",
+      "classification": "contemporary text serif (e-reading)",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/literata",
+      "variable": true,
+      "axes": [
+        "wght",
+        "opsz"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "greek-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "books, long articles, reading apps",
+      "avoidFor": "tight UI labels",
+      "pairsWith": [
+        {
+          "id": "manrope",
+          "reason": "geometric sans contrast"
+        },
+        {
+          "id": "geist",
+          "reason": "clean sans for UI chrome"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v40",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/literata",
+        "https://fontsource.org/fonts/literata",
+        "https://fonts.google.com/specimen/Literata"
+      ]
+    },
+    {
+      "id": "newsreader",
+      "name": "Newsreader",
+      "role": "serif",
+      "classification": "transitional editorial serif with optical size",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/newsreader",
+      "variable": true,
+      "axes": [
+        "wght",
+        "opsz"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "news, magazines, essays; optical sizes suit both text and headlines",
+      "avoidFor": "small UI text below 14 px",
+      "pairsWith": [
+        {
+          "id": "hanken-grotesk",
+          "reason": "sans for UI around articles"
+        },
+        {
+          "id": "ibm-plex-sans",
+          "reason": "technical sans contrast"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v26",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/newsreader",
+        "https://fontsource.org/fonts/newsreader",
+        "https://fonts.google.com/specimen/Newsreader"
+      ]
+    },
+    {
+      "id": "lora",
+      "name": "Lora",
+      "role": "serif",
+      "classification": "contemporary calligraphic serif",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/lora",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "math",
+        "symbols",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "blogs, editorial body, quotes",
+      "avoidFor": "dense data UI",
+      "pairsWith": [
+        {
+          "id": "work-sans",
+          "reason": "grotesque contrast"
+        },
+        {
+          "id": "plus-jakarta-sans",
+          "reason": "geometric contrast"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v37",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/lora",
+        "https://fontsource.org/fonts/lora",
+        "https://fonts.google.com/specimen/Lora"
+      ]
+    },
+    {
+      "id": "merriweather",
+      "name": "Merriweather",
+      "role": "serif",
+      "classification": "sturdy screen serif",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/merriweather",
+      "variable": true,
+      "axes": [
+        "wght",
+        "wdth",
+        "opsz"
+      ],
+      "weights": [
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "on-screen reading at modest sizes, dense articles",
+      "avoidFor": "elegant or high-contrast brand tones",
+      "pairsWith": [
+        {
+          "id": "open-sans",
+          "reason": "humanist sans companion"
+        },
+        {
+          "id": "nunito-sans",
+          "reason": "soft sans companion"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v33",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/merriweather",
+        "https://fontsource.org/fonts/merriweather",
+        "https://fonts.google.com/specimen/Merriweather"
+      ]
+    },
+    {
+      "id": "eb-garamond",
+      "name": "EB Garamond",
+      "role": "serif",
+      "classification": "old-style serif (Garamond revival)",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/eb-garamond",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "greek-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "low",
+      "bestFor": "literary and cultural long-form on large screens or print",
+      "avoidFor": "small sizes on low-density screens",
+      "pairsWith": [
+        {
+          "id": "inter",
+          "reason": "neutral sans for UI"
+        },
+        {
+          "id": "public-sans",
+          "reason": "plain sans companion"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v33",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/eb-garamond",
+        "https://fontsource.org/fonts/eb-garamond",
+        "https://fonts.google.com/specimen/EB+Garamond"
+      ]
+    },
+    {
+      "id": "crimson-pro",
+      "name": "Crimson Pro",
+      "role": "serif",
+      "classification": "old-style serif",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/crimson-pro",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "low",
+      "bestFor": "books, essays, refined body at 18 px and up",
+      "avoidFor": "small UI text",
+      "pairsWith": [
+        {
+          "id": "source-sans-3",
+          "reason": "humanist sans companion"
+        },
+        {
+          "id": "figtree",
+          "reason": "friendly sans companion"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v28",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/crimson-pro",
+        "https://fontsource.org/fonts/crimson-pro",
+        "https://fonts.google.com/specimen/Crimson+Pro"
+      ]
+    },
+    {
+      "id": "libre-baskerville",
+      "name": "Libre Baskerville",
+      "role": "serif",
+      "classification": "transitional serif (Baskerville, web-tuned)",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/libre-baskerville",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "tabularFigures": false,
+      "xHeight": "high",
+      "bestFor": "body text at screen sizes, formal tone",
+      "avoidFor": "tabular data; no tabular figures in the Fontsource latin file",
+      "pairsWith": [
+        {
+          "id": "hanken-grotesk",
+          "reason": "clean sans companion"
+        },
+        {
+          "id": "work-sans",
+          "reason": "grotesque companion"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v24",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/libre-baskerville",
+        "https://fontsource.org/fonts/libre-baskerville",
+        "https://fonts.google.com/specimen/Libre+Baskerville"
+      ]
+    },
+    {
+      "id": "noto-serif",
+      "name": "Noto Serif",
+      "role": "serif",
+      "classification": "neutral transitional serif",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/noto-serif",
+      "variable": true,
+      "axes": [
+        "wght",
+        "wdth"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "greek-ext",
+        "latin",
+        "latin-ext",
+        "math",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "multilingual reading, documentation",
+      "avoidFor": "distinctive editorial voice",
+      "pairsWith": [
+        {
+          "id": "noto-sans",
+          "reason": "same superfamily"
+        },
+        {
+          "id": "atkinson-hyperlegible-next",
+          "reason": "legibility-focused sans companion"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v33",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/noto-serif",
+        "https://fontsource.org/fonts/noto-serif",
+        "https://fonts.google.com/specimen/Noto+Serif"
+      ]
+    },
+    {
+      "id": "fraunces",
+      "name": "Fraunces",
+      "role": "display",
+      "classification": "soft old-style display serif (SOFT and WONK axes)",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/fraunces",
+      "variable": true,
+      "axes": [
+        "wght",
+        "opsz",
+        "SOFT",
+        "WONK"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": false,
+      "xHeight": "medium",
+      "bestFor": "hero headlines with warmth and personality",
+      "avoidFor": "body text; use a text serif instead",
+      "pairsWith": [
+        {
+          "id": "inter",
+          "reason": "neutral sans for body"
+        },
+        {
+          "id": "hanken-grotesk",
+          "reason": "clean sans for UI"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v38",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/fraunces",
+        "https://fontsource.org/fonts/fraunces",
+        "https://fonts.google.com/specimen/Fraunces"
+      ]
+    },
+    {
+      "id": "playfair-display",
+      "name": "Playfair Display",
+      "role": "display",
+      "classification": "high-contrast transitional (Didone-leaning) serif",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/playfair-display",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": false,
+      "xHeight": "medium",
+      "bestFor": "elegant headlines, magazine and luxury tones",
+      "avoidFor": "body text and text below 24 px; hairlines break down small",
+      "pairsWith": [
+        {
+          "id": "source-sans-3",
+          "reason": "humanist sans for body"
+        },
+        {
+          "id": "work-sans",
+          "reason": "plain sans for UI"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v40",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/playfair-display",
+        "https://fontsource.org/fonts/playfair-display",
+        "https://fonts.google.com/specimen/Playfair+Display"
+      ]
+    },
+    {
+      "id": "bricolage-grotesque",
+      "name": "Bricolage Grotesque",
+      "role": "display",
+      "classification": "quirky grotesque with optical size and width",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/bricolage-grotesque",
+      "variable": true,
+      "axes": [
+        "wght",
+        "wdth",
+        "opsz"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "italics": false,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "expressive headlines, brand-forward pages",
+      "avoidFor": "dense UI text",
+      "pairsWith": [
+        {
+          "id": "inter",
+          "reason": "neutral sans for body"
+        },
+        {
+          "id": "newsreader",
+          "reason": "editorial contrast"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v9",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/bricolage-grotesque",
+        "https://fontsource.org/fonts/bricolage-grotesque",
+        "https://fonts.google.com/specimen/Bricolage+Grotesque"
+      ]
+    },
+    {
+      "id": "unbounded",
+      "name": "Unbounded",
+      "role": "display",
+      "classification": "wide geometric sans",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/unbounded",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": false,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "tech and web3-style hero titles, short headings",
+      "avoidFor": "multi-line headings and any body text; width uses space",
+      "pairsWith": [
+        {
+          "id": "inter",
+          "reason": "neutral body sans"
+        },
+        {
+          "id": "jetbrains-mono",
+          "reason": "technical accent"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v12",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/unbounded",
+        "https://fontsource.org/fonts/unbounded",
+        "https://fonts.google.com/specimen/Unbounded"
+      ]
+    },
+    {
+      "id": "big-shoulders",
+      "name": "Big Shoulders",
+      "role": "display",
+      "classification": "condensed grotesque with optical size",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/big-shoulders",
+      "variable": true,
+      "axes": [
+        "wght",
+        "opsz"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": false,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": false,
+      "xHeight": "high",
+      "bestFor": "sports, posters, tall narrow hero titles",
+      "avoidFor": "body text and long headings",
+      "pairsWith": [
+        {
+          "id": "public-sans",
+          "reason": "plain sans for body"
+        },
+        {
+          "id": "roboto-slab",
+          "reason": "sturdy slab accent"
+        }
+      ],
+      "fontsourceCategory": "display",
+      "version": "v4",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/big-shoulders",
+        "https://fontsource.org/fonts/big-shoulders",
+        "https://fonts.google.com/specimen/Big+Shoulders"
+      ]
+    },
+    {
+      "id": "abril-fatface",
+      "name": "Abril Fatface",
+      "role": "display",
+      "classification": "fat-face Didone",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource/abril-fatface",
+      "variable": false,
+      "axes": [],
+      "weights": [
+        400
+      ],
+      "italics": false,
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "tabularFigures": false,
+      "xHeight": "medium",
+      "bestFor": "single-word headlines, posters",
+      "avoidFor": "anything under 32 px; only one weight",
+      "pairsWith": [
+        {
+          "id": "lora",
+          "reason": "text serif for body"
+        },
+        {
+          "id": "open-sans",
+          "reason": "humanist sans for body"
+        }
+      ],
+      "fontsourceCategory": "display",
+      "version": "v25",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/abril-fatface",
+        "https://fontsource.org/fonts/abril-fatface",
+        "https://fonts.google.com/specimen/Abril+Fatface"
+      ]
+    },
+    {
+      "id": "dm-serif-display",
+      "name": "DM Serif Display",
+      "role": "display",
+      "classification": "high-contrast transitional display serif",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource/dm-serif-display",
+      "variable": false,
+      "axes": [],
+      "weights": [
+        400
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "tabularFigures": false,
+      "xHeight": "medium",
+      "bestFor": "elegant headlines, editorial hero",
+      "avoidFor": "body text; only regular weight and italic",
+      "pairsWith": [
+        {
+          "id": "dm-sans",
+          "reason": "same foundry lineage, geometric body"
+        },
+        {
+          "id": "inter",
+          "reason": "neutral body"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v17",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/dm-serif-display",
+        "https://fontsource.org/fonts/dm-serif-display",
+        "https://fonts.google.com/specimen/DM+Serif+Display"
+      ]
+    },
+    {
+      "id": "anton",
+      "name": "Anton",
+      "role": "display",
+      "classification": "condensed heavy gothic",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource/anton",
+      "variable": false,
+      "axes": [],
+      "weights": [
+        400
+      ],
+      "italics": false,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": false,
+      "xHeight": "high",
+      "bestFor": "impact headlines, banners, short calls",
+      "avoidFor": "more than a few words; only one weight, all-caps feel",
+      "pairsWith": [
+        {
+          "id": "open-sans",
+          "reason": "neutral body"
+        },
+        {
+          "id": "source-sans-3",
+          "reason": "humanist body"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v27",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/anton",
+        "https://fontsource.org/fonts/anton",
+        "https://fonts.google.com/specimen/Anton"
+      ]
+    },
+    {
+      "id": "space-grotesk",
+      "name": "Space Grotesk",
+      "role": "display",
+      "classification": "quirky geometric grotesque",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/space-grotesk",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        300,
+        400,
+        500,
+        600,
+        700
+      ],
+      "italics": false,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "tech-brand headlines, short subheads",
+      "avoidFor": "long text; some letterforms are idiosyncratic",
+      "pairsWith": [
+        {
+          "id": "inter",
+          "reason": "neutral body"
+        },
+        {
+          "id": "ibm-plex-mono",
+          "reason": "technical pairing"
+        }
+      ],
+      "fontsourceCategory": "sans-serif",
+      "version": "v22",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/space-grotesk",
+        "https://fontsource.org/fonts/space-grotesk",
+        "https://fonts.google.com/specimen/Space+Grotesk"
+      ]
+    },
+    {
+      "id": "jetbrains-mono",
+      "name": "JetBrains Mono",
+      "role": "mono",
+      "classification": "developer monospace",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/jetbrains-mono",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "code blocks, terminals, technical UI",
+      "avoidFor": "prose",
+      "pairsWith": [
+        {
+          "id": "inter",
+          "reason": "neutral sans for UI"
+        },
+        {
+          "id": "source-serif-4",
+          "reason": "serif for docs prose"
+        }
+      ],
+      "fontsourceCategory": "monospace",
+      "version": "v24",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/jetbrains-mono",
+        "https://fontsource.org/fonts/jetbrains-mono",
+        "https://fonts.google.com/specimen/JetBrains+Mono"
+      ]
+    },
+    {
+      "id": "ibm-plex-mono",
+      "name": "IBM Plex Mono",
+      "role": "mono",
+      "classification": "industrial monospace",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource/ibm-plex-mono",
+      "variable": false,
+      "axes": [],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "code, IDs, data values; matches IBM Plex Sans",
+      "avoidFor": "prose",
+      "pairsWith": [
+        {
+          "id": "ibm-plex-sans",
+          "reason": "same superfamily"
+        },
+        {
+          "id": "newsreader",
+          "reason": "editorial contrast"
+        }
+      ],
+      "fontsourceCategory": "monospace",
+      "version": "v20",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/ibm-plex-mono",
+        "https://fontsource.org/fonts/ibm-plex-mono",
+        "https://fonts.google.com/specimen/IBM+Plex+Mono"
+      ]
+    },
+    {
+      "id": "source-code-pro",
+      "name": "Source Code Pro",
+      "role": "mono",
+      "classification": "humanist monospace",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/source-code-pro",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "greek-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "code blocks and docs; matches Source Sans",
+      "avoidFor": "prose",
+      "pairsWith": [
+        {
+          "id": "source-sans-3",
+          "reason": "same superfamily"
+        },
+        {
+          "id": "source-serif-4",
+          "reason": "same superfamily"
+        }
+      ],
+      "fontsourceCategory": "monospace",
+      "version": "v31",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/source-code-pro",
+        "https://fontsource.org/fonts/source-code-pro",
+        "https://fonts.google.com/specimen/Source+Code+Pro"
+      ]
+    },
+    {
+      "id": "geist-mono",
+      "name": "Geist Mono",
+      "role": "mono",
+      "classification": "neo-grotesque monospace",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/geist-mono",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "symbols2",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "code and technical UI; matches Geist",
+      "avoidFor": "prose",
+      "pairsWith": [
+        {
+          "id": "geist",
+          "reason": "same superfamily"
+        },
+        {
+          "id": "public-sans",
+          "reason": "plain sans companion"
+        }
+      ],
+      "fontsourceCategory": "monospace",
+      "version": "v6",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/geist-mono",
+        "https://fontsource.org/fonts/geist-mono",
+        "https://fonts.google.com/specimen/Geist+Mono"
+      ]
+    },
+    {
+      "id": "caveat",
+      "name": "Caveat",
+      "role": "handwriting",
+      "classification": "casual brush handwriting",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/caveat",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ],
+      "italics": false,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "latin",
+        "latin-ext"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "short accents, annotations, signatures",
+      "avoidFor": "body, UI labels, any text over a few words",
+      "pairsWith": [
+        {
+          "id": "inter",
+          "reason": "neutral sans carries all real content"
+        },
+        {
+          "id": "fraunces",
+          "reason": "warm display serif"
+        }
+      ],
+      "fontsourceCategory": "handwriting",
+      "version": "v23",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/caveat",
+        "https://fontsource.org/fonts/caveat",
+        "https://fonts.google.com/specimen/Caveat"
+      ]
+    },
+    {
+      "id": "kalam",
+      "name": "Kalam",
+      "role": "handwriting",
+      "classification": "casual marker handwriting",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource/kalam",
+      "variable": false,
+      "axes": [],
+      "weights": [
+        300,
+        400,
+        700
+      ],
+      "italics": false,
+      "subsets": [
+        "devanagari",
+        "latin",
+        "latin-ext"
+      ],
+      "tabularFigures": false,
+      "xHeight": "medium",
+      "bestFor": "callouts, notes, quotes",
+      "avoidFor": "body, UI labels, long text",
+      "pairsWith": [
+        {
+          "id": "open-sans",
+          "reason": "plain sans carries the content"
+        },
+        {
+          "id": "source-serif-4",
+          "reason": "serif for reading text"
+        }
+      ],
+      "fontsourceCategory": "handwriting",
+      "version": "v18",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/kalam",
+        "https://fontsource.org/fonts/kalam",
+        "https://fonts.google.com/specimen/Kalam"
+      ]
+    },
+    {
+      "id": "patrick-hand",
+      "name": "Patrick Hand",
+      "role": "handwriting",
+      "classification": "neat printed handwriting",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource/patrick-hand",
+      "variable": false,
+      "axes": [],
+      "weights": [
+        400
+      ],
+      "italics": false,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": false,
+      "xHeight": "medium",
+      "bestFor": "short labels on playful surfaces, sticky-note styles",
+      "avoidFor": "body, UI labels, long text",
+      "pairsWith": [
+        {
+          "id": "nunito-sans",
+          "reason": "soft sans carries the content"
+        },
+        {
+          "id": "lora",
+          "reason": "serif for reading text"
+        }
+      ],
+      "fontsourceCategory": "handwriting",
+      "version": "v25",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/patrick-hand",
+        "https://fontsource.org/fonts/patrick-hand",
+        "https://fonts.google.com/specimen/Patrick+Hand"
+      ]
+    },
+    {
+      "id": "bitter",
+      "name": "Bitter",
+      "role": "slab",
+      "classification": "contemporary text slab serif",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/bitter",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": true,
+      "xHeight": "high",
+      "bestFor": "on-screen body text with a sturdy voice, headings",
+      "avoidFor": "ornamental use",
+      "pairsWith": [
+        {
+          "id": "inter",
+          "reason": "neutral sans for UI"
+        },
+        {
+          "id": "source-sans-3",
+          "reason": "humanist sans companion"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v42",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/bitter",
+        "https://fontsource.org/fonts/bitter",
+        "https://fonts.google.com/specimen/Bitter"
+      ]
+    },
+    {
+      "id": "roboto-slab",
+      "name": "Roboto Slab",
+      "role": "slab",
+      "classification": "geometric slab serif",
+      "license": "Apache 2.0",
+      "package": "@fontsource-variable/roboto-slab",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": false,
+      "subsets": [
+        "cyrillic",
+        "cyrillic-ext",
+        "greek",
+        "greek-ext",
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": false,
+      "xHeight": "high",
+      "bestFor": "headings, callouts, technical content",
+      "avoidFor": "long body at light weights",
+      "pairsWith": [
+        {
+          "id": "roboto-flex",
+          "reason": "same drawing lineage"
+        },
+        {
+          "id": "open-sans",
+          "reason": "humanist companion"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v36",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/roboto-slab",
+        "https://fontsource.org/fonts/roboto-slab",
+        "https://fonts.google.com/specimen/Roboto+Slab"
+      ]
+    },
+    {
+      "id": "zilla-slab",
+      "name": "Zilla Slab",
+      "role": "slab",
+      "classification": "humanist slab serif (Mozilla)",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource/zilla-slab",
+      "variable": false,
+      "axes": [],
+      "weights": [
+        300,
+        400,
+        500,
+        600,
+        700
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "tabularFigures": true,
+      "xHeight": "medium",
+      "bestFor": "headings and short text with warmth",
+      "avoidFor": "data tables; static files only",
+      "pairsWith": [
+        {
+          "id": "work-sans",
+          "reason": "grotesque companion"
+        },
+        {
+          "id": "figtree",
+          "reason": "friendly companion"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v12",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/zilla-slab",
+        "https://fontsource.org/fonts/zilla-slab",
+        "https://fonts.google.com/specimen/Zilla+Slab"
+      ]
+    },
+    {
+      "id": "aleo",
+      "name": "Aleo",
+      "role": "slab",
+      "classification": "humanist slab serif",
+      "license": "SIL OFL 1.1",
+      "package": "@fontsource-variable/aleo",
+      "variable": true,
+      "axes": [
+        "wght"
+      ],
+      "weights": [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900
+      ],
+      "italics": true,
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "tabularFigures": false,
+      "xHeight": "medium",
+      "bestFor": "editorial headings and body with a soft slab voice",
+      "avoidFor": "tight UI labels",
+      "pairsWith": [
+        {
+          "id": "hanken-grotesk",
+          "reason": "clean sans companion"
+        },
+        {
+          "id": "public-sans",
+          "reason": "plain sans companion"
+        }
+      ],
+      "fontsourceCategory": "serif",
+      "version": "v16",
+      "source": [
+        "https://api.fontsource.org/v1/fonts/aleo",
+        "https://fontsource.org/fonts/aleo",
+        "https://fonts.google.com/specimen/Aleo"
+      ]
+    }
+  ]
+}
