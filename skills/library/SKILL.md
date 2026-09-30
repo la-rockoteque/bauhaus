@@ -73,11 +73,11 @@ Extract one component into its slice. Follow `extraction.md` § One batch.
 2. Show the plan: slice path, files to create, app concerns found (i18n, router, data, flags, store), shim path. Wait for a yes.
 3. Dispatch:
    - `bauhaus:design-system-architect` leads: placement, isolation, prop API.
-   - `bauhaus:ui-designer` writes the `.mdx` page (Introduction, Tokens, Anatomy, Usage, Pitfalls) and replaces literals by semantic tokens.
+   - `bauhaus:ui-designer` writes the showcase (`DocPage` props: Tokens, Anatomy, States grid) and the `.mdx` guide (Introduction, Usage, Pitfalls) and replaces literals by semantic tokens.
    - `bauhaus:ux-designer` builds the state matrix and reviews keyboard and focus behaviour.
-4. Create the slice: `<name>.tsx`, `.css`, `.stories.tsx`, `.mdx`, `.rules.ts`, `.test.tsx`. Add `.tokens.json` only with component tokens.
+4. Create the slice: `<name>.tsx`, `.css`, `.stories.tsx` (the showcase), `.mdx` (the guide), `.rules.ts`, `.test.tsx`. Add `.tokens.json` only with component tokens.
 5. Cut app concerns into props (`extraction.md` § Cutting app concerns). Text is a prop. Links use `as` or a render prop.
-6. Write one story per state-matrix cell. Rules use ids `<component>.state.<state>`. A missing cell is a finding.
+6. Fill the States grid with one cell per state-matrix cell. Rules use ids `<component>.state.<state>`. A missing cell is a finding.
 7. Export from `index.ts`.
 8. Leave a shim at the old app path, marked `@deprecated`. Update the ratchet count. It may not rise.
 9. Verify: `node ${CLAUDE_PLUGIN_ROOT}/scripts/structure.mjs check packages/<name>`, then the package's test and build with the app absent. Report the results.

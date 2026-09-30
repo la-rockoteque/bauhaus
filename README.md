@@ -2,7 +2,7 @@
 
 <img src="assets/bauhaus-512.png" alt="Bauhaus icon: stacked layers in red, black, blue and yellow" width="160">
 
-A design-system workshop for AI agents. Bauhaus helps Claude Code build, extract, audit, evolve and advise on a design system (DSM): its tokens, components, patterns, styleguide, Storybook and rulebook.
+A design-system workshop for AI agents. Bauhaus helps Claude Code build, extract, audit, evolve and advise on a design system (DSM): its tokens, components, patterns, showcase and guide pages, and rulebook.
 
 The name comes from the Bauhaus school (Weimar 1919, Dessau 1925, Berlin 1932–33). Its students took a preliminary course on form, colour and material first, then worked in the workshops. Bauhaus follows the same order: foundations first, then tokens, components and patterns. See `knowledge/bauhaus/principles.md`.
 
@@ -10,7 +10,7 @@ The name comes from the Bauhaus school (Weimar 1919, Dessau 1925, Berlin 1932–
 
 - **Three layers, never mixed.** Foundation, component, pattern. Tokens are not a layer: they are the DTCG storage of foundation and component decisions. Every agent classifies an artifact before it builds or reviews it, and flags anything filed in the wrong layer (`knowledge/taxonomy/`).
 - **States as a core concept.** Every component, pattern and screen has a state matrix: Speelman's nine lifecycle states and the interaction states (`knowledge/states/`).
-- **One page contract.** Every DSM page has an introduction, tokens, anatomy, states, a full usage guide, and pitfalls and don'ts. Every rule names its basis: a WCAG criterion with its level, an APG pattern, a heuristic, a published system or a research result (`knowledge/governance/page-contract.md`).
+- **One page contract.** Every slice has two pages. The showcase (`<name>.stories.tsx`, one `<DocPage/>` story) shows tokens, anatomy, the States grid and a compact Do / Don't. The guide (`<name>.mdx`) holds the full introduction, usage, the reasoning per state, and pitfalls and don'ts with their reasons. Every rule names its basis: a WCAG criterion with its level, an APG pattern, a heuristic, a published system or a research result (`knowledge/governance/page-contract.md`).
 - **Tech-agnostic tokens.** DTCG JSON is the source. Colour is stored as a palette (named hues), colors (role scales that alias it: the rebrand point) and roles per theme (`themes/light`, the default, and `themes/dark`, siblings that define the same role names). Components use roles only. `scripts/tokens.mjs` builds CSS, SCSS, JS, TS, JSON and a Tailwind preset.
 - **Plain words first.** Advice comes in two registers: plain for anyone, then precise for the implementer (`knowledge/taxonomy/plain-language.md`).
 - **A knowledge base** the agents read and cite (`knowledge/README.md`).
@@ -41,7 +41,7 @@ claude plugin install bauhaus@bauhaus
 | `/bauhaus:component` | Add or evolve a component. |
 | `/bauhaus:pattern` | Add or evolve a pattern. |
 | `/bauhaus:theme` | Add a sibling theme (dark, high contrast, brand) with a full set of roles and a parity check. |
-| `/bauhaus:styleguide` | Write or resync the prose styleguide. |
+| `/bauhaus:styleguide` | Write or resync the guides (`.mdx`) and the optional overview. |
 | `/bauhaus:storybook` | Install the Storybook kit. |
 
 ## Agents

@@ -51,10 +51,10 @@ Contract: [docs/library.md](../../docs/library.md) § Extraction from an app. Ta
 
 1. **Classify.** Run the decision tree in `knowledge/taxonomy/decision-tree.md`. Confirm it is a component, not a pattern with a component's name.
 2. **Place.** Choose `primitives/` or `components/<family>/` ([folder-structure.md](folder-structure.md)).
-3. **Create the slice.** `button.tsx`, `button.css`, `button.stories.tsx`, `button.mdx`, `button.rules.ts`, `button.test.tsx`.
+3. **Create the slice.** `button.tsx`, `button.css`, `button.stories.tsx` (the showcase), `button.mdx` (the guide), `button.rules.ts`, `button.test.tsx`.
 4. **Cut app concerns into props.** See the table below.
 5. **Replace literals** in `button.css` by semantic tokens.
-6. **Write one story per state-matrix cell** and the `.mdx` page contract.
+6. **Write the showcase** (one `<DocPage/>` story whose States grid renders every state-matrix cell) **and the guide** (`.mdx`).
 7. **Write the rules** with ids `<component>.state.<state>`.
 8. **Export** from `index.ts`.
 9. **Leave the shim** in the app.

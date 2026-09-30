@@ -35,10 +35,10 @@ A component is a reusable block that does one job and consumes semantic tokens. 
 7. **Propose before you populate.** Show anatomy, variants and states to the user with `AskUserQuestion` (2-4 options). Populate after the answer.
 8. **Land the four artifacts in one pass.**
    1. **Styles and tokens.** The stylesheet or component CSS, using `--<prefix>-*` semantic tokens only (colour: roles, never `palette.*` or `colors.*`). Component tokens only if a semantic token is too broad.
-   2. **Styleguide section.** In `<config.guide>` §Components, to the page contract, six sections in order: 1 Introduction (what, job, layer, plain words first), 2 Tokens (consumed, with intent), 3 Anatomy (parts, required or optional), 4 States (the matrix), 5 Usage (when, when not and the alternative, how: variants, composition, content, responsive, accessibility), 6 Pitfalls and don'ts (each with why).
-   3. **Storybook page.** `Components/<Name>` with the same six sections, and one story per state.
+   2. **Guide.** `<name>.mdx` (with `<Meta of={Stories}/>`), to the page contract. It holds the full text of: 1 Introduction (what, job, layer, plain words first), 2 Tokens (consumed, with intent), 3 Anatomy (parts, required or optional), 4 States (the matrix), 5 Usage (when, when not and the alternative, how: variants, composition, content, responsive, accessibility), 6 Pitfalls and don'ts (each with why).
+   3. **Showcase.** `<name>.stories.tsx`: one story renders `<DocPage/>` with a short Introduction, Tokens, Anatomy (stage, pins, legend, Specs, API), the States grid (every state live with its trigger), live Rulebook, Accessibility coverage and a compact Do / Don't. Do not repeat the guide's tables.
    4. **Rulebook entries.** Rules with permanent ids (`<component>.<rule>`), verify mode `auto` or `review`, severity, expectation. Add the stylesheet to the graded list if the project has one.
-9. **State matrix.** Mandatory. Run `/bauhaus:states` for the component: rows = interaction states, columns = variants, each cell designed, n/a with reason, or missing. One story per state, one rule `<component>.state.<state>` per designed state. No matrix, no component.
+9. **State matrix.** Mandatory. Run `/bauhaus:states` for the component: rows = interaction states, columns = variants, each cell designed, n/a with reason, or missing. One States-grid cell per state, one rule `<component>.state.<state>` per designed state. No matrix, no component.
 10. **Slop check.** For each Usage rule and Pitfall ask: "What is the basis?" (WCAG number and level, APG pattern, Nielsen heuristic by name, published system, research result) and "Would this line be true of any component?" No basis or generic: rewrite with a basis or cut.
 11. **Migrate the first call site.** Replace the ad-hoc version with the component. Record the remaining call sites and set a ratchet on them.
 12. **Verify.**
@@ -46,7 +46,7 @@ A component is a reusable block that does one job and consumes semantic tokens. 
     - No raw colour, size or duration in the component's CSS.
     - All four artifacts exist and name the same variants and tokens.
     - Matrix has zero unexplained `missing` cells.
-    - The page has six sections in order. Every Usage and Pitfall line has a basis.
+    - The two pages carry six sections in order. Every Usage and Pitfall line has a basis.
     - Keyboard walk and accessible name confirmed by `bauhaus:ux-designer`.
     - Project build and tests pass.
 13. **Audit.** Optionally run `/bauhaus:audit` on the new component.

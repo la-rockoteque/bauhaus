@@ -69,12 +69,14 @@ Colour is the one foundation with more than one tokens file, and its roles live 
 foundations/color/
 ├─ palette.tokens.json   named hues with grades: palette.scarlet.100…900, palette.dark-blue.*, palette.teal.*, palette.gray.*
 ├─ colors.tokens.json    role scales aliasing the palette: colors.primary.*, secondary, error, success, warning, info, neutral
-├─ color.mdx             the page contract
-├─ color.stories.tsx     palette, colors and roles side by side
+├─ color.mdx             the guide
+├─ color.stories.tsx     the showcase: palette, colors and roles side by side
 └─ color.rules.ts        rulebook entries
 themes/
-├─ light/                light.tokens.json · light.mdx · light.stories.tsx   (the default, also :root)
-└─ dark/                 dark.tokens.json · dark.mdx · dark.stories.tsx
+├─ themes.stories.tsx    one showcase for every theme, with a Light · Dark switch
+├─ themes.mdx            one guide for every theme
+├─ light/                light.tokens.json   (the default, also :root)
+└─ dark/                 dark.tokens.json
 ```
 
 - `palette.tokens.json` is primitive. Only `colors.tokens.json` reads it. No component or pattern does.
@@ -90,8 +92,8 @@ One folder, every file named after the thing.
 components/clickables/button/
 ├─ button.tsx            the component
 ├─ button.css            styles, semantic tokens only
-├─ button.stories.tsx    one story per designed state-matrix cell
-├─ button.mdx            the page contract (six sections)
+├─ button.stories.tsx    the showcase: one story renders <DocPage/>
+├─ button.mdx            the guide: prose the showcase cannot show
 ├─ button.rules.ts       rulebook entries
 ├─ button.test.tsx       behaviour and accessibility tests
 ├─ button.tokens.json    only if the component has component tokens
@@ -102,8 +104,8 @@ components/clickables/button/
 |---|---|---|
 | `.tsx` (or `.vue`, `.svelte`) | component, primitive | The code |
 | `.css` | anything with styles | Styles beside markup |
-| `.stories.tsx` | every slice | Bauhaus four artifacts; state matrix |
-| `.mdx` | every slice | Page contract, `knowledge/governance/page-contract.md` |
+| `.stories.tsx` | every slice | The showcase; four artifacts; state matrix |
+| `.mdx` | every slice | The guide; page contract, `knowledge/governance/page-contract.md` |
 | `.rules.ts` | every slice | Rulebook, `knowledge/governance/rulebook.md` |
 | `.test.tsx` | component, primitive | Behaviour and accessibility |
 | `.tokens.json` | foundation, theme; component only with component tokens. Colour has `palette.tokens.json` and `colors.tokens.json`. | Tokens tier rules, `knowledge/tokens/architecture.md` |
@@ -170,8 +172,10 @@ Test by product speech: no product owner asks for "a Box on the settings page". 
 - `.storybook/main.ts` globs `../**/*.@(mdx|stories.tsx)`.
 - Stories use CSF files named `*.stories.tsx`.
 - Title comes from the path: `foundations/spacing` gives Foundations/Spacing, `components/clickables/button` gives Clickables/Button, `patterns/filtering` gives Patterns/Filtering.
-- Each slice has one `.mdx` page that holds the page contract: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts.
-- Stories cover the state matrix: one story per designed cell.
+- Each slice has two pages. The stories file is the showcase: one story renders `<DocPage …/>` and shows the visual sections (Tokens, Anatomy, the States grid, live Rulebook, Accessibility, compact Do / Don't). The `.mdx` file is the guide: the full Introduction, Usage, the reasoning behind each state, Pitfalls with reasons. It declares `<Meta of={Stories}/>`, so one entry shows the guide as "Docs" and the showcase as a story.
+- The States grid renders every designed cell live inside the showcase. A state is a cell of the grid, not a story of its own.
+- `DocPage` lives in `.storybook/doc-page/`, outside the published package. The sidebar sorts Principles, Foundations, Themes, Primitives, the component families, Patterns. A toolbar switches light and dark.
+- `scripts/structure.mjs` reports `slice.page` when the guide is missing and `slice.showcase` when the stories file does not render `DocPage`.
 
 ## Import direction
 
@@ -213,7 +217,7 @@ Where a stack keeps styles inside the component file, keep the `.css` rule "sema
 ## Misfiles
 
 - `misfile.folder-by-file-type`: folders such as `styles/`, `stories/`, `hooks/`. Move each file into the slice it serves.
-- `misfile.story-far-from-component`: a story or `.mdx` outside its slice. Move it beside its component and rename after it.
+- `misfile.story-far-from-component`: a story or `.mdx` guide outside its slice. Move it beside its component and rename after it.
 - `misfile.primitive-as-layer`: `primitives/` treated as a layer, or a raw-value token stored in `primitives/`. Tokens belong in the foundation slice; `primitives/` holds components.
 - `misfile.token-as-layer`: a root `tokens/` folder beside `foundations/`. Move each file into its foundation slice.
 - `misfile.theme-not-sibling`: a theme that lists part of the roles, or rewrites palette values.
@@ -226,5 +230,5 @@ These ids are defined in [../taxonomy/misfiles.md](../taxonomy/misfiles.md).
 - [library-options.md](library-options.md) — where the package lives
 - [extraction.md](extraction.md) — moving code into slices
 - [../taxonomy/layers.md](../taxonomy/layers.md) — the three layers
-- [../governance/page-contract.md](../governance/page-contract.md) — the `.mdx` page
+- [../governance/page-contract.md](../governance/page-contract.md) — the showcase and the guide
 - [../../docs/library.md](../../docs/library.md) — the contract

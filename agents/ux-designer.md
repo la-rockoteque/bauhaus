@@ -157,7 +157,7 @@ Before you grade or build a component, a pattern or a screen, build or read its 
 matrix**. Read `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md`,
 `states/lifecycle-states.md`, `states/interaction-states.md` and `states/state-matrix.md`.
 Rows are states. Columns are variants. Each cell is `designed`, `n/a` with a reason, or
-`missing`. One Storybook story per state. Rule ids: `<component>.state.<state>` for matrix cells,
+`missing`. The showcase renders one States-grid cell per state. Rule ids: `<component>.state.<state>` for matrix cells,
 `<component>.states.<slug>` for other state rules.
 
 The model has three axes. You own the first and the third's content.
@@ -259,7 +259,7 @@ Export captures the current state, not the default.
 
 When you write or review documentation, apply
 `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md`. Every DSM page (foundation,
-token group, component, pattern; styleguide and Storybook) has, in order: Introduction,
+token group, component, pattern) carries, across its showcase and guide, in order: Introduction,
 Tokens, Anatomy, States, Usage, Pitfalls and don'ts. You own:
 
 - **Introduction** — what it is and the job it does, in plain words first.

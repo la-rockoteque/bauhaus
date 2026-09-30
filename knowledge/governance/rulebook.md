@@ -214,7 +214,7 @@ if (actual > EXPECTED) fail(`debt rose: ${actual} > ${EXPECTED}. Fix the new lit
 if (actual < EXPECTED) fail(`debt fell: ${actual} < ${EXPECTED}. Lower EXPECTED to ${actual}.`)
 ```
 
-Good ratchet targets: raw colour literals, legacy tokens still in use, single-caller families kept in the shared sheet, components with no Storybook page. See [metrics.md](metrics.md) for how to count each.
+Good ratchet targets: raw colour literals, legacy tokens still in use, single-caller families kept in the shared sheet, components with no showcase. See [metrics.md](metrics.md) for how to count each.
 
 ## Coverage and the "not graded" list
 

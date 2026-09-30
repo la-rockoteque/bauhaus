@@ -14,13 +14,13 @@ sources:
 
 > A checklist on a clipboard: for every situation the component can be in, one box. Each box is ticked (designed), crossed with a note (does not apply, because…), or empty (forgotten). Empty boxes are the bugs users find for you.
 
-The state matrix is the artifact that makes states real. Every component, pattern and screen has one. It lives in the **States** section of the page (`../governance/page-contract.md`), in Storybook as one story per state, and in the rulebook as one rule per state.
+The state matrix is the artifact that makes states real. Every component, pattern and screen has one. It lives in the **States** section of the page (`../governance/page-contract.md`): the grid in the showcase, the reasoning in the guide. The rulebook holds one rule per state.
 
 ## Rules
 
 1. Give every component, pattern and screen a state matrix before it ships. (Speelman 2015)
 2. Mark each cell `designed`, `n/a` with a reason, or `missing`. A blank cell is `missing`. (Speelman: a conscious decision to ignore a state is still a decision)
-3. Back each `designed` cell with one story, built with realistic data. (Speelman 2015 § Too many; Figma, "Button states")
+3. Back each `designed` cell with a live render in the showcase States grid, built with realistic data. (Speelman 2015 § Too many; Figma, "Button states")
 4. Start from the required-rows table. Justify every `n/a`. (Speelman 2015)
 5. Give each applicable state one rulebook rule. (`../governance/rulebook.md`)
 
@@ -37,7 +37,7 @@ Rows are states. Columns are variants (or, for a pattern, the main configuration
 
 | Cell | Meaning | Required |
 |---|---|---|
-| `designed` | A spec exists and a story renders it. | Link to the story. |
+| `designed` | A spec exists and the States grid renders it live. | Show the live render. |
 | `n/a` | This state cannot occur for this component. | A reason. "n/a" alone is `missing`. |
 | `missing` | Not designed yet. | Nothing. It is a finding. |
 
@@ -90,10 +90,12 @@ Not every state applies to every kind. Start from this table, then justify any `
 
 ## In Storybook
 
-- One story per `designed` cell, named for the state: `Loading`, `Empty`, `TooMany`, `Error`, `Done`. Figma's advice to "explode" a screen into every state combination is the same idea in a design file.
-- Use realistic data. The *too many* story uses the longest real value the product has, not a lorem string.
-- A matrix story may render every cell side by side for visual review. It supplements the per-state stories; it does not replace them.
-- A visual regression snapshot per state story catches a state that silently regresses (`../tooling/visual-regression.md`).
+- The showcase renders a States grid through `DocPage` (`states` prop). Every `designed` cell is a live render, named for the state: `Loading`, `Empty`, `TooMany`, `Error`, `Done`. The cell shows its trigger: the prop, or the CSS selector. Figma's advice to "explode" a screen into every state combination is the same idea in a design file.
+- An `n/a` cell shows its reason. A `missing` cell carries a badge. The grid never leaves a cell blank.
+- Use realistic data. The *too many* cell uses the longest real value the product has, not a lorem string.
+- Use forced-state helpers where the state cannot be reached by hand (hover, focus-visible).
+- The guide (`.mdx`) explains why each state looks as it does. It does not repeat the grid.
+- A visual regression snapshot of the grid catches a state that silently regresses (`../tooling/visual-regression.md`).
 
 ## In the rulebook
 

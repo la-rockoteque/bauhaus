@@ -17,13 +17,33 @@ sources:
 
 # The page contract
 
-> Every page in the design system, in the styleguide and in Storybook, answers six questions in the same order. What is this? Which values does it use? What are its parts? What conditions can it be in? When do I use it, and when not? What goes wrong? A reader who knows one page knows them all. A writer who cannot fill a section has found a gap in the design.
+> Every slice in the design system answers six questions in the same order, across two pages: the showcase and the guide. What is this? Which values does it use? What are its parts? What conditions can it be in? When do I use it, and when not? What goes wrong? A reader who knows one page knows them all. A writer who cannot fill a section has found a gap in the design.
 
 The contract applies to a foundation, a token group, a component and a pattern. The sections are fixed. The content differs by layer. A token group is a kind of page, not a layer: it documents the stored tokens of one foundation (or of one component).
 
+## Two pages: the showcase and the guide
+
+Each slice has two pages, and they never repeat each other's tables.
+
+- **The showcase** is `<name>.stories.tsx`. One story renders `<DocPage …/>`. It shows what a reader can see.
+- **The guide** is `<name>.mdx`. It holds the prose a picture cannot show. It declares `<Meta of={Stories}/>`, so one Storybook entry shows the guide as "Docs" and the showcase as a story.
+
+| Section | Showcase (`DocPage` props) | Guide (`.mdx`) |
+|---|---|---|
+| 1 Introduction | short: `name`, `layer`, `family` (eyebrow), `plain`, `precise`, `usedFor` | full: plain words, then precise, the layer |
+| 2 Tokens | `tokens`: `{ mode: 'defined' \| 'consumed', rows: [{ name, tier, use, swatch }] }` | none |
+| 3 Anatomy | `anatomy` (`render`, `parts` pins, legend), `specimens` for a foundation, `specs` table, `api` table | none |
+| 4 States | `states`: `{ cells, expect }`, the grid. Each cell is live, with its trigger; `n/a` with its reason; `missing` badged | the reasoning behind each state |
+| 5 Usage | none | when, when not and what instead, how: variants, composition, content and wording, responsive, keyboard and ARIA, i18n. Each rule with its basis |
+| 6 Pitfalls | `dos`, `donts`: compact, each `{ text, basis, rule }` | full prose with the reasons |
+| Rulebook | `rules`: the `<name>.rules.ts` export, graded live | every rule with its basis |
+| Accessibility | derived from the rules' `covers` (no prop) | keyboard and ARIA prose |
+
+`DocPage` lives in `.storybook/doc-page/`, outside the published package. `extra` adds sections between States and Do and don't; `guide` and `guideName` point to the guide. The props are typed in `.storybook/doc-page/types.ts` (`DocPageProps`). `scripts/structure.mjs` reports `slice.page` when the guide is missing and `slice.showcase` when the stories file does not render `DocPage`.
+
 ## Rules
 
-1. Every page has six sections, in this order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. (One order means one place to look.)
+1. Every slice has six sections, in this order, split across the showcase and the guide: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. (One order means one place to look.)
 2. Start the Introduction with plain words, then the precise statement. (Architecture contract: two registers.)
 3. Name the layer in the Introduction. (Readers must not guess; see [../taxonomy/layers.md](../taxonomy/layers.md).)
 4. Fill the States section from the state matrix. A blank cell is a finding. (See [../states/state-matrix.md](../states/state-matrix.md).)
@@ -46,6 +66,8 @@ The contract applies to a foundation, a token group, a component and a pattern. 
 
 ## Template
 
+The template below is the guide's outline. The showcase fills the same headings from `DocPage` props (table above).
+
 ```markdown
 # <Name>
 
@@ -60,7 +82,7 @@ The contract applies to a foundation, a token group, a component and a pattern. 
 <parts, required or optional; scale and steps; tiers and aliases; composed components>.
 
 ## 4. States
-<state matrix: designed | n/a — reason | missing; link one story per state>.
+<the reasoning per state; the grid itself sits in the showcase: designed | n/a — reason | missing>.
 
 ## 5. Usage
 ### When to use
@@ -215,14 +237,14 @@ Use the test in review too. A reviewer who flags a line names the check it faile
 
 ## Misfiles
 
-- A Storybook page that shows only the default story. See `misfile.state-only-happy-path`.
+- A showcase that renders only the default state, or a States grid with blank cells. See `misfile.state-only-happy-path`.
 - Usage written as marketing ("delightful, powerful buttons"). It has no rule and no basis.
 - A foundation page that is only a token table. See `misfile.foundation-tokens-only`.
 - Pitfalls copied from another system without checking they apply here.
 
 ## See also
 
-- [contribution.md](contribution.md) — the four artifacts each page belongs to.
+- [contribution.md](contribution.md) — the four artifacts each slice belongs to.
 - [rulebook.md](rulebook.md) — how `page.*` rules and rule ids work.
 - [maturity.md](maturity.md) — level 4 needs this contract.
 - [../taxonomy/layers.md](../taxonomy/layers.md) — the layer named in section 1.

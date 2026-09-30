@@ -12,14 +12,14 @@ Storybook is the running spec: one page per foundation, component and pattern. T
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/tooling/storybook.md` — structure, doc pages, addons, the dev overlay.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/tooling/framework-adapters.md` — React, Vue, Svelte, Angular, web components.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/tooling/visual-regression.md` — optional.
-- `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md` — the six-section page.
-- `${CLAUDE_PLUGIN_ROOT}/knowledge/states/state-matrix.md` — one story per state.
+- `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md` — the six sections, split across showcase and guide.
+- `${CLAUDE_PLUGIN_ROOT}/knowledge/states/state-matrix.md` — the States grid.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/rulebook.md`
 - Kit: `${CLAUDE_PLUGIN_ROOT}/kit/storybook`.
 
 ## Page contract
 
-Every page, in order: 1 Introduction, 2 Tokens, 3 Anatomy, 4 States, 5 Usage, 6 Pitfalls and don'ts. The States section holds one story per state. Usage and Pitfalls name a basis for every line. No generic lines.
+Every slice has two pages. The showcase (`<name>.stories.tsx`) has one story that renders `<DocPage/>`: short Introduction, Tokens with swatches, Anatomy stage with pins, Specs and API tables, the States grid (every state live, `n/a` with reason, `missing` badged), live Rulebook, Accessibility coverage, compact Do / Don't. The guide (`<name>.mdx`, with `<Meta of={Stories}/>`) holds the full Introduction, Usage, the reasoning per state and Pitfalls with reasons. The two never repeat each other's tables. Usage and Pitfalls name a basis for every line. No generic lines. `DocPage` lives in `.storybook/doc-page/`, outside the package. The sidebar sorts Principles, Foundations, Themes, Primitives, the component families, Patterns. A toolbar switches light and dark.
 
 ## Sections and pages
 
@@ -45,7 +45,7 @@ Every page, in order: 1 Introduction, 2 Tokens, 3 Anatomy, 4 States, 5 Usage, 6 
 5. **Adapt the prefix.** Replace the upstream prefix (`mo-`, `--mo-`) with `<config.prefix>`. Grep afterwards for leftover `mo-`.
 6. **Adapt the paths.** Point imports at `<config.tokens.outputs>` (the generated CSS), `<config.stylesheet>`, `<config.components>` and `<config.rulebook.rules>`. Never hardcode a path: read it from config, or parameterise it in one file.
 7. **Prune upstream-specific pages.** Remove pages that document the upstream product's features (shipments, scan bay, provenance, and the like), French copy tied to it, and ADR or ticket links. Keep the structure: DocPage, the foundation pages, the benchmark page, the inventory pages. Replace project content with the project's own. List what you pruned.
-8. **Rebuild pages to the contract.** Each kept page follows the six sections. Fill Tokens from the generated source. Add one story per designed state-matrix cell for each component (`${CLAUDE_PLUGIN_ROOT}/knowledge/states/state-matrix.md`, from `/bauhaus:states`).
+8. **Rebuild pages to the contract.** Each kept page follows the six sections, split across showcase and guide. Fill Tokens from the generated source. Add one States-grid cell per designed state-matrix cell for each component (`${CLAUDE_PLUGIN_ROOT}/knowledge/states/state-matrix.md`, from `/bauhaus:states`).
 9. **Wire the dev overlay.** The overlay draws advisories over the live component. Point it at `<config.rulebook.advisories>`. Mount it in the preview file only in development. Confirm it never ships to production builds.
 10. **Add a11y and theme addons.** Add an accessibility addon and a theme switcher when `config.tokens.themes` exists (`/bauhaus:theme`).
 11. **Install and run.** Run the package manager install for the missing dev dependencies, using the project's manager. Ask before adding dependencies. Then run the Storybook build. Fix errors from moved paths.
@@ -59,7 +59,7 @@ Every page, in order: 1 Introduction, 2 Tokens, 3 Anatomy, 4 States, 5 Usage, 6 
 ## Other stacks
 
 1. Name the Storybook framework package for the stack (Vue, Svelte, Angular, web components). Read `framework-adapters.md`. Verify the package name against Storybook's docs. Do not guess.
-2. Do not copy the React kit files. Port the page structure: the section tree above, the six-section page, one story per state.
+2. Do not copy the React kit files. Port the page structure: the section tree above, the showcase and guide split, the States grid.
 3. Tokens are stack-independent: load `<config.tokens.outputs>` CSS in the preview.
 4. For `stack.framework: none` or `native`: skip Storybook. The styleguide and rulebook still apply. Say so.
 5. Port the dev overlay only if the stack can render an overlay. Otherwise keep advisories in `<config.rulebook.advisories>` and list them in the report.

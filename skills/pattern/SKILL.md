@@ -30,8 +30,8 @@ A pattern composes existing components to answer a recurring need. It introduces
 7. **State matrix.** Mandatory. Run `/bauhaus:states`. Patterns carry the lifecycle axis: nothing, loading, none, one, some, too-many, incorrect, correct, done. Mark each designed, n/a with reason, or missing. A pattern without its matrix is not done.
 8. **Propose before you populate.** Show the composition to the user with `AskUserQuestion` (2-4 options). Write after the answer.
 9. **Land the artifacts to the page contract.** Each has six sections in order: Introduction, Tokens (consumed), Anatomy, States, Usage, Pitfalls and don'ts.
-   - **Styleguide.** `<config.guide>` §Patterns section.
-   - **Storybook.** A page under `Patterns/<Name>`, one story per lifecycle state.
+   - **Guide.** `patterns/<name>/<name>.mdx`.
+   - **Showcase.** `Patterns/<Name>`: one `<DocPage/>` story, one States-grid cell per lifecycle state.
    - **Rulebook.** Review rules (`<pattern>.<rule>`), plus `<pattern>.state.<state>` per designed state. Most pattern rules are `review`. Make one `auto` rule: "uses only listed components and no raw value".
    - **Tokens.** None new. The Tokens section lists consumed tokens.
 10. **Slop check.** For each line in Usage and each Pitfall ask: "What is the basis?" and "Would this line be true of any pattern?" No basis or generic: rewrite with a basis (WCAG number and level, APG, Nielsen heuristic by name, published system, research result) or cut it.
@@ -39,7 +39,7 @@ A pattern composes existing components to answer a recurring need. It introduces
 12. **Verify.**
     - The pattern's CSS holds no raw value: grep.
     - `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check` exits 0.
-    - All six sections exist in the styleguide and the Storybook page.
+    - All six sections exist across the guide and the showcase.
     - Every Usage rule and Pitfall has a basis.
     - Matrix has zero unexplained `missing` cells.
 

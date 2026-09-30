@@ -14,18 +14,18 @@ sources:
 
 # Storybook as the running spec
 
-> The styleguide is the written spec. Storybook is the spec you can click. Each foundation, component and pattern gets one page with live examples, do and don't, the rules it is graded by, and an accessibility check drawn on the component.
+> The styleguide is the written spec. Storybook is the spec you can click. Each foundation, component and pattern gets a showcase story with live examples, do and don't, the rules it is graded by and an accessibility check, and a guide with the prose.
 
 ## Rules
 
-1. Give every foundation, component and pattern one Storybook page. A component without a page is unfinished. (Basis: four artifacts; `UBIQUITOUS-LANGUAGE.md`.)
-2. Group pages by layer, in reading order: Principles, Foundations, Components, Patterns. (Basis: `docs/architecture.md` § The three layers.)
+1. Give every foundation, component and pattern a showcase (`<name>.stories.tsx`, one story rendering `<DocPage/>`) and a guide (`<name>.mdx`). A component without both is unfinished. (Basis: four artifacts; `UBIQUITOUS-LANGUAGE.md`.)
+2. Sort the sidebar: Principles, Foundations, Themes, Primitives, the component families, Patterns. (Basis: `docs/architecture.md` § The three layers.)
 3. File a page by what it documents, not by what it is made of. Legacy pages sit beside their modern counterpart. (Basis: one place to look.)
-4. Build every doc page from one template so each page has the same sections: summary, anatomy, states, rules, do and don't. (Basis: Nielsen 4 Consistency and standards.)
-5. Show all required states on the component page, in every theme. (Basis: `states/state-matrix.md`.)
-6. Drive stories with `args` and `argTypes`, so controls match the real API. Do not hand-write a control for a prop the type already describes. (Basis: Storybook controls read component types.)
-7. Write one interaction test per story for behaviour that a screenshot cannot show: keyboard, focus, open and close. (Basis: `accessibility/testing.md`.)
-8. Run axe on each story. Zero violations at A and AA is the gate. (Basis: `accessibility/testing.md`.)
+4. Render every showcase through `DocPage` so each has the same sections (see Doc page template). Declare `<Meta of={Stories}/>` in the guide so both share one entry. (Basis: Nielsen 4 Consistency and standards.)
+5. Show all required states in the States grid of the showcase, live, in every theme. A state is a cell of the grid, not a story of its own. (Basis: `states/state-matrix.md`.)
+6. Drive the grid cells with `args`, so controls match the real API. Do not hand-write a control for a prop the type already describes. (Basis: Storybook controls read component types.)
+7. Write one interaction test per interactive cell for behaviour that a screenshot cannot show: keyboard, focus, open and close. (Basis: `accessibility/testing.md`.)
+8. Run axe on each showcase. Zero violations at A and AA is the gate. (Basis: `accessibility/testing.md`.)
 9. Publish the rulebook as a live page. Each rule shows its id, severity, verify mode and current verdict. (Basis: `governance/rulebook.md`.)
 10. Keep Storybook-only styling out of the design system stylesheet. (Basis: layer separation.)
 11. Store a counted debt on a page as a derived number, never as prose. Use a ratchet test. (Basis: `governance/rulebook.md`.)
@@ -37,22 +37,27 @@ sources:
 |---|---|
 | Principles | What the system believes. The rulebook page. The accessibility checklist. |
 | Foundations | Colour, typography, spacing, radius and border, elevation, motion, iconography, density. |
-| Components | One page per component, grouped by job (fields, data, navigation). |
+| Themes | One entry per theme: light, dark. |
+| Primitives | Box, Text, Icon, Visually hidden. |
+| Component families | One entry per component, grouped by family (clickables, fields, data-structures, feedback, overlays, navigation). |
 | Patterns | Compositions: loading, empty and error, forms, filtering, data tables, dashboards. |
 
-Titles follow `Section/Group/Name`. Example: `Components/Fields/Text field`.
+Titles follow `Section/Name`, taken from the path. Example: `Fields/Text field`. A toolbar switches light and dark.
 
-## Doc page template
+## The showcase and the guide
 
-Each page has these blocks:
+`DocPage` lives in `.storybook/doc-page/`, outside the published package. The showcase story passes it props (`governance/page-contract.md` maps the six sections to props). It has these blocks:
 
-1. **Summary** — one plain sentence of the job.
-2. **Anatomy** — text diagram with numbered parts.
-3. **States** — a grid of every state the matrix requires.
-4. **Specs** — the tokens it reads, sizes, target size.
-5. **Do and don't** — paired examples, each with a reason.
-6. **Rules** — the rulebook entries with live verdicts.
-7. **Accessibility** — keyboard contract, ARIA, and the checklist items that apply.
+1. **Header** — eyebrow (`kind`) and title.
+2. **Introduction** — a short plain line and the precise line.
+3. **Tokens** — the tokens it reads, with swatches.
+4. **Anatomy** — the stage with numbered pins and a legend, then the Specs table and the API table.
+5. **States** — a grid of every state the matrix requires: live render and trigger; `n/a` cells with their reason; `missing` cells badged.
+6. **Do and don't** — two columns, each line with a basis chip.
+7. **Rulebook** — the entries of `<name>.rules.ts` with live verdicts.
+8. **Accessibility** — coverage: keyboard contract, ARIA, and the checklist items that apply.
+
+The guide (`<name>.mdx`) holds the rest: the full Introduction, Usage in depth, the reasoning behind each state, Pitfalls with reasons, every rule with its basis. The two never repeat each other's tables.
 
 ## The dev overlay
 
@@ -86,12 +91,12 @@ A written spec drifts from the code. A running page cannot: it renders the real 
 
 ## Rulebook seeds
 
-- `storybook.page-per-component` · auto · HIGH · Every exported component has a page. Four artifacts.
-- `storybook.states-shown` · review · MEDIUM · The page shows every state in the matrix.
-- `storybook.axe-clean` · auto · HIGH · Each story has zero axe violations at A and AA.
+- `storybook.page-per-component` · auto · HIGH · Every exported component has a showcase and a guide. Four artifacts.
+- `storybook.states-shown` · review · MEDIUM · The States grid shows every state in the matrix.
+- `storybook.axe-clean` · auto · HIGH · Each showcase has zero axe violations at A and AA.
 - `storybook.interaction-test` · review · MEDIUM · Interactive components have a `play` test.
 - `storybook.rulebook-live` · auto · MEDIUM · The rulebook page reads live verdicts.
-- `storybook.docs-template` · auto · LOW · Doc pages use the shared template.
+- `storybook.docs-template` · auto · LOW · Every showcase renders `DocPage`.
 
 ## Misfiles
 

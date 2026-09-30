@@ -29,7 +29,7 @@ Use this file first. Every agent classifies an artifact here before it creates, 
 6. A component has one job and its own API. If it has two jobs, split it. (Gate 3: [contribution](../governance/contribution.md).)
 7. A pattern adds no token, no raw value and no new visual style. If it needs one, the gap is in a component or a foundation. (A pattern is composition, not decoration.)
 8. Layout may be local. Look may not. A component-scoped style may place things; it may not colour, round, shade or set type.
-9. Ship the four artifacts together for a foundation or a component: tokens, styleguide section, Storybook page, rulebook entries. (Ubiquitous language: Four artifacts.)
+9. Ship the four artifacts together for a foundation or a component: tokens, guide, showcase, rulebook entries. (Ubiquitous language: Four artifacts.)
 10. A theme is a full set of role values. It never changes the palette or the colors. (Ubiquitous language: Theme.) (Ubiquitous language: Theme.)
 11. A state is not a layer. An interaction state belongs to its component. A lifecycle state belongs to a pattern or to a data-bearing component. (A state describes a moment of one thing; it has no owner of its own.)
 12. "Disabled", "selected" and "loading" are states, never variants. (A variant is a chosen look; a state is a condition the user or the data puts the block in.)
@@ -221,7 +221,7 @@ Note the pattern column. No pattern introduces a value. It reuses values through
 - `layers.component.tokens-only-look` · auto · MEDIUM · A component sets look through tokens only.
 - `layers.pattern.no-own-style` · review · MEDIUM · A pattern adds no token and no new visual style.
 - `layers.foundation.rationale-present` · review · LOW · Each foundation page states its scale and its reason.
-- `layers.four-artifacts` · auto · MEDIUM · Each component has tokens, a styleguide section, a Storybook page and rulebook entries.
+- `layers.four-artifacts` · auto · MEDIUM · Each component has tokens, a guide, a showcase and rulebook entries.
 - `layers.state-not-variant` · review · MEDIUM · Disabled, selected and loading are states, not variants.
 
 ## Misfiles

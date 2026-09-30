@@ -24,9 +24,9 @@ Builds the system in six stages. The order is fixed. Each stage ends at a checkp
 2. **Classify first.** Before you create any artifact, run the decision tree. Name its layer.
 3. **Refuse misfiles.** Do not put a raw value in a pattern. Do not put a flow in a component. Cite the id from `misfiles.md` and send the work to the right layer.
 4. **Propose before you populate.** A foundation is a decision. Put it to the user with `AskUserQuestion`: one focused question, 2-4 options, cost stated. Populate only after the answer.
-5. **Four artifacts.** A foundation or component is done when tokens, styleguide section, Storybook page and rulebook entries ship together.
-6. **State matrix.** A component or pattern is not done without its matrix (`/bauhaus:states`). Each of the four artifacts carries the states: state roles, matrix table, one story per state, rules `<component>.state.<state>`.
-7. **Page contract.** Every page has six sections in order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Every Usage rule and Pitfall names a basis (`knowledge/governance/page-contract.md`).
+5. **Four artifacts.** A foundation or component is done when tokens, guide, showcase and rulebook entries ship together.
+6. **State matrix.** A component or pattern is not done without its matrix (`/bauhaus:states`). Each of the four artifacts carries the states: state roles, the States grid in the showcase, the reasoning in the guide, rules `<component>.state.<state>`.
+7. **Page contract.** Every slice carries six sections in order across showcase and guide: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Every Usage rule and Pitfall names a basis (`knowledge/governance/page-contract.md`).
 8. **Slop check.** For each Usage and Pitfall line ask: "What is the basis?" and "Would this line be true of any design system?" No basis or generic: rewrite or cut.
 
 ## Steps
@@ -91,7 +91,7 @@ Tokens are the storage of the accepted foundations, not a layer. This stage writ
 - Every foundation and component has all four artifacts.
 - Every pattern lists the components it composes and adds no token.
 - Every component and pattern has a state matrix with no unexplained `missing` cell.
-- Every page has six sections in order and every Usage and Pitfall line has a basis.
+- Every slice carries six sections in order and every Usage and Pitfall line has a basis.
 
 ## Output format
 

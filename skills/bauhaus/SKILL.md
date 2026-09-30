@@ -23,12 +23,12 @@ Never mix them. Terms come from `${CLAUDE_PLUGIN_ROOT}/UBIQUITOUS-LANGUAGE.md`.
 
 Tokens are not a layer. They are the DTCG storage and delivery of foundation (and component) decisions: `space.3 = 12px`.
 
-Plus the four artifacts that make a foundation or a component real: tokens, styleguide section, Storybook page, rulebook entries.
+Plus the four artifacts that make a foundation or a component real: tokens, guide, showcase, rulebook entries.
 
 ## Core concepts
 
 - **UI states.** Every component, pattern and screen has a state matrix. Two axes: lifecycle (nothing, loading, none, one, some, too-many, incorrect, correct, done) and interaction (default, hover, focus-visible, active, disabled, loading, success, error, selected, and more). Each cell is designed, n/a with a reason, or missing. A component or pattern without its matrix is not done. See `${CLAUDE_PLUGIN_ROOT}/knowledge/states/model.md`.
-- **Page contract.** Every page, in the styleguide and in Storybook, has six sections in order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Every Usage rule and Pitfall names a basis. Generic lines are cut. See `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md`.
+- **Page contract.** Every slice has a showcase (the `DocPage` story) and a guide (`.mdx`) that together have six sections in order: Introduction, Tokens, Anatomy, States, Usage, Pitfalls and don'ts. Every Usage rule and Pitfall names a basis. Generic lines are cut. See `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md`.
 
 ## Steps
 

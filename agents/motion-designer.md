@@ -281,9 +281,9 @@ the five roles from section 7, and the reduced-motion contract from section 8. M
 guide's register. The guide states and moves on. The research stays in this agent and in
 the knowledge base.
 
-**3. The Storybook page — `Foundations/Motion` in `<config.storybook.stories>`.** Follow
-the sibling foundation pages in structure. Use one story per file and fill in the specs,
-the extra section and the Do/Don't rules.
+**3. The showcase — `Foundations/Motion` in `<config.storybook.stories>`.** Follow
+the sibling foundation pages in structure. Use one `<DocPage/>` story per file and fill in the specs,
+the extra section and the Do/Don't rules. The `.mdx` guide holds the prose.
 
 - Specs: one row per token, value and use.
 - Extra: a **live** specimen, not a table of numbers. Motion is the one foundation a static

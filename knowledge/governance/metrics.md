@@ -172,7 +172,7 @@ Debt is any tracked gap. Count each kind. Ratchet each one.
 | Raw colour literals | Section 2 | Down |
 | Components not graded | Section 4 | Down |
 | Single-caller components | Section 3 | Down |
-| Components without a Storybook page | Compare component names with story titles | Down |
+| Components without a showcase | Compare component names with story titles | Down |
 | Components with blank state-matrix cells | Count `missing` cells in the state matrices | Down |
 
 Known violations, count:

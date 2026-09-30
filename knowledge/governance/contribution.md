@@ -15,7 +15,7 @@ sources:
 
 ## Rules
 
-1. Ship the four artifacts together: tokens, styleguide section, Storybook page, rulebook entries. A foundation or a component is not done until all four exist. (Ubiquitous language: Four artifacts.)
+1. Ship the four artifacts together: tokens, guide, showcase, rulebook entries. A foundation or a component is not done until all four exist. (Ubiquitous language: Four artifacts.)
 2. Each of the four artifacts carries the state matrix. A missing state is a visible blank, not a silent gap. (See [../states/state-matrix.md](../states/state-matrix.md); a state omitted in one artifact drifts from the others.)
 3. A new component needs two or more occurrences, a structural reason and one job.
 4. Propose a foundation before you populate it. Write the rationale, the scale and the limits. Then add tokens. (A token with no scale is an arbitrary number.)
@@ -30,17 +30,17 @@ sources:
 | Artifact | Holds | For a foundation | For a component |
 |---|---|---|---|
 | **Tokens** | Named values in the DTCG source | The scale's tier-1 tokens and the semantic tokens that name intents | Semantic state tokens the component reads; optional component tokens |
-| **Styleguide section** | The prose spec | Scale, rationale, usage rules, limits | Anatomy, states, usage, do and don't |
-| **Storybook page** | The running spec | Visual scale and live token table | One story per state and per variant |
+| **Guide** (`<name>.mdx`) | The prose spec | Scale, rationale, usage rules, limits | Full introduction, usage in depth, reasoning per state, pitfalls with reasons |
+| **Showcase** (`<name>.stories.tsx`) | The running spec | Visual scale and live token table | `DocPage`: anatomy, States grid with every state live, compact do and don't |
 | **Rulebook entries** | Graded expectations | Review rules (scale closed, rationale present) | Auto and review rules, each with a stable id |
 
-Every page in the four artifacts follows [page-contract.md](page-contract.md): introduction, tokens, anatomy, states, usage, pitfalls.
+Every slice follows [page-contract.md](page-contract.md): introduction, tokens, anatomy, states, usage, pitfalls.
 
 ### State matrix in each artifact
 
 - Tokens: every state has its semantic state token (hover, focus, disabled, error), or the cell says "n/a" with a reason.
-- Styleguide: the state table lists each state, its visual change, its token and its ARIA attribute.
-- Storybook: one story per state. A state that cannot render in a story is shown as a labelled facsimile.
+- Guide: the reasoning lists each state, its visual change, its token and its ARIA attribute.
+- Showcase: one cell per state in the States grid. A state that cannot render is shown as a labelled facsimile.
 - Rulebook: at least one rule per state that carries a WCAG duty (focus visible, 2.4.7 AA; not colour alone, 1.4.1 A).
 
 ## Adding a component
@@ -59,8 +59,8 @@ Where the styles live: a family read by several components goes in the shared sh
 
 Then:
 1. Write the tokens it needs (semantic first; tier 1 only if the scale lacks a step).
-2. Write the styleguide section and the state matrix.
-3. Write the Storybook page with a story per state.
+2. Write the guide (`.mdx`) and the state matrix.
+3. Write the showcase (`.stories.tsx`) with a States grid cell per state.
 4. Write the rulebook entries. Mark each `auto` or `review`.
 5. Migrate the first adopter.
 6. Run the checks. Add any failing `auto` rule as a known violation with an advisory. See [rulebook.md](rulebook.md).
@@ -88,7 +88,7 @@ Fix in place, with no permission. These are defects.
 - An interactive element with no hover or focus state.
 - An arbitrary shadow, a scattered z-index, a fifth status colour.
 - A guide that describes something the code no longer does.
-- A component with no Storybook page.
+- A component with no showcase or no guide.
 - A state modelled as a variant (`misfile.state-as-variant`), when the fix is local.
 
 Recommend, do not do. These are judgements or ripples.
@@ -129,7 +129,7 @@ The split between `auto` and `review` is not administrative. It is the differenc
 
 ## Rulebook seeds
 
-- `contribution.four-artifacts` · auto · MEDIUM · Every component has tokens, a styleguide section, a Storybook page and rulebook entries.
+- `contribution.four-artifacts` · auto · MEDIUM · Every component has tokens, a guide, a showcase and rulebook entries.
 - `contribution.state-matrix` · review · MEDIUM · Each artifact carries the component's state matrix.
 - `contribution.component-gates` · review · MEDIUM · A new component attaches two call sites, a structural reason and a one-sentence job.
 - `contribution.foundation-proposal` · review · MEDIUM · A new or changed foundation has an accepted proposal.

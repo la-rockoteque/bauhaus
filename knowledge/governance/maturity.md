@@ -81,7 +81,7 @@ This file gives seven levels (0 to 6), the signals that show each one in a repo,
 
 **Meaning:** reuse works. The system is not yet visible or checkable.
 
-**Next step:** ship the four artifacts for each component, starting with the most used. Write the styleguide section and the Storybook page with every state. See [contribution.md](contribution.md).
+**Next step:** ship the four artifacts for each component, starting with the most used. Write the guide and the showcase with every state. See [contribution.md](contribution.md).
 
 ## Level 4 — Documented and visible
 
@@ -129,7 +129,7 @@ Run these checks in order. Stop at the first "no". The level is the last "yes".
 | 1 | Is there a shared stylesheet or theme? | Look for a global CSS, SCSS or theme file. |
 | 2 | Is there a token source with semantic names? | Look for `tokens.source` in `bauhaus.config.json`, or `tokens/*.json`, or `$value` keys. |
 | 3 | Is there a components library with several call sites per part? | Count imports of each library component across `src`. |
-| 4 | Are there styleguide sections and Storybook pages per part, with states? | Compare component names against headings and story titles. |
+| 4 | Are there guides and showcases per part, with states? | Compare component names against guides and showcase titles. |
 | 5 | Is there a rulebook with tests and a ratchet? | Look for rule ids, `KNOWN_VIOLATIONS` or equivalent, and a test that fails on a count change. |
 | 6 | Are there two themes or two platform outputs from one token source? | Look for theme override files and multiple build targets. |
 

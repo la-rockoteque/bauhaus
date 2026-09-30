@@ -77,9 +77,9 @@ from this file.
 
 | Layer | Question it answers | Lives in | Example |
 |---|---|---|---|
-| **Foundation** | Which families of values exist, and on what scale? | `foundations/<name>/`, styleguide Foundations, Storybook `Foundations/*`. Its decisions are stored as tokens in `<config.tokens.source>`. | "Spacing runs on a 4px grid, 12 steps." Colour: palette, colors, roles. |
-| **Component** | Which reusable block does one job? | `<config.components>`, styleguide Components, Storybook `Components/*` | Button, Field, Dialog |
-| **Pattern** | How do components compose to answer a recurring need? | styleguide Patterns, Storybook `Patterns/*` | Filtering, empty state, wizard |
+| **Foundation** | Which families of values exist, and on what scale? | `foundations/<name>/`, the guide and showcase, Storybook `Foundations/*`. Its decisions are stored as tokens in `<config.tokens.source>`. | "Spacing runs on a 4px grid, 12 steps." Colour: palette, colors, roles. |
+| **Component** | Which reusable block does one job? | `<config.components>`, the guide and showcase, Storybook by family | Button, Field, Dialog |
+| **Pattern** | How do components compose to answer a recurring need? | the guide and showcase, Storybook `Patterns/*` | Filtering, empty state, wizard |
 
 **Tokens are not a layer.** A token is the stored form of one decision (DTCG JSON), for a
 foundation or, optionally, a component. Atlassian: "Design tokens are the new way to apply
@@ -168,7 +168,7 @@ A state belongs to the component or pattern it is a state of. You own the model.
 
 Before you grade or build a component, pattern or screen, build or read its **state
 matrix** (`states/state-matrix.md`). Rows are states. Columns are variants. Each cell is
-`designed`, `n/a` with a reason, or `missing`. One Storybook story per state. Rule ids
+`designed`, `n/a` with a reason, or `missing`. The showcase renders one States-grid cell per state. Rule ids
 follow `<component>.state.<state>` for matrix cells and `<component>.states.<slug>` for other
 state rules (`knowledge/governance/rulebook.md` § Rule id shapes). A missing state is a finding. Empty, incorrect,
 disabled-without-reason and too-many ship missing most often.
@@ -186,7 +186,7 @@ Ownership of states:
 ### The page contract
 
 You own `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/page-contract.md`. Every DSM page
-(foundation, token group, component, pattern; styleguide and Storybook) has, in order:
+(foundation, token group, component, pattern) is a slice with two pages, the showcase (`<name>.stories.tsx`, one `<DocPage/>` story) and the guide (`<name>.mdx`). Together they have, in order:
 
 1. **Introduction**
 2. **Tokens**
@@ -251,10 +251,10 @@ need. Read `knowledge/patterns/`. A pattern uses components and adds no token.
 ship together:
 
 1. **Tokens** in `<config.tokens.source>`.
-2. **A styleguide section** in `<config.guide>`, following the page contract.
-3. **A Storybook page** in `<config.storybook.stories>`, if the stack uses Storybook. Copy
+2. **A guide** (`<name>.mdx`), following the page contract.
+3. **A showcase** (`<name>.stories.tsx`, one `<DocPage/>` story) in `<config.storybook.stories>`, if the stack uses Storybook. Copy
    the seed from `${CLAUDE_PLUGIN_ROOT}/kit/storybook/` and adapt it. For other stacks,
-   the styleguide carries the spec and you say the Storybook artifact does not apply.
+   the guide carries the spec and you say the showcase does not apply.
 4. **Rulebook entries** in `<config.rulebook.rules>`, `auto` and `review`.
 
 Three of four is a system that drifts by the next story. Report the four as one unit.
@@ -614,7 +614,7 @@ in English. The body uses `<config.language.reports>`.
 
 ```
 ## Built
-- <layer> — <artifact> — <path>   [four artifacts: tokens ✓ · guide ✓ · storybook ✗ · rulebook ✓]
+- <layer> — <artifact> — <path>   [four artifacts: tokens ✓ · guide ✓ · showcase ✗ · rulebook ✓]
 
 ## Decisions
 - <foundation> — <option chosen> — <asked via AskUserQuestion / user's words>

@@ -49,7 +49,7 @@ Each cell is `designed`, `n/a` with a reason, or `missing`. A `missing` cell is 
 
 ## Page contract — every DSM page
 
-A page documents one foundation, token group, component or pattern, in the styleguide and in Storybook. It has these sections, in this order. `knowledge/governance/page-contract.md` holds the full spec per layer.
+A page documents one foundation, token group, component or pattern. Each slice carries it as two pages: the showcase (`<name>.stories.tsx`, one story rendering `DocPage`) and the guide (`<name>.mdx`). The styleguide is the set of all slice pages. Together they have these sections, in this order. `knowledge/governance/page-contract.md` holds the full spec per layer.
 
 1. **Introduction** — what it is, the job it does, and the layer it belongs to. Plain words first.
 2. **Tokens** — the tokens it defines (foundation, token group) or consumes (component, pattern), with values and intent.
@@ -57,6 +57,8 @@ A page documents one foundation, token group, component or pattern, in the style
 4. **States** — the state matrix. For a foundation or token group: the states it provides tokens for.
 5. **Usage** — an exhaustive guide to when to use it, when not to, and what to use instead, and how to use it: variants, composition, content, responsive, accessibility.
 6. **Pitfalls and don'ts** — the common mistakes, each with why it fails.
+
+The showcase carries what a reader can see: a short Introduction, Tokens with swatches, Anatomy with pins, the States grid, and a compact Do / Don't. The guide carries what a picture cannot show: the full Introduction, Usage in depth, the reasoning behind each state, Pitfalls with their reasons, and every rule with its basis. The two pages never repeat each other's tables.
 
 No generic content. Every rule in Usage and every item in Pitfalls names its **basis**: a WCAG criterion with its level, an APG pattern, a heuristic by name, a published system, or a research result. A line that has no basis, or that could fit any design system unchanged, is slop. Cut it.
 

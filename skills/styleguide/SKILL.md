@@ -5,7 +5,7 @@ description: Write or resync the prose styleguide against tokens, CSS, component
 
 # /bauhaus:styleguide — the prose spec
 
-The styleguide is the prose spec: philosophy, token tables, per-component anatomy, Do/Don't, composition. One Markdown file or folder at `<config.guide>`. This skill writes it or resyncs it, and detects prose rot. Lead: `bauhaus:design-system-architect`.
+The styleguide is the set of all slice pages: each slice's showcase (`<name>.stories.tsx`) and guide (`<name>.mdx`). This skill writes or resyncs the guides and detects prose rot. An overview file at `<config.guide>` (`design-system.md`) is optional, generated or hand-written; it links to the slices and holds the philosophy and contributing sections. Lead: `bauhaus:design-system-architect`.
 
 ## Loads
 
@@ -29,7 +29,7 @@ The styleguide is the prose spec: philosophy, token tables, per-component anatom
 
 ## Page contract
 
-Every page has these sections, in this order:
+Every slice has these sections, in this order. The showcase carries Tokens, Anatomy, the States grid and a compact Do / Don't. The guide carries the full Introduction, Usage, the reasoning per state and Pitfalls with reasons. The two never repeat each other's tables:
 
 1. **Introduction** — what it is, its job, its layer. Plain words first.
 2. **Tokens** — defined (foundation, token group) or consumed (component, pattern), with values and intent.
@@ -42,7 +42,7 @@ Every Usage rule and Pitfall names its basis. A line with no basis, or one that 
 
 ## Steps: write
 
-1. **Read the config.** Get `guide`, `tokens`, `stylesheet`, `components`, `storybook`, `rulebook`. Missing `guide`: ask where to put it (`docs/design-system.md` or `docs/design-system/`). Write it into the config.
+1. **Read the config.** Get `guide`, `tokens`, `stylesheet`, `components`, `storybook`, `rulebook`. Missing `guide`: the overview is optional; ask only if the user wants one (`docs/design-system.md`), then write it into the config.
 2. **Inventory.** List foundations (from token families), token groups, components (from `<config.components>` and the stylesheet), patterns (from Storybook and code).
 3. **Draft from sources, not memory.** Token tables come from the DTCG source. Anatomy and variants come from component code. States come from the state matrix. Never type a value that exists in a token file. Render it from the source, or cite the token name.
 4. **Write each page** to the contract. Plain words first in the Introduction. Ask the specialists for content they own:
@@ -51,7 +51,7 @@ Every Usage rule and Pitfall names its basis. A line with no basis, or one that 
    - `bauhaus:motion-designer` — motion pages.
    - `bauhaus:responsive-reviewer` — responsive notes.
 5. **Slop check.** For each Usage line and each Pitfall ask: "What is the basis?" and "Would this line be true of any component?" No basis or generic: rewrite with a basis or cut.
-6. **Link.** Each page names its Storybook page and its rule ids.
+6. **Link.** Each guide links its showcase (`<Meta of={Stories}/>`) and its rule ids.
 
 ## Steps: resync
 
@@ -59,7 +59,7 @@ Every Usage rule and Pitfall names its basis. A line with no basis, or one that 
    - Token names and values in tables against `<config.tokens.source>`. Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check` first.
    - Class names, props and variants against `<config.stylesheet>` and `<config.components>`.
    - Components with no section. Sections with no component.
-   - Storybook pages with no section, and sections with no page.
+   - Showcases with no guide, and guides with no showcase.
    - Rule ids cited in prose against `<config.rulebook.rules>`.
    - Counts written in prose ("12 steps") against reality.
 2. **Classify each mismatch.** Stale value, missing section, dead section, wrong layer (a raw value written into a pattern page), missing contract section, basis-less line.
@@ -72,11 +72,11 @@ Every Usage rule and Pitfall names its basis. A line with no basis, or one that 
 - Every token in the tables exists in the source. No token in source is missing from the tables.
 - Every component and pattern has a page with all six sections.
 - No basis-less Usage or Pitfall line.
-- Links to Storybook pages and rule ids resolve.
+- Links from each guide to its showcase and rule ids resolve.
 
 ## Writes
 
-- `<config.guide>` only. Write advisories to `<config.rulebook.advisories>` for code that is wrong.
+- The `.mdx` guides, and `<config.guide>` when an overview exists. Write advisories to `<config.rulebook.advisories>` for code that is wrong.
 
 ## Output format
 

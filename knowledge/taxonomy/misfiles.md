@@ -243,10 +243,10 @@ Call sites are everything outside the token source and outside the semantic toke
 
 ### misfile.state-only-happy-path
 - **Symptom:** A component or pattern documents and tests only the ideal state. No empty, loading, error, too-many, disabled or focus story.
-- **Detect:** A Storybook page with a single story. A state matrix with empty cells. Data-bearing components with no empty or error branch.
+- **Detect:** A showcase whose States grid shows only the default. A state matrix with empty cells. Data-bearing components with no empty or error branch.
 - **Why it hurts:** Users meet the other states daily. Focus and error states carry WCAG duties (2.4.7 AA, 1.4.1 A).
 - **Belongs:** The state matrix of each component and the lifecycle states of each pattern. See [../states/state-matrix.md](../states/state-matrix.md), [../states/lifecycle-states.md](../states/lifecycle-states.md).
-- **Smallest fix:** Fill the matrix. Mark each non-applicable cell "n/a" with a reason. Add one story per state.
+- **Smallest fix:** Fill the matrix. Mark each non-applicable cell "n/a" with a reason. Add a States grid cell per state.
 
 ## Structure confusion
 
@@ -288,11 +288,11 @@ Call sites are everything outside the token source and outside the semantic toke
 ## Governance confusion
 
 ### misfile.partial-four-artifacts
-- **Symptom:** A component has CSS but no styleguide section, no Storybook page or no rulebook entries.
+- **Symptom:** A component has CSS but no guide, no showcase or no rulebook entries.
 - **Detect:** Compare component names in `components` against styleguide headings, Storybook titles and rulebook component ids.
 - **Why it hurts:** It is used but not specified. It is graded by nobody.
 - **Belongs:** Tokens, styleguide, Storybook and rulebook, shipped together.
-- **Smallest fix:** Add the missing artifact. Start with a Storybook page and two rulebook entries.
+- **Smallest fix:** Add the missing artifact. Start with a showcase and two rulebook entries.
 
 ## Rulebook seeds
 

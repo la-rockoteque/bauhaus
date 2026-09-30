@@ -18,18 +18,20 @@ One term per concept. Agents, skills, knowledge files and reports use these word
 | **Component** | A reusable UI block owned by the design system that can stand alone: Button, Text field, Dialog. Lives in `primitives/` or `components/<family>/`. | "atom", "widget", "primitive" as a layer |
 | **Primitive** | A base building-block component other components are built from: Box, Text, Icon, Visually hidden. Lives in `primitives/`. A kind of component, not a layer. Also the first word of *primitive token*. | |
 | **Family** | A role group of components under `components/`: clickables, fields, data-structures, feedback, overlays, navigation. Exists from 2 members. | "category" |
-| **Slice** | One folder per foundation, theme, component or pattern, holding every file about it: code, styles, stories, `.mdx` page, rules, tests, tokens. | "module" |
+| **Slice** | One folder per foundation, theme, component or pattern, holding every file about it: code, styles, the showcase (`.stories.tsx`), the guide (`.mdx`), rules, tests, tokens. | "module" |
 | **Library** | The design-system package, isolated from the app. Shape and rules: `docs/library.md`. | "shared folder" |
 | **Pattern** | A composition of components that answers a recurring need: filtering, empty state, wizard, data table. | "template" |
-| **Styleguide** | The prose spec: philosophy, token tables, per-component anatomy, Do/Don't, composition. One Markdown file or folder. | "docs", "guidelines" |
-| **Storybook** | The running spec: one page per foundation, component and pattern. | |
+| **Styleguide** | The set of all slice pages: every showcase and every guide. An optional `design-system.md` gives the overview. | "docs", "guidelines" |
+| **Storybook** | The running spec: one entry per slice, showing the guide as "Docs" and the showcase as a story. Built from `.storybook/doc-page/`, outside the package. | |
+| **Showcase** | The `<name>.stories.tsx` page of a slice. One story renders `<DocPage …/>`: short introduction, tokens with swatches, anatomy stage with pins, States grid, live Rulebook table, Accessibility coverage, compact Do / Don't. | "demo", "playground" |
+| **Guide** | The `<name>.mdx` page of a slice. Exhaustive prose a showcase cannot show: full Introduction, Usage in depth, the reasoning behind each state, Pitfalls with reasons, every rule with its basis. | "readme", "docs" |
 | **Rulebook** (barème) | Every expectation a component is held to, with a stable id, a severity and a verify mode. | "checklist", "lint rules" |
 | **Rule** | One rulebook entry: `button.focus-ring`. Its id is permanent once written. | |
 | **Verify mode** | `auto` — settled by reading code or the stylesheet, asserted by a test. `review` — needs judgement, graded by an agent. | |
 | **Advisory** | A standing finding written into the project, drawn over the component by the dev overlay. Closing one means deleting it. | "issue", "ticket" |
 | **Known violation** | An `auto` rule that fails today, listed with its advisory. Tracked debt, not a red build. | "exception", "ignore" |
 | **Ratchet** | A test that fails if a debt count rises, and also if it drops without the number being lowered. | |
-| **Four artifacts** | Tokens + styleguide section + Storybook page + rulebook entries. A foundation or component is not done until all four ship together. | |
+| **Four artifacts** | Tokens + showcase + guide + rulebook entries. A foundation or component is not done until all four ship together. | |
 | **Knowledge base** | `knowledge/` in this plugin. The shelves agents read and cite. | "wiki" |
 | **Shelf** | One knowledge-base folder: `foundations/`, `tokens/`, `accessibility/`… | |
 | **Kit** | `kit/` in this plugin. Starter files a skill copies into a project. | "boilerplate" |

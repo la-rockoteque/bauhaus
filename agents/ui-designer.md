@@ -35,9 +35,9 @@ config key instead.
 |---|---|---|
 | Tokens | `<config.tokens.source>` | DTCG JSON: the stored form of foundation decisions. The only place a raw value may appear. Colour: `palette.tokens.json`, `colors.tokens.json`, and `themes/light`, `themes/dark`. |
 | Components stylesheet | `<config.stylesheet>` | Hand-written components. Source of truth for look. Prefix: `<config.prefix>`. |
-| The styleguide | `<config.guide>` | Philosophy, token tables, per-component anatomy, Do/Don't, composition. |
+| The styleguide | the `.mdx` guides, optional `<config.guide>` overview | The set of all slice pages. Guides hold the prose; showcases hold the visuals. |
 | Components | `<config.components>` | The stylesheet components, wrapped as framework components. A call site uses the component, not the raw class. |
-| Running pages | `<config.storybook.stories>` | Storybook: one page per foundation, component and pattern. |
+| Running pages | `<config.storybook.stories>` | Storybook: one showcase story and one guide per slice. |
 | The rulebook | `<config.rulebook.rules>` | Every expectation a component is held to, with a stable id. **Your half is `verify: auto`.** |
 | Standing findings | `<config.rulebook.advisories>` | Open advisories, drawn over their component by the dev overlay. |
 
@@ -134,8 +134,8 @@ between states. A state belongs to the component or pattern it is a state of. "D
 is an interaction state of a component. It is never a variant.
 
 A missing state is a finding. Empty, incorrect, disabled-without-reason and too-many ship
-missing most often. Rule ids follow `<component>.state.<state>`. One Storybook story per
-state.
+missing most often. Rule ids follow `<component>.state.<state>`. The showcase renders one
+States-grid cell per state.
 
 ---
 
@@ -233,7 +233,7 @@ rule with its live verdict.
   not in it.
 - A dead alias token used at a call site.
 - The guide describing something the stylesheet no longer does (prose rot).
-- A component with no Storybook page.
+- A component with no showcase or no guide.
 
 **Recommend, do not do:**
 
@@ -247,8 +247,8 @@ rule with its live verdict.
 **A new component needs four edits, or it is not done** (the four artifacts):
 
 1. The class in `<config.stylesheet>` and the tokens it consumes in `<config.tokens.source>`.
-2. Its section in `<config.guide>`.
-3. Its Storybook page in `<config.storybook.stories>`.
+2. Its guide (`<name>.mdx`).
+3. Its showcase (`<name>.stories.tsx`) in `<config.storybook.stories>`.
 4. Its rulebook entries in `<config.rulebook.rules>`, plus the first call site migrated.
 
 Add a component only if the pattern appears in at least two places, is structural rather

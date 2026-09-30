@@ -82,7 +82,7 @@ One sentence per layer for a mixed audience:
 | **Advisory** | A sticky note on the part: "this is wrong, see rule X". Peeling it off means fixing it. | Not a ticket. It sits on the part itself. |
 | **Known violation** | A crack already on the list. We know. We track it. The building is still open. | Debt, not a red build. |
 | **Ratchet** | A ratchet strap: it tightens, and it never loosens by accident. | The count of cracks may go down. It may never go up. |
-| **Four artifacts** | A product needs four things before it ships: the recipe, the photo, the label and the exam. | Tokens, styleguide, Storybook page, rulebook. |
+| **Four artifacts** | A product needs four things before it ships: the recipe, the photo, the label and the exam. | Tokens, guide, showcase, rulebook. |
 | **Styleguide** | The printed cookbook. | Words. |
 | **Storybook** | The open kitchen: you see each part working. | Running examples. |
 | **Semver** | A version number that tells you if your kitchen breaks: 2.0 means "check your recipes". | See [../governance/versioning.md](../governance/versioning.md). |
@@ -151,7 +151,7 @@ See [../states/model.md](../states/model.md) for the full state model.
 | Advisory | A note pinned to a part that shows an open problem. |
 | Known violation | A failing check we already track. |
 | Ratchet | A test that lets a debt count fall but never rise. |
-| Four artifacts | The four things shipped together: tokens, guide, Storybook page, rulebook entries. |
+| Four artifacts | The four things shipped together: tokens, guide, showcase, rulebook entries. |
 | Misfile | A thing kept in the wrong layer. |
 | Adoption | How much of the product uses the shared parts. |
 | Token coverage | How many values are tokens rather than typed-in numbers. |

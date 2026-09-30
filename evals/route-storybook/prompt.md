@@ -1,6 +1,6 @@
 ---
 description: 'A realistic user phrasing should trigger /bauhaus:storybook.'
-expected_outcome: 'Plans the kit with the dev overlay and .mdx pages.'
+expected_outcome: 'Plans the kit with the dev overlay, a showcase story per slice and .mdx guides.'
 tags: [routing, structure, read-only]
 runs: 1
 max_turns: 10

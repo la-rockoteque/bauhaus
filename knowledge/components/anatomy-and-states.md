@@ -72,7 +72,7 @@ Card
   Whole card clickable: one link inside, stretched over the card.
 ```
 
-Each anatomy lists: part, job, required or optional, token that styles it. Put the diagram and the part table in the styleguide section of the component. The Storybook page repeats the diagram.
+Each anatomy lists: part, job, required or optional, token that styles it. Put the part table and the diagram in the showcase (the anatomy stage with numbered pins and a legend). The guide explains the parts in prose.
 
 ## Variants, props and states
 
@@ -99,7 +99,7 @@ Anatomy gives the team one vocabulary. The variant, prop and state split keeps t
 
 ## Rulebook seeds
 
-- `<component>.anatomy-documented` · review · MEDIUM · The styleguide section has an anatomy diagram with named parts.
+- `<component>.anatomy-documented` · review · MEDIUM · The showcase has an anatomy stage with named parts.
 - `<component>.variants-are-enums` · auto · MEDIUM · Variant props accept a closed set of values.
 - `<component>.states.disabled-explains` · review · HIGH · A disabled control states why and what unlocks it. Nielsen 1.
 - `<component>.states.not-colour-alone` · review · HIGH · Each state differs by more than colour. WCAG 1.4.1 (A).
