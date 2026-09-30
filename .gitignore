@@ -2,3 +2,7 @@ node_modules/
 .DS_Store
 .omc/
 .bauhaus/
+.claude/ramify.conf
+evals/results/
+# the template ships without a lockfile; each project locks its own
+kit/library/package-lock.json
