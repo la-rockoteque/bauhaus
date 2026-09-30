@@ -5,8 +5,6 @@
   --paper-head: calc(var(--paper-rule) * 3);
   --paper-margin: calc(var(--ds-space-12) * 2);
   --paper-line: var(--ds-size-border-thin);
-  /* ponytail: fixed nudge that sets a text baseline on its rule at md to lg sizes; tune it if the scale changes */
-  --paper-sink: calc(var(--paper-rule) / 6);
   --paper-ink: var(--ds-status-info-border);
   --paper-color: var(--ds-surface-raised);
   position: relative;
@@ -21,6 +19,7 @@
     repeating-linear-gradient(transparent 0 calc(var(--paper-rule) - var(--paper-line)), var(--paper-ink) 0 var(--paper-rule)),
     var(--paper-color);
   box-shadow: var(--ds-shadow-1);
+  overflow-x: auto;
 }
 
 .paper-hole {
@@ -38,15 +37,20 @@
 .paper-hole:nth-child(2) { inset-block-start: 50%; }
 .paper-hole:nth-child(3) { inset-block-start: 88%; }
 
-.paper-lines {
-  position: relative;
-  inset-block-start: var(--paper-sink);
-}
-
-.paper-lines p {
+/* Each line is exactly one rule high, whatever fonts it mixes, so the lines never drift off the rules. */
+.paper-line {
+  display: grid;
+  align-content: end;
+  block-size: var(--paper-rule);
   margin: 0;
   font-size: var(--ds-font-size-lg);
-  line-height: var(--paper-rule);
+  white-space: nowrap;
+}
+
+/* The trim puts the bottom of the text box on the alphabetic baseline, so every face sits on the rule and descenders hang below. */
+.paper-line > span {
+  line-height: 1;
+  text-box: trim-end alphabetic;
 }
 
 .paper-face {
