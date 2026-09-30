@@ -1,0 +1,45 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './themes.stories';
+
+<Meta of={Stories} />
+
+# Themes
+
+The Showcase holds the role swatches and the contrast measurements of the selected theme; switch it in the header or the toolbar. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A theme gives every role a value for one kind of page. Components do not change. They read the same role names, and the names point to different values.
+
+**Precisely:** Themes are sibling sets of role values: `themes/light/light.tokens.json` and `themes/dark/dark.tokens.json`. Each defines every role name in `foundations/color` and adds none. Light is the default: it renders as `:root` and as `[data-theme="light"]`; dark renders as `[data-theme="dark"]`. The palette and the colors do not change per theme. Each theme picks other grades of the same scales.
+
+## 2. Usage
+
+### When to use
+
+- **Light** as the default. Users who set no preference get it.
+- **Dark** when users choose a dark colour scheme or work in low light. WCAG 1.4.3 still applies: the choice does not relax contrast.
+
+### When not to use, and what to use instead
+
+- **For a brand variant or a per-customer look.** Change `colors.tokens.json`, or add a sibling theme that defines every role. Do not stretch an existing one.
+- **For one panel in the other theme.** Pin `data-theme` on that element.
+
+### How
+
+- **Parity.** Keep the role names identical in every theme. The check fails on a missing or extra role (Carbon: "Color token names and roles are the same across themes").
+- **Roles only.** Each role aliases a `colors.*` grade. Never alias `palette.*`, and never write a raw value: a rebrand could not reach it.
+- **Derive, do not invert.** Choose the dark values from the scales. Do not invert the light values by formula.
+- **Contrast.** Re-check every text and border pair at 4.5:1 and 3:1 after a change, in each theme (WCAG 1.4.3 and 1.4.11, AA).
+- **Elevation by tone in dark.** `surface.raised` is lighter than `surface.default`, and `surface.sunken` is darker (Material 3 elevation-by-tone, adapted; project decision). If the kit adds shadows, re-tune them for dark. Do not reuse the light values.
+
+## 3. Why the states look as they do
+
+The theme is a state of the whole page. Pair contrast is checked in each theme: the dark values are chosen, not computed. Forced-colors and high-contrast modes are n/a here: they replace author colours, and the browser handles them.
+
+## 4. Pitfalls and don'ts
+
+- **Do not add a role that another theme lacks.** The build fails: every theme defines the same roles. (Bauhaus `tokens.mjs check`; `color.theme-parity`)
+- **Do not alias `palette.*` from a role, or write a hex in a theme file.** The rebrand point is bypassed. (Bauhaus `tokens.mjs check` warning; `color.roles-alias-colors`)
+- **Do not invert the light values by formula.** Contrast pairs break, and each pair must be checked. (WCAG 1.4.3, AA; `color.text-contrast`)
+- **Do not write a colour literal in a component "for dark mode".** The token system is bypassed, and the theme drifts. (Bauhaus `misfile.raw-value-in-component`; `color.semantic-by-intent`)

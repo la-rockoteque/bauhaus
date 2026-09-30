@@ -8,7 +8,7 @@
 // How it reads: file names and a text scan of import lines, no parser. Ceiling (known limits, none checked):
 //   - imports are found by regex: an import built at runtime, or inside a template string, is missed;
 //   - an app path alias is only recognised as `@/`, `~/` or `src/`;
-//   - dot-folders (.storybook, .git) are skipped whole, so a stray file in .storybook is never read;
+//   - dot-folders (.storybook, .git) are skipped by the slice checks; only `storybook.literal` reads .storybook;
 //   - `place` reads the name and props only: two components with one name get the same target.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -29,6 +29,7 @@ const STORY_EXT = ['tsx', 'ts', 'jsx', 'js'];
 const KEBAB = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
 const APP_MODULES = ['i18next', 'react-i18next', 'react-intl', 'react-router', 'react-router-dom', 'next/router', 'next/navigation', '@tanstack/react-query', 'axios', 'swr', '@apollo/client'];
 const APP_ALIAS = /^(?:[@~]\/|src\/)/;
+const STORY_FILE = /\.stories\.[jt]sx?$/;
 const SOURCE_FILE = /\.(?:[cm]?[jt]sx?|vue|svelte)$/;
 const IMPORT = /(?:\bfrom\s*|\bimport\s*\(?\s*|\brequire\s*\(\s*)['"]([^'"]+)['"]/g;
 const LITERAL = /#[0-9a-f]{3,8}\b|\b(?:rgb|hsl|oklch|hwb|lab)a?\(|(?<![\w.])(?!0px)\d*\.?\d+px\b/i;
@@ -62,6 +63,8 @@ function listTree(root, rel = '', out = { dirs: [], files: [] }) {
 /** The layer when `dir` is a slice folder (foundations/x, components/family/x), else null. */
 function sliceLayer(dir) {
   const parts = dir.split('/');
+  // themes/ is itself a slice: one showcase and one guide for every theme; themes/<name>/ holds only tokens.
+  if (dir === 'themes') return 'theme-set';
   if (['foundations', 'themes', 'primitives', 'patterns'].includes(parts[0]) && parts.length === 2) return parts[0];
   return parts[0] === 'components' && parts.length === 3 ? 'components' : null;
 }
@@ -97,7 +100,10 @@ function nameProblem(dir, layer, files) {
   return problems;
 }
 
-function sliceChecks({ dirs, files }) {
+/** The showcase contract: the story file imports from a path ending in `doc-page` and renders `<DocPage`. */
+const rendersDocPage = (text) => /\bfrom\s*['"][^'"]*doc-page['"]/.test(text) && /<DocPage\b/.test(text);
+
+function sliceChecks({ root, dirs, files }) {
   const out = [];
   const has = (dir, suffix) => files.has(`${dir}/${path.posix.basename(dir)}.${suffix}`);
   for (const dir of dirs) {
@@ -108,13 +114,18 @@ function sliceChecks({ dirs, files }) {
     if (problems.length) out.push(finding('structure.slice-name', 'MEDIUM', dir, `Slice "${name}": ${problems.join('; ')}.`, `Name the folder in kebab-case and its main file <folder>.tsx (or .vue, .svelte, .ts).`));
     const component = ['components', 'primitives'].includes(layer);
     const need = (id, severity, ok, what) => ok || out.push(finding(id, severity, dir, `Slice "${name}" has no ${what}.`, `Add ${what} to ${dir}/.`));
+    if (layer === 'themes') { need('slice.tokens', 'MEDIUM', has(dir, 'tokens.json'), `${name}.tokens.json`); continue; }
     need('slice.story', 'HIGH', STORY_EXT.some((e) => files.has(`${dir}/${name}.stories.${e}`)), `${name}.stories.tsx`);
     need('slice.page', 'MEDIUM', has(dir, 'mdx'), `${name}.mdx`);
-    need('slice.rules', 'MEDIUM', layer === 'themes' || has(dir, 'rules.ts'), `${name}.rules.ts`);
+    const story = STORY_EXT.map((e) => `${dir}/${name}.stories.${e}`).find((f) => files.has(f));
+    if (story && !rendersDocPage(fs.readFileSync(path.join(root, story), 'utf8'))) {
+      out.push(finding('slice.showcase', 'MEDIUM', story, `Slice "${name}": the story file does not render a DocPage.`, `Import DocPage from a path ending in doc-page (.storybook/doc-page/doc-page) and render <DocPage …/> in ${name}.stories.tsx.`));
+    }
+    need('slice.rules', 'MEDIUM', layer === 'theme-set' || has(dir, 'rules.ts'), `${name}.rules.ts`);
     need('slice.test', 'MEDIUM', !component || STORY_EXT.some((e) => files.has(`${dir}/${name}.test.${e}`)), `${name}.test.tsx`);
     // A foundation may split its tokens over several files (color: palette + colors); a theme has one.
     const anyTokens = [...files].some((f) => path.posix.dirname(f) === dir && f.endsWith('.tokens.json'));
-    need('slice.tokens', 'MEDIUM', !['foundations', 'themes'].includes(layer) || (layer === 'foundations' ? anyTokens : has(dir, 'tokens.json')), `${name}.tokens.json`);
+    need('slice.tokens', 'MEDIUM', layer !== 'foundations' || anyTokens, `${name}.tokens.json`);
   }
   return out;
 }
@@ -126,7 +137,7 @@ function storyChecks({ files }) {
     if (!m) continue;
     const dir = path.posix.dirname(f);
     const layer = sliceLayer(dir);
-    const documentsSlice = ['foundations', 'themes', 'patterns'].includes(layer) && m[1] === path.posix.basename(dir);
+    const documentsSlice = ['foundations', 'theme-set', 'patterns'].includes(layer) && m[1] === path.posix.basename(dir);
     if (!documentsSlice && !MAIN_EXT.some((e) => files.has(`${dir}/${m[1]}.${e}`))) {
       out.push(finding('misfile.story-far-from-component', 'MEDIUM', f, `Story "${m[1]}" has no ${m[1]}.tsx beside it.`, 'Move the story into the folder of the component it shows.'));
     }
@@ -164,6 +175,33 @@ function paletteChecks({ root, files }) {
   });
 }
 
+// ---------- Storybook dogfoods the design system ----------
+
+const STORYBOOK_FILE = /\.(?:tsx?|css)$/;
+const GENERATED = /\.generated\./;
+const STORYBOOK_LITERAL = /#[0-9a-f]{3,8}\b|\b(?:rgb|hsl|oklch|hwb|lab)a?\(|(?<![\w.-])(?!0px)\d*\.?\d+(?:px|rem)\b/gi;
+
+function walk(dir) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    if (e.name === 'node_modules') return [];
+    const p = path.join(dir, e.name);
+    return e.isDirectory() ? walk(p) : [p];
+  });
+}
+
+const stripComments = (text) => text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');
+
+/** No raw colour or size in .storybook: the pages are styled with the library's tokens only. */
+export function storybookChecks({ root }) {
+  const dir = path.join(root, '.storybook');
+  if (!fs.existsSync(dir)) return [];
+  return walk(dir).filter((f) => STORYBOOK_FILE.test(f) && !GENERATED.test(f)).flatMap((f) => {
+    const hits = [...new Set(stripComments(fs.readFileSync(f, 'utf8')).match(STORYBOOK_LITERAL) ?? [])];
+    const rel = path.relative(root, f).split(path.sep).join('/');
+    return hits.length ? [finding('storybook.literal', 'MEDIUM', rel, `Raw value in Storybook code: ${hits.slice(0, 4).join(', ')}.`, 'Use a token (var(--ds-...)) or, in TypeScript, read it from the generated tokens file.')] : [];
+  });
+}
+
 // ---------- imports ----------
 
 const importsOf = (text, ext) => [...cleanSource(text, ext).matchAll(IMPORT)].map((m) => m[1]);
@@ -174,6 +212,8 @@ const kindOf = (target) => (LAYERS.includes(target.split('/')[0]) && target.incl
 
 function relativeImport(file, spec, files) {
   const target = path.posix.normalize(path.posix.join(path.posix.dirname(file), spec));
+  // A story may import the page builder that lives in .storybook, outside the package layers.
+  if (STORY_FILE.test(file) && target.split('/')[0] === '.storybook') return null;
   if (target.startsWith('..')) return finding('misfile.library-imports-app', 'HIGH', file, `"${spec}" reaches out of the package.`, 'Take the value as a prop; the library never imports the app.');
   const own = sliceOf(file);
   if (own && (target === own || target.startsWith(`${own}/`))) return null;
@@ -201,7 +241,7 @@ function importChecks({ root, files }) {
 export function checkStructure(dir) {
   const tree = listTree(dir);
   const ctx = { root: dir, dirs: tree.dirs, files: new Set(tree.files) };
-  const all = [folderChecks, sliceChecks, storyChecks, patternStyleChecks, paletteChecks, importChecks].flatMap((c) => c(ctx));
+  const all = [folderChecks, sliceChecks, storyChecks, patternStyleChecks, paletteChecks, storybookChecks, importChecks].flatMap((c) => c(ctx));
   return all.sort((a, b) => RANK[a.severity] - RANK[b.severity] || a.path.localeCompare(b.path) || a.id.localeCompare(b.id));
 }
 

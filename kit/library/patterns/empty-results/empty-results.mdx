@@ -1,65 +1,51 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './empty-results.stories';
 
 <Meta of={Stories} />
 
 # Empty results
 
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
 ## 1. Introduction
 
 **In plain words:** An empty result is what a list shows when there is nothing to show. It should say why, and give the user a way forward.
 
-**Precisely:** Pattern · a heading, a hint and one button, arranged in a status region · composes the text primitive and the button; has no style of its own.
+**Precisely:** Pattern. A heading, a hint and one button, arranged in a status region. It composes the text primitive and the button. It has no style and no token of its own.
 
-## 2. Tokens (consumed)
+**The user need.** A blank area reads as broken. The user asks two questions: "is it loading, empty or failed?" and "what do I do now?". The pattern answers both in three lines.
 
-None of its own. Layout and colour come from the text primitive and the button. Gaps between the three parts are set by the parent through `space.stack.sm`.
+**When it exists.** Use it whenever a list, table or search can return zero rows. It sits above components in the import order, so only an app or another pattern may import it.
 
-## 3. Anatomy
-
-| Part | Status |
-|---|---|
-| Heading (`Text`, variant heading) | Required |
-| Hint (`Text`, muted) | Optional; state the filters that applied |
-| Action (`Button`, secondary) | Required when a filter caused the result; optional otherwise |
-| Status region (`role="status"`) | Required |
-
-## 4. States
-
-| Cell | Status | Story |
-|---|---|---|
-| None (filters match nothing) | Designed | NoMatches |
-| Nothing (no data exists yet) | Designed | NothingYet |
-| Loading | Designed | Loading |
-| Some, too many | n/a: the list itself takes over |  |
-| Incorrect | n/a: a failed request is an error pattern, not an empty one |  |
-
-<Canvas of={Stories.NoMatches} />
-
-## 5. Usage
+## 2. Usage
 
 ### When to use
 
 - When a list, table or search returns zero rows.
 
-### When not to use — and what instead
+### When not to use, and what to use instead
 
-- When the request failed: show an error with a retry, since "no results" would be false (Nielsen heuristic 9, help users recognise and recover from errors).
-- When results are still loading: show the loading state, or a skeleton for a long wait.
+- **When the request failed.** Show an error with a retry. "No results" would be false (Nielsen heuristic 9, help users recognise, diagnose and recover from errors).
+- **While results are loading.** Show the loading cell, or a skeleton for a long wait.
 
 ### How
 
-- **Content:** say whether nothing exists or nothing matches, and name the filters that applied (Nielsen heuristic 1, visibility of system status).
-- **Action:** offer one button that clears the filters (Nielsen heuristic 3, user control and freedom).
-- **Accessibility:** put the message in a status region so a screen reader announces it after a filter change (WCAG 4.1.3 Status Messages, AA).
-- **Responsive:** let the text wrap; the button stays on its own row below 320 CSS px (WCAG 1.4.10 Reflow, AA).
-- **Text arrives as props.** The pattern holds no i18n code (docs/library.md, isolation rule 4).
+- **Content.** Say whether nothing exists or nothing matches, and name the filters that applied (Nielsen heuristic 1, visibility of system status).
+- **Action.** Offer one button that clears the filters (Nielsen heuristic 3, user control and freedom).
+- **Accessibility.** Put the message in a status region, so a screen reader announces it after a filter change (WCAG 4.1.3 Status Messages, AA).
+- **Responsive.** Let the text wrap. Below 320 CSS px the button sits on its own row (WCAG 1.4.10 Reflow, AA).
+- **i18n.** Text arrives as props. The pattern holds no translation code (`docs/library.md`, isolation rule 4).
 
-## 6. Pitfalls and don'ts
+## 3. Why the states look as they do
 
-| Don't | Why it fails | Basis | Rule id |
-|---|---|---|---|
-| "No data" with no filters named | Users cannot tell whether to change the filters or wait | Nielsen heuristic 1 | `empty-results.says-why` |
-| No way to clear the filters | The user is stuck in an empty view | Nielsen heuristic 3 | `empty-results.offers-exit` |
-| A stylesheet in the pattern folder | The pattern drifts from the components it composes | docs/library.md | `empty-results.no-own-style` |
-| A silent update after filtering | Screen reader users hear nothing | WCAG 4.1.3 (AA) | `empty-results.announced` |
+- **Nothing and none look alike but say different things.** "Nothing" means no data exists, so filtering is not the cause and the action leads to creating or browsing. "None" means the filters excluded everything, so the action clears them.
+- **Loading keeps the slot.** The same three parts stay, with the action busy, so the layout does not jump when results arrive.
+- **One, some and too many are n/a.** Once a row exists, the list takes over.
+- **Incorrect is n/a.** A failed request is an error pattern, not an empty one.
+
+## 4. Pitfalls and don'ts
+
+- **Do not write "No data" with no filters named.** Users cannot tell whether to change the filters or wait. (Nielsen heuristic 1; `empty-results.says-why`)
+- **Do not leave the user no way to clear the filters.** The user is stuck in an empty view. (Nielsen heuristic 3; `empty-results.offers-exit`)
+- **Do not add a stylesheet to the pattern folder.** The pattern drifts from the components it composes. (`docs/library.md`; `empty-results.no-own-style`)
+- **Do not update silently after filtering.** Screen reader users hear nothing. (WCAG 4.1.3, AA; `empty-results.announced`)

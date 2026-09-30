@@ -1,94 +1,63 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './button.stories';
 
 <Meta of={Stories} />
 
 # Button
 
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
 ## 1. Introduction
 
 **In plain words:** A button is the thing you press to make something happen. Save, send, delete. If pressing it takes you to another page, it is a link, not a button.
 
-**Precisely:** Component in the clickables family · triggers one action in the current view · not for navigation and not for toggling a setting.
+**Precisely:** Component in the clickables family. It triggers one action in the current view. It does not navigate, and it does not toggle a setting.
 
-## 2. Tokens (consumed)
+**The job.** A button answers the question "what can I do here?". Each view region has one main answer, so the button comes in three variants that rank the answers: primary, secondary, tertiary. Rank is the only thing a variant changes. State (disabled, loading) is a separate prop, so a button can be secondary and loading at once.
 
-| Token | Tier | Use |
-|---|---|---|
-| `action.primary`, `action.primary-hover`, `action.primary-pressed` | role | Fill of the primary variant and its hover and pressed states |
-| `action.primary-text` | role | Label on the primary fill; the pair reaches 4.5:1 in both themes |
-| `border.strong` | role | Outline of the secondary variant |
-| `surface.default` | role | Secondary fill |
-| `text.default`, `text.link` | role | Secondary and tertiary labels |
-| `state.hover-layer`, `state.pressed-layer` | role | Hover and pressed fill of the secondary and tertiary variants |
-| `disabled.text`, `disabled.surface`, `disabled.border` | role | Disabled label, fill and outline |
-| `focus.ring.color`, `focus.ring.width`, `focus.ring.offset` | role | Focus indicator |
-| `text.label.*` | 2 | Label size, weight and line height |
-| `space.inset.sm`, `space.inline.sm`, `space.inline.lg` | 2 | Padding and gap between label and spinner |
-| `size.target.min` | 2 | Minimum height and width |
-| `radius.control` | 2 | Corner radius |
-| `motion.duration.deliberate` | 2 | One turn of the spinner |
+**The layer.** The button is a component. It reads roles and semantic tokens. It owns no colour, no size and no radius of its own.
 
-The button has no component tokens.
+**When it exists.** Use the button when an action needs a control. If the destination is a URL, use a link. If the control keeps a state after the press, use a switch or a checkbox. If the control shows an icon and no text, use the icon button, which forces an accessible name.
 
-## 3. Anatomy
-
-| Part | Status |
-|---|---|
-| Container (native `button`) | Required |
-| Label (`children`) | Required |
-| Spinner | Shown only while `loading` |
-
-The button takes no icon slot. For an icon alone, use the icon button; for an icon with a label, place both in `children`.
-
-## 4. States
-
-| Cell | Status | Story |
-|---|---|---|
-| Default (primary, secondary, tertiary) | Designed | Primary, Secondary, Tertiary |
-| Hover | Designed | Hover |
-| Focus-visible | Designed | FocusVisible |
-| Active | Designed | Active |
-| Disabled | Designed | Disabled |
-| Loading | Designed | Loading |
-| Too many (long label) | Designed: the label wraps | LongLabel |
-| Nothing, none, some | n/a: the button has no data of its own |  |
-| Incorrect | n/a: the form owns the error, and the button stays pressable so the user can retry |  |
-| Done | n/a: the result is announced by the view (a status message), not by the button |  |
-
-<Canvas of={Stories.Loading} />
-
-## 5. Usage
+## 2. Usage
 
 ### When to use
 
-- To trigger an action in place: submit, save, open a dialog (WAI-ARIA APG Button pattern: a button performs an action).
+- To trigger an action in place: submit, save, open a dialog, confirm. The WAI-ARIA APG Button pattern defines a button as a control that performs an action.
 
-### When not to use — and what instead
+### When not to use, and what to use instead
 
-- To go to another page or URL: use a link (WCAG 4.1.2 Name, Role, Value, A: the role must match the behaviour).
-- To turn a setting on or off: use a switch or checkbox (APG Switch and Checkbox patterns).
-- For an icon with no visible text: use the icon button, which requires an accessible name (WCAG 1.1.1, A).
+- **To go to another page or URL.** Use a link. The role must match the behaviour (WCAG 4.1.2 Name, Role, Value, A).
+- **To turn a setting on or off.** Use a switch or a checkbox (APG Switch and Checkbox patterns).
+- **For an icon with no visible text.** Use the icon button, which requires an accessible name (WCAG 1.1.1 Non-text Content, A).
 
 ### How
 
-- **Variants:** show one primary per view region and make the others secondary or tertiary (Hick 1952: choice time grows with the number of options; Nielsen heuristic 8: extra items compete with the important ones).
-- **Content:** start the label with a verb and name the object, "Save changes" (WCAG 2.4.6 Headings and Labels, AA).
-- **Keyboard:** Space and Enter activate it. The component renders a native `button`, so this is free (APG Button pattern).
-- **Target size:** at least 24 by 24 CSS px (WCAG 2.5.8, AA). The house floor is 44px (the WCAG 2.5.5 AAA figure; project decision).
-- **Loading:** keep the label and the width, ignore repeat presses, keep the button focusable, and announce the result elsewhere in the view (Nielsen heuristic 1; WCAG 4.1.3 Status Messages, AA).
-- **Disabled:** exempt from text contrast (WCAG 1.4.3 exception for inactive components). Say why, near the button (Nielsen heuristic 1).
-- **Responsive:** let the label wrap; never truncate it (WCAG 1.4.10 Reflow, AA).
-- **Form use:** the default `type` is `button`, so a button in a form does not submit it unless you pass `type="submit"` (HTML form submission behaviour).
+- **Variants.** Show one primary per view region. Make the other actions secondary or tertiary. Choice time grows with the number of options (Hick 1952), and extra emphasis competes with the important item (Nielsen heuristic 8).
+- **Content.** Start the label with a verb and name the object: "Save changes". A label describes its purpose (WCAG 2.4.6 Headings and Labels, AA).
+- **Keyboard.** Space and Enter activate the button. The component renders a native `button`, so this needs no code (APG Button pattern).
+- **Target size.** The target is at least 24 by 24 CSS px (WCAG 2.5.8, AA). The house floor is 44px, the WCAG 2.5.5 (AAA) figure. This is a project decision.
+- **Loading.** Keep the label and the width. Ignore repeat presses. Keep the button focusable. Announce the result somewhere else in the view (Nielsen heuristic 1, visibility of system status; WCAG 4.1.3 Status Messages, AA).
+- **Disabled.** A disabled button is exempt from text contrast (WCAG 1.4.3 exception for inactive components). Say why, next to the button (Nielsen heuristic 1).
+- **Responsive.** Let the label wrap. Never truncate it (WCAG 1.4.10 Reflow, AA).
+- **Form use.** The default `type` is `button`. A button in a form does not submit it unless you pass `type="submit"` (HTML form submission behaviour).
+- **i18n.** The label arrives as `children`. The component holds no text of its own (`docs/library.md`, isolation rule 4).
 
-## 6. Pitfalls and don'ts
+## 3. Why the states look as they do
 
-| Don't | Why it fails | Basis | Rule id |
-|---|---|---|---|
-| `outline: none` with no replacement | Keyboard users lose their place | WCAG 2.4.7 (AA) | `button.focus-ring` |
-| A `div` with a click handler | No focus, no Space or Enter, no role | APG Button; WCAG 4.1.2 (A) | `button.native-element` |
-| `variant="disabled"` | A state modelled as a choice; it cannot combine with the variants | Bauhaus `misfile.state-as-variant` | `button.states.not-variant` |
-| Two primary buttons side by side | Users cannot tell which action leads | Hick 1952; Nielsen heuristic 8 | `button.one-primary` |
-| Swapping the label for a spinner while loading | The width shifts and the name disappears for assistive technology | Nielsen heuristic 1; WCAG 4.1.2 (A) | `button.state.loading` |
-| A colour literal in `button.css` | The dark theme cannot reach it | Bauhaus `misfile.raw-value-in-component` | `button.no-literal` |
-| "Click here" as a label | The label names no action and no object | WCAG 2.4.6 (AA) | `button.label-verb` |
+- **Hover and pressed** use a state layer (`state.hover-layer`, `state.pressed-layer`) on the secondary and tertiary variants, and a darker fill on the primary. Each differs from its base in lightness, so no state relies on hue alone (WCAG 1.4.1 Use of Color, A).
+- **Focus-visible** draws an outline offset from the box. The offset keeps the ring visible against the primary fill, where a ring of the same colour would vanish (WCAG 1.4.11 Non-text Contrast, AA). Mouse presses do not show it.
+- **Disabled** uses the disabled roles and the native `disabled` attribute. The attribute removes the button from the tab order and blocks the click, and no ARIA needs to imitate it. The state reads as unavailable, so the view must say why (Nielsen heuristic 1).
+- **Loading** hides the label with `opacity`, not `display`. The label keeps its width, so the layout does not jump. It stays in the accessibility tree, so the button keeps its name (WCAG 4.1.2, A). `aria-busy` tells assistive technology that work is running.
+- **Too many** wraps the label. A truncated label hides the object of the action (WCAG 1.4.10, AA).
+- **Nothing, none, one, some, incorrect, correct, done** are n/a. The button holds no data. The form owns the error and the view owns the confirmation, so the button stays pressable and the user can retry.
+
+## 4. Pitfalls and don'ts
+
+- **Do not write `outline: none` with no replacement.** Keyboard users lose their place. (WCAG 2.4.7, AA; `button.focus-ring`)
+- **Do not use a `div` with a click handler.** It has no focus, no Space or Enter, and no role. (APG Button; WCAG 4.1.2, A; `button.native-element`)
+- **Do not write `variant="disabled"`.** A state modelled as a choice cannot combine with the variants. (Bauhaus `misfile.state-as-variant`; `button.states.not-variant`)
+- **Do not put two primary buttons side by side.** Users cannot tell which action leads. (Hick 1952; Nielsen heuristic 8; `button.one-primary`)
+- **Do not swap the label for a spinner while loading.** The width shifts and the name disappears for assistive technology. (Nielsen heuristic 1; WCAG 4.1.2, A; `button.state.loading`)
+- **Do not write a colour literal in `button.css`.** The dark theme cannot reach it. (Bauhaus `misfile.raw-value-in-component`; `button.no-literal`)
+- **Do not label a button "Click here".** The label names no action and no object. (WCAG 2.4.6, AA; `button.label-verb`)

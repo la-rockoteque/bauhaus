@@ -8,8 +8,7 @@ export default defineConfig({
   plugins: [react(), dts({ include: ['index.ts', 'foundations', 'themes', 'primitives', 'components', 'patterns'], exclude: ['**/*.stories.tsx', '**/*.test.tsx', '**/*.rules.ts'] })],
   build: {
     emptyOutDir: false,
-    cssFileName: 'style',
-    lib: { entry: 'index.ts', formats: ['es'], fileName: 'index' },
+    lib: { entry: 'index.ts', formats: ['es'], fileName: 'index', cssFileName: 'style' },
     rollupOptions: { external: ['react', 'react-dom', 'react/jsx-runtime'] },
   },
   test: { environment: 'jsdom', globals: true, include: ['**/*.test.tsx'], exclude: ['node_modules', 'dist'] },

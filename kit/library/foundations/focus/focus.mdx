@@ -1,54 +1,42 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './focus.stories';
 
 <Meta of={Stories} />
 
 # Focus
 
+The Showcase story holds the ring in both themes with its measured contrast, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
 ## 1. Introduction
 
 **In plain words:** Focus is the mark that shows which control the keyboard will act on. Without it, keyboard users are lost.
 
-**Precisely:** Foundation · the focus ring: width, offset and colour · drawn on `:focus-visible` for every interactive component.
+**Precisely:** Foundation. The focus ring: width, offset and colour. It is drawn on `:focus-visible` for every interactive component.
 
-## 2. Tokens (defined)
+**The shape of the ring.** An outline of `focus.ring.width`, offset from the box by `focus.ring.offset`. The offset places the ring on the page and not on the control's own fill, so it stays visible on a filled primary button.
 
-| Token | Tier | Value |
-|---|---|---|
-| `focus.ring.width` | 2 | 2px |
-| `focus.ring.offset` | 2 | 2px |
-| `focus.ring.color` | role | Defined per theme in `themes/light` and `themes/dark`; aliases `colors.primary.*` |
-
-## 3. Anatomy
-
-An outline of `focus.ring.width`, offset from the box by `focus.ring.offset` so it sits on the page rather than on the control's own fill.
-
-<Canvas of={Stories.Ring} />
-
-## 4. States
-
-The ring is the focus-visible state of every component. Mouse presses do not show it; keyboard focus does (`:focus-visible`).
-
-## 5. Usage
+## 2. Usage
 
 ### When to use
 
 - On every interactive component: buttons, fields, links, tabs (WCAG 2.4.7 Focus Visible, AA).
 
-### When not to use — and what instead
+### When not to use, and what to use instead
 
-- On non-interactive containers: do not add `tabindex` only to show a ring.
+- **On non-interactive containers.** Do not add `tabindex` only to show a ring.
 
 ### How
 
-- Draw the outline with the three tokens: `outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color)` and `outline-offset` from the offset token.
-- Keep the ring at 3:1 against the surface in both themes (WCAG 1.4.11, AA).
-- Keep a focused control from hiding under a sticky header (WCAG 2.4.11 Focus Not Obscured, AA).
+- **Tokens.** Draw the outline with the three tokens: `outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color)`, and `outline-offset` from the offset token.
+- **Contrast.** Keep the ring at 3:1 against the surface in both themes (WCAG 1.4.11 Non-text Contrast, AA).
+- **Visibility.** Keep a focused control from hiding under a sticky header (WCAG 2.4.11 Focus Not Obscured, AA).
 
-## 6. Pitfalls and don'ts
+## 3. Why the states look as they do
 
-| Don't | Why it fails | Basis | Rule id |
-|---|---|---|---|
-| `outline: none` with no replacement | Keyboard users lose their place | WCAG 2.4.7 (AA) | `focus.never-removed` |
-| A ring the same colour as the fill | It vanishes on the primary button; the offset prevents this | WCAG 1.4.11 (AA) | `focus.ring-contrast` |
-| A 1px ring | Hard to see for low-vision users | House standard, 2px minimum | `focus.ring-min-width` |
+The ring is the focus-visible state of every component. The browser shows `:focus-visible` after keyboard input and hides it after a mouse press, so mouse users see no ring and keyboard users always do. The ring is instant: a transition on it would delay the mark the user waits for.
+
+## 4. Pitfalls and don'ts
+
+- **Do not write `outline: none` with no replacement.** Keyboard users lose their place. (WCAG 2.4.7, AA; `focus.never-removed`)
+- **Do not colour the ring like the fill.** It vanishes on the primary button. The offset prevents this. (WCAG 1.4.11, AA; `focus.ring-contrast`)
+- **Do not draw a 1px ring.** It is hard to see for low-vision users. (House standard, 2px minimum; `focus.ring-min-width`)

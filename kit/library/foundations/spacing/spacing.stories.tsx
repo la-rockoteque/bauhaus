@@ -1,52 +1,71 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { DocPage } from '../../.storybook/doc-page/doc-page';
+import { SpacingScale } from '../../.storybook/doc-page/specimens';
+import { spacingRules } from './spacing.rules';
 
-const STEPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-const ROLES = ['inline-sm', 'inline-lg', 'stack-sm', 'stack-lg', 'inset-md'];
-
-const meta = { title: 'Foundations/Spacing' } satisfies Meta;
+const meta = { title: 'Foundations/Spacing', parameters: { layout: 'fullscreen' } } satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-/** The closed scale: 12 steps on a 4px grid. Bar width is the token itself. */
-export const Scale: Story = {
-  render: () => (
-    <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--ds-space-stack-sm)' }}>
-      {STEPS.map((n) => (
-        <li key={n} style={{ display: 'flex', alignItems: 'center', gap: 'var(--ds-space-inline-lg)' }}>
-          <code style={{ inlineSize: 'var(--ds-space-12)' }}>space.{n}</code>
-          <span style={{ display: 'block', inlineSize: `var(--ds-space-${n})`, blockSize: 'var(--ds-space-3)', background: 'var(--ds-action-primary)' }} />
-        </li>
-      ))}
-    </ul>
-  ),
-};
+const Groups = () => (
+  <div style={{ display: 'grid', gap: 'var(--ds-space-stack-lg)' }}>
+    {['Shipping', 'Billing'].map((title) => (
+      <div key={title} style={{ display: 'grid', gap: 'var(--ds-space-stack-sm)' }}>
+        <strong>{title}</strong>
+        <span>Street</span>
+        <span>City</span>
+      </div>
+    ))}
+  </div>
+);
 
-/** The semantic tokens: what a call site reads instead of a step. */
-export const SemanticGaps: Story = {
+export const Showcase: StoryObj = {
+  name: 'Showcase',
   render: () => (
-    <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--ds-space-stack-sm)' }}>
-      {ROLES.map((role) => (
-        <li key={role} style={{ display: 'flex', alignItems: 'center', gap: 'var(--ds-space-inline-lg)' }}>
-          <code style={{ inlineSize: 'var(--ds-space-12)' }}>space.{role.replace('-', '.')}</code>
-          <span style={{ display: 'block', inlineSize: `var(--ds-space-${role})`, blockSize: 'var(--ds-space-3)', background: 'var(--ds-action-primary)' }} />
-        </li>
-      ))}
-    </ul>
-  ),
-};
-
-/** Proximity: the gap inside a group is smaller than the gap between groups. */
-export const Grouping: Story = {
-  render: () => (
-    <div style={{ display: 'grid', gap: 'var(--ds-space-stack-lg)' }}>
-      {['Shipping', 'Billing'].map((title) => (
-        <div key={title} style={{ display: 'grid', gap: 'var(--ds-space-stack-sm)' }}>
-          <strong>{title}</strong>
-          <span>Street</span>
-          <span>City</span>
-        </div>
-      ))}
-    </div>
+    <DocPage
+      name="Spacing"
+      layer="Foundation"
+      plain="Spacing is the air between things. Close things read as one group. Far things read as separate. One fixed set of gaps keeps every screen in the same rhythm."
+      precise="Foundation · a closed scale of 13 steps on a 4px grid, plus semantic gap tokens · governs margin, padding and gap. It is not a layout grid and not a control size."
+      usedFor="Between and inside every block."
+      tokens={{
+        mode: 'defined',
+        note: 'CSS names: --ds-space-4, --ds-space-stack-md, --ds-size-target-min.',
+        rows: [
+          { name: 'space.0 … space.12', tier: '1', use: 'The scale. Step n is n × 4px.' },
+          { name: 'space.inset.xs … xl', tier: '2', use: 'Padding inside a container' },
+          { name: 'space.stack.xs … xl', tier: '2', use: 'Vertical gap between siblings' },
+          { name: 'space.inline.xs … xl', tier: '2', use: 'Horizontal gap between siblings' },
+          { name: 'size.target.min', tier: '2', use: '44px; the smallest pointer target. Spacing must not shrink it.' },
+        ],
+      }}
+      specimens={<SpacingScale />}
+      specs={[
+        { label: 'Base unit', value: '4px; every step is a multiple of it' },
+        { label: 'Steps', value: 'space.0 to space.12; closed, no step between space.4 and space.5' },
+        { label: 'Tier 2', value: 'Names the job: inset, stack, inline. A component reads tier 2.' },
+      ]}
+      states={{
+        cells: [
+          { id: 'density', status: 'n/a', reason: 'A compact theme would remap tier 2 tokens one step down; controls keep size.target.min.' },
+          { id: 'text-spacing', status: 'designed', label: 'Text spacing raised by the user', render: <Groups />, trigger: 'gaps in tokens', note: 'No container around text has a fixed height, so nothing clips.' },
+        ],
+      }}
+      dos={[
+        { text: 'Make the gap inside a group smaller than the gap between groups.', basis: 'Wertheimer 1923' },
+        { text: 'Set the gap on the parent with gap, not as child margins.', basis: 'Project decision' },
+        { text: 'Keep one column and no second scroll axis at 320 CSS px.', basis: 'WCAG 1.4.10 (AA)' },
+      ]}
+      donts={[
+        { text: 'Write margin: 18px at a call site.', basis: 'Closed scale; misfile.raw-value-in-component', rule: 'spacing.no-literal' },
+        { text: 'Use the same gap between and inside groups.', basis: 'Wertheimer 1923', rule: 'spacing.groups-distinct' },
+        { text: 'Fix the height of a card that holds text.', basis: 'WCAG 1.4.12 (AA)', rule: 'spacing.text-spacing-safe' },
+        { text: 'Add a step "just this once".', basis: 'Closed scale', rule: 'spacing.scale-closed' },
+        { text: 'Shrink a target below size.target.min to save room.', basis: 'WCAG 2.5.8 (AA); house floor 44px', rule: 'spacing.target-min' },
+      ]}
+      rules={spacingRules}
+      guide="foundations-spacing--docs"
+      guideName="Spacing"
+    />
   ),
 };

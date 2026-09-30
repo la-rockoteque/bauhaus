@@ -1,56 +1,42 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './typography.stories';
 
 <Meta of={Stories} />
 
 # Typography
 
+The Showcase story holds the live type specimens, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
 ## 1. Introduction
 
 **In plain words:** Typography is how words look: which typeface, how big, how heavy, how tall each line is. Four text roles cover the library, so a heading looks the same wherever it appears.
 
-**Precisely:** Foundation · one sans typeface, four sizes, three weights, two line heights, and four text roles built from them · governs all text in the library.
+**Precisely:** Foundation. Two typefaces (sans and mono), four sizes, three weights, two line heights, and four text roles built from them. It governs all text in the library.
 
-## 2. Tokens (defined)
+**Two tiers.** Tier 1 is the scale. Tier 2 is four roles, each with size, weight and line height: heading, body, caption and label. Label is for controls. The mono family serves identifiers, code and columns of figures, where each character must line up.
 
-| Token | Tier | Value |
-|---|---|---|
-| `font.family.sans` | 1 | Inter, then system fonts |
-| `font.size.xs`, `sm`, `md`, `xl` | 1 | 12, 14, 16, 24 px |
-| `font.weight.regular`, `medium`, `semibold` | 1 | 400, 500, 600 |
-| `font.line-height.tight`, `normal` | 1 | 1.25, 1.5 |
-| `text.body.*`, `caption.*`, `heading.*`, `label.*` | 2 | Size, weight and line height per role |
-
-## 3. Anatomy
-
-Tier 1 is the scale. Tier 2 is four roles, each with size, weight and line height: heading, body, caption and label. Label is for controls.
-
-<Canvas of={Stories.Roles} />
-
-## 4. States
-
-n/a: type has no interaction state. Users may raise text size to 200% or text spacing; layouts must not clip (WCAG 1.4.4 Resize Text, AA; 1.4.12 Text Spacing, AA).
-
-## 5. Usage
+## 2. Usage
 
 ### When to use
 
-- Through the text primitive for content, and through `text.label.*` for control labels.
+- Through the Text primitive for content, and through `text.label.*` for control labels.
 
-### When not to use — and what instead
+### When not to use, and what to use instead
 
-- For a display size above `text.heading`: propose a role; do not enlarge a heading ad hoc.
+- **For a display size above `text.heading`.** Propose a role. Do not enlarge a heading ad hoc.
 
 ### How
 
-- Keep body at 16px or more and line height at 1.5 (WCAG 1.4.12, AA: content must survive line height 1.5).
-- Size text in a unit that follows the user setting (WCAG 1.4.4, AA).
-- Bold or size is not structure; mark headings with heading elements (WCAG 1.3.1, A).
+- **Body.** Keep body at 16px or more and line height at 1.5 (WCAG 1.4.12 Text Spacing, AA: content must survive line height 1.5).
+- **Units.** Size text in a unit that follows the user setting (WCAG 1.4.4 Resize Text, AA).
+- **Structure.** Bold or size is not structure. Mark headings with heading elements (WCAG 1.3.1 Info and Relationships, A).
 
-## 6. Pitfalls and don'ts
+## 3. Why the states look as they do
 
-| Don't | Why it fails | Basis | Rule id |
-|---|---|---|---|
-| A new font size for one screen | The scale gains a step nobody can reuse | Closed roles (this page) | `typography.roles-closed` |
-| Body text at 12px | Hard to read at arm's length | Project decision, 16px floor | `typography.body-min-size` |
-| A line height of 1.2 on paragraphs | Lines crowd; the 1.5 test fails | WCAG 1.4.12 (AA) | `typography.line-height-min` |
+Type has no interaction state. Users may raise text size to 200% or raise text spacing. Layouts must not clip when they do (WCAG 1.4.4, AA; 1.4.12, AA). That is the only "state" of a type foundation, and the Showcase renders it.
+
+## 4. Pitfalls and don'ts
+
+- **Do not add a new font size for one screen.** The scale gains a step nobody can reuse. (Closed roles; `typography.roles-closed`)
+- **Do not set body text at 12px.** It is hard to read at arm's length. (Project decision, 16px floor; `typography.body-min-size`)
+- **Do not use a line height of 1.2 on paragraphs.** Lines crowd, and the 1.5 test fails. (WCAG 1.4.12, AA; `typography.line-height-min`)

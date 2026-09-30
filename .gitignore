@@ -6,3 +6,6 @@ node_modules/
 evals/results/
 # the template ships without a lockfile; each project locks its own
 kit/library/package-lock.json
+kit/library/dist/*
+!kit/library/dist/tokens.css
+!kit/library/dist/tokens.ts

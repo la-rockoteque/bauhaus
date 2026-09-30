@@ -1,61 +1,52 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './text.stories';
 
 <Meta of={Stories} />
 
 # Text
 
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
 ## 1. Introduction
 
 **In plain words:** Text is how words appear on screen. It picks the size and the weight so that a heading looks like a heading and a note looks like a note.
 
-**Precisely:** Primitive component · sets the look of body, caption and heading text from typography tokens · the element it renders is the caller's choice.
+**Precisely:** Primitive component. It sets the look of body, caption and heading text from typography tokens. The caller chooses the element it renders.
 
-## 2. Tokens (consumed)
+**The job.** Text separates two decisions that HTML mixes: the structure (which element) and the look (which size). `as` sets the first. `variant` and `tone` set the second. A heading outline stays correct while a small heading can still look small.
 
-| Token | Tier | Use |
-|---|---|---|
-| `text.body.*`, `text.caption.*`, `text.heading.*` | 2 | Size, weight and line height per variant |
-| `font.family.sans` | 1 | Typeface (no semantic alias exists yet) |
-| `text.default`, `text.muted` | role | Tone |
+**The layer.** A primitive sits under the components. Buttons, patterns and every page build their words from it.
 
-## 3. Anatomy
-
-One element, chosen by `as`. Defaults: body is `p`, caption is `span`, heading is `h2`.
-
-## 4. States
-
-| Cell | Status |
-|---|---|
-| Default, muted tone | Designed (stories Body, Muted) |
-| Nothing (empty string) | n/a: the caller decides whether to render |
-| Too many (long text) | Designed: text wraps and never truncates (WCAG 1.4.10, AA) |
-| Hover, focus, active, disabled, loading | n/a: text is not interactive |
-
-<Canvas of={Stories.HeadingLevel} />
-
-## 5. Usage
+## 2. Usage
 
 ### When to use
 
 - For every run of words in the library, so size, weight and colour come from tokens.
 
-### When not to use — and what instead
+### When not to use, and what to use instead
 
-- For text that acts: use a button or a link.
-- For a label tied to a field: use the field's own label part, which links label and control (WCAG 1.3.1, A).
+- **For text that acts.** Use a button or a link.
+- **For a label tied to a field.** Use the field's own label part, which links label and control (WCAG 1.3.1 Info and Relationships, A).
 
 ### How
 
-- Choose `as` from the outline of the page, and `variant` from the look you need. The two are independent (WCAG 1.3.1 Info and Relationships, A).
-- Use `tone="muted"` for secondary content only. It reaches 4.5:1 on the default surface (WCAG 1.4.3, AA).
-- Keep body text at 16px or more, sized in a unit that follows the user setting (WCAG 1.4.4 Resize Text, AA).
+- **Structure.** Choose `as` from the outline of the page. Choose `variant` from the look you need. The two are independent (WCAG 1.3.1, A).
+- **Tone.** Use `tone="muted"` for secondary content only. It reaches 4.5:1 on the default surface in both themes (WCAG 1.4.3 Contrast, AA).
+- **Size.** Keep body text at 16px or more, in a unit that follows the user setting (WCAG 1.4.4 Resize Text, AA).
+- **Spacing.** Text has no margin. The parent sets the gap, so stacks never collide.
+- **i18n.** Text arrives as `children`. The primitive holds no translation code.
 
-## 6. Pitfalls and don'ts
+## 3. Why the states look as they do
 
-| Don't | Why it fails | Basis | Rule id |
-|---|---|---|---|
-| A `div` styled as a heading | No heading role; screen reader users cannot navigate by heading | WCAG 1.3.1 (A) | `text.element-by-structure` |
-| Skipping from h2 to h4 to get a smaller size | The outline breaks; use `variant` for size | WCAG 1.3.1 (A) | `text.element-by-structure` |
-| Grey text below 4.5:1 for "quiet" copy | Low-vision users cannot read it | WCAG 1.4.3 (AA) | `text.muted-contrast` |
-| A px font size in a call site | Bypasses the role tokens | Project decision | `text.size-from-role` |
+Text is not interactive, so it has no hover, focus, active, disabled or selected look. Adding one would make text look like a control, and a control needs a role and a keyboard path.
+
+Long text wraps. Truncating hides content, and a user who raises text spacing would lose more of it (WCAG 1.4.10 Reflow, AA; 1.4.12 Text Spacing, AA).
+
+An empty string is the caller's decision. The primitive renders whatever it receives, so hiding an empty label is a view concern.
+
+## 4. Pitfalls and don'ts
+
+- **Do not style a `div` as a heading.** It has no heading role, and screen reader users cannot navigate by heading. (WCAG 1.3.1, A; `text.element-by-structure`)
+- **Do not skip from h2 to h4 to get a smaller size.** The outline breaks. Use `variant` for size. (WCAG 1.3.1, A; `text.element-by-structure`)
+- **Do not set grey text below 4.5:1 for "quiet" copy.** Low-vision users cannot read it. (WCAG 1.4.3, AA; `text.muted-contrast`)
+- **Do not write a px font size at a call site.** It bypasses the role tokens. (Project decision; `text.size-from-role`)

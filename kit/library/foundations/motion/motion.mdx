@@ -1,54 +1,41 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
 import * as Stories from './motion.stories';
 
 <Meta of={Stories} />
 
 # Motion
 
+The Showcase story holds replayable motion swatches with a reduced-motion switch, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
 ## 1. Introduction
 
 **In plain words:** Motion is how things move between states. Small, quick movement tells users something changed. Long or looping movement gets in the way.
 
-**Precisely:** Foundation · three durations, capped at 400ms · governs transitions and the spinner.
+**Precisely:** Foundation. Three durations, capped at 400ms. It governs transitions and the spinner.
 
-## 2. Tokens (defined)
+**Three steps, three roles.** Tier 1 holds the three durations. Tier 2 names the jobs: fast (hover, press), base (small enter and exit), deliberate (the ceiling, one spinner turn). Easing is not tokenised in this template. The spinner uses `linear`.
 
-| Token | Tier | Value |
-|---|---|---|
-| `duration.150`, `200`, `400` | 1 | 150, 200, 400 ms |
-| `motion.duration.fast` | 2 | `{duration.150}`; hover and press |
-| `motion.duration.base` | 2 | `{duration.200}`; small enter and exit |
-| `motion.duration.deliberate` | 2 | `{duration.400}`; the ceiling; one spinner turn |
-
-## 3. Anatomy
-
-Three steps on a tier 1 scale, three roles on tier 2. Easing is not tokenised in this template; the spinner uses `linear`.
-
-<Canvas of={Stories.Durations} />
-
-## 4. States
-
-n/a for a foundation. Under `prefers-reduced-motion: reduce`, looping animation stops and transitions shorten to none.
-
-## 5. Usage
+## 2. Usage
 
 ### When to use
 
 - For feedback on hover and press, and for a spinner that shows work is running (Nielsen heuristic 1, visibility of system status).
 
-### When not to use — and what instead
+### When not to use, and what to use instead
 
-- To decorate: skip it. Motion with no job is noise.
-- For content that moves on its own for more than 5 seconds: give a way to pause (WCAG 2.2.2 Pause, Stop, Hide, A).
+- **To decorate.** Skip it. Motion with no job is noise.
+- **For content that moves on its own for more than 5 seconds.** Give a way to pause (WCAG 2.2.2 Pause, Stop, Hide, A).
 
 ### How
 
-- Read `motion.duration.*` in every `transition` and `animation`.
-- Stop looping animation under `prefers-reduced-motion` (WCAG 2.3.3, AAA; house standard at AA).
+- **Tokens.** Read `motion.duration.*` in every `transition` and `animation`.
+- **Preference.** Stop looping animation under `prefers-reduced-motion` (WCAG 2.3.3 Animation from Interactions, AAA; house standard at AA).
 
-## 6. Pitfalls and don'ts
+## 3. Why the states look as they do
 
-| Don't | Why it fails | Basis | Rule id |
-|---|---|---|---|
-| A 600ms transition | Users wait for the interface | House cap, `house.maxDurationMs` | `motion.duration-ceiling` |
-| A spinner that ignores reduced motion | Vestibular disorders make motion harmful | WCAG 2.3.3 (AAA) | `motion.reduced-motion` |
+A foundation has no interaction state. Its one condition is the user's motion preference. Under `prefers-reduced-motion: reduce`, looping animation stops and transitions shorten to none. The Showcase simulates this with a switch, so you can compare the two behaviours side by side without changing the operating system setting.
+
+## 4. Pitfalls and don'ts
+
+- **Do not run a 600ms transition.** Users wait for the interface. (House cap, `house.maxDurationMs`; `motion.duration-ceiling`)
+- **Do not ship a spinner that ignores reduced motion.** Vestibular disorders make motion harmful. (WCAG 2.3.3, AAA; `motion.reduced-motion`)

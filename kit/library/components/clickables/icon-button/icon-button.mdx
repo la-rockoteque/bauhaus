@@ -5,59 +5,46 @@ import * as Stories from './icon-button.stories';
 
 # Icon button
 
+The Showcase story holds the tokens, the anatomy, the states grid, the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
 ## 1. Introduction
 
 **In plain words:** An icon button is a button drawn as a small picture, such as a cross to close. Because there is no text, you must give it a name that a screen reader can say.
 
-**Precisely:** Component in the clickables family · a button whose only visible content is an icon · built on the button.
+**Precisely:** Component in the clickables family. It is a button whose only visible content is an icon. It is built on the button and inherits its states.
 
-## 2. Tokens (consumed)
+**The job.** It saves space for actions whose symbol everyone knows. The accessible name replaces the visible text, so the `label` prop is required. The TypeScript type enforces it.
 
-It consumes the tokens of the button, and adds none. Its size comes from `size.target.min` and `space.inset.sm`; the button's stylesheet supplies the rest.
+**When it exists.** Use it in a dense toolbar or for a universal action. For any other action, use a button with a text label.
 
-## 3. Anatomy
-
-| Part | Status |
-|---|---|
-| Button container | Required |
-| Icon (`icon`) | Required, hidden from assistive technology |
-| Label (`label`) | Required, becomes `aria-label`; never shown |
-
-## 4. States
-
-| Cell | Status | Story |
-|---|---|---|
-| Default (tertiary, secondary) | Designed | Tertiary, Secondary |
-| Focus-visible | Designed | FocusVisible |
-| Disabled | Designed | Disabled |
-| Loading | Designed | Loading |
-| Hover, active | Designed by the button; no separate story | |
-| Nothing, none, some, too many, incorrect, done | n/a: same reasons as the button | |
-
-## 5. Usage
+## 2. Usage
 
 ### When to use
 
-- For a common action with a widely known symbol: close, search, open menu (Nielsen heuristic 6: recognition rather than recall).
+- For a common action with a widely known symbol: close, search, open menu. Users recognise the symbol and need not recall a word (Nielsen heuristic 6).
 - In a dense toolbar where a text label would not fit.
 
-### When not to use — and what instead
+### When not to use, and what to use instead
 
-- For an action with no standard symbol: use a button with a text label (WCAG 3.3.2 Labels or Instructions, A).
-- For a link: use a link.
+- **For an action with no standard symbol.** Use a button with a text label (WCAG 3.3.2 Labels or Instructions, A).
+- **For navigation.** Use a link.
 
 ### How
 
-- Pass `label` in the imperative and name the object: "Close dialog", not "X" (WCAG 1.1.1 Non-text Content, A; 4.1.2, A).
-- Keep the hit area at `size.target.min` even when the icon is smaller (WCAG 2.5.8, AA; house floor 44px).
-- Give the icon `currentColor` so it follows the text tokens and both themes (WCAG 1.4.11 Non-text Contrast, AA: the icon needs 3:1).
-- Show a tooltip for sighted mouse users only when the symbol is ambiguous; the accessible name stays the same (WCAG 1.4.13 Content on Hover or Focus, AA).
+- **Name.** Pass `label` in the imperative and name the object: "Close dialog", not "X" (WCAG 1.1.1 Non-text Content, A; 4.1.2 Name, Role, Value, A).
+- **Target.** Keep the hit area at `size.target.min` even when the icon is smaller (WCAG 2.5.8, AA; house floor 44px).
+- **Colour.** Give the icon `currentColor`, so it follows the text tokens in both themes. The icon needs 3:1 against its background (WCAG 1.4.11 Non-text Contrast, AA).
+- **Tooltip.** Show one for mouse users only when the symbol is ambiguous. The accessible name stays the same. A tooltip must be dismissible and hoverable (WCAG 1.4.13 Content on Hover or Focus, AA).
 
-## 6. Pitfalls and don'ts
+## 3. Why the states look as they do
 
-| Don't | Why it fails | Basis | Rule id |
-|---|---|---|---|
-| An icon with `title` only | Not reliably exposed as a name | WCAG 4.1.2 (A) | `icon-button.accessible-name` |
-| Leaving the icon visible to screen readers | The name is read twice | APG: decorative graphics carry no role | `icon-button.icon-hidden` |
-| A 24px icon with no padding | A target under the house floor | WCAG 2.5.8 (AA); house floor 44px | `icon-button.touch-target` |
-| A custom symbol for a common action | Users must learn it | Nielsen heuristic 6 | `icon-button.known-icon` |
+The icon button reuses the button's stylesheet, so it has the button's hover, pressed, focus and disabled looks. It adds only a square hit area. The grid shows the loading state because a spinner replaces nothing here: the icon stays, hidden by `opacity`, and `aria-busy` reports the work.
+
+Text-based cells (too many) are n/a because there is no text to overflow. The others are n/a for the reasons given on the button.
+
+## 4. Pitfalls and don'ts
+
+- **Do not give the icon a `title` only.** Assistive technology does not expose it reliably as a name. (WCAG 4.1.2, A; `icon-button.accessible-name`)
+- **Do not leave the icon visible to screen readers.** The name is read twice. (APG: decorative graphics carry no role; `icon-button.icon-hidden`)
+- **Do not use a 24px icon with no padding.** The target falls under the house floor. (WCAG 2.5.8, AA; house floor 44px; `icon-button.touch-target`)
+- **Do not invent a symbol for a common action.** Users must learn it. (Nielsen heuristic 6; `icon-button.known-icon`)

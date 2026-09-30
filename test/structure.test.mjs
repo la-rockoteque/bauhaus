@@ -25,7 +25,7 @@ test('check: the bad library yields every finding id', () => {
   const ids = new Set(findings.map((f) => f.id));
   for (const id of [
     'misfile.folder-by-file-type', 'structure.root', 'structure.family', 'structure.slice-name',
-    'slice.story', 'slice.page', 'slice.rules', 'slice.test', 'slice.tokens',
+    'slice.story', 'slice.page', 'slice.showcase', 'slice.rules', 'slice.test', 'slice.tokens',
     'misfile.story-far-from-component', 'misfile.library-imports-app', 'structure.direction', 'pattern.no-styles',
   ]) assert.ok(ids.has(id), `missing ${id}`);
   for (const f of findings) {
@@ -45,6 +45,9 @@ test('check: findings are specific', () => {
   assert.deepEqual(at('pattern.no-styles'), ['patterns/card/card.css']);
   assert.deepEqual(at('misfile.story-far-from-component'), ['components/clickables/Chip/other.stories.tsx']);
   assert.equal(findings.find((f) => f.id === 'slice.story').severity, 'HIGH');
+  const showcase = at('slice.showcase');
+  assert.ok(showcase.length > 0 && !showcase.includes('components/clickables/button/button.stories.tsx'), 'a story that renders DocPage is not flagged');
+  assert.ok(findings.filter((f) => f.id === 'slice.showcase').every((f) => f.severity === 'MEDIUM'));
 });
 
 test('check: findings sort by severity then path', () => {
@@ -61,6 +64,32 @@ test('check: skips node_modules, dist and .storybook', () => {
     fs.writeFileSync(path.join(dir, p), '');
   }
   assert.deepEqual(checkStructure(dir), []);
+});
+
+test('check: slice.showcase needs a DocPage import from doc-page and a <DocPage element', () => {
+  const at = (story) => checkStructure(tmpLibrary(SLICE('primitives/box', 'box', { 'box.stories.tsx': story }))).filter((f) => f.id === 'slice.showcase').map((f) => f.path);
+  assert.deepEqual(at(''), ['primitives/box/box.stories.tsx']);
+  assert.deepEqual(at("import { DocPage } from './somewhere';\nexport const A = () => <DocPage />;"), ['primitives/box/box.stories.tsx'], 'wrong import path');
+  assert.deepEqual(at("import { DocPage } from '../../.storybook/doc-page/doc-page';"), ['primitives/box/box.stories.tsx'], 'imported but never rendered');
+  assert.deepEqual(at(DOC_STORY), []);
+});
+
+test('check: a story may import the page builder from .storybook', () => {
+  const dir = tmpLibrary(SLICE('foundations/color', 'color', { 'color.tokens.json': '{}' }));
+  assert.deepEqual(checkStructure(dir).filter((f) => f.id === 'structure.direction'), []);
+});
+
+test('check: storybook.literal flags a raw colour or size in .storybook, not comments or generated files', () => {
+  const dir = tmpLibrary({
+    '.storybook/doc-page/page.css': '/* 4px in a comment */\n.a { color: var(--ds-text-default); padding: 0px; }\n.b { color: #fff; margin: 12px; }',
+    '.storybook/doc-page/page.tsx': "// #000 in a comment\nexport const x = { color: 'var(--ds-text-default)', width: '2rem' };",
+    '.storybook/clean.ts': "export const ok = 'var(--ds-space-4)'; // 8px is fine in a comment",
+    '.storybook/tokens.generated.ts': "export const t = { a: '#ffffff', b: '16px' };",
+  });
+  const hits = checkStructure(dir).filter((f) => f.id === 'storybook.literal');
+  assert.deepEqual(hits.map((f) => f.path).sort(), ['.storybook/doc-page/page.css', '.storybook/doc-page/page.tsx']);
+  assert.ok(hits.every((f) => f.severity === 'MEDIUM'));
+  assert.match(hits.find((f) => f.path.endsWith('.css')).message, /#fff.*12px|12px.*#fff/);
 });
 
 test('check: CLI exit codes and json', () => {
@@ -181,8 +210,9 @@ function tmpLibrary(files) {
   }
   return dir;
 }
+const DOC_STORY = "import { DocPage } from '../../.storybook/doc-page/doc-page';\nexport const Showcase = { render: () => <DocPage /> };\n";
 const SLICE = (dir, name, extra = {}) => Object.fromEntries(Object.entries({
-  [`${name}.stories.tsx`]: '', [`${name}.mdx`]: '', [`${name}.rules.ts`]: '', [`${name}.test.tsx`]: '', [`${name}.tsx`]: '', ...extra,
+  [`${name}.stories.tsx`]: DOC_STORY, [`${name}.mdx`]: '', [`${name}.rules.ts`]: '', [`${name}.test.tsx`]: '', [`${name}.tsx`]: '', ...extra,
 }).map(([f, t]) => [`${dir}/${f}`, t]));
 
 test('check: a foundation slice accepts any *.tokens.json (color has palette and colors)', () => {
@@ -214,4 +244,20 @@ test('check: the palette-at-call-site prefix comes from bauhaus.config.json', ()
   const hits = checkStructure(dir).filter((f) => f.id === 'misfile.palette-at-call-site');
   assert.equal(hits.length, 1);
   assert.match(hits[0].message, /--acme-colors-/);
+});
+
+test('check: themes are one showcase and one guide at themes/, each theme folder holds only its tokens', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bauhaus-themes-'));
+  const write = (rel, text = '') => { fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true }); fs.writeFileSync(path.join(root, rel), text); };
+  write('themes/light/light.tokens.json', '{}');
+  write('themes/dark/dark.tokens.json', '{}');
+  const ids = (list) => list.map((f) => `${f.id} ${f.path}`);
+  const missing = ids(checkStructure(root).findings ?? checkStructure(root));
+  assert.ok(missing.some((x) => x.startsWith('slice.story themes')), 'the theme set needs a showcase');
+  assert.ok(missing.some((x) => x.startsWith('slice.page themes')), 'the theme set needs a guide');
+  assert.ok(!missing.some((x) => /themes\/(light|dark)/.test(x)), `theme folders need only tokens: ${missing.join(' | ')}`);
+  write('themes/themes.stories.tsx', "import { DocPage } from '../.storybook/doc-page/doc-page';\nexport const Showcase = { render: () => <DocPage /> };\n");
+  write('themes/themes.mdx', '# Themes');
+  const after = ids(checkStructure(root).findings ?? checkStructure(root)).filter((x) => x.includes('themes'));
+  assert.deepEqual(after, []);
 });
