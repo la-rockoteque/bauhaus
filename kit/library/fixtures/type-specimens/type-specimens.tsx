@@ -7,7 +7,7 @@ import './type-specimens.css';
  * typefaces (the named families) -> fonts (the six roles) -> text styles (how a job looks at a size).
  * Every name and value is read from the generated tokens, so a swapped family shows up here unedited.
  */
-const THEME = 'light';
+export const THEME = 'light';
 const PANGRAM = 'The quick brown fox jumps over the lazy dog.';
 const FRENCH = 'Voix ambiguë d’un cœur qui, au zéphyr, préfère les jattes de kiwis.';
 const CONFUSABLE = 'Il1 O0';
@@ -39,18 +39,18 @@ const DEFAULT_SAMPLE = 'Your order ships on Friday.';
 const names = (pattern: RegExp): string[] => Object.keys(themeTokens(THEME)).filter((name) => pattern.test(name));
 /** `--ds-typeface-source-serif-4` gives `typeface.source-serif-4`: only the group separator becomes a dot. */
 const dotted = (name: string): string => name.replace(/^--ds-/, '').replace('-', '.');
-const tail = (name: string, prefix: string): string => name.slice(prefix.length);
+export const tail = (name: string, prefix: string): string => name.slice(prefix.length);
 
 /** `--ds-font-sans` and its five siblings; the scales that share the `font` group are left out. */
-const roleVars = (): string[] => names(/^--ds-font-/).filter((name) => !SCALES.test(name));
+export const roleVars = (): string[] => names(/^--ds-font-/).filter((name) => !SCALES.test(name));
 const weightVars = (): string[] => names(/^--ds-font-weight-/);
 
 /** The first family of a stack, without quotes or the ` Variable` Fontsource adds: `"Inter Variable", …` gives Inter. */
-const familyName = (stack: string | undefined): string =>
+export const familyName = (stack: string | undefined): string =>
   (stack?.split(',')[0] ?? '').trim().replace(/^["']|["']$/g, '').replace(/ Variable$/, '');
 
 /** The typeface variable a role aliases: `var(--ds-typeface-inter)` gives `--ds-typeface-inter`. */
-const typefaceOf = (roleVar: string): string | undefined => /var\((--[\w-]+)\)/.exec(alias(THEME, roleVar) ?? '')?.[1];
+export const typefaceOf = (roleVar: string): string | undefined => /var\((--[\w-]+)\)/.exec(alias(THEME, roleVar) ?? '')?.[1];
 
 const styleNames = (): string[] => names(/^--ds-text-[\w-]+-family$/).map((name) => name.slice('--ds-text-'.length, -'-family'.length));
 
