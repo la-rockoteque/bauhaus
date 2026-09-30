@@ -1,0 +1,73 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './spacing.stories';
+
+<Meta of={Stories} />
+
+# Spacing
+
+## 1. Introduction
+
+**In plain words:** Spacing is the air between things. Close things read as one group. Far things read as separate. One fixed set of gaps keeps every screen in the same rhythm.
+
+**Precisely:** Foundation · a closed scale of 13 steps on a 4px grid, plus semantic gap tokens · governs margin, padding and gap. It is not a layout grid and not a control size.
+
+## 2. Tokens (defined)
+
+| Token | Tier | Value | Use |
+|---|---|---|---|
+| `space.0` … `space.12` | 1 | 0, 4, 8, 12 … 48 px | The scale. Step n is n × 4px. |
+| `space.inset.xs` … `xl` | 2 | `{space.1}`, `{space.2}`, `{space.4}`, `{space.6}`, `{space.8}` | Padding inside a container |
+| `space.stack.xs` … `xl` | 2 | `{space.1}` … `{space.10}` | Vertical gap between siblings |
+| `space.inline.xs` … `xl` | 2 | `{space.1}` … `{space.6}` | Horizontal gap between siblings |
+| `size.target.min` | 2 | 44px | Smallest pointer target; spacing must not shrink it |
+
+CSS names: `--ds-space-4`, `--ds-space-stack-md`, `--ds-size-target-min`.
+
+## 3. Anatomy
+
+Base unit 4px. Every step is a multiple of it, so edges align across components. The scale is closed: no step exists between `space.4` and `space.5`, and a new step needs a scale proposal.
+
+Tier 1 is the scale. Tier 2 names the job: inset, stack and inline. A component reads tier 2. It reads tier 1 only for a size that is not a gap, such as a spinner box.
+
+<Canvas of={Stories.Scale} />
+
+## 4. States
+
+Spacing has no interaction or lifecycle state. Two cells are designed:
+
+| Cell | Status |
+|---|---|
+| Density | n/a for now. A `compact` theme would remap tier 2 tokens one step down; controls keep `size.target.min`. |
+| Text spacing raised by the user | Designed: gaps are tokens in `rem`-based layouts and no container around text has a fixed height. |
+
+## 5. Usage
+
+### When to use
+
+- Between and inside every block, through a tier 2 token (project decision: tokens are the only source of a value).
+
+### When not to use — and what instead
+
+- To size a control's hit area: use `size.target.min` (WCAG 2.5.8 Target Size, AA).
+- To stack layers: spacing does not order layers; use the z-index scale.
+- For a gap that only one component uses and no other shares: keep it in that component, as a tier 1 step.
+
+### How
+
+- Make the gap inside a group smaller than the gap between groups. Use `space.stack.sm` between a label and its value and `space.stack.lg` between groups (Wertheimer 1923, proximity).
+- Set the gap on the parent with `gap`, not as margins on the children, so stacks never collide (project decision, from the spacing rules in `knowledge/foundations/spacing-layout.md`).
+- Space small controls so a 24px circle on each does not touch another (WCAG 2.5.8 spacing exception, AA).
+- Do not fix the height of a container that holds text; the text must survive line height 1.5 and paragraph spacing of 2× the font size (WCAG 1.4.12 Text Spacing, AA).
+- Keep one column and no second scroll axis at 320 CSS px (WCAG 1.4.10 Reflow, AA).
+
+<Canvas of={Stories.Grouping} />
+
+## 6. Pitfalls and don'ts
+
+| Don't | Why it fails | Basis | Rule id |
+|---|---|---|---|
+| `margin: 18px` at a call site | Off the scale; gaps drift between screens | Closed scale (this page); `misfile.raw-value-in-component` | `spacing.no-literal` |
+| The same gap between and inside groups | Groups stop reading as groups | Wertheimer 1923 | `spacing.groups-distinct` |
+| A fixed height on a card that holds text | Text clips when the user raises text spacing | WCAG 1.4.12 (AA) | `spacing.text-spacing-safe` |
+| A step added "just this once" | The scale gains a hole; every later step becomes arguable | Closed scale (this page) | `spacing.scale-closed` |
+| A target smaller than `size.target.min` to save room | Users miss it; the house floor is 44px | WCAG 2.5.8 (AA); house floor at the 2.5.5 (AAA) figure | `spacing.target-min` |

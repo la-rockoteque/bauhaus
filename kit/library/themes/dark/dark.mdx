@@ -1,0 +1,58 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './dark.stories';
+
+<Meta of={Stories} />
+
+# Dark theme
+
+## 1. Introduction
+
+**In plain words:** The dark theme swaps the light colours for dark ones. Components do not change. They read the same names, and the names point to different values.
+
+**Precisely:** Theme · overrides the semantic colour tokens under `[data-theme="dark"]` · adds no token and changes no component.
+
+## 2. Tokens (overridden)
+
+| Token group | Tier | Change |
+|---|---|---|
+| `color.text.*` | 2 | Light greys on dark surfaces; `text.on-accent` becomes dark |
+| `color.surface.*` | 2 | Gray 900 default, lighter grays for raised layers |
+| `color.border.*` | 2 | Darker subtle border, lighter strong border |
+| `color.accent.*` | 2 | One step lighter, so the fill still contrasts with the surface |
+
+Tier 1 colours, spacing and type are not overridden.
+
+## 3. Anatomy
+
+One file, `dark.tokens.json`. Each override names a semantic token that exists in `foundations/color`; the build refuses an unknown one.
+
+## 4. States
+
+The theme is a state of the whole page: light (default) and dark. Pair contrast is re-checked in both. Forced-colors and high-contrast modes are n/a here: they replace author colours and are handled by the browser.
+
+## 5. Usage
+
+### When to use
+
+- When users choose a dark colour scheme or work in low light (WCAG 1.4.3 still applies: the choice does not relax contrast).
+
+### When not to use — and what instead
+
+- For a brand variant or a per-customer palette: add a separate theme; do not stretch this one.
+- For one dark panel on a light page: pin `data-theme="dark"` on that element, as the Panel story does.
+
+### How
+
+- Override semantic tokens only. A tier 1 override would recolour every theme (project decision, tier rule).
+- Re-check every text and border pair at 4.5:1 and 3:1 (WCAG 1.4.3 and 1.4.11, AA).
+- Use `color.surface.sunken` for wells only; page and card surfaces stay at `default` and `raised` so layers remain distinct (Material 3 elevation-by-tone, adapted; project decision).
+
+<Canvas of={Stories.Panel} />
+
+## 6. Pitfalls and don'ts
+
+| Don't | Why it fails | Basis | Rule id |
+|---|---|---|---|
+| A colour literal in a component for "dark mode" | The token system is bypassed and the theme drifts | Bauhaus `misfile.raw-value-in-component` | `color.semantic-by-intent` |
+| Inverting the light values by formula | Contrast pairs break; each pair must be checked | WCAG 1.4.3 (AA) | `color.text-contrast` |
+| Overriding a token that no light value defines | The build fails: a theme cannot invent tokens | Bauhaus `tokens.mjs check` | none |

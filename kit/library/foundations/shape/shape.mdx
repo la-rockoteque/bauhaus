@@ -1,0 +1,51 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './shape.stories';
+
+<Meta of={Stories} />
+
+# Shape
+
+## 1. Introduction
+
+**In plain words:** Shape is how round the corners are. Sharp corners feel strict, round ones feel friendly. The library picks one for controls and keeps it.
+
+**Precisely:** Foundation · a radius scale and one semantic token for controls · covers corner radius only.
+
+## 2. Tokens (defined)
+
+| Token | Tier | Value |
+|---|---|---|
+| `radius.none`, `sm`, `md`, `lg`, `full` | 1 | 0, 2, 4, 8, 9999 px |
+| `radius.control` | 2 | `{radius.md}`; buttons and fields |
+
+## 3. Anatomy
+
+Five steps and one role. `full` makes a pill or a circle.
+
+<Canvas of={Stories.Radius} />
+
+## 4. States
+
+n/a: radius does not change with interaction. The focus ring follows the corner because the outline is drawn on the same box.
+
+## 5. Usage
+
+### When to use
+
+- Read `radius.control` for anything the user presses or types into (project decision: one shape for all controls).
+
+### When not to use — and what instead
+
+- To show a boundary: a radius is not a border. Use `color.border.*` (WCAG 1.4.11, AA).
+
+### How
+
+- Nested rounded boxes use a smaller radius inside than outside, so the gap looks even (optical alignment; project decision).
+- Keep a visible border on any control whose fill is under 3:1 against its surroundings (WCAG 1.4.11 Non-text Contrast, AA).
+
+## 6. Pitfalls and don'ts
+
+| Don't | Why it fails | Basis | Rule id |
+|---|---|---|---|
+| `border-radius: 6px` in a component | Off the scale; controls stop matching | Closed scale (this page) | `shape.controls-use-control-radius` |
+| A borderless pale button on a white page | The button edge disappears for low-vision users | WCAG 1.4.11 (AA) | `shape.boundary-visible` |

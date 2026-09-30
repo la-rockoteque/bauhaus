@@ -1,0 +1,67 @@
+{
+  "color": {
+    "$type": "color",
+    "text": {
+      "default": {
+        "$value": "{color.gray.50}"
+      },
+      "muted": {
+        "$value": "{color.gray.400}"
+      },
+      "disabled": {
+        "$value": "{color.gray.600}"
+      },
+      "inverse": {
+        "$value": "{color.gray.900}"
+      },
+      "link": {
+        "$value": "{color.blue.300}"
+      },
+      "on-accent": {
+        "$value": "{color.gray.900}"
+      }
+    },
+    "surface": {
+      "default": {
+        "$value": "{color.gray.900}"
+      },
+      "soft": {
+        "$value": "{color.gray.800}"
+      },
+      "raised": {
+        "$value": "{color.gray.800}"
+      },
+      "sunken": {
+        "$value": "{color.black}"
+      },
+      "inverse": {
+        "$value": "{color.gray.50}"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$value": "{color.gray.800}"
+      },
+      "default": {
+        "$value": "{color.gray.700}"
+      },
+      "strong": {
+        "$value": "{color.gray.400}"
+      }
+    },
+    "accent": {
+      "default": {
+        "$value": "{color.blue.400}"
+      },
+      "hover": {
+        "$value": "{color.blue.300}"
+      },
+      "active": {
+        "$value": "{color.blue.200}"
+      },
+      "subtle": {
+        "$value": "{color.blue.900}"
+      }
+    }
+  }
+}

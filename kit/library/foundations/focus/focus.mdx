@@ -1,0 +1,54 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './focus.stories';
+
+<Meta of={Stories} />
+
+# Focus
+
+## 1. Introduction
+
+**In plain words:** Focus is the mark that shows which control the keyboard will act on. Without it, keyboard users are lost.
+
+**Precisely:** Foundation · the focus ring: width, offset and colour · drawn on `:focus-visible` for every interactive component.
+
+## 2. Tokens (defined)
+
+| Token | Tier | Value |
+|---|---|---|
+| `focus.ring.width` | 2 | 2px |
+| `focus.ring.offset` | 2 | 2px |
+| `color.focus.ring` | 2 | Defined in Color: `{color.accent.default}` |
+
+## 3. Anatomy
+
+An outline of `focus.ring.width`, offset from the box by `focus.ring.offset` so it sits on the page rather than on the control's own fill.
+
+<Canvas of={Stories.Ring} />
+
+## 4. States
+
+The ring is the focus-visible state of every component. Mouse presses do not show it; keyboard focus does (`:focus-visible`).
+
+## 5. Usage
+
+### When to use
+
+- On every interactive component: buttons, fields, links, tabs (WCAG 2.4.7 Focus Visible, AA).
+
+### When not to use — and what instead
+
+- On non-interactive containers: do not add `tabindex` only to show a ring.
+
+### How
+
+- Draw the outline with the three tokens: `outline: var(--ds-focus-ring-width) solid var(--ds-color-focus-ring)` and `outline-offset` from the offset token.
+- Keep the ring at 3:1 against the surface in both themes (WCAG 1.4.11, AA).
+- Keep a focused control from hiding under a sticky header (WCAG 2.4.11 Focus Not Obscured, AA).
+
+## 6. Pitfalls and don'ts
+
+| Don't | Why it fails | Basis | Rule id |
+|---|---|---|---|
+| `outline: none` with no replacement | Keyboard users lose their place | WCAG 2.4.7 (AA) | `focus.never-removed` |
+| A ring the same colour as the fill | It vanishes on the primary button; the offset prevents this | WCAG 1.4.11 (AA) | `focus.ring-contrast` |
+| A 1px ring | Hard to see for low-vision users | House standard, 2px minimum | `focus.ring-min-width` |

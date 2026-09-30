@@ -1,0 +1,24 @@
+{
+  "radius": {
+    "$type": "dimension",
+    "none": {
+      "$value": "0px"
+    },
+    "sm": {
+      "$value": "2px"
+    },
+    "md": {
+      "$value": "4px"
+    },
+    "lg": {
+      "$value": "8px"
+    },
+    "full": {
+      "$value": "9999px"
+    },
+    "control": {
+      "$value": "{radius.md}",
+      "$description": "Corner radius of buttons and fields."
+    }
+  }
+}

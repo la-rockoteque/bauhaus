@@ -1,0 +1,63 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './icon-button.stories';
+
+<Meta of={Stories} />
+
+# Icon button
+
+## 1. Introduction
+
+**In plain words:** An icon button is a button drawn as a small picture, such as a cross to close. Because there is no text, you must give it a name that a screen reader can say.
+
+**Precisely:** Component in the clickables family · a button whose only visible content is an icon · built on the button.
+
+## 2. Tokens (consumed)
+
+It consumes the tokens of the button, and adds none. Its size comes from `size.target.min` and `space.inset.sm`; the button's stylesheet supplies the rest.
+
+## 3. Anatomy
+
+| Part | Status |
+|---|---|
+| Button container | Required |
+| Icon (`icon`) | Required, hidden from assistive technology |
+| Label (`label`) | Required, becomes `aria-label`; never shown |
+
+## 4. States
+
+| Cell | Status | Story |
+|---|---|---|
+| Default (tertiary, secondary) | Designed | Tertiary, Secondary |
+| Focus-visible | Designed | FocusVisible |
+| Disabled | Designed | Disabled |
+| Loading | Designed | Loading |
+| Hover, active | Designed by the button; no separate story | |
+| Nothing, none, some, too many, incorrect, done | n/a: same reasons as the button | |
+
+## 5. Usage
+
+### When to use
+
+- For a common action with a widely known symbol: close, search, open menu (Nielsen heuristic 6: recognition rather than recall).
+- In a dense toolbar where a text label would not fit.
+
+### When not to use — and what instead
+
+- For an action with no standard symbol: use a button with a text label (WCAG 3.3.2 Labels or Instructions, A).
+- For a link: use a link.
+
+### How
+
+- Pass `label` in the imperative and name the object: "Close dialog", not "X" (WCAG 1.1.1 Non-text Content, A; 4.1.2, A).
+- Keep the hit area at `size.target.min` even when the icon is smaller (WCAG 2.5.8, AA; house floor 44px).
+- Give the icon `currentColor` so it follows the text tokens and both themes (WCAG 1.4.11 Non-text Contrast, AA: the icon needs 3:1).
+- Show a tooltip for sighted mouse users only when the symbol is ambiguous; the accessible name stays the same (WCAG 1.4.13 Content on Hover or Focus, AA).
+
+## 6. Pitfalls and don'ts
+
+| Don't | Why it fails | Basis | Rule id |
+|---|---|---|---|
+| An icon with `title` only | Not reliably exposed as a name | WCAG 4.1.2 (A) | `icon-button.accessible-name` |
+| Leaving the icon visible to screen readers | The name is read twice | APG: decorative graphics carry no role | `icon-button.icon-hidden` |
+| A 24px icon with no padding | A target under the house floor | WCAG 2.5.8 (AA); house floor 44px | `icon-button.touch-target` |
+| A custom symbol for a common action | Users must learn it | Nielsen heuristic 6 | `icon-button.known-icon` |

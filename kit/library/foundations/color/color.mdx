@@ -1,0 +1,61 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './color.stories';
+
+<Meta of={Stories} />
+
+# Color
+
+## 1. Introduction
+
+**In plain words:** Color tells users what things are for: text, surface, border, the main action. Components ask for a job ("text on the default surface"), never for a shade of blue.
+
+**Precisely:** Foundation · a grey ramp, a blue ramp, and semantic tokens for text, surface, border, accent and focus · the source of every colour in the library.
+
+## 2. Tokens (defined)
+
+| Token | Tier | Value | Use |
+|---|---|---|---|
+| `color.gray.50` … `900`, `color.blue.*`, `white`, `black` | 1 | Ramps | Raw palette. Components never read it. |
+| `color.text.default`, `muted`, `disabled`, `inverse`, `link`, `on-accent` | 2 | Aliases into the ramps | Text roles |
+| `color.surface.default`, `soft`, `raised`, `sunken`, `inverse` | 2 | Aliases | Backgrounds |
+| `color.border.subtle`, `default`, `strong` | 2 | Aliases | Outlines and dividers |
+| `color.accent.default`, `hover`, `active`, `subtle` | 2 | Aliases | The main action colour and its states |
+| `color.focus.ring` | 2 | `{color.accent.default}` | Focus outline colour |
+
+The dark theme overrides tier 2 only.
+
+## 3. Anatomy
+
+Two tiers. Tier 1 is the ramp: ten steps of grey, eight of blue. Tier 2 is a closed set of roles. Status colours (ready, warning, error) are not in this template; add them with a scale proposal.
+
+<Canvas of={Stories.Semantic} />
+
+## 4. States
+
+Color supplies the state colours: accent `hover` and `active`, text `disabled`, and the focus colour. Each state colour differs from its base in lightness and never carries meaning alone (WCAG 1.4.1 Use of Color, A).
+
+## 5. Usage
+
+### When to use
+
+- Read a tier 2 token for every colour in a stylesheet (project decision: components read semantic tokens).
+
+### When not to use — and what instead
+
+- For a status such as an error: do not tint text red alone; add an icon or text (WCAG 1.4.1, A).
+- For a brand colour needed once: propose a token; do not add a literal.
+
+### How
+
+- Keep text at 4.5:1 against its surface, and borders and focus rings at 3:1 (WCAG 1.4.3 and 1.4.11, AA).
+- Check every pair in both themes; the dark values are chosen, not computed (project decision).
+- Name a token for its job. `color.text.link` is correct; `color.text.blue` is not (Bauhaus naming lint).
+
+## 6. Pitfalls and don'ts
+
+| Don't | Why it fails | Basis | Rule id |
+|---|---|---|---|
+| A hex value in a component | The dark theme cannot reach it | `misfile.raw-value-in-component` | `color.semantic-by-intent` |
+| Reading `color.blue.600` from a component | Ties the component to one hue; a rebrand breaks it | Tier rule (this page) | `color.semantic-by-intent` |
+| Red as the only sign of an error | Colour-blind users miss it | WCAG 1.4.1 (A) | `color.ui-contrast` |
+| Grey text tuned by eye | Fails 4.5:1 for low-vision users | WCAG 1.4.3 (AA) | `color.text-contrast` |

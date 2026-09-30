@@ -1,0 +1,16 @@
+{
+  "duration": {
+    "$type": "duration",
+    "150": { "$value": "150ms" },
+    "200": { "$value": "200ms" },
+    "400": { "$value": "400ms" }
+  },
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "fast": { "$value": "{duration.150}", "$description": "Hover and press feedback." },
+      "base": { "$value": "{duration.200}", "$description": "Small enter and exit." },
+      "deliberate": { "$value": "{duration.400}", "$description": "The ceiling (house.maxDurationMs). Also one turn of a spinner." }
+    }
+  }
+}

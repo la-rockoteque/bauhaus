@@ -1,0 +1,93 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './button.stories';
+
+<Meta of={Stories} />
+
+# Button
+
+## 1. Introduction
+
+**In plain words:** A button is the thing you press to make something happen. Save, send, delete. If pressing it takes you to another page, it is a link, not a button.
+
+**Precisely:** Component in the clickables family · triggers one action in the current view · not for navigation and not for toggling a setting.
+
+## 2. Tokens (consumed)
+
+| Token | Tier | Use |
+|---|---|---|
+| `color.accent.default`, `.hover`, `.active` | 2 | Fill of the primary variant and its pressed states |
+| `color.text.on-accent` | 2 | Label on the primary fill; the pair reaches 4.5:1 |
+| `color.border.strong` | 2 | Outline of the secondary variant |
+| `color.surface.default`, `.soft`, `.sunken` | 2 | Secondary fill, hover and active; disabled fill |
+| `color.text.link`, `color.accent.subtle` | 2 | Tertiary label and its hover fill |
+| `color.text.disabled`, `color.border.subtle` | 2 | Disabled label and outline |
+| `color.focus.ring`, `focus.ring.width`, `focus.ring.offset` | 2 | Focus indicator |
+| `text.label.*` | 2 | Label size, weight and line height |
+| `space.inset.sm`, `space.inline.sm`, `space.inline.lg` | 2 | Padding and gap between label and spinner |
+| `size.target.min` | 2 | Minimum height and width |
+| `radius.control` | 2 | Corner radius |
+| `motion.duration.deliberate` | 2 | One turn of the spinner |
+
+The button has no component tokens.
+
+## 3. Anatomy
+
+| Part | Status |
+|---|---|
+| Container (native `button`) | Required |
+| Label (`children`) | Required |
+| Spinner | Shown only while `loading` |
+
+The button takes no icon slot. For an icon alone, use the icon button; for an icon with a label, place both in `children`.
+
+## 4. States
+
+| Cell | Status | Story |
+|---|---|---|
+| Default (primary, secondary, tertiary) | Designed | Primary, Secondary, Tertiary |
+| Hover | Designed | Hover |
+| Focus-visible | Designed | FocusVisible |
+| Active | Designed | Active |
+| Disabled | Designed | Disabled |
+| Loading | Designed | Loading |
+| Too many (long label) | Designed: the label wraps | LongLabel |
+| Nothing, none, some | n/a: the button has no data of its own |  |
+| Incorrect | n/a: the form owns the error, and the button stays pressable so the user can retry |  |
+| Done | n/a: the result is announced by the view (a status message), not by the button |  |
+
+<Canvas of={Stories.Loading} />
+
+## 5. Usage
+
+### When to use
+
+- To trigger an action in place: submit, save, open a dialog (WAI-ARIA APG Button pattern: a button performs an action).
+
+### When not to use — and what instead
+
+- To go to another page or URL: use a link (WCAG 4.1.2 Name, Role, Value, A: the role must match the behaviour).
+- To turn a setting on or off: use a switch or checkbox (APG Switch and Checkbox patterns).
+- For an icon with no visible text: use the icon button, which requires an accessible name (WCAG 1.1.1, A).
+
+### How
+
+- **Variants:** show one primary per view region and make the others secondary or tertiary (Hick 1952: choice time grows with the number of options; Nielsen heuristic 8: extra items compete with the important ones).
+- **Content:** start the label with a verb and name the object, "Save changes" (WCAG 2.4.6 Headings and Labels, AA).
+- **Keyboard:** Space and Enter activate it. The component renders a native `button`, so this is free (APG Button pattern).
+- **Target size:** at least 24 by 24 CSS px (WCAG 2.5.8, AA). The house floor is 44px (the WCAG 2.5.5 AAA figure; project decision).
+- **Loading:** keep the label and the width, ignore repeat presses, keep the button focusable, and announce the result elsewhere in the view (Nielsen heuristic 1; WCAG 4.1.3 Status Messages, AA).
+- **Disabled:** exempt from text contrast (WCAG 1.4.3 exception for inactive components). Say why, near the button (Nielsen heuristic 1).
+- **Responsive:** let the label wrap; never truncate it (WCAG 1.4.10 Reflow, AA).
+- **Form use:** the default `type` is `button`, so a button in a form does not submit it unless you pass `type="submit"` (HTML form submission behaviour).
+
+## 6. Pitfalls and don'ts
+
+| Don't | Why it fails | Basis | Rule id |
+|---|---|---|---|
+| `outline: none` with no replacement | Keyboard users lose their place | WCAG 2.4.7 (AA) | `button.focus-ring` |
+| A `div` with a click handler | No focus, no Space or Enter, no role | APG Button; WCAG 4.1.2 (A) | `button.native-element` |
+| `variant="disabled"` | A state modelled as a choice; it cannot combine with the variants | Bauhaus `misfile.state-as-variant` | `button.states.not-variant` |
+| Two primary buttons side by side | Users cannot tell which action leads | Hick 1952; Nielsen heuristic 8 | `button.one-primary` |
+| Swapping the label for a spinner while loading | The width shifts and the name disappears for assistive technology | Nielsen heuristic 1; WCAG 4.1.2 (A) | `button.state.loading` |
+| A colour literal in `button.css` | The dark theme cannot reach it | Bauhaus `misfile.raw-value-in-component` | `button.no-literal` |
+| "Click here" as a label | The label names no action and no object | WCAG 2.4.6 (AA) | `button.label-verb` |

@@ -1,0 +1,87 @@
+.ds-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-inline-sm);
+  min-block-size: var(--ds-size-target-min);
+  min-inline-size: var(--ds-size-target-min);
+  padding-block: var(--ds-space-inset-sm);
+  padding-inline: var(--ds-space-inline-lg);
+  border: var(--ds-focus-ring-width) solid transparent;
+  border-radius: var(--ds-radius-control);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+  cursor: pointer;
+}
+
+.ds-button__label {
+  overflow-wrap: anywhere;
+}
+
+.ds-button--primary {
+  background: var(--ds-color-accent-default);
+  color: var(--ds-color-text-on-accent);
+}
+
+.ds-button--secondary {
+  background: var(--ds-color-surface-default);
+  border-color: var(--ds-color-border-strong);
+  color: var(--ds-color-text-default);
+}
+
+.ds-button--tertiary {
+  background: transparent;
+  color: var(--ds-color-text-link);
+}
+
+.ds-button--primary:hover { background: var(--ds-color-accent-hover); }
+.ds-button--primary:active { background: var(--ds-color-accent-active); }
+.ds-button--secondary:hover { background: var(--ds-color-surface-soft); }
+.ds-button--secondary:active { background: var(--ds-color-surface-sunken); }
+.ds-button--tertiary:hover { background: var(--ds-color-accent-subtle); }
+.ds-button--tertiary:active { background: var(--ds-color-surface-sunken); }
+
+.ds-button:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-color-focus-ring);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.ds-button:disabled {
+  background: var(--ds-color-surface-soft);
+  border-color: var(--ds-color-border-subtle);
+  color: var(--ds-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Loading keeps the label in the tree (it names the button) and in the layout (no width shift). */
+.ds-button--loading {
+  cursor: progress;
+}
+
+.ds-button--loading .ds-button__label {
+  opacity: 0;
+}
+
+.ds-button__spinner {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: var(--ds-space-4);
+  block-size: var(--ds-space-4);
+  margin: calc(var(--ds-space-2) * -1);
+  border: var(--ds-focus-ring-width) solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: var(--ds-radius-full);
+  animation: ds-button-spin var(--ds-motion-duration-deliberate) linear infinite;
+}
+
+@keyframes ds-button-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-button__spinner { animation: none; }
+}

@@ -1,0 +1,40 @@
+// Rulebook entries for the Empty results pattern. Shape: knowledge/governance/rulebook.md.
+export const emptyResultsRules = [
+  {
+    id: 'empty-results.no-own-style',
+    component: 'EmptyResults',
+    rubric: 'composition',
+    severity: 'MEDIUM',
+    expectation: 'The pattern has no stylesheet; layout comes from the components it composes.',
+    verify: 'auto',
+    basis: 'docs/library.md: a pattern has no tokens and no styles of its own',
+  },
+  {
+    id: 'empty-results.says-why',
+    component: 'EmptyResults',
+    rubric: 'content',
+    severity: 'MEDIUM',
+    expectation: 'The heading says whether nothing exists or nothing matches, and names the filters that applied.',
+    verify: 'review',
+    basis: 'Nielsen heuristic 1, visibility of system status',
+  },
+  {
+    id: 'empty-results.offers-exit',
+    component: 'EmptyResults',
+    rubric: 'content',
+    severity: 'MEDIUM',
+    expectation: 'When filters caused the empty result, one button clears them.',
+    verify: 'review',
+    basis: 'Nielsen heuristic 3, user control and freedom',
+  },
+  {
+    id: 'empty-results.announced',
+    component: 'EmptyResults',
+    rubric: 'accessibility',
+    severity: 'HIGH',
+    expectation: 'The empty message sits in a status region so a screen reader announces it after a filter change.',
+    verify: 'auto',
+    covers: ['status-messages'],
+    basis: 'WCAG 4.1.3 Status Messages (AA)',
+  },
+] as const;

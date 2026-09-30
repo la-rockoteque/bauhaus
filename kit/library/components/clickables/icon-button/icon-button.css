@@ -1,0 +1,9 @@
+/* Square hit area at the button's target floor; the icon sits in the middle. */
+.ds-icon-button {
+  padding: var(--ds-space-inset-sm);
+  inline-size: var(--ds-size-target-min);
+}
+
+.ds-icon-button__icon {
+  display: inline-flex;
+}

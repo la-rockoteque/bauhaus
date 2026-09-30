@@ -1,0 +1,42 @@
+// Rulebook entries for IconButton. Shape: knowledge/governance/rulebook.md. Ids are permanent.
+export const iconButtonRules = [
+  {
+    id: 'icon-button.accessible-name',
+    component: 'IconButton',
+    rubric: 'name',
+    severity: 'HIGH',
+    expectation: 'The icon button has a required label that becomes its accessible name.',
+    verify: 'auto',
+    covers: ['name-role-value'],
+    basis: 'WCAG 1.1.1 Non-text Content (A); WCAG 4.1.2 Name, Role, Value (A)',
+  },
+  {
+    id: 'icon-button.icon-hidden',
+    component: 'IconButton',
+    rubric: 'name',
+    severity: 'MEDIUM',
+    expectation: 'The icon is hidden from assistive technology so the name is read once.',
+    verify: 'auto',
+    basis: 'WAI-ARIA APG: a decorative graphic inside a named control has no role of its own',
+  },
+  {
+    id: 'icon-button.touch-target',
+    component: 'IconButton',
+    rubric: 'target size',
+    severity: 'MEDIUM',
+    expectation: 'The icon button has a target of at least 44px on each side.',
+    expected: '--ds-size-target-min',
+    verify: 'auto',
+    covers: ['target-size'],
+    basis: 'House floor at the WCAG 2.5.5 (AAA) figure; WCAG 2.5.8 (AA) minimum is 24px',
+  },
+  {
+    id: 'icon-button.known-icon',
+    component: 'IconButton',
+    rubric: 'content',
+    severity: 'LOW',
+    expectation: 'The icon has a widely shared meaning (close, search, menu); otherwise the button carries a text label.',
+    verify: 'review',
+    basis: 'Nielsen heuristic 6, recognition rather than recall',
+  },
+] as const;

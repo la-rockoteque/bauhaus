@@ -1,0 +1,61 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './text.stories';
+
+<Meta of={Stories} />
+
+# Text
+
+## 1. Introduction
+
+**In plain words:** Text is how words appear on screen. It picks the size and the weight so that a heading looks like a heading and a note looks like a note.
+
+**Precisely:** Primitive component · sets the look of body, caption and heading text from typography tokens · the element it renders is the caller's choice.
+
+## 2. Tokens (consumed)
+
+| Token | Tier | Use |
+|---|---|---|
+| `text.body.*`, `text.caption.*`, `text.heading.*` | 2 | Size, weight and line height per variant |
+| `font.family.sans` | 1 | Typeface (no semantic alias exists yet) |
+| `color.text.default`, `color.text.muted` | 2 | Tone |
+
+## 3. Anatomy
+
+One element, chosen by `as`. Defaults: body is `p`, caption is `span`, heading is `h2`.
+
+## 4. States
+
+| Cell | Status |
+|---|---|
+| Default, muted tone | Designed (stories Body, Muted) |
+| Nothing (empty string) | n/a: the caller decides whether to render |
+| Too many (long text) | Designed: text wraps and never truncates (WCAG 1.4.10, AA) |
+| Hover, focus, active, disabled, loading | n/a: text is not interactive |
+
+<Canvas of={Stories.HeadingLevel} />
+
+## 5. Usage
+
+### When to use
+
+- For every run of words in the library, so size, weight and colour come from tokens.
+
+### When not to use — and what instead
+
+- For text that acts: use a button or a link.
+- For a label tied to a field: use the field's own label part, which links label and control (WCAG 1.3.1, A).
+
+### How
+
+- Choose `as` from the outline of the page, and `variant` from the look you need. The two are independent (WCAG 1.3.1 Info and Relationships, A).
+- Use `tone="muted"` for secondary content only. It reaches 4.5:1 on the default surface (WCAG 1.4.3, AA).
+- Keep body text at 16px or more, sized in a unit that follows the user setting (WCAG 1.4.4 Resize Text, AA).
+
+## 6. Pitfalls and don'ts
+
+| Don't | Why it fails | Basis | Rule id |
+|---|---|---|---|
+| A `div` styled as a heading | No heading role; screen reader users cannot navigate by heading | WCAG 1.3.1 (A) | `text.element-by-structure` |
+| Skipping from h2 to h4 to get a smaller size | The outline breaks; use `variant` for size | WCAG 1.3.1 (A) | `text.element-by-structure` |
+| Grey text below 4.5:1 for "quiet" copy | Low-vision users cannot read it | WCAG 1.4.3 (AA) | `text.muted-contrast` |
+| A px font size in a call site | Bypasses the role tokens | Project decision | `text.size-from-role` |

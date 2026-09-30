@@ -1,0 +1,48 @@
+{
+  "name": "@acme/design-system",
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": ["*.css"],
+  "files": ["dist"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./tokens.css": "./dist/tokens.css",
+    "./style.css": "./dist/style.css"
+  },
+  "//": "BAUHAUS_PLUGIN is the folder of the bauhaus plugin (the one holding scripts/). Set it once in your shell or CI. tokens.css holds the light tokens and the [data-theme=dark] block, so a consumer on another stack imports one file.",
+  "scripts": {
+    "tokens": "node $BAUHAUS_PLUGIN/scripts/tokens.mjs build --config bauhaus.config.json",
+    "check-tokens": "node $BAUHAUS_PLUGIN/scripts/tokens.mjs check --config bauhaus.config.json",
+    "check-structure": "node $BAUHAUS_PLUGIN/scripts/structure.mjs check .",
+    "build": "vite build && npm run tokens",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "storybook": "npm run tokens && storybook dev -p 6006",
+    "build-storybook": "npm run tokens && storybook build"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "^10.0.0",
+    "@storybook/react-vite": "^10.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^9.0.0",
+    "jsdom": "^27.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remark-gfm": "^4.0.0",
+    "storybook": "^10.0.0",
+    "storybook-addon-pseudo-states": "^10.0.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.0.0",
+    "vitest": "^3.2.0"
+  }
+}

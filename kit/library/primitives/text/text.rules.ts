@@ -1,0 +1,42 @@
+// Rulebook entries for Text. Shape: knowledge/governance/rulebook.md. Ids are permanent.
+export const textRules = [
+  {
+    id: 'text.size-from-role',
+    component: 'Text',
+    rubric: 'tokens',
+    severity: 'MEDIUM',
+    expectation: 'Each variant reads its size, weight and line height from the text.* semantic tokens.',
+    verify: 'auto',
+    basis: 'Project decision: call sites read semantic tokens',
+  },
+  {
+    id: 'text.body-min-size',
+    component: 'Text',
+    rubric: 'legibility',
+    severity: 'MEDIUM',
+    expectation: 'Body text is at least 16px and resizes with the user setting.',
+    expected: '16px',
+    verify: 'auto',
+    basis: 'WCAG 1.4.4 Resize Text (AA); project decision for the 16px floor',
+  },
+  {
+    id: 'text.muted-contrast',
+    component: 'Text',
+    rubric: 'contrast',
+    severity: 'HIGH',
+    expectation: 'Muted text reaches 4.5:1 on the default surface in every theme.',
+    expected: '4.5:1',
+    verify: 'auto',
+    covers: ['contrast-text'],
+    basis: 'WCAG 1.4.3 Contrast (Minimum) (AA)',
+  },
+  {
+    id: 'text.element-by-structure',
+    component: 'Text',
+    rubric: 'semantics',
+    severity: 'MEDIUM',
+    expectation: 'The element follows the document outline, chosen with as; the variant only sets the look.',
+    verify: 'review',
+    basis: 'WCAG 1.3.1 Info and Relationships (A)',
+  },
+] as const;

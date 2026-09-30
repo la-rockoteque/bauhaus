@@ -1,0 +1,54 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './motion.stories';
+
+<Meta of={Stories} />
+
+# Motion
+
+## 1. Introduction
+
+**In plain words:** Motion is how things move between states. Small, quick movement tells users something changed. Long or looping movement gets in the way.
+
+**Precisely:** Foundation · three durations, capped at 400ms · governs transitions and the spinner.
+
+## 2. Tokens (defined)
+
+| Token | Tier | Value |
+|---|---|---|
+| `duration.150`, `200`, `400` | 1 | 150, 200, 400 ms |
+| `motion.duration.fast` | 2 | `{duration.150}`; hover and press |
+| `motion.duration.base` | 2 | `{duration.200}`; small enter and exit |
+| `motion.duration.deliberate` | 2 | `{duration.400}`; the ceiling; one spinner turn |
+
+## 3. Anatomy
+
+Three steps on a tier 1 scale, three roles on tier 2. Easing is not tokenised in this template; the spinner uses `linear`.
+
+<Canvas of={Stories.Durations} />
+
+## 4. States
+
+n/a for a foundation. Under `prefers-reduced-motion: reduce`, looping animation stops and transitions shorten to none.
+
+## 5. Usage
+
+### When to use
+
+- For feedback on hover and press, and for a spinner that shows work is running (Nielsen heuristic 1, visibility of system status).
+
+### When not to use — and what instead
+
+- To decorate: skip it. Motion with no job is noise.
+- For content that moves on its own for more than 5 seconds: give a way to pause (WCAG 2.2.2 Pause, Stop, Hide, A).
+
+### How
+
+- Read `motion.duration.*` in every `transition` and `animation`.
+- Stop looping animation under `prefers-reduced-motion` (WCAG 2.3.3, AAA; house standard at AA).
+
+## 6. Pitfalls and don'ts
+
+| Don't | Why it fails | Basis | Rule id |
+|---|---|---|---|
+| A 600ms transition | Users wait for the interface | House cap, `house.maxDurationMs` | `motion.duration-ceiling` |
+| A spinner that ignores reduced motion | Vestibular disorders make motion harmful | WCAG 2.3.3 (AAA) | `motion.reduced-motion` |
