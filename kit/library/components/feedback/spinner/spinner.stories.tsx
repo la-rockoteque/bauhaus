@@ -30,7 +30,7 @@ export const Showcase: StoryObj = {
           { name: 'progress.fill', tier: 'role', use: 'The moving arc; 3:1 on the page', swatch: '--ds-progress-fill' },
           { name: 'progress.track', tier: 'role', use: 'The rest of the ring', swatch: '--ds-progress-track' },
           { name: 'text.muted', tier: 'role', use: 'Visible label', swatch: '--ds-text-muted' },
-          { name: 'size.icon.sm · md · lg', tier: '2', use: 'Ring size, 16, 20 and 24px' },
+          { name: 'size.icon.sm · md · lg', tier: '2', use: 'Ring size, 12, 16 and 20px' },
           { name: 'size.border.thick', tier: '2', use: 'Ring thickness' },
           { name: 'motion.duration.deliberate', tier: '2', use: 'One turn, linear' },
           { name: 'text.caption.* · space.control.gap', tier: '2', use: 'Visible label, and its gap to the ring' },
@@ -45,7 +45,7 @@ export const Showcase: StoryObj = {
         ],
       }}
       specs={[
-        { label: 'Sizes', value: 'sm 16px · md 20px · lg 24px (size.icon.*); the turning ring cannot be measured' },
+        { label: 'Sizes', value: 'sm 12px · md 16px · lg 20px (size.icon.*); the turning ring cannot be measured' },
         { label: 'Turn', value: 'motion.duration.deliberate, linear, infinite' },
         { label: 'Reduced motion', value: 'The ring stops and stays as a static arc' },
         { label: 'Delay', value: 'None built in. The caller waits about 300 ms before it mounts the spinner.' },

@@ -145,7 +145,7 @@ export function MotionSwatches() {
   return (
     <div className="spec-motion">
       <div className="spec-motion-controls">
-        <Button variant="subtle" size="narrow" onClick={() => setRun((n) => n + 1)}>
+        <Button variant="subtle" onClick={() => setRun((n) => n + 1)}>
           Replay
         </Button>
         <label className="spec-toggle">

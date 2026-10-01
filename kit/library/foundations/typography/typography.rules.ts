@@ -5,10 +5,10 @@ export const typographyRules = [
     component: 'Typography',
     rubric: 'legibility',
     severity: 'MEDIUM',
-    expectation: 'text.body.size is at least 16px.',
-    expected: '16px',
+    expectation: 'text.body.size is at least 14px.',
+    expected: '14px',
     verify: 'auto',
-    basis: 'Project decision for the 16px floor; WCAG 1.4.4 Resize Text (AA) keeps it resizable',
+    basis: 'Project decision for the 14px floor of a compact system; WCAG 1.4.4 Resize Text (AA) keeps it resizable',
   },
   {
     id: 'typography.line-height-min',

@@ -32,13 +32,13 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 ### How
 
 - **Name.** Pass `label` in the imperative and name the object: "Close dialog", not "X" (WCAG 1.1.1 Non-text Content, A; 4.1.2 Name, Role, Value, A).
-- **Target.** Keep the hit area at `size.target.min` even when the icon is smaller (WCAG 2.5.8, AA; house floor 44px).
+- **Target.** Keep the square at `size.control.md` (32px) even when the icon is smaller. The target is at least `size.target.min` (24px; WCAG 2.5.8, AA).
 - **Colour.** Give the icon `currentColor`, so it follows the text tokens in both themes. The icon needs 3:1 against its background (WCAG 1.4.11 Non-text Contrast, AA).
 - **Tooltip.** Show one for mouse users only when the symbol is ambiguous. The accessible name stays the same. A tooltip must be dismissible and hoverable (WCAG 1.4.13 Content on Hover or Focus, AA).
 
 ## 3. Why the states look as they do
 
-The icon button reuses the button's stylesheet, so it has the button's hover, pressed, focus and disabled looks. It adds only a square hit area. The grid shows the loading state because a spinner replaces nothing here: the icon stays, hidden by `opacity`, and `aria-busy` reports the work.
+The icon button reuses the button's stylesheet, so it has the button's hover, pressed, focus and disabled looks. It adds only a square shape. The grid shows the loading state because a spinner replaces nothing here: the icon stays, hidden by `opacity`, and `aria-busy` reports the work.
 
 Text-based cells (too many) are n/a because there is no text to overflow. The others are n/a for the reasons given on the button.
 
@@ -46,5 +46,5 @@ Text-based cells (too many) are n/a because there is no text to overflow. The ot
 
 - **Do not give the icon a `title` only.** Assistive technology does not expose it reliably as a name. (WCAG 4.1.2, A; `icon-button.accessible-name`)
 - **Do not leave the icon visible to screen readers.** The name is read twice. (APG: decorative graphics carry no role; `icon-button.icon-hidden`)
-- **Do not use a 24px icon with no padding.** The target falls under the house floor. (WCAG 2.5.8, AA; house floor 44px; `icon-button.touch-target`)
+- **Do not draw the button smaller than the 24px floor.** The target falls under the AA minimum. (WCAG 2.5.8, AA; `icon-button.touch-target`)
 - **Do not invent a symbol for a common action.** Users must learn it. (Nielsen heuristic 6; `icon-button.known-icon`)

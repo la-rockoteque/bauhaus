@@ -13,12 +13,13 @@
   margin-inline-start: var(--ds-space-inline-xs);
 }
 
-/* A standalone link is a control, so it gets the target floor. Inside a sentence it stays inline (WCAG 2.5.8 inline exception). */
+/* A standalone link is a control, so it draws at size.control.md. Inside a sentence it stays inline (WCAG 2.5.8 inline exception). */
 .ds-link--standalone {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
-  min-block-size: var(--ds-size-target-min);
-  min-inline-size: var(--ds-size-target-min);
+  min-block-size: var(--ds-size-control-md);
+  min-inline-size: var(--ds-size-control-md);
 }
 
 /* Browsers let :visited change the colour only. text.link-visited keeps 4.5:1 and the underline stays. */

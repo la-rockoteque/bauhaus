@@ -38,7 +38,7 @@ export const Showcase: StoryObj = {
           { name: 'text.body.* · text.label.weight', tier: '2', use: 'Crumb text, and the heavier current crumb' },
           { name: 'space.inline.xs · space.inset.sm', tier: '2', use: 'Gap around a separator, and padding of the current crumb' },
           { name: 'size.icon.sm', tier: '2', use: 'Separator chevron' },
-          { name: 'size.target.min', tier: '2', use: 'Target of each crumb and of the "…" button, through Link and Button' },
+          { name: 'size.control.md', tier: '2', use: 'Height of each crumb and of the "…" button (32px, through Link and Button). The target is at least size.target.min (24px)' },
         ],
       }}
       stage={{

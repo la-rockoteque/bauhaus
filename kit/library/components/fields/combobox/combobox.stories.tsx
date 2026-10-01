@@ -60,7 +60,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus on the input, the toggle and the active option', swatch: '--ds-focus-ring-color' },
           { name: 'shadow.1 · z.dropdown', tier: '2', use: 'Popup elevation and layer' },
           { name: 'text.body.* · text.caption.*', tier: '2', use: 'Options; empty text, description and error' },
-          { name: 'size.target.min · size.overlay.md · size.icon.sm', tier: '2', use: 'Option and toggle target (44px); popup maximum height; check mark' },
+          { name: 'size.control.md · size.overlay.md · size.icon.sm', tier: '2', use: 'Option and toggle (32px, above the 24px target floor); popup maximum height; check mark' },
           { name: 'radius.control · radius.overlay · motion.duration.fast', tier: '2', use: 'Corners; popup fade' },
         ],
       }}
@@ -87,12 +87,12 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Input height', property: 'height', target: '.ds-combobox__input', token: 'size.control.md', value: 'as the text field' },
-        { label: 'Input padding block', property: 'padding-block', target: '.ds-combobox__input', token: 'space.inset.sm' },
+        { label: 'Input padding block', property: 'padding-block', target: '.ds-combobox__input', token: 'space.0', value: '0, the text centres in size.control.md' },
         { label: 'Input radius', property: 'radius', target: '.ds-combobox__input', token: 'radius.control' },
-        { label: 'Toggle width', property: 'width', target: '.ds-combobox__button', token: 'size.target.min', value: 'at the end of the input, chevron-down, turns over when open' },
+        { label: 'Toggle width', property: 'width', target: '.ds-combobox__button', token: 'size.control.md', value: 'at the end of the input, chevron-down, turns over when open' },
         { label: 'Toggle radius', property: 'radius', target: '.ds-combobox__button', token: 'radius.control' },
         { label: 'Popup', value: 'width of the input · max size.overlay.md high, scrolls · overlay.surface · shadow.1 · z.dropdown' },
-        { label: 'Option', value: 'at least 44px high · check mark for the selected one' },
+        { label: 'Option', token: 'size.control.md', value: 'at least 32px high · check mark for the selected one' },
         { label: 'Focus', value: 'stays in the input; the active option is set with aria-activedescendant' },
       ]}
       api={[

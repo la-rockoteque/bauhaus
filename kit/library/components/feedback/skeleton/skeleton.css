@@ -16,14 +16,14 @@
 
 .ds-skeleton--block {
   inline-size: 100%;
-  block-size: calc(var(--ds-space-12) * 2);
+  block-size: var(--ds-space-12);
   border-radius: var(--ds-radius-control);
 }
 
 .ds-skeleton--circle {
   flex: none;
-  inline-size: var(--ds-space-10);
-  block-size: var(--ds-space-10);
+  inline-size: var(--ds-space-8);
+  block-size: var(--ds-space-8);
   border-radius: var(--ds-radius-full);
 }
 

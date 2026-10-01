@@ -3,8 +3,8 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  inline-size: var(--ds-size-icon-lg);
-  block-size: var(--ds-size-icon-lg);
+  inline-size: var(--ds-size-icon-md);
+  block-size: var(--ds-size-icon-md);
   border: var(--ds-size-border-thick) solid var(--ds-field-border);
   border-radius: var(--ds-radius-full);
   background: var(--ds-field-surface);
@@ -12,8 +12,8 @@
 }
 
 .ds-radio-group__dot {
-  inline-size: var(--ds-size-icon-sm);
-  block-size: var(--ds-size-icon-sm);
+  inline-size: var(--ds-space-2);
+  block-size: var(--ds-space-2);
   border-radius: var(--ds-radius-full);
   background: var(--ds-selection-mark);
   opacity: 0;

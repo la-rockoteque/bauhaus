@@ -38,7 +38,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **One control per row.** Pass `href` for a link, or `onPress` for a button. The title becomes the control's text. The control's `::after` stretches over the row, so the whole row is the target and the row has one tab stop. There are no nested interactive elements, and the trailing slot never holds a button (WCAG 4.1.2, A). For a row with two actions, use a table with an actions column or a menu.
 - **Dividers.** `divided` draws `border.default` between rows. Dividers are opt-in, because whitespace alone often separates rows well enough.
 - **Selected.** A selected link row sets `aria-current="true"`. A selected button row sets `aria-pressed`. The row shows a fill and a bar at its start edge, so the state does not rest on fill alone (WCAG 1.4.1, A).
-- **Target size.** A row is at least 44px high. The house floor is the WCAG 2.5.5 (AAA) figure. The AA minimum is 24px (WCAG 2.5.8).
+- **Target size.** A row is at least 32px high (`size.control.md`). The target floor is 24px (`size.target.min`, WCAG 2.5.8, AA).
 - **Focus.** The ring goes around the row, because the row is the target (WCAG 2.4.7, AA).
 - **Keyboard.** Tab moves from row to row. Enter activates a link. Enter and Space activate a button. Both are native.
 - **Link text.** The title is the link text. "Open" and "Details" tell a screen-reader user nothing when links are listed (WCAG 2.4.4, A).

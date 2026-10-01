@@ -82,7 +82,7 @@ export const Showcase: StoryObj = {
           { name: 'size.overlay.sm', tier: '2', use: 'Maximum inline size, 20rem' },
           { name: 'motion.duration.base · motion.ease.enter · motion.ease.exit', tier: '2', use: 'Enter and exit' },
           { name: 'z.toast', tier: '2', use: 'Stacking of the region' },
-          { name: 'space.inset.md · space.inline.md · space.stack.sm', tier: '2', use: 'Padding, icon gap, gap between toasts' },
+          { name: 'space.inset.sm · space.inset.md · space.inline.md · space.stack.sm', tier: '2', use: 'Padding, icon gap, gap between toasts' },
         ],
       }}
       stage={{
@@ -98,13 +98,13 @@ export const Showcase: StoryObj = {
           { n: 2, label: 'Icon', note: 'status glyph with a spoken name', target: '.ds-toast__icon', at: 'top-start' },
           { n: 3, label: 'Message', note: 'with an optional title', target: '.ds-toast__message' },
           { n: 4, label: 'Action', note: 'optional; makes the toast persistent', target: '.ds-toast__action', at: 'bottom-end' },
-          { n: 5, label: 'Close button', note: 'named, 44px', target: '.ds-toast > .ds-icon-button', at: 'top-end' },
+          { n: 5, label: 'Close button', note: 'named, 32px', target: '.ds-toast > .ds-icon-button', at: 'top-end' },
         ],
       }}
       specs={[
         { label: 'Width', value: 'Up to size.overlay.sm, 20rem, fills a narrow screen' },
         { label: 'Padding inline', property: 'padding-inline', target: '.ds-toast', token: 'space.inset.md' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-toast', token: 'space.inset.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-toast', token: 'space.inset.sm' },
         { label: 'Gap', property: 'gap', target: '.ds-toast', token: 'space.inline.md' },
         { label: 'Radius', property: 'radius', target: '.ds-toast', token: 'radius.overlay' },
         { label: 'Position', value: 'Fixed at the bottom inline end, z.toast; static for a specimen' },

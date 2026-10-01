@@ -1,8 +1,9 @@
 .ds-menu-item {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: var(--ds-space-control-gap);
-  min-block-size: var(--ds-size-target-min);
+  min-block-size: var(--ds-size-control-md);
   padding-block: var(--ds-space-inset-xs);
   padding-inline: var(--ds-space-control-inline);
   border-radius: var(--ds-radius-control);

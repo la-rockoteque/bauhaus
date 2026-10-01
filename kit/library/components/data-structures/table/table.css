@@ -32,7 +32,7 @@
 }
 
 .ds-table__caption {
-  padding: var(--ds-space-inset-sm) var(--ds-space-inset-md);
+  padding: var(--ds-space-inset-xs) var(--ds-space-inline-md);
   color: var(--ds-text-default);
   font-family: var(--ds-text-label-family);
   font-size: var(--ds-text-label-size);
@@ -53,10 +53,11 @@
 }
 
 .ds-table__cell {
-  padding-block: var(--ds-space-inset-sm);
-  padding-inline: var(--ds-space-inset-md);
+  box-sizing: border-box;
+  padding-block: var(--ds-space-inset-xs);
+  padding-inline: var(--ds-space-inline-md);
   border-block-end: var(--ds-size-border-thin) solid var(--ds-table-border);
-  block-size: var(--ds-size-target-min);
+  block-size: var(--ds-size-control-md);
   text-align: start;
   vertical-align: middle;
 }
@@ -123,13 +124,15 @@
 
 /* Sort control: a button filling the header cell. */
 .ds-table__sort {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-inline-xs);
-  min-block-size: var(--ds-size-target-min);
-  margin-block: calc(var(--ds-space-inset-sm) * -1);
-  margin-inline: calc(var(--ds-space-inset-sm) * -1);
-  padding-inline: var(--ds-space-inset-sm);
+  min-block-size: var(--ds-size-control-md);
+  margin-block: calc(var(--ds-space-inset-xs) * -1);
+  margin-inline: calc(var(--ds-space-inline-sm) * -1);
+  padding-block: 0;
+  padding-inline: var(--ds-space-inline-sm);
   border: 0;
   border-radius: var(--ds-radius-control);
   background: transparent;
@@ -173,12 +176,13 @@
 }
 
 .ds-table__check {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   min-inline-size: var(--ds-size-target-min);
-  min-block-size: var(--ds-size-target-min);
-  margin-block: calc(var(--ds-space-inset-sm) * -1);
+  min-block-size: var(--ds-size-control-md);
+  margin-block: calc(var(--ds-space-inset-xs) * -1);
   cursor: pointer;
 }
 
@@ -204,20 +208,22 @@
   line-height: var(--ds-text-caption-line-height);
 }
 
-/* Compact: less padding, smaller targets that still clear the 24px AA floor. */
+/* Compact: no block padding, smaller targets that still clear the 24px AA floor. */
 .ds-table--compact .ds-table__cell {
-  padding-block: var(--ds-space-inset-xs);
+  padding-block: 0;
   block-size: auto;
 }
 
 .ds-table--compact .ds-table__sort {
-  min-block-size: var(--ds-size-icon-lg);
-  margin-block: calc(var(--ds-space-inset-xs) * -1);
+  box-sizing: border-box;
+  min-block-size: var(--ds-size-control-sm);
+  margin-block: 0;
 }
 
 .ds-table--compact .ds-table__check {
-  min-block-size: var(--ds-size-icon-lg);
-  margin-block: calc(var(--ds-space-inset-xs) * -1);
+  box-sizing: border-box;
+  min-block-size: var(--ds-size-control-sm);
+  margin-block: 0;
 }
 
 /* Slots: empty, error and partial rows span every column. */
@@ -360,10 +366,10 @@
   .ds-table__row--data > .ds-table__cell--select {
     justify-content: flex-start;
     inline-size: auto;
-    padding-inline: var(--ds-space-inset-sm);
+    padding-inline: var(--ds-space-inline-sm);
   }
 
   .ds-table--compact .ds-table__cell {
-    padding-block: var(--ds-space-inset-xs);
+    padding-block: 0;
   }
 }

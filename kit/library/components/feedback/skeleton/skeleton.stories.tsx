@@ -62,7 +62,7 @@ export const Showcase: StoryObj<typeof meta> = {
         rows: [
           { name: 'skeleton.base', tier: 'role', use: 'Fill of every placeholder', swatch: '--ds-skeleton-base' },
           { name: 'skeleton.highlight', tier: 'role', use: 'The moving band of the shimmer', swatch: '--ds-skeleton-highlight' },
-          { name: 'space.3 · space.10 · space.12', tier: '2', use: 'Default height of a text line, size of a circle, height of a block (twice space.12)' },
+          { name: 'space.3 · space.8 · space.12', tier: '2', use: 'Default height of a text line, size of a circle, height of a block' },
           { name: 'radius.sm · radius.control · radius.full', tier: '2', use: 'Corners of a line, a block and a circle' },
           { name: 'motion.duration.deliberate', tier: '2', use: 'A shimmer sweep is four times this duration, linear' },
         ],
@@ -78,8 +78,8 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Text height', property: 'height', target: '.ds-skeleton--text', token: 'space.3' },
-        { label: 'Block height', value: '2 × space.12' },
-        { label: 'Circle width', property: 'width', target: '.ds-skeleton--circle', token: 'space.10' },
+        { label: 'Block height', value: 'space.12' },
+        { label: 'Circle width', property: 'width', target: '.ds-skeleton--circle', token: 'space.8' },
         { label: 'Size', value: 'width and height props take a token expression' },
         { label: 'Shimmer', value: 'A highlight sweeps over the base, linear, 4 × motion.duration.deliberate' },
         { label: 'Reduced motion', value: 'No sweep. The placeholder is a flat block.' },

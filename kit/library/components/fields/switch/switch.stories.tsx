@@ -32,14 +32,14 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator around the track', swatch: '--ds-focus-ring-color' },
           { name: 'text.default · text.muted', tier: 'role', use: 'Label; description', swatch: '--ds-text-muted' },
           { name: 'text.body.* · text.caption.*', tier: '2', use: 'Label; description' },
-          { name: 'size.target.min · size.icon.sm · space.6 · space.11 · size.border.thin', tier: '2', use: 'Target (44px); thumb; track height and width; track outline' },
+          { name: 'size.target.min · size.icon.md · space.5 · space.9 · size.border.thin', tier: '2', use: 'Target (24px); thumb; track height and width; track outline' },
           { name: 'radius.full · motion.duration.base · motion.ease.standard', tier: '2', use: 'Pill shape; thumb slide' },
         ],
       }}
       stage={{
         render: (args) => cell(<Switch label={String(args.label)} description={String(args.description) || undefined} disabled={args.disabled === true} defaultChecked />),
         parts: [
-          { n: 1, label: 'Target', note: '44px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
+          { n: 1, label: 'Target', note: '24px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
           { n: 2, label: 'Track', note: 'drawn, decorative', target: '.ds-switch__track' },
           { n: 3, label: 'Thumb and check', note: 'position and mark carry the state', target: '.ds-switch__thumb', at: 'bottom-start' },
           { n: 4, label: 'Label', note: 'required, never changes', target: '.ds-field__choice-label', at: 'bottom-end' },
@@ -47,13 +47,13 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Target height', property: 'height', target: '.ds-field__choice-target', token: 'size.target.min', value: '44px, the whole row' },
+        { label: 'Target height', property: 'height', target: '.ds-field__choice-target', token: 'size.target.min', value: '24px, the whole row' },
         { label: 'Target width', property: 'width', target: '.ds-field__choice-target', token: 'size.target.min' },
-        { label: 'Track width', property: 'width', target: '.ds-switch__track', token: 'space.11' },
-        { label: 'Track height', property: 'height', target: '.ds-switch__track', token: 'space.6' },
+        { label: 'Track width', property: 'width', target: '.ds-switch__track', token: 'space.9' },
+        { label: 'Track height', property: 'height', target: '.ds-switch__track', token: 'space.5' },
         { label: 'Track radius', property: 'radius', target: '.ds-switch__track', token: 'radius.full' },
-        { label: 'Thumb height', property: 'height', target: '.ds-switch__thumb', token: 'size.icon.sm', value: 'slides to the end when on; a check appears in it' },
-        { label: 'Thumb width', property: 'width', target: '.ds-switch__thumb', token: 'size.icon.sm' },
+        { label: 'Thumb height', property: 'height', target: '.ds-switch__thumb', token: 'size.icon.md', value: 'slides to the end when on; a check appears in it' },
+        { label: 'Thumb width', property: 'width', target: '.ds-switch__thumb', token: 'size.icon.md' },
         { label: 'Motion', value: 'motion.duration.base slide; dropped under reduced motion' },
         { label: 'Focus', value: 'ring 2px, offset 2px, around the track, on :focus-visible' },
       ]}

@@ -5,8 +5,9 @@
   align-items: center;
   gap: var(--ds-space-control-gap);
   max-inline-size: 100%;
-  min-block-size: var(--ds-space-8);
-  padding-inline: var(--ds-space-inline-lg);
+  min-block-size: var(--ds-size-control-sm);
+  padding-block: 0;
+  padding-inline: var(--ds-space-inline-md);
   border: var(--ds-size-border-thin) solid var(--ds-border-default);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-surface-sunken);
@@ -31,10 +32,10 @@
   outline-offset: var(--ds-focus-ring-offset);
 }
 
-/* Pressable chips keep the 44px target inside their border. */
+/* Pressable chips draw at size.control.md, border included, so they line up with buttons. */
 .ds-chip--removable,
 .ds-chip--selectable {
-  min-block-size: calc(var(--ds-size-target-min) + 2 * var(--ds-size-border-thin));
+  min-block-size: var(--ds-size-control-md);
   border-color: var(--ds-border-strong);
   background: var(--ds-surface-default);
 }
@@ -43,8 +44,13 @@
   padding-inline-end: 0;
 }
 
+/* The remove button fits inside the outline at size.control.sm, the 24px target floor. */
 .ds-chip .ds-chip__remove {
+  box-sizing: border-box;
   flex: none;
+  inline-size: var(--ds-size-control-sm);
+  min-inline-size: var(--ds-size-control-sm);
+  min-block-size: var(--ds-size-control-sm);
   border-radius: var(--ds-radius-full);
   color: var(--ds-text-default);
 }

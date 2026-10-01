@@ -49,15 +49,9 @@ describe('Button', () => {
     await expectNoAxeViolations(container);
   });
 
-  it('draws the narrow size, and keeps a caller class beside its own', () => {
-    render(<Button size="narrow" className="extra">Filter</Button>);
+  it('keeps a caller class beside its own', () => {
+    render(<Button className="extra">Filter</Button>);
     const classes = screen.getByRole('button', { name: 'Filter' }).className.split(' ');
-    expect(classes).toContain('ds-button--narrow');
-    expect(classes).toContain('extra');
-  });
-
-  it('draws no narrow class at the default size', () => {
-    render(<Button>Filter</Button>);
-    expect(screen.getByRole('button').className).not.toContain('ds-button--narrow');
+    expect(classes).toEqual(expect.arrayContaining(['ds-button', 'ds-button--primary', 'extra']));
   });
 });

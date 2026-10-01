@@ -47,7 +47,8 @@
   display: flex;
   align-items: flex-start;
   gap: var(--ds-space-inline-md);
-  padding: var(--ds-space-inset-md);
+  padding-block: var(--ds-space-inset-sm);
+  padding-inline: var(--ds-space-inset-md);
   border: var(--ds-size-border-thin) solid var(--ds-overlay-border);
   border-radius: var(--ds-radius-overlay);
   background: var(--ds-overlay-surface);

@@ -43,7 +43,7 @@ export const Showcase: StoryObj = {
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator on a tab and on a panel', swatch: '--ds-focus-ring-color' },
           { name: 'text.label.* · text.body.*', tier: '2', use: 'Tab label, and panel text' },
           { name: 'space.inset.* · space.inline.*', tier: '2', use: 'Tab padding, panel padding, gap of vertical tabs' },
-          { name: 'size.target.min · size.border.thin · size.border.thick', tier: '2', use: 'Tab target, list rule, selected bar' },
+          { name: 'size.control.md · size.border.thin · size.border.thick', tier: '2', use: 'Tab height (32px; the target is at least size.target.min, 24px), list rule, selected bar' },
           { name: 'size.icon.sm', tier: '2', use: 'Chevron of the scroll cue' },
         ],
       }}

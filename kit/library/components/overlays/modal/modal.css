@@ -72,7 +72,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--ds-space-inline-md);
-  padding: var(--ds-space-inset-lg) var(--ds-space-inset-lg) var(--ds-space-inset-sm);
+  padding: var(--ds-space-inset-md) var(--ds-space-inset-lg) var(--ds-space-inset-sm);
 }
 
 .ds-modal__title {
@@ -99,7 +99,7 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--ds-space-inline-md);
-  padding: var(--ds-space-inset-md) var(--ds-space-inset-lg) var(--ds-space-inset-lg);
+  padding: var(--ds-space-inset-md) var(--ds-space-inset-lg);
   border-block-start: var(--ds-size-border-thin) solid var(--ds-overlay-border);
 }
 

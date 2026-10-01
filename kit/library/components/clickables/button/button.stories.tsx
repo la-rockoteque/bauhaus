@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from './button';
-import type { ButtonProps, ButtonSize, ButtonVariant } from './button';
+import type { ButtonProps, ButtonVariant } from './button';
 import { buttonRules } from './button.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -11,7 +11,6 @@ const meta = { title: 'Clickables/Button', component: Button, parameters: { layo
 export default meta;
 
 const VARIANTS = ['primary', 'secondary', 'tertiary', 'subtle'] as const satisfies readonly ButtonVariant[];
-const SIZES = ['default', 'narrow'] as const satisfies readonly ButtonSize[];
 const TYPES = ['button', 'submit', 'reset'] as const satisfies readonly NonNullable<ButtonProps['type']>[];
 
 export const Showcase: StoryObj<typeof meta> = {
@@ -37,16 +36,15 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'disabled.text · disabled.surface · disabled.border', tier: 'role', use: 'Disabled label, fill and outline', swatch: '--ds-disabled-surface' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator', swatch: '--ds-focus-ring-color' },
           { name: 'text.label.*', tier: '2', use: 'Label size, weight and line height' },
-          { name: 'space.inset.sm · space.inline.sm · space.inline.lg', tier: '2', use: 'Padding, and the gap between label and spinner' },
-          { name: 'size.target.min', tier: '2', use: 'Minimum height and width, and the hit area of a narrow button' },
-          { name: 'size.control.narrow', tier: '2', use: 'Visible height of a narrow button' },
+          { name: 'space.inline.md · space.inline.sm', tier: '2', use: 'Padding inline, and the gap between label and spinner. Padding block is 0: the height centres the label' },
+          { name: 'size.control.md', tier: '2', use: 'Minimum height and width (32px), above the size.target.min floor (24px)' },
           { name: 'radius.control', tier: '2', use: 'Corner radius' },
           { name: 'motion.duration.deliberate', tier: '2', use: 'One turn of the spinner' },
         ],
       }}
       stage={{
         render: (args) => (
-          <Button variant={args.variant as ButtonVariant} size={args.size as ButtonSize} loading={args.loading === true} type={args.type as ButtonProps['type']} disabled={args.disabled === true}>
+          <Button variant={args.variant as ButtonVariant} loading={args.loading === true} type={args.type as ButtonProps['type']} disabled={args.disabled === true}>
             Save changes
           </Button>
         ),
@@ -57,9 +55,9 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Height', property: 'height', target: '.ds-button', token: 'size.target.min', value: 'minimum; the width has the same floor' },
-        { label: 'Padding inline', property: 'padding-inline', target: '.ds-button', token: 'space.inline.lg' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-button', token: 'space.inset.sm' },
+        { label: 'Height', property: 'height', target: '.ds-button', token: 'size.control.md', value: 'minimum; the width has the same floor' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-button', token: 'space.inline.md' },
+        { label: 'Padding block', value: '0; the height centres the label, so the block padding stays below the inline padding' },
         { label: 'Gap', value: 'space.inline.sm; the spinner overlays the label while loading, so no gap shows' },
         { label: 'Radius', property: 'radius', target: '.ds-button', token: 'radius.control' },
         { label: 'Label', value: 'text.label.*, medium weight' },
@@ -68,7 +66,6 @@ export const Showcase: StoryObj<typeof meta> = {
       ]}
       api={[
         { label: 'variant', value: '"primary" | "secondary" | "tertiary" | "subtle", default "primary". One primary per view region. Subtle is the quietest: neutral text, no fill or outline until hover.', control: { kind: 'select', options: VARIANTS, value: 'primary' } },
-        { label: 'size', value: '"default" | "narrow", default "default". Narrow draws at size.control.narrow (32px) for dense chrome; its hit area stays at size.target.min.', control: { kind: 'select', options: SIZES, value: 'default' } },
         { label: 'loading', value: 'The action is running. The label and width stay, aria-busy is set, presses are ignored.', control: { kind: 'boolean', value: true } },
         { label: 'type', value: '"button" | "submit" | "reset", default "button". A button in a form does not submit unless you ask.', control: { kind: 'select', options: TYPES, value: 'button' } },
         { label: 'disabled', value: 'The native disabled attribute.', control: { kind: 'boolean', value: false } },
@@ -94,7 +91,6 @@ export const Showcase: StoryObj<typeof meta> = {
                 <Button variant="secondary">Secondary</Button>
                 <Button variant="tertiary">Tertiary</Button>
                 <Button variant="subtle">Subtle</Button>
-                <Button variant="subtle" size="narrow">Narrow</Button>
               </div>
             ),
             trigger: 'variant',

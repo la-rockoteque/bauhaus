@@ -33,10 +33,10 @@ export const spacingRules = [
     rubric: 'target size',
     severity: 'HIGH',
     expectation: 'size.target.min is at least 24px.',
-    expected: '44px',
+    expected: '24px',
     verify: 'auto',
     covers: ['target-size'],
-    basis: 'WCAG 2.5.8 Target Size (Minimum) (AA); house floor 44px at the WCAG 2.5.5 (AAA) figure',
+    basis: 'WCAG 2.5.8 Target Size (Minimum) (AA); the house floor is the AA figure, 24px',
   },
   {
     id: 'spacing.breakpoints-match',
@@ -57,5 +57,15 @@ export const spacingRules = [
     verify: 'auto',
     basis: 'WCAG 1.4.12 Text Spacing (AA); failure F104 (clipped or overlapping content when text spacing is adjusted). Heuristic: reads the stylesheets, not the rendered page.',
     covers: ['text-spacing'],
+  },
+  {
+    id: 'spacing.control-border-box',
+    component: 'Spacing',
+    rubric: 'scale',
+    severity: 'MEDIUM',
+    expectation: 'A rule that sizes a box with size.control.* (height or width) also sets box-sizing: border-box, so padding and border stay inside the 32px box.',
+    expected: 'box-sizing: border-box',
+    verify: 'auto',
+    basis: 'Project decision: controls side by side share one height (CSS Box Sizing 3)',
   },
 ] as const;

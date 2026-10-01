@@ -28,7 +28,7 @@ export const Showcase: StoryObj = {
         note: 'The colour is currentColor, so no colour token is defined here. The glyph data is in glyphs.ts.',
         rows: [
           { name: 'icon.stroke', tier: '2', use: '2px at 24; the one stroke weight of every glyph. It scales with the icon box' },
-          { name: 'size.icon.sm · md · lg', tier: '2', use: '16, 20, 24 px; defined in spacing, paired with text styles below' },
+          { name: 'size.icon.sm · md · lg', tier: '2', use: '12, 16, 20 px; defined in spacing, paired with text styles below' },
         ],
       }}
       specimens={<Keylines />}
@@ -44,7 +44,7 @@ export const Showcase: StoryObj = {
       }}
       specs={[
         { label: 'Grid', value: '24 by 24 viewBox, live area 20 by 20 (2 to 22)' },
-        { label: 'Stroke', value: 'icon.stroke = 2px at 24; it scales with the box through the viewBox, 1.33px at sm, 1.67px at md, 2px at lg. No vector-effect' },
+        { label: 'Stroke', value: 'icon.stroke = 2px at 24; it scales with the box through the viewBox, 1px at sm, 1.33px at md, 1.67px at lg. No vector-effect' },
         { label: 'Caps and joins', value: 'Square caps, mitre joins, one rule for every glyph' },
         { label: 'Corners', value: 'None. A corner is sharp; a circle is a circle' },
         { label: 'Forms', value: 'Circle, square, triangle and straight lines; arcs only from one circle' },
@@ -64,7 +64,7 @@ export const Showcase: StoryObj = {
         { text: 'Draw on the 24 grid, inside the 20 live area, with the one stroke.', basis: 'Project decision; optical consistency' },
         { text: 'Give an icon-only control a name with IconButton label, and a tooltip with the same words.', basis: 'WCAG 4.1.2 (A); 2.5.3 (A)' },
         { text: 'Put a word beside a status icon.', basis: 'WCAG 1.4.1 (A)' },
-        { text: 'Keep a 44px target around a 20px icon.', basis: 'House standard; WCAG 2.5.5 (AAA); 2.5.8 (AA)' },
+        { text: 'Keep a target of at least 24px around a 20px icon.', basis: 'House floor 24px; WCAG 2.5.8 (AA)' },
         { text: 'Add a new glyph to glyphs.ts, with the construction checklist.', basis: 'Nielsen 4' },
       ]}
       donts={[

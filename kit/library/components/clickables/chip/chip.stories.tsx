@@ -41,7 +41,7 @@ export const Showcase: StoryObj = {
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator', swatch: '--ds-focus-ring-color' },
           { name: 'text.label.*', tier: '2', use: 'Label size, weight and line height' },
           { name: 'space.inline.lg · space.control.gap · space.8', tier: '2', use: 'Side padding, gap to the check icon, height of a static chip' },
-          { name: 'size.target.min · size.border.thin', tier: '2', use: 'Height of a pressable chip: the target plus its two outline widths' },
+          { name: 'size.control.md · size.border.thin', tier: '2', use: 'Height of a pressable chip: 32px plus its two outline widths. The target is at least size.target.min (24px)' },
           { name: 'size.overlay.sm', tier: '2', use: 'Widest label before it truncates' },
           { name: 'radius.pill · radius.full', tier: '2', use: 'Chip outline; round remove button' },
         ],
@@ -59,7 +59,7 @@ export const Showcase: StoryObj = {
         ],
       }}
       specs={[
-        { label: 'Height', value: 'static: space.8 · pressable: size.target.min plus the outline, so the target is 44px' },
+        { label: 'Height', value: 'static: size.control.sm (24px) · pressable: size.control.md (32px) plus the outline' },
         { label: 'Padding', value: 'space.inline.lg on each side; none after the remove button, which fills the end' },
         { label: 'Radius', property: 'radius', target: '.ds-chip', token: 'radius.pill', value: 'the remove button is radius.full' },
         { label: 'Label', value: 'text.label.*, one line, ellipsis past size.overlay.sm' },
@@ -124,7 +124,7 @@ export const Showcase: StoryObj = {
       donts={[
         { text: 'Label a remove button "×" or "Remove".', basis: 'WCAG 4.1.2 (A)', rule: 'chip.removable-labelled' },
         { text: 'Draw the label and the remove button as two bordered controls.', basis: 'Gestalt common region', rule: 'chip.one-shape' },
-        { text: 'Shrink the remove button below 44px.', basis: 'WCAG 2.5.8 (AA); house floor 44px', rule: 'chip.touch-target' },
+        { text: 'Shrink the remove button below the 24px floor.', basis: 'WCAG 2.5.8 (AA); 24px house floor', rule: 'chip.touch-target' },
         { text: 'Show selection by colour alone.', basis: 'WCAG 1.4.1 (A)', rule: 'chip.selected-not-colour-alone' },
         { text: 'Cut a long label with no way to read it whole.', basis: 'WCAG 1.4.13 (AA)', rule: 'chip.truncate-tooltip' },
         { text: 'Write a colour literal in chip.css.', basis: 'misfile.raw-value-in-component', rule: 'chip.no-literal' },

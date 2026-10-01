@@ -18,10 +18,10 @@
   line-height: var(--ds-text-heading-line-height);
 }
 
-/* No text style sits between heading and label, so this size takes the heading style at the lg step of the font scale. */
+/* No text style sits between heading and label, so this size takes the heading style at the md step of the font scale. */
 .ds-heading--subheading {
   font-family: var(--ds-text-heading-family);
-  font-size: var(--ds-font-size-lg);
+  font-size: var(--ds-font-size-md);
   font-weight: var(--ds-text-heading-weight);
   line-height: var(--ds-text-heading-line-height);
 }

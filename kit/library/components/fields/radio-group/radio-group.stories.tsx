@@ -47,7 +47,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'status.error', tier: 'role', use: 'Error text and icon', swatch: '--ds-status-error' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator around the circle', swatch: '--ds-focus-ring-color' },
           { name: 'text.label.* · text.body.* · text.caption.*', tier: '2', use: 'Legend; option labels; description and error' },
-          { name: 'size.target.min · size.icon.lg · size.icon.sm · size.border.thick', tier: '2', use: 'Target (44px); circle; dot; circle outline' },
+          { name: 'size.target.min · size.icon.md · space.2 · size.border.thick', tier: '2', use: 'Target (24px); circle; dot; circle outline' },
           { name: 'radius.full', tier: '2', use: 'Circle shape' },
         ],
       }}
@@ -72,12 +72,12 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Target height', property: 'height', target: '.ds-field__choice-target', token: 'size.target.min', value: '44px, the whole option row' },
+        { label: 'Target height', property: 'height', target: '.ds-field__choice-target', token: 'size.target.min', value: '24px, the whole option row' },
         { label: 'Target width', property: 'width', target: '.ds-field__choice-target', token: 'size.target.min' },
-        { label: 'Circle height', property: 'height', target: '.ds-radio-group__circle', token: 'size.icon.lg', value: '24px, outline size.border.thick' },
-        { label: 'Circle width', property: 'width', target: '.ds-radio-group__circle', token: 'size.icon.lg' },
-        { label: 'Dot height', property: 'height', target: '.ds-radio-group__dot', token: 'size.icon.sm' },
-        { label: 'Dot width', property: 'width', target: '.ds-radio-group__dot', token: 'size.icon.sm' },
+        { label: 'Circle height', property: 'height', target: '.ds-radio-group__circle', token: 'size.icon.md', value: '16px, outline size.border.thick' },
+        { label: 'Circle width', property: 'width', target: '.ds-radio-group__circle', token: 'size.icon.md' },
+        { label: 'Dot height', property: 'height', target: '.ds-radio-group__dot', token: 'space.2' },
+        { label: 'Dot width', property: 'width', target: '.ds-radio-group__dot', token: 'space.2' },
         { label: 'Options', value: 'stacked with no gap: the targets touch, none overlaps' },
         { label: 'Focus', value: 'ring 2px, offset 2px, around the circle, on :focus-visible' },
       ]}

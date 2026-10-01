@@ -2,7 +2,8 @@
   display: flex;
   align-items: flex-start;
   gap: var(--ds-space-inline-md);
-  padding: var(--ds-space-inset-md);
+  padding-block: var(--ds-space-inset-sm);
+  padding-inline: var(--ds-space-inset-md);
   border: var(--ds-size-border-thin) solid var(--ds-status-info-border);
   border-radius: var(--ds-radius-control);
   background: var(--ds-status-info-surface);

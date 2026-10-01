@@ -40,7 +40,7 @@ export const Showcase: StoryObj = {
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator', swatch: '--ds-focus-ring-color' },
           { name: 'text.body.* · text.label.*', tier: '2', use: 'Total, controls and the select label' },
           { name: 'space.inline.* · space.control.gap · space.control.inline', tier: '2', use: 'Gaps and select padding' },
-          { name: 'size.target.min · size.border.thin · size.border.thick · size.icon.sm', tier: '2', use: 'Targets, select border, current outline, chevrons' },
+          { name: 'size.control.md · size.target.min · size.border.thin · size.border.thick · size.icon.sm', tier: '2', use: 'Control height (32px), gap width (24px floor), select border, current outline, chevrons' },
           { name: 'radius.control', tier: '2', use: 'Corner radius' },
         ],
       }}

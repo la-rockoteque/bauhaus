@@ -1,6 +1,7 @@
 /* The box, label, description and error come from ../field.css. */
 .ds-textarea__input {
   display: block;
+  padding-block: var(--ds-space-1);
   resize: vertical;
 }
 

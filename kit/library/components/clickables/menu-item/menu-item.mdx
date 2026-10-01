@@ -36,7 +36,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **Description.** Optional. It is wired as the item's accessible description. Use it for a consequence or for the reason an item is disabled.
 - **Shortcut.** Optional `kbd` hint. It is text only. The app binds the key. A shortcut that the app does not bind misleads the user.
 - **Destructive.** Reads in `status.error`, which reaches 4.5:1 on the overlay surface in both themes. The colour is a second signal. The label carries the meaning (WCAG 1.4.1, A).
-- **Target size.** 44px high, the house floor at the WCAG 2.5.5 (AAA) figure.
+- **Target size.** 32px high (`size.control.md`). The target is at least `size.target.min` (24px; WCAG 2.5.8, AA).
 - **Wrapping.** The label and the description wrap. Nothing truncates (WCAG 1.4.10, AA).
 - **i18n.** Every text arrives as a prop.
 
@@ -56,5 +56,5 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **Do not mark a destructive item by red alone.** (WCAG 1.4.1, A; `menu-item.destructive-named`)
 - **Do not let the icon name the item.** (WCAG 1.1.1, A; `menu-item.icon-hidden`)
 - **Do not bind the key from the shortcut prop.** (`menu-item.shortcut-hint`)
-- **Do not make an item shorter than 44px.** (`menu-item.touch-target`)
+- **Do not make an item shorter than the 24px floor.** (`menu-item.touch-target`)
 - **Do not write a literal in `menu-item.css`.** (Bauhaus `misfile.raw-value-in-component`; `menu-item.no-literal`)

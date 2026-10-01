@@ -1,7 +1,7 @@
 /* Hue ramp: nine grades as one band. The hovered tile widens. Below the switch width the nine tiles stack, all at once, so no grade sits alone on a row. */
 
 .hue-ramp {
-  margin: var(--ds-space-6) 0 0;
+  margin: var(--ds-space-4) 0 0;
 }
 
 .hue-ramp:first-child {

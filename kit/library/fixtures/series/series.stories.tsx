@@ -10,7 +10,7 @@ const PARTS = Array.from({ length: 12 }, (_, n) => n + 1);
 
 export const Sample: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--ds-space-3)', padding: 'var(--ds-space-6)' }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--ds-space-3)', padding: 'var(--ds-space-4)' }}>
       {PARTS.map((n) => (
         <span
           key={n}

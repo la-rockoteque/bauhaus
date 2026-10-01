@@ -30,11 +30,12 @@
 }
 
 .ds-tabs__tab {
+  box-sizing: border-box;
   flex: none;
-  min-block-size: var(--ds-size-target-min);
-  min-inline-size: var(--ds-size-target-min);
-  padding-block: var(--ds-space-inset-sm);
-  padding-inline: var(--ds-space-inline-lg);
+  min-block-size: var(--ds-size-control-md);
+  min-inline-size: var(--ds-size-control-md);
+  padding-block: 0;
+  padding-inline: var(--ds-space-inline-md);
   border: 0;
   border-block-end: var(--ds-size-border-thick) solid transparent;
   background: transparent;

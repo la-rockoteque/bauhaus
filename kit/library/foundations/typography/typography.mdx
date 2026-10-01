@@ -48,7 +48,7 @@ Some text styles already read these roles: `text.prose` reads serif, `text.displ
 
 ### How
 
-- **Body.** Keep body at 16px or more and line height at 1.5 (WCAG 1.4.12 Text Spacing, AA: content must survive line height 1.5).
+- **Body.** Keep body at 14px or more and line height at 1.5 (project decision for a compact system; WCAG 1.4.12 Text Spacing, AA: content must survive line height 1.5). The sizes are body 14, label 14, caption 12, heading 18, prose 16, display 24. Fields go back to 16px under `@media (pointer: coarse)`, so iOS does not zoom the page on focus.
 - **Units.** Size text in a unit that follows the user setting (WCAG 1.4.4 Resize Text, AA).
 - **Structure.** Bold or size is not structure. Mark headings with heading elements (WCAG 1.3.1 Info and Relationships, A).
 
@@ -207,7 +207,7 @@ Type has no interaction state. Users may raise text size to 200% or raise text s
 ## 4. Pitfalls and don'ts
 
 - **Do not add a new font size for one screen.** The scale gains a step nobody can reuse. (Closed roles; `typography.roles-closed`)
-- **Do not set body text at 12px.** It is hard to read at arm's length. (Project decision, 16px floor; `typography.body-min-size`)
+- **Do not set body text at 12px.** It is hard to read at arm's length. (Project decision, 14px floor; `typography.body-min-size`)
 - **Do not use a line height of 1.2 on paragraphs.** Lines crowd, and the 1.5 test fails. (WCAG 1.4.12, AA; `typography.line-height-min`)
 - **Do not set body text, labels or errors in the handwriting face.** Its rhythm is irregular and its letters are hard to tell apart. (typefaces.md rules 29 and 31; `typography.handwriting-accent-only`)
 - **Do not use more than two text families plus mono on one surface.** The page gets heavier and less coherent. (typefaces.md rule 12; `typography.max-families`)

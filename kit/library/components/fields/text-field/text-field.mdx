@@ -43,7 +43,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **Message content.** Name the field and the fix: "Enter an email address, like name@example.com" (WCAG 3.3.3 Error Suggestion, AA).
 - **When to validate.** On blur, and again on input once an error shows. Do not flag an empty field the user has not left (`knowledge/patterns/forms.md` rules 10 and 11; Nielsen heuristic 5). The component takes the error as a prop, so the view decides when.
 - **Type and autocomplete.** Set `type` and `autoComplete` to match the data: `email`, `tel`, `name`, `postal-code`. The keyboard changes and the browser can fill the field (WCAG 1.3.5 Identify Input Purpose, AA).
-- **Size.** The input is at least 48px high and its text is 16px, so iOS does not zoom on focus and the target clears the 44px house floor (WCAG 2.5.8 AA is 24px; 2.5.5 AAA is 44px).
+- **Size.** The input is 32px high (`size.control.md`), above the 24px house floor (WCAG 2.5.8 AA). Its text is 14px. On a coarse pointer the text is 16px, so iOS does not zoom on focus.
 - **Paste.** Never block paste (WCAG 3.3.8 Accessible Authentication, AA).
 - **i18n.** Label, description, error, `requiredText` and `errorPrefix` all arrive as props. The component holds no text of its own (`docs/library.md`, isolation rule 4).
 

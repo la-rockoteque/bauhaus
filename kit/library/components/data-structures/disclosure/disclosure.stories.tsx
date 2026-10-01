@@ -59,8 +59,8 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'skeleton.base · skeleton.highlight', tier: 'role', use: 'Loading lines in a panel', swatch: '--ds-skeleton-base' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Ring inside the header', swatch: '--ds-focus-ring-color' },
           { name: 'text.body.* · text.label.* · text.caption.*', tier: '2', use: 'Panel text, header, reason' },
-          { name: 'space.inset.sm · space.inset.md · space.inline.md · space.stack.xs', tier: '2', use: 'Header and panel padding, gaps' },
-          { name: 'size.target.min · size.border.thin · size.icon.md · radius.md · radius.sm', tier: '2', use: 'Header height, outline, chevron, corners' },
+          { name: 'space.inset.xs · space.inset.sm · space.inline.md · space.stack.xs', tier: '2', use: 'Header and panel padding, gaps' },
+          { name: 'size.control.md · size.border.thin · size.icon.md · radius.md · radius.sm', tier: '2', use: 'Header height, outline, chevron, corners' },
           { name: 'motion.duration.base · deliberate · ease.standard · ease.enter', tier: '2', use: 'Chevron turn, panel reveal, skeleton shimmer' },
         ],
       }}
@@ -80,9 +80,9 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Header height', value: 'at least size.target.min, 44px' },
-        { label: 'Padding inline', property: 'padding-inline', target: '.ds-disclosure__trigger', token: 'space.inset.md' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-disclosure__trigger', token: 'space.inset.sm' },
+        { label: 'Header height', value: 'at least size.control.md, 32px; the target floor is size.target.min, 24px' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-disclosure__trigger', token: 'space.inline.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-disclosure__trigger', value: '0' },
         { label: 'Radius', property: 'radius', target: '.ds-disclosure', token: 'radius.md' },
         { label: 'Reveal', value: 'fade and rise, motion.duration.base · fade only under reduced motion' },
         { label: 'Keyboard (single)', value: 'Enter or Space on the summary, from the browser' },

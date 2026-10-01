@@ -101,7 +101,7 @@
   justify-content: center;
   min-block-size: calc(var(--ds-space-12) * 2);
   /* The padding leaves room for a focus ring, so a forced focus is never clipped. */
-  padding: var(--ds-space-6) var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-space-4);
   /* The page breaks long token names anywhere; a live render wraps as it does in an app. */
   overflow-wrap: normal;
   background-image: linear-gradient(var(--doc-grid-line) var(--doc-hairline), transparent 0),

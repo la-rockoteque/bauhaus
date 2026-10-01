@@ -1,4 +1,4 @@
-import { all, noLiteral, sourceMatches, uses, type Check } from './checks';
+import { all, noLiteral, paddingFlat, sourceMatches, uses, type Check } from './checks';
 import { hoverGuarded } from './checks-clickables';
 import { rulesOf } from './sources';
 // sources.ts globs css and tsx only, so the hook (a .ts file) is read here.
@@ -32,7 +32,8 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'tabs.panel-linked': has(`${TABS}.tsx`, [/id=\{`\$\{base\}-panel-/, 'gives the panel no id'], [/tabIndex=\{0\}/, 'leaves the panel out of the tab order'], [/hidden=\{index !== selectedIndex\}/, 'removes unselected panels instead of hiding them']),
   'tabs.activation-modes': has(`${TABS}.tsx`, [/activation === 'automatic'/, 'does not branch on activation'], [/onClick=\{\(\) => select/, 'has no click activation for manual mode']),
   'tabs.focus-ring': all(uses(`${TABS}.css`, '.ds-tabs__tab:focus-visible', 'outline', '--ds-focus-ring-color'), uses(`${TABS}.css`, '.ds-tabs__panel:focus-visible', 'outline', '--ds-focus-ring-color')),
-  'tabs.touch-target': all(uses(`${TABS}.css`, '.ds-tabs__tab', 'min-block-size', '--ds-size-target-min'), uses(`${TABS}.css`, '.ds-tabs__tab', 'min-inline-size', '--ds-size-target-min')),
+  'tabs.touch-target': all(uses(`${TABS}.css`, '.ds-tabs__tab', 'min-block-size', '--ds-size-control-md'), uses(`${TABS}.css`, '.ds-tabs__tab', 'min-inline-size', '--ds-size-control-md')),
+  'tabs.padding-flat': paddingFlat(`${TABS}.css`, '.ds-tabs__tab'),
   'tabs.selected-not-colour-alone': all(
     uses(`${TABS}.css`, ".ds-tabs__tab[aria-selected='true']", 'background', '--ds-state-selected'),
     uses(`${TABS}.css`, ".ds-tabs__tab[aria-selected='true']", 'border-color', '--ds-border-strong'),
@@ -64,7 +65,8 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'pagination.ellipsis-decorative': has(`${PAGER}.tsx`, [/ds-pagination__gap" aria-hidden="true"/, 'does not hide the ellipsis']),
   'pagination.native-controls': has(`${PAGER}.tsx`, [/<button type="button"/, 'has no native button'], [/<select /, 'has no native select'], [/<label htmlFor=/, 'gives the select no visible label']),
   'pagination.focus-ring': all(uses(`${PAGER}.css`, '.ds-pagination__item:focus-visible', 'outline', '--ds-focus-ring-color'), uses(`${PAGER}.css`, '.ds-pagination__select:focus-visible', 'outline', '--ds-focus-ring-color')),
-  'pagination.touch-target': all(uses(`${PAGER}.css`, '.ds-pagination__item', 'min-block-size', '--ds-size-target-min'), uses(`${PAGER}.css`, '.ds-pagination__item', 'min-inline-size', '--ds-size-target-min'), uses(`${PAGER}.css`, '.ds-pagination__select', 'min-block-size', '--ds-size-target-min')),
+  'pagination.touch-target': all(uses(`${PAGER}.css`, '.ds-pagination__item', 'min-block-size', '--ds-size-control-md'), uses(`${PAGER}.css`, '.ds-pagination__item', 'min-inline-size', '--ds-size-control-md'), uses(`${PAGER}.css`, '.ds-pagination__select', 'min-block-size', '--ds-size-control-md')),
+  'pagination.padding-flat': paddingFlat(`${PAGER}.css`, '.ds-pagination__item'),
   'pagination.wraps': all(uses(`${PAGER}.css`, '.ds-pagination', 'flex-wrap', 'wrap'), uses(`${PAGER}.css`, '.ds-pagination__list', 'flex-wrap', 'wrap')),
   'pagination.no-literal': noLiteral(`${PAGER}.css`),
   'pagination.states.hover-guarded': hoverGuarded(`${PAGER}.css`),

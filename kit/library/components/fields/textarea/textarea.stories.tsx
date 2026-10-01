@@ -34,7 +34,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'surface.sunken · disabled.*', tier: 'role', use: 'Read-only fill; disabled value, fill and outline', swatch: '--ds-surface-sunken' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator', swatch: '--ds-focus-ring-color' },
           { name: 'text.body.* · text.caption.*', tier: '2', use: 'Value; description, counter and error' },
-          { name: 'space.control.inline · space.inset.sm · space.field.gap', tier: '2', use: 'Padding and gaps' },
+          { name: 'space.control.inline · space.1 · space.field.gap', tier: '2', use: 'Padding and gaps' },
           { name: 'size.control.md · radius.control', tier: '2', use: 'Minimum height; corner radius' },
         ],
       }}
@@ -66,9 +66,9 @@ export const Showcase: StoryObj<typeof meta> = {
       specs={[
         { label: 'Height', value: 'rows (default 4), at least size.control.md; resizable vertically' },
         { label: 'Padding inline', property: 'padding-inline', target: '.ds-textarea__input', token: 'space.control.inline' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-textarea__input', token: 'space.inset.sm' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-textarea__input', token: 'space.1' },
         { label: 'Radius', property: 'radius', target: '.ds-textarea__input', token: 'radius.control' },
-        { label: 'Value', value: 'text.body.*, 16px' },
+        { label: 'Value', value: 'text.body.*, 14px; 16px on a coarse pointer' },
         { label: 'Counter', value: 'text.caption.*, muted, at the end of the line' },
       ]}
       api={[

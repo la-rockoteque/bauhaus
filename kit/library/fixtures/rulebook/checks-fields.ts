@@ -1,3 +1,4 @@
+import { rulesOf } from './sources';
 import { all, eachTheme, noLiteral, pxAtLeast, ratioAtLeast, sourceMatches, uses, type Check } from './checks';
 
 const FIELD = 'components/fields/field';
@@ -39,6 +40,10 @@ const valueContrast: Check = eachTheme((theme) =>
 );
 
 const controlTarget: Check = all(uses(`${FIELD}.css`, CONTROL, 'min-block-size', '--ds-size-control-md'), pxAtLeast('--ds-size-control-md', 24));
+const noIosZoom: Check = () =>
+  rulesOf(`${FIELD}.css`).some((rule) => rule.media?.includes('pointer: coarse') && rule.selector === CONTROL && rule.declarations['font-size']?.includes('--ds-font-size-md'))
+    ? null
+    : `${CONTROL} does not set font-size to --ds-font-size-md on a coarse pointer`;
 const choiceTarget: Check = all(uses(`${FIELD}.css`, '.ds-field__choice-target', 'min-block-size', '--ds-size-target-min'), uses(`${FIELD}.css`, '.ds-field__choice', 'grid-template-columns', '--ds-size-target-min'), pxAtLeast('--ds-size-target-min', 24));
 const choiceCoversTarget: Check = all(uses(`${FIELD}.css`, '.ds-field__choice-input', 'inline-size', '100%'), uses(`${FIELD}.css`, '.ds-field__choice-input', 'block-size', '100%'));
 const selectionContrast: Check = eachTheme((theme) =>
@@ -55,6 +60,7 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'text-field.boundary-contrast': boxContrast,
   'text-field.value-contrast': valueContrast,
   'text-field.touch-target': controlTarget,
+  'text-field.no-ios-zoom': all(noIosZoom, pxAtLeast('--ds-font-size-md', 16)),
   'text-field.no-literal': familyLiteral(TEXT_FIELD),
   'text-field.state.disabled': all(sourceMatches(`${FIELD}.css`, /\.ds-field__control:disabled/, 'no disabled rule'), uses(`${FIELD}.css`, `${CONTROL}:disabled`, 'color', '--ds-disabled-text'), uses(`${FIELD}.css`, `${CONTROL}:disabled`, 'background', '--ds-disabled-surface')),
   'text-field.state.read-only': all(uses(`${FIELD}.css`, `${CONTROL}[readonly]`, 'background', '--ds-surface-sunken'), sourceMatches(`${FIELD}.css`, /\.ds-field__control:disabled \{[^}]*--ds-disabled-border/, 'read-only and disabled look the same')),
@@ -86,7 +92,7 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'combobox.state.loading': all(sourceMatches(`${COMBOBOX}.tsx`, /aria-busy=\{loading \|\| undefined\}/, 'no aria-busy while loading'), sourceMatches(`${COMBOBOX}.tsx`, /loading \? loadingText/, 'no loading text in the list')),
   'combobox.popup-layer': all(uses(`${COMBOBOX}.css`, '.ds-combobox__popover', 'z-index', '--ds-z-dropdown'), uses(`${COMBOBOX}.css`, '.ds-combobox__popover', 'box-shadow', '--ds-shadow-1')),
   'combobox.option-focus': ring(`${COMBOBOX}.css`, '.ds-combobox__option[data-focus-visible]'),
-  'combobox.touch-target': all(uses(`${COMBOBOX}.css`, '.ds-combobox__option', 'min-block-size', '--ds-size-target-min'), uses(`${COMBOBOX}.css`, '.ds-combobox__button', 'inline-size', '--ds-size-target-min')),
+  'combobox.touch-target': all(uses(`${COMBOBOX}.css`, '.ds-combobox__option', 'min-block-size', '--ds-size-control-md'), uses(`${COMBOBOX}.css`, '.ds-combobox__button', 'inline-size', '--ds-size-control-md'), pxAtLeast('--ds-size-control-md', 24)),
   'combobox.reduced-motion': sourceMatches(`${COMBOBOX}.css`, /prefers-reduced-motion: reduce\) \{[\s\S]*animation: none/, 'the popup fade is not switched off'),
   'combobox.no-literal': familyLiteral(COMBOBOX),
 

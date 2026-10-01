@@ -1,13 +1,14 @@
 .ds-button {
+  box-sizing: border-box;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--ds-space-inline-sm);
-  min-block-size: var(--ds-size-target-min);
-  min-inline-size: var(--ds-size-target-min);
-  padding-block: var(--ds-space-inset-sm);
-  padding-inline: var(--ds-space-inline-lg);
+  min-block-size: var(--ds-size-control-md);
+  min-inline-size: var(--ds-size-control-md);
+  padding-block: 0;
+  padding-inline: var(--ds-space-inline-md);
   border: var(--ds-focus-ring-width) solid transparent;
   border-radius: var(--ds-radius-control);
   font-family: var(--ds-text-label-family);
@@ -41,22 +42,6 @@
 .ds-button--subtle {
   background: transparent;
   color: var(--ds-text-default);
-}
-
-/* Narrow: drawn at size.control.narrow with a smaller label, for dense chrome such as toolbars and segmented controls.
-   An invisible layer keeps the hit area at size.target.min, so the target floor holds (WCAG 2.5.5 at the house floor). */
-.ds-button--narrow {
-  min-block-size: var(--ds-size-control-narrow);
-  padding-block: 0;
-  padding-inline: var(--ds-space-inline-md);
-  font-size: var(--ds-text-caption-size);
-}
-
-.ds-button--narrow::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  inset-block: calc((var(--ds-size-control-narrow) - var(--ds-size-target-min)) / 2);
 }
 
 .ds-button--primary:hover { background: var(--ds-action-primary-hover); }

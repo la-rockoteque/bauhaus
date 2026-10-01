@@ -39,7 +39,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'surface.sunken · disabled.*', tier: 'role', use: 'Read-only fill; disabled text, fill and outline', swatch: '--ds-surface-sunken' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator', swatch: '--ds-focus-ring-color' },
           { name: 'text.body.* · text.label.* · text.caption.*', tier: '2', use: 'Value; label; description and error' },
-          { name: 'space.control.inline · space.control.gap · space.inset.sm', tier: '2', use: 'Padding; room kept for the chevron' },
+          { name: 'space.control.inline · space.control.gap', tier: '2', use: 'Padding; room kept for the chevron' },
           { name: 'size.control.md · size.icon.md · radius.control', tier: '2', use: 'Height; chevron; corner radius' },
         ],
       }}
@@ -65,9 +65,9 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Height', property: 'height', target: '.ds-select__input', token: 'size.control.md', value: '48px' },
+        { label: 'Height', property: 'height', target: '.ds-select__input', token: 'size.control.md', value: '32px' },
         { label: 'Padding inline', value: 'space.control.inline, more at the end for the chevron' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-select__input', token: 'space.inset.sm' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-select__input', token: 'space.0', value: '0, the text centres in size.control.md (32px)' },
         { label: 'Radius', property: 'radius', target: '.ds-select__input', token: 'radius.control' },
         { label: 'Chevron', value: 'icon chevron-down, size.icon.md, hidden from assistive technology' },
         { label: 'Options', value: 'the browser list; the page does not style it' },

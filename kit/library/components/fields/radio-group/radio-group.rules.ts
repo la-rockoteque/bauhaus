@@ -46,11 +46,11 @@ export const radioGroupRules = [
     component: 'RadioGroup',
     rubric: 'target size',
     severity: 'MEDIUM',
-    expectation: 'The whole row, box and label, is one target of at least 44px on each side.',
+    expectation: 'The whole row, box and label, is one target of at least size.target.min (24px) on each side.',
     expected: '--ds-size-target-min',
     verify: 'auto',
     covers: ['target-size'],
-    basis: 'House floor at the WCAG 2.5.5 (AAA) figure; WCAG 2.5.8 (AA) minimum is 24px',
+    basis: 'WCAG 2.5.8 Target Size (Minimum) (AA): 24px, the house floor',
   },
   {
     id: 'radio.focus-ring',

@@ -7,8 +7,8 @@
   grid-template-columns: auto minmax(0, auto);
   align-items: center;
   justify-content: center;
-  gap: var(--ds-space-12);
-  padding: var(--ds-space-6);
+  gap: var(--ds-space-8);
+  padding: var(--ds-space-4);
   overflow-x: auto;
   background-color: var(--ds-surface-default);
   background-image: linear-gradient(var(--doc-grid-line) var(--doc-hairline), transparent 0),
@@ -38,7 +38,7 @@
 
 /* The page the component sits on: a faint plane under the stack. */
 .doc-exploded-ground {
-  margin: calc(var(--ds-space-6) * -1);
+  margin: calc(var(--ds-space-4) * -1);
   border: var(--ds-size-border-thin) dashed var(--ds-border-default);
   background: color-mix(in oklab, var(--ds-surface-sunken) 60%, transparent);
 }

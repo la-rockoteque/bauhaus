@@ -13,7 +13,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 
 **Precisely:** Component in the fields family. It turns one setting on or off with immediate effect. It is a native `input` of type checkbox with `role="switch"` and a visible, clickable label. It is not for a choice that a form saves later (use the checkbox).
 
-**The layer.** A component. The native input is invisible and covers a 44px target. A drawn track and thumb sit under it, so the browser keeps focus, Space, and label clicks.
+**The layer.** A component. The native input is invisible and covers a 24px target. A drawn track and thumb sit under it, so the browser keeps focus, Space, and label clicks.
 
 ## 2. Usage
 
@@ -32,7 +32,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **Label.** Names the setting and never changes with the state. "Email alerts", not "Email alerts on". A label that flips makes the announcement contradict itself ("Email alerts on, off") (WCAG 3.2.4 Consistent Identification, AA).
 - **Not colour alone.** The on state moves the thumb to the end and draws a check in it. The off state has the thumb at the start and no check (WCAG 1.4.1, A).
 - **Contrast.** The off track outline reaches 3:1 on the page. The on track fill reaches 3:1, and the thumb reaches 3:1 on it (WCAG 1.4.11, AA).
-- **Target.** The row is at least 44px high and the target column is 44px wide (WCAG 2.5.5 AAA house floor; 2.5.8 AA is 24px).
+- **Target.** The row is at least 24px high and the target column is 24px wide, the house floor (WCAG 2.5.8 AA).
 - **Failure.** If the change can fail (a network call), put the switch back and say so in a status message (WCAG 4.1.3, AA). Do not leave it in a state that is not true.
 - **Direction.** The thumb slides with a physical `translate`. In a right-to-left layout it would need a mirror; add it when the first RTL product needs it.
 - **i18n.** All text arrives as props.

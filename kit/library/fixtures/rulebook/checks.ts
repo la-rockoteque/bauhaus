@@ -70,6 +70,24 @@ export const pxAtLeast = (token: string, min: number): Check => () => {
   return value !== null && value >= min ? null : `${token} is ${value ?? 'not a px value'}px, needs ${min}px`;
 };
 
+/** A declared length in px: `0`, a px literal or one `var(--token)` resolved in the default theme. */
+const lengthPx = (value: string): number | null => {
+  const v = value.trim();
+  if (v === '0') return 0;
+  const token = /^var\((--[\w-]+)\)$/.exec(v)?.[1];
+  return token ? px(resolve(THEMES[0] ?? 'light', token)) : px(v);
+};
+
+/** The selector's padding-block is smaller than its padding-inline. */
+export const paddingFlat = (path: string, selector: string): Check => () => {
+  const found = declarationsFor(rulesOf(path), selector);
+  if (!found) return `${selector} is not in ${path}`;
+  const block = lengthPx(found['padding-block'] ?? '');
+  const inline = lengthPx(found['padding-inline'] ?? '');
+  if (block === null || inline === null) return `${selector} needs a padding-block and a padding-inline in px or tokens`;
+  return block < inline ? null : `${selector} padding-block ${block}px is not below padding-inline ${inline}px`;
+};
+
 export const noLiteral = (path: string): Check => () => {
   const bad = rulesOf(path).flatMap((rule) =>
     Object.entries(rule.declarations)
@@ -86,7 +104,7 @@ export const textRole = (role: string): Check =>
     ),
   );
 
-const bodyMinSize: Check = pxAtLeast('--ds-text-body-size', 16);
+const bodyMinSize: Check = pxAtLeast('--ds-text-body-size', 14);
 
 const lineHeightMin: Check = () => {
   for (const role of ['body', 'caption']) {
@@ -163,6 +181,20 @@ const textSpacingSafe: Check = () => {
       .map((rule) => `${path} ${rule.selector}`),
   );
   return bad.length ? `fixed height clips: ${bad.join(' · ')}` : null;
+};
+
+// A control size token is the whole box: padding and border sit inside it. The base block (`.ds-chip` for `.ds-chip--selectable`) may set box-sizing for its modifiers.
+const CONTROL_HEIGHT = /var\(--ds-size-control-(?:sm|md|lg)\)/;
+const controlBorderBox: Check = () => {
+  const bad = CSS_PATHS.filter((p) => CALL_SITE.test(p)).flatMap((path) => {
+    const rules = rulesOf(path);
+    const borderBox = (selector: string) => declarationsFor(rules, selector)?.['box-sizing'] === 'border-box';
+    return rules
+      .filter((rule) => Object.entries(rule.declarations).some(([property, value]) => /^(?:min-)?(?:block|inline)-size$/.test(property) && CONTROL_HEIGHT.test(value)))
+      .filter((rule) => rule.declarations['box-sizing'] !== 'border-box' && !borderBox(rule.selector.replace(/--[\w-]+$/, '')))
+      .map((rule) => `${path} ${rule.selector}`);
+  });
+  return bad.length ? `content-box control size: ${bad.join(' · ')}` : null;
 };
 
 const themeParity: Check = () => {
@@ -281,8 +313,8 @@ const neverRemovedFromTree = (path: string): Check => () => {
 export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'button.native-element': sourceMatches(`${BUTTON}.tsx`, /<button[\s>]/, 'button.tsx does not render a native <button>'),
   'button.focus-ring': all(uses(`${BUTTON}.css`, '.ds-button:focus-visible', 'outline', '--ds-focus-ring-color'), uses(`${BUTTON}.css`, '.ds-button:focus-visible', 'outline-offset', '--ds-focus-ring-offset')),
-  'button.touch-target': all(uses(`${BUTTON}.css`, '.ds-button', 'min-block-size', '--ds-size-target-min'), uses(`${BUTTON}.css`, '.ds-button', 'min-inline-size', '--ds-size-target-min'), pxAtLeast('--ds-size-target-min', 24)),
-  'button.narrow-hit-area': all(uses(`${BUTTON}.css`, '.ds-button--narrow', 'min-block-size', '--ds-size-control-narrow'), uses(`${BUTTON}.css`, '.ds-button--narrow::before', 'inset-block', '--ds-size-target-min')),
+  'button.touch-target': all(uses(`${BUTTON}.css`, '.ds-button', 'min-block-size', '--ds-size-control-md'), uses(`${BUTTON}.css`, '.ds-button', 'min-inline-size', '--ds-size-control-md'), pxAtLeast('--ds-size-control-md', 24)),
+  'button.padding-flat': paddingFlat(`${BUTTON}.css`, '.ds-button'),
   'button.no-literal': noLiteral(`${BUTTON}.css`),
   'button.state.disabled': all(uses(`${BUTTON}.css`, '.ds-button:disabled', 'color', '--ds-disabled-text'), uses(`${BUTTON}.css`, '.ds-button:disabled', 'background', '--ds-disabled-surface')),
   'button.state.loading': all(
@@ -301,7 +333,7 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
     sourceMatches(`${ICON_BUTTON}.tsx`, /aria-label=\{label\}/, 'label does not become aria-label'),
   ),
   'icon-button.icon-hidden': sourceMatches(`${ICON_BUTTON}.tsx`, /aria-hidden="true"/, 'the icon is not aria-hidden'),
-  'icon-button.touch-target': all(uses(`${ICON_BUTTON}.css`, '.ds-icon-button', 'inline-size', '--ds-size-target-min'), uses(`${BUTTON}.css`, '.ds-button', 'min-block-size', '--ds-size-target-min')),
+  'icon-button.touch-target': all(uses(`${ICON_BUTTON}.css`, '.ds-icon-button', 'inline-size', '--ds-size-control-md'), uses(`${BUTTON}.css`, '.ds-button', 'min-block-size', '--ds-size-control-md')),
 
   'text.size-from-role': all(textRole('body'), textRole('caption'), textRole('heading')),
   'text.body-min-size': bodyMinSize,
@@ -322,6 +354,7 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'spacing.target-min': pxAtLeast('--ds-size-target-min', 24),
   'spacing.breakpoints-match': breakpointsMatch,
   'spacing.text-spacing-safe': textSpacingSafe,
+  'spacing.control-border-box': controlBorderBox,
 
   'typography.body-min-size': bodyMinSize,
   'typography.line-height-min': lineHeightMin,
@@ -349,7 +382,7 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'heading.size-from-text-style': all(
     noLiteral(`${HEADING}.css`),
     ...['display', 'heading', 'label'].map((role) => uses(`${HEADING}.css`, `.ds-heading--${role}`, 'font-size', `--ds-text-${role}-size`)),
-    uses(`${HEADING}.css`, '.ds-heading--subheading', 'font-size', '--ds-font-size-lg'),
+    uses(`${HEADING}.css`, '.ds-heading--subheading', 'font-size', '--ds-font-size-md'),
   ),
 
   'icon.hidden-by-default': sourceMatches(`${ICON}.tsx`, /'aria-hidden': true/, 'the icon is not aria-hidden without a label'),

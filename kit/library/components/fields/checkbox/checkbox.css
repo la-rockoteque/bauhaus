@@ -3,8 +3,8 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  inline-size: var(--ds-size-icon-lg);
-  block-size: var(--ds-size-icon-lg);
+  inline-size: var(--ds-size-icon-md);
+  block-size: var(--ds-size-icon-md);
   border: var(--ds-size-border-thick) solid var(--ds-field-border);
   border-radius: var(--ds-radius-sm);
   background: var(--ds-field-surface);
