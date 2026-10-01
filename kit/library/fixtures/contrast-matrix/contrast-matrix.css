@@ -119,15 +119,56 @@
   outline: calc(var(--ds-space-1) / 2) solid var(--ds-status-error);
 }
 
-.cm-small {
+.cm-cards {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--ds-space-6);
+  align-items: flex-start;
+  gap: var(--ds-space-4);
 }
 
-.cm-small > * {
-  max-inline-size: 100%;
+/* One role against a few: a card titled by the shared role, one swatch per pairing. */
+.cm-card {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin: 0;
+  padding: var(--ds-space-4);
+  border: thin solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface-default);
+}
+
+.cm-card-title {
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.cm-card-pairs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cm-swatch-pair {
+  display: grid;
+  /* Tile, name, plate: a name that wraps to two lines never pushes its plate out of line. */
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  gap: var(--ds-space-1);
+  inline-size: calc(var(--ds-space-12) * 2);
+  font-size: var(--ds-font-size-xs);
+  text-align: center;
+}
+
+.cm-tile {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: var(--ds-space-12);
+  border-radius: var(--ds-radius-control);
+  box-shadow: inset 0 0 0 var(--doc-hairline) var(--doc-grid-line);
 }
 
 @media (forced-colors: active) {
