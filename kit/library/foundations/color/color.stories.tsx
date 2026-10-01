@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
-import { ContrastPairs, RoleSwatches } from '../../fixtures/specimens/specimens';
+import { RoleSwatches } from '../../fixtures/specimens/specimens';
+import { ContrastMatrix } from '../../fixtures/contrast-matrix/contrast-matrix';
 import { HueRamps } from '../../fixtures/hue-ramp/hue-ramp';
 import { colorRules } from './color.rules';
 
@@ -60,7 +61,7 @@ export const Showcase: StoryObj = {
       }}
       extra={[
         { title: 'Roles', kicker: 'The roles of the selected theme; switch it in the header or the toolbar. The lines under a value are the hex and the alias it reads.', content: <RoleSwatches /> },
-        { title: 'Contrast', kicker: 'Every pair of foundations/color/pairs.json, measured in the selected theme from the built tokens.', content: <ContrastPairs /> },
+        { title: 'Contrast', kicker: 'Every pair of foundations/color/pairs.json, measured in the selected theme from the built tokens.', content: <ContrastMatrix /> },
       ]}
       dos={[
         { text: 'Read a role for every colour in a stylesheet.', basis: 'Project decision' },

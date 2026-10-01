@@ -54,22 +54,6 @@
   margin-block-end: var(--ds-space-3);
 }
 
-.spec-pair {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  align-items: center;
-  gap: var(--ds-space-3);
-  padding-block: var(--ds-space-1);
-  font-size: var(--ds-font-size-xs);
-}
-
-.spec-pair-sample {
-  padding: var(--ds-space-1) var(--ds-space-2);
-  border: thin solid var(--ds-border-default);
-  border-radius: var(--ds-radius-sm);
-  font-size: var(--ds-font-size-sm);
-}
-
 .spec-ok {
   color: var(--ds-status-success);
   font-weight: var(--ds-font-weight-semibold);
