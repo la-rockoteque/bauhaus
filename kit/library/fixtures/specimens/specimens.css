@@ -14,33 +14,6 @@
   gap: var(--ds-space-3);
 }
 
-.spec-ramp {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--ds-space-12) * 1.5)), 1fr));
-  gap: var(--ds-space-1);
-}
-
-.spec-ramp-cell {
-  display: grid;
-  align-content: start;
-  gap: var(--ds-space-1);
-  padding: var(--ds-space-2);
-  background: var(--ds-surface-default);
-  font-size: var(--ds-font-size-xs);
-  line-height: var(--ds-font-line-height-tight);
-}
-
-.spec-ramp-chip {
-  block-size: calc(var(--ds-space-12) * 1.25);
-  margin-block-end: var(--ds-space-1);
-  border-radius: var(--ds-radius-sm);
-  border: thin solid var(--ds-border-default);
-}
-
-.spec-ramp-cell code {
-  font-size: var(--ds-font-size-xs);
-}
-
 .spec-role {
   overflow: hidden;
   background: var(--ds-surface-default);

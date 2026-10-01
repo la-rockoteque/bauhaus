@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
-import { ColorRamps, ContrastPairs, PaletteRamps, RoleChips, RoleSwatches } from '../../fixtures/specimens/specimens';
+import { ContrastPairs, RoleChips, RoleSwatches } from '../../fixtures/specimens/specimens';
+import { HueRamps } from '../../fixtures/hue-ramp/hue-ramp';
 import { colorRules } from './color.rules';
 
 // The showcase: one page story with live swatches, read from the generated tokens.
@@ -43,8 +44,8 @@ export const Showcase: StoryObj = {
       }}
       specimens={
         <>
-          <PaletteRamps hues={['scarlet', 'dark-blue', 'teal', 'amber', 'green', 'gray']} />
-          <ColorRamps scales={['primary', 'secondary', 'error', 'success', 'warning', 'info', 'neutral']} />
+          <HueRamps prefix="palette" names={['scarlet', 'dark-blue', 'teal', 'amber', 'green', 'gray']} />
+          <HueRamps prefix="colors" names={['primary', 'secondary', 'error', 'success', 'warning', 'info', 'neutral']} />
         </>
       }
       specs={[

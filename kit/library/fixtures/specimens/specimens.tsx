@@ -28,31 +28,6 @@ export function Group({ name, children }: { name: string; children: ReactNode })
 
 // ---------- colour ----------
 
-const GRADES = [100, 200, 300, 400, 500, 600, 700, 800, 900];
-
-/** One row of nine grades: `--ds-<prefix>-<name>-<grade>`. */
-function Ramp({ prefix, name }: { prefix: 'palette' | 'colors'; name: string }) {
-  return (
-    <Group name={`${prefix}.${name}`}>
-      <div className="spec-ramp">
-        {GRADES.map((grade) => {
-          const token = `--ds-${prefix}-${name}-${grade}`;
-          return (
-            <div key={grade} className="spec-ramp-cell">
-              <span className="spec-ramp-chip" style={{ background: `var(${token})` }} />
-              <code>{grade}</code>
-              <code className="doc-muted">{resolve('light', token)}</code>
-            </div>
-          );
-        })}
-      </div>
-    </Group>
-  );
-}
-
-export const PaletteRamps = ({ hues }: { hues: readonly string[] }) => <>{hues.map((hue) => <Ramp key={hue} prefix="palette" name={hue} />)}</>;
-export const ColorRamps = ({ scales }: { scales: readonly string[] }) => <>{scales.map((scale) => <Ramp key={scale} prefix="colors" name={scale} />)}</>;
-
 const roleGroups = (theme: string): [string, string[]][] => {
   const groups = new Map<string, string[]>();
   for (const name of roleNames(theme)) {

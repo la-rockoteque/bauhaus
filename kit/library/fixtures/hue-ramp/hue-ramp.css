@@ -1,0 +1,75 @@
+/* Hue ramp: nine grades as one band. The hovered tile widens. Below the switch width the nine tiles stack, all at once, so no grade sits alone on a row. */
+
+.hue-ramp {
+  margin: var(--ds-space-6) 0 0;
+}
+
+.hue-ramp:first-child {
+  margin-block-start: 0;
+}
+
+.hue-ramp-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-2);
+  font-size: var(--ds-font-size-xs);
+}
+
+.hue-band {
+  /* Nine tiles of 1.5 × space-12 side by side, give or take. */
+  --hue-switch: calc(var(--ds-space-12) * 13.5);
+
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border-radius: var(--ds-radius-lg);
+  /* An outline paints over the tiles, so a white grade still shows its edge. */
+  outline: var(--ds-size-border-thin) solid var(--ds-border-default);
+  outline-offset: calc(var(--ds-size-border-thin) * -1);
+}
+
+.hue-tile {
+  /* Wider than the switch: a negative basis, all nine share the row. Narrower: a huge basis, one per row. */
+  flex: 1 1 calc((var(--hue-switch) - 100%) * 999);
+  min-inline-size: 0;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: var(--ds-space-1);
+  min-block-size: calc(var(--ds-space-12) * 1.75);
+  padding: var(--ds-space-3);
+  font-size: var(--ds-font-size-xs);
+  line-height: var(--ds-font-line-height-tight);
+  transition: flex-grow var(--ds-motion-duration-base) ease-out;
+}
+
+.hue-tile:hover {
+  flex-grow: 1.6;
+}
+
+.hue-tile-grade {
+  font-size: var(--ds-font-size-lg);
+  font-weight: var(--ds-font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.hue-tile-hex {
+  font-size: var(--ds-font-size-xs);
+  color: inherit;
+  background: none;
+  padding: 0;
+}
+
+.hue-tile-ratio {
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hue-tile {
+    transition: none;
+  }
+}
