@@ -36,9 +36,9 @@ export const comboboxRules = [
     rubric: 'announcements',
     severity: 'HIGH',
     expectation: 'The number of matching options is announced when the list opens or the text changes.',
-    verify: 'review',
+    verify: 'auto',
     covers: ['status-messages'],
-    basis: 'WCAG 4.1.3 Status Messages (AA); React Aria live announcer',
+    basis: 'WCAG 4.1.3 Status Messages (AA); React Aria useComboBox announces the count through its live announcer (countAnnouncement)',
   },
   {
     id: 'combobox.state.none',

@@ -36,7 +36,7 @@ export const boxRules = [
     rubric: 'semantics',
     severity: 'HIGH',
     expectation: 'A Box that must be pressed is a button or a link. A Box never carries a click handler.',
-    verify: 'review',
+    verify: 'auto',
     covers: ['name-role-value', 'keyboard'],
     basis: 'WAI-ARIA APG Button pattern; WCAG 4.1.2 Name, Role, Value (A); 2.1.1 Keyboard (A)',
   },

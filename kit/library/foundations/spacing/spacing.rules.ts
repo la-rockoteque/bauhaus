@@ -53,8 +53,9 @@ export const spacingRules = [
     component: 'Spacing',
     rubric: 'reflow',
     severity: 'MEDIUM',
-    expectation: 'No container around text has a fixed height, so raised text spacing does not clip.',
-    verify: 'review',
-    basis: 'WCAG 1.4.12 Text Spacing (AA)',
+    expectation: 'No container around text pairs a fixed height with hidden or clipped overflow, so raised text spacing does not cut text.',
+    verify: 'auto',
+    basis: 'WCAG 1.4.12 Text Spacing (AA); failure F104 (clipped or overlapping content when text spacing is adjusted). Heuristic: reads the stylesheets, not the rendered page.',
+    covers: ['text-spacing'],
   },
 ] as const;

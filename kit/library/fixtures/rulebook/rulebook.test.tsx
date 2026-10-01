@@ -2,6 +2,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { coverage } from './a11y';
 import { declarationsFor, parseCss } from './css-parser';
+import { clipsText } from './checks';
 import { grade } from './grade';
 import { Rulebook } from './rulebook';
 import { contrast, resolve, THEMES } from './tokens';
@@ -44,6 +45,23 @@ describe('grade', () => {
 
   it('runs the check of an auto rule', () => {
     expect(grade(rule({ id: 'spacing.target-min' })).verdict).toBe('pass');
+  });
+
+  it('flags a fixed height that clips, and spares hidden text, viewport caps and scrolling', () => {
+    expect(clipsText({ 'block-size': 'var(--ds-space-8)', overflow: 'hidden' })).toBe(true);
+    expect(clipsText({ 'max-height': 'var(--ds-space-12)', 'overflow-y': 'clip' })).toBe(true);
+    expect(clipsText({ 'block-size': 'var(--ds-space-8)', overflow: 'auto' })).toBe(false);
+    expect(clipsText({ 'block-size': 'var(--ds-space-1)', overflow: 'hidden', 'clip-path': 'inset(50%)' })).toBe(false);
+    expect(clipsText({ 'max-block-size': 'calc(100dvh - var(--ds-space-8))', overflow: 'hidden' })).toBe(false);
+    expect(clipsText({ 'min-block-size': 'var(--ds-space-8)', overflow: 'hidden' })).toBe(false);
+  });
+
+  it.each(['box.not-interactive', 'banner.no-blocking', 'combobox.count-announced'])('checks %s on the library and passes', (id) => {
+    expect(grade(rule({ id })).verdict).toBe('pass');
+  });
+
+  it('passes the text spacing rule on the library', () => {
+    expect(grade(rule({ id: 'spacing.text-spacing-safe' })).verdict).toBe('pass');
   });
 
   it('reads only the theme roles for the palette alias check, not the colors scales in :root', () => {

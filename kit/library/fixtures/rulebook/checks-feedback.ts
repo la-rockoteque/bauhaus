@@ -1,6 +1,6 @@
 import { all, eachTheme, noLiteral, ratioAtLeast, sourceMatches, uses } from './checks';
 import type { Check } from './checks';
-import { sourceOf } from './sources';
+import { rulesOf, sourceOf } from './sources';
 
 /**
  * Auto checks for the feedback slices, keyed by rule id. Build them from the helpers exported by
@@ -65,6 +65,10 @@ export const CHECKS: Readonly<Record<string, Check>> = {
     ...STATUSES.map((s) => uses(`${BANNER}.css`, s === 'info' ? '.ds-banner' : `.ds-banner--${s}`, 'color', `--ds-status-${s}-text`)),
     statusPairs,
   ),
+  'banner.no-blocking': () => {
+    const bad = rulesOf(`${BANNER}.css`).filter(({ declarations: d }) => /fixed|absolute|sticky/.test(d.position ?? '') || d['white-space'] === 'nowrap');
+    return bad.length ? `out of the flow or not wrapping: ${bad.map((rule) => rule.selector).join(', ')}` : null;
+  },
   'banner.no-literal': noLiteral(`${BANNER}.css`),
 
   // Toast

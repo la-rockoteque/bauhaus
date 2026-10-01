@@ -78,6 +78,8 @@ export const CHECKS: Readonly<Record<string, Check>> = {
     sourceMatches(`${COMBOBOX}.tsx`, /from 'react-aria-components'/, 'combobox.tsx does not use React Aria Components'),
     sourceMatches(`${COMBOBOX}.tsx`, /<Input className="ds-field__control ds-combobox__input"/, 'the input is not the field control'),
   ),
+  // React Aria's useComboBox announces the option count when the list opens and whenever it changes.
+  'combobox.count-announced': sourceMatches(`${COMBOBOX}.tsx`, /import \{[^}]*\bComboBox\b[^}]*\} from 'react-aria-components'/, 'combobox.tsx is not built on the React Aria ComboBox'),
   'combobox.visible-label': sourceMatches(`${COMBOBOX}.tsx`, /<Label className="ds-field__label">/, 'no React Aria Label'),
   'combobox.error-bound': all(sourceMatches(`${COMBOBOX}.tsx`, /isInvalid=\{Boolean\(error\)\}/, 'isInvalid is not set from the error'), sourceMatches(`${COMBOBOX}.tsx`, /<AriaFieldError className="ds-field__error">/, 'no field error slot'), errorIsText),
   'combobox.state.none': sourceMatches(`${COMBOBOX}.tsx`, /renderEmptyState[\s\S]*emptyText/, 'the list has no empty-state text'),

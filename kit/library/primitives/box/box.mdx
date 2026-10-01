@@ -46,6 +46,6 @@ It has no loading, error or data states. It renders what it receives. Long conte
 ## 4. Pitfalls and don'ts
 
 - **Do not write `padding: 13px` in a stylesheet.** It leaves the scale and the dark or dense theme cannot reach it. (Project decision; `box.no-literal`)
-- **Do not put `onClick` on a Box.** It has no role, no focus and no Space or Enter. (APG Button; WCAG 4.1.2, A; `box.not-interactive`)
+- **Do not put `onClick` on a Box.** It has no role, no focus and no Space or Enter. `BoxProps` refuses `onClick`, `onKeyDown` and `onKeyUp`, so the type check stops it. (APG Button; WCAG 4.1.2, A; `box.not-interactive`)
 - **Do not use `div` for a list or a navigation.** Pass `as="ul"` or `as="nav"` so assistive technology can find them. (WCAG 1.3.1, A; `box.element-by-structure`)
 - **Do not expect `gap` to work on a block Box.** Set `display` first.
