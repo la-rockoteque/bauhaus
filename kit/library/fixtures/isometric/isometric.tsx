@@ -21,12 +21,12 @@ export const screen = ([x, y, z]: Vec): [number, number] => [(x - y) * COS, (x +
 export const faceAt = (z: number): string => `matrix(${COS} ${SIN} ${-COS} ${SIN} 0 ${-z})`;
 
 /**
- * A corner radius capped at a quarter of the shape's shorter side. A pill token (radius.full) reads as a
- * lens in isometric; a quarter keeps the corners round and the sides straight. space.1 is 4px, so n px is
- * space.1 × n / 4.
+ * A corner radius as CSS draws it. CSS shrinks a radius larger than half the shorter side to that half, so
+ * radius.pill (9999px) gives round ends. An SVG rect clamps each axis on its own, which turns the ends into
+ * long ellipses. Capping at half the shorter side matches CSS. space.1 is 4px, so n px is space.1 × n / 4.
  */
 export const cornerOf = (radius: string, width: number, height: number): string =>
-  `min(${radius}, calc(var(--ds-space-1) * ${Math.min(width, height) / 16}))`;
+  `min(${radius}, calc(var(--ds-space-1) * ${Math.min(width, height) / 8}))`;
 
 /**
  * The stage: a view box that holds a footprint of width × depth and a cursor above it. `rise` adds
