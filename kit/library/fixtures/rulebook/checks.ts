@@ -134,9 +134,11 @@ const noPaletteAtCallSite: Check = () => {
   return hit ? `${hit[0]} reads a palette or colors variable` : null;
 };
 
+// Roles only: :root also holds the colors scales, and those alias the palette by design.
 const rolesAliasColors = eachTheme((theme) => {
-  const literal = Object.entries(themeTokens(theme)).find(([, value]) => value.includes('--ds-palette-'));
-  return literal ? `${literal[0]} aliases the palette` : null;
+  const tokens = themeTokens(theme);
+  const role = roleNames(theme).find((name) => tokens[name]?.includes('--ds-palette-'));
+  return role ? `${role} aliases the palette` : null;
 });
 
 const themeParity: Check = () => {

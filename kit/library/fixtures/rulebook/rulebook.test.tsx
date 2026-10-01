@@ -45,6 +45,10 @@ describe('grade', () => {
   it('runs the check of an auto rule', () => {
     expect(grade(rule({ id: 'spacing.target-min' })).verdict).toBe('pass');
   });
+
+  it('reads only the theme roles for the palette alias check, not the colors scales in :root', () => {
+    expect(grade(rule({ id: 'color.roles-alias-colors' })).verdict).toBe('pass');
+  });
 });
 
 describe('coverage', () => {
