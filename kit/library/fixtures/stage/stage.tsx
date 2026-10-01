@@ -102,7 +102,7 @@ const NO_TOKENS: readonly TokenRow[] = [];
  * The component drawn once, with two layers the viewer switches between: the anatomy (numbered parts, leader lines,
  * the parts panel) and the specs (measured redlines and the specs table). The hidden layer's list or table stays for screen readers.
  */
-export function Stage({ stage, specs = NO_SPECS, tokens = NO_TOKENS }: { stage: StageSpec; specs?: readonly Spec[]; tokens?: readonly TokenRow[] }) {
+export function Stage({ stage, specs = NO_SPECS, tokens = NO_TOKENS }: { stage: StageSpec & { render: ReactNode }; specs?: readonly Spec[]; tokens?: readonly TokenRow[] }) {
   const { render } = stage;
   const parts = useMemo(() => [...stage.parts].sort((a, b) => a.n - b.n), [stage.parts]);
   const wide = useMedia(WIDE);
@@ -180,6 +180,9 @@ export function Stage({ stage, specs = NO_SPECS, tokens = NO_TOKENS }: { stage: 
     const next = leaders(measure.anchors, ends, order);
     setPaths((prev) => (sameNumbers(prev, next) ? prev : next));
   }, [measure, order, lines, tick]);
+
+  // A new render (an API control changed) moves the parts without always resizing the stage: measure again.
+  useLayoutEffect(() => setTick((t) => t + 1), [render]);
 
   // Measure again when the layout moves: size, theme, fonts.
   useEffect(() => {

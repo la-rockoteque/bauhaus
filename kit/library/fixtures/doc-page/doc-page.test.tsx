@@ -75,4 +75,35 @@ describe('DocPage', () => {
     expect(region.tabIndex).toBe(0);
     expect(region.querySelector('table')).not.toBeNull();
   });
+
+  it('drives the stage from the API controls, and keeps each description behind a "!" button', () => {
+    render(
+      <DocPage
+        name="Sample"
+        layer="Component"
+        plain="Plain words."
+        precise="Precise words."
+        tokens={{ mode: 'consumed', rows: [] }}
+        stage={{ render: (args) => <button type="button" className="sample" disabled={args.disabled === true}>{String(args.label)}</button>, parts: [] }}
+        api={[
+          { label: 'label', value: 'The text.', control: { kind: 'text', value: 'Save' } },
+          { label: 'disabled', value: 'Turns it off.', control: { kind: 'boolean', value: false } },
+          { label: 'onClick', value: 'Runs on press.' },
+        ]}
+        states={{ cells: [] }}
+        dos={[]}
+        donts={[]}
+        guide="sample--docs"
+        guideName="Sample"
+      />,
+    );
+    const sample = () => document.querySelector<HTMLButtonElement>('.doc-stage-inner .sample')!;
+    expect(sample().textContent).toBe('Save');
+    fireEvent.change(screen.getByRole('textbox', { name: 'label' }), { target: { value: 'Send' } });
+    expect(sample().textContent).toBe('Send');
+    fireEvent.click(screen.getByRole('switch', { name: 'disabled' }));
+    expect(sample().disabled).toBe(true);
+    expect(screen.getByRole('button', { name: 'About onClick' })).toBeTruthy();
+    expect(screen.queryByText('Runs on press.')).toBeNull();
+  });
 });

@@ -51,7 +51,8 @@ export interface AnatomyPart {
 
 /** The Stage: the component drawn once, with the anatomy layer (numbered parts) and the specs layer (measured redlines) over it. */
 export interface StageSpec {
-  render: ReactNode;
+  /** The component, or a function of the API controls' values: the stage, the specs and the tokens view follow them live. */
+  render: ReactNode | ((args: ApiArgs) => ReactNode);
   parts: readonly AnatomyPart[];
   /** Ignored: the stage spans the page column. Kept so older call sites still type-check. */
   stageWidth?: string;
@@ -63,6 +64,20 @@ export interface Row {
   label: string;
   value: string;
 }
+
+/** A live input on an API row. Its `value` is the initial one. */
+export type ApiControl =
+  | { kind: 'text'; value: string }
+  | { kind: 'boolean'; value: boolean }
+  | { kind: 'select'; options: readonly string[]; value: string };
+
+/** One API row: the prop name, its description (shown in a tooltip) and an optional control. */
+export interface ApiRow extends Row {
+  control?: ApiControl;
+}
+
+/** The controls' current values, by prop name. */
+export type ApiArgs = Record<string, string | boolean>;
 
 /** What the specs layer measures on a target and draws as a redline. */
 export type SpecProperty = 'height' | 'width' | 'padding-inline' | 'padding-block' | 'gap' | 'radius';
@@ -186,8 +201,8 @@ interface DocPageBase {
   /** Live specimens for a foundation, shown at the top of the Stage section. */
   specimens?: ReactNode;
   specs?: readonly Spec[];
-  /** Public API, name to description. */
-  api?: readonly Row[];
+  /** Public API, name to description. A row with a `control` drives the stage when `stage.render` is a function. */
+  api?: readonly ApiRow[];
   /** Extra sections between section 4 and Do and don't. */
   extra?: readonly ExtraSection[];
   dos: readonly Guidance[];

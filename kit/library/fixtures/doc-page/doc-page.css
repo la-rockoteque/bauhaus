@@ -194,6 +194,22 @@
   font-family: inherit;
 }
 
+.doc-table-api th,
+.doc-table-api td {
+  vertical-align: middle;
+}
+
+.doc-api-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+}
+
+/* The info glyph upside down: an "!" in a circle. */
+.doc-api-mark {
+  rotate: 180deg;
+}
+
 .doc-token {
   display: inline-flex;
   align-items: center;

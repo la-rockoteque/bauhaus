@@ -2,21 +2,20 @@ import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { Icon } from '../../../primitives/icon/icon';
+import type { IconGlyph } from '../../../primitives/icon/icon';
 import { IconButton } from './icon-button';
 import { iconButtonRules } from './icon-button.rules';
 
-const Cross = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-    <path d="M3 3l10 10M13 3L3 13" />
-  </svg>
-);
+const ICONS = ['close', 'search', 'menu', 'settings'] as const satisfies readonly IconGlyph[];
+const VARIANTS = ['tertiary', 'secondary', 'primary', 'subtle'] as const;
 
 // The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Clickables/Icon button', component: IconButton, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof IconButton>;
 
 export default meta;
 
-const close = (props: Partial<ComponentProps<typeof IconButton>> = {}) => <IconButton label="Close dialog" icon={<Cross />} {...props} />;
+const close = (props: Partial<ComponentProps<typeof IconButton>> = {}) => <IconButton label="Close dialog" icon={<Icon glyph="close" />} {...props} />;
 const sameAsButton = 'Same reason as the button.';
 
 export const Showcase: StoryObj = {
@@ -39,7 +38,14 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: close(),
+        render: (args) =>
+          close({
+            label: String(args.label),
+            icon: <Icon glyph={args.icon as IconGlyph} />,
+            variant: args.variant as ComponentProps<typeof IconButton>['variant'],
+            loading: args.loading === true,
+            disabled: args.disabled === true,
+          }),
         parts: [
           { n: 1, label: 'Button container', note: 'required', target: '.ds-icon-button', at: 'top-start' },
           { n: 2, label: 'Icon', note: 'required, hidden from assistive technology', target: '.ds-icon-button__icon' },
@@ -54,9 +60,12 @@ export const Showcase: StoryObj = {
         { label: 'Default variant', value: 'tertiary' },
       ]}
       api={[
-        { label: 'label', value: 'Required. The accessible name, in the imperative: "Close dialog".' },
-        { label: 'icon', value: 'Required. The icon element, already sized. Hidden from assistive technology.' },
-        { label: '…props', value: 'The button props: variant, loading, disabled, onClick.' },
+        { label: 'label', value: 'Required. The accessible name, in the imperative: "Close dialog".', control: { kind: 'text', value: 'Close dialog' } },
+        { label: 'icon', value: 'Required. The icon element, already sized. Hidden from assistive technology.', control: { kind: 'select', options: ICONS, value: 'close' } },
+        { label: 'variant', value: 'A button prop. Tertiary by default.', control: { kind: 'select', options: VARIANTS, value: 'tertiary' } },
+        { label: 'loading', value: 'A button prop. Shows the spinner and keeps the name.', control: { kind: 'boolean', value: false } },
+        { label: 'disabled', value: 'A button prop.', control: { kind: 'boolean', value: false } },
+        { label: '…props', value: 'The other button props, such as onClick.' },
       ]}
       states={{
         cells: [
