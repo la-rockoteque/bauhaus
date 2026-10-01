@@ -17,8 +17,9 @@ describe('ContrastMatrix', () => {
 
   it('heads every row with its foreground and every column with its background', () => {
     render(<ContrastMatrix />);
-    expect(screen.getAllByRole('rowheader').map((th) => th.textContent)).toContain('text.muted');
-    expect(screen.getAllByRole('columnheader').map((th) => th.textContent)).toContain('surface.sunken');
+    expect(screen.getAllByRole('rowheader').map((th) => th.textContent)).toContain('Text Muted');
+    expect(screen.getAllByRole('columnheader').map((th) => th.textContent)).toContain('Surface Sunken');
+    expect(screen.getByRole('img', { name: 'Text Muted, text.muted' })).toBeTruthy();
   });
 
   it('splits the pairs into blocks joined by a shared role', () => {

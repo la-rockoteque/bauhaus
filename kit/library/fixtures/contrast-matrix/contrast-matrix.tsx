@@ -1,5 +1,6 @@
 import pairs from '../../foundations/color/pairs.json';
 import { Text } from '../../primitives/text/text';
+import { TokenName } from '../dictionary/dictionary';
 import { TableScroll } from '../doc-page/table-scroll';
 import { contrastOf, ratioText } from '../rulebook/tokens';
 import { useTheme } from '../theme-switch/theme-store';
@@ -80,7 +81,9 @@ function Matrix({ theme, cluster, legend = false }: { theme: string; cluster: Cl
           <td className="cm-corner">{legend && <span className="doc-muted">foreground ↓ · background →</span>}</td>
           {cluster.bgs.map((bg) => (
             <th key={bg} scope="col" className="cm-col">
-              <code className="cm-col-name">{bg}</code>
+              <span className="cm-col-name">
+                <TokenName name={bg} />
+              </span>
               <span className="cm-swatch" style={{ background: `var(${cssVar(bg)})` }} aria-hidden="true" />
             </th>
           ))}
@@ -91,7 +94,7 @@ function Matrix({ theme, cluster, legend = false }: { theme: string; cluster: Cl
           <tr key={fg}>
             <th scope="row" className="cm-row">
               <span className="cm-dot" style={{ background: `var(${cssVar(fg)})` }} aria-hidden="true" />
-              <code>{fg}</code>
+              <TokenName name={fg} />
             </th>
             {cluster.bgs.map((bg) => {
               const pair = at(fg, bg);
