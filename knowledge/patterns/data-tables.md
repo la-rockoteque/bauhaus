@@ -25,7 +25,7 @@ sources:
 5. Align text left and numbers right. Never centre data. Use tabular figures for numbers. (Basis: numbers compare by digit position.)
 6. Make the first column a human-readable identifier, not a surrogate id. (Basis: Nielsen 2 Match between the system and the real world.)
 7. Order columns by user priority. Put columns that users compare next to each other. (Basis: Nielsen 6.)
-8. Set row height to 44 to 48 px by default. Offer compact as an opt-in density. (Basis: `foundations/density.md`; WCAG 2.5.8 Target Size (Minimum) (AA) for row controls.)
+8. Set row height to 44 to 48 px by default. Offer compact as an opt-in density. (Basis: `foundations/density.md`; WCAG 2.5.8 Target Size (Minimum) (AA) for row controls.) The kit library (`kit/library`) makes the opposite choice: compact is its default, with 32 px rows (`size.control.md`).
 9. Use zebra stripes or hover highlight, not both. (Basis: Nielsen 8.)
 10. Make sortable headers buttons with a visible direction icon and `aria-sort` on the `th`. Announce the change in a live region. (Basis: WCAG 4.1.2 (A), 4.1.3 (AA).)
 11. Paginate with a total and a page-size selector: "Showing 1 to 25 of 1,342". (Basis: Nielsen 1 Visibility of system status.)

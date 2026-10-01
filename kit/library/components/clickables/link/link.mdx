@@ -37,7 +37,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **Router.** Pass `href` for a plain anchor. Pass `as` with your router's link component, which receives every prop. The library never imports a router.
 - **External.** `external` sets `target="_blank"` and `rel="noopener noreferrer"`, draws the external icon and adds a hidden "opens in a new tab" to the accessible name. Pass `externalLabel` in the app language. The warning follows navigation rule 15 (WCAG 3.2.5, AAA).
 - **Current.** `current` sets `aria-current="page"`. The text turns heavier and the underline thicker, so the cue is not colour alone (WCAG 4.1.2, A; 1.4.1, A).
-- **Target size.** A link in a sentence stays inline: WCAG 2.5.8 (AA) exempts it, and a 44px box would break the line. `standalone` gives nav items, crumbs and footer links the 44px house floor.
+- **Target size.** A link in a sentence stays inline: WCAG 2.5.8 (AA) exempts it, and a 32px box would break the line. `standalone` gives nav items, crumbs and footer links `size.control.md` (32px). The target is at least `size.target.min` (24px).
 - **i18n.** Text arrives as `children` and `externalLabel`. The component holds no other text.
 
 ## 3. Why the states look as they do

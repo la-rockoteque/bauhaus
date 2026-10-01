@@ -63,10 +63,10 @@ export const toastRules = [
     component: 'Toast',
     rubric: 'target size',
     severity: 'MEDIUM',
-    expectation: 'The close button is an icon button with a name and a 44px target.',
+    expectation: 'The close button is an icon button with a name and a target of at least size.target.min (24px); it draws at size.control.md (32px).',
     verify: 'auto',
     covers: ['name-role-value', 'target-size'],
-    basis: 'WCAG 4.1.2 Name, Role, Value (A); house floor at WCAG 2.5.5 (AAA)',
+    basis: 'WCAG 4.1.2 Name, Role, Value (A); WCAG 2.5.8 Target Size (Minimum) (AA): 24px, the house floor',
   },
   {
     id: 'toast.reduced-motion',

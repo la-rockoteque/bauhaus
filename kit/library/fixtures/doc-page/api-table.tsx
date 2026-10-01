@@ -44,7 +44,7 @@ export function ApiTable({ rows, args, onChange }: { rows?: readonly ApiRow[]; a
                     <code>{row.label}</code>
                     <Tooltip content={row.value}>
                       {/* The info glyph turned upside down: an "!" in a circle. */}
-                      <IconButton label={`About ${row.label}`} icon={<Icon glyph="info" size="sm" className="doc-api-mark" />} size="narrow" />
+                      <IconButton label={`About ${row.label}`} icon={<Icon glyph="info" size="sm" className="doc-api-mark" />} />
                     </Tooltip>
                   </span>
                 </th>

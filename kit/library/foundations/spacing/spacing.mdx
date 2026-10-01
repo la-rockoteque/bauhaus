@@ -23,7 +23,7 @@ The Showcase story holds the live scale and the semantic gaps. The Advisories st
 
 ### When not to use, and what to use instead
 
-- **To size a control's hit area.** Use `size.target.min` (WCAG 2.5.8 Target Size, AA).
+- **To size a control.** Use the control scale: `size.control.sm` 24px, `size.control.md` 32px (the default), `size.control.lg` 40px. A control draws at `size.control.md`, and its target is at least `size.target.min`, 24px (WCAG 2.5.8 Target Size Minimum, AA).
 - **To stack layers.** Spacing does not order layers. Use the z-index scale.
 - **For a gap that only one component uses.** Keep it in that component, as a tier 1 step.
 
@@ -40,7 +40,8 @@ The Showcase story holds the live scale and the semantic gaps. The Advisories st
 Spacing has no interaction or lifecycle state. Two cells are decided:
 
 - **Breakpoints are tokens, but a media query cannot read them.** `breakpoint.sm`, `md` and `lg` are 640, 768 and 1024px. A stylesheet writes the same number in `@media (max-width: 768px)`, and `spacing.breakpoints-match` fails when a width in any query equals none of the three. Change a breakpoint in the token file and in every query in one commit.
-- **Density is n/a for now.** A `compact` theme would remap tier 2 tokens one step down. Controls would keep `size.target.min`, so a denser page never shrinks a target.
+- **Compact is the default density.** The library ships one density, and it is compact: a control is 32px high, and the tier 2 scale runs `xs` 4, `sm` 8, `md` 12, `lg` 16, `xl` 24. A denser page never shrinks a target below `size.target.min`, 24px.
+- **Buttons have flat padding.** A button and a button-like pressable (chip, tab, menu item, pagination item, segmented control, table sort, disclosure trigger) centres its label in `size.control.md`. Its `padding-block` is 0 and its `padding-inline` is `space.inline.md`, so the block padding is always below the inline padding (`button.padding-flat`). Containers such as cards, banners and popovers are not bound by this rule.
 - **Raised text spacing is designed.** Gaps are tokens and no container around text has a fixed height, so a user who raises text spacing loses nothing.
 
 ## 4. Pitfalls and don'ts
@@ -49,4 +50,4 @@ Spacing has no interaction or lifecycle state. Two cells are decided:
 - **Do not use the same gap between and inside groups.** Groups stop reading as groups. (Wertheimer 1923; `spacing.groups-distinct`)
 - **Do not fix the height of a card that holds text.** Text clips when the user raises text spacing. (WCAG 1.4.12, AA; `spacing.text-spacing-safe`)
 - **Do not add a step "just this once".** The scale gains a hole, and every later step becomes arguable. (Closed scale; `spacing.scale-closed`)
-- **Do not use a target smaller than `size.target.min` to save room.** Users miss it. (WCAG 2.5.8, AA; house floor at the 2.5.5 (AAA) figure; `spacing.target-min`)
+- **Do not use a target smaller than `size.target.min` to save room.** Users miss it. (WCAG 2.5.8, AA; house floor 24px; `spacing.target-min`)

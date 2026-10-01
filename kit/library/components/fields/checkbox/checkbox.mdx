@@ -13,7 +13,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 
 **Precisely:** Component in the fields family. It toggles one independent option with a native `input` of type checkbox and a visible, clickable label. It does not act at once (use the switch) and it is not one-of-many (use the radio group).
 
-**The layer.** A component. The native input is invisible and covers a 44px target. A drawn box and check sit under it, so the browser keeps focus, Space, form value and label clicks.
+**The layer.** A component. The native input is invisible and covers a 24px target. A drawn box and check sit under it, so the browser keeps focus, Space, form value and label clicks.
 
 ## 2. Usage
 
@@ -36,7 +36,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **Mixed state.** `indeterminate` sets the native property, so assistive technology reads "mixed". It clears when the user toggles the box (WCAG 4.1.2, A).
 - **Error.** For a box that must be ticked, pass `error` and `required`. The message is tied with `aria-describedby`, the input gets `aria-invalid`, and the box outline turns to the invalid colour beside the icon and text (WCAG 3.3.1, A; WCAG 1.4.1, A).
 - **Blur.** `onBlur` reaches the native input, so a form can validate a box that must be ticked once focus leaves it.
-- **Target.** The row is at least 44px high and the target column is 44px wide (WCAG 2.5.5, AAA house floor; 2.5.8, AA is 24px).
+- **Target.** The row is at least 24px high and the target column is 24px wide, the house floor (WCAG 2.5.8, AA).
 - **Box contrast.** The empty outline reaches 3:1 on the page. The checked fill reaches 3:1, and the check reaches 3:1 on the fill (WCAG 1.4.11, AA).
 - **i18n.** All text arrives as props.
 

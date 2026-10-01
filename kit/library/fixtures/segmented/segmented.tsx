@@ -17,7 +17,7 @@ export interface SegmentedProps<T extends string> {
 
 /**
  * A segmented control: one choice out of a few, side by side. A radio group (WAI-ARIA APG):
- * one tab stop, the arrow keys move and select, wrapping. Built from the library's subtle, narrow Button.
+ * one tab stop, the arrow keys move and select, wrapping. Built from the library's subtle Button.
  */
 export function Segmented<T extends string>({ label, options, value, onChange }: SegmentedProps<T>) {
   const index = options.findIndex((option) => option.value === value);
@@ -40,7 +40,6 @@ export function Segmented<T extends string>({ label, options, value, onChange }:
           aria-checked={option.value === value}
           tabIndex={option.value === value ? 0 : -1}
           variant="subtle"
-          size="narrow"
           onClick={() => onChange(option.value)}
         >
           {option.label}

@@ -31,7 +31,7 @@ export const Showcase: StoryObj = {
         rows: [
           { name: 'text.default · text.muted', tier: 'role', use: 'Title; body and media', swatch: '--ds-text-muted' },
           { name: 'text.body.*', tier: '2', use: 'Body text. The title takes the subheading style from Heading.' },
-          { name: 'space.inset.xl · space.inset.md', tier: '2', use: 'Padding around the block' },
+          { name: 'space.inset.lg · space.inset.md', tier: '2', use: 'Padding around the block' },
           { name: 'space.stack.sm · space.stack.xs · space.inline.sm', tier: '2', use: 'Gaps between media, title, body and actions' },
           { name: 'size.overlay.md', tier: '2', use: 'Maximum inline size, 30rem, so lines stay readable' },
         ],
@@ -52,7 +52,7 @@ export const Showcase: StoryObj = {
       specs={[
         { label: 'Width', property: 'width', target: '.ds-empty-state', token: 'size.overlay.md', value: 'fills its container, up to this, centred' },
         { label: 'Padding inline', property: 'padding-inline', target: '.ds-empty-state', token: 'space.inset.md' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-empty-state', token: 'space.inset.xl' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-empty-state', token: 'space.inset.lg' },
         { label: 'Gap', property: 'gap', target: '.ds-empty-state', token: 'space.stack.sm' },
         { label: 'Title', value: 'A real heading, Heading size "subheading", level from the prop' },
         { label: 'Body', value: 'text.body.*, text.muted' },

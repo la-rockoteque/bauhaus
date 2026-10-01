@@ -17,7 +17,7 @@ export interface ButtonIsometricProps {
 }
 
 const W = 112;
-const D = 44;
+const D = 32;
 const REST = 9;
 const PRESSED = 3;
 const LIFT = 5;

@@ -235,16 +235,16 @@ export const tokens = {
     "inset": {
       "xs": "4px",
       "sm": "8px",
-      "md": "16px",
-      "lg": "24px",
-      "xl": "32px"
+      "md": "12px",
+      "lg": "16px",
+      "xl": "24px"
     },
     "stack": {
       "xs": "4px",
       "sm": "8px",
-      "md": "16px",
-      "lg": "24px",
-      "xl": "40px"
+      "md": "12px",
+      "lg": "16px",
+      "xl": "24px"
     },
     "inline": {
       "xs": "4px",
@@ -254,30 +254,29 @@ export const tokens = {
       "xl": "24px"
     },
     "control": {
-      "inline": "12px",
+      "inline": "8px",
       "gap": "8px"
     },
     "field": {
       "gap": "4px"
     },
     "group": {
-      "gap": "16px"
+      "gap": "12px"
     }
   },
   "size": {
     "target": {
-      "min": "44px"
+      "min": "24px"
     },
     "control": {
-      "narrow": "32px",
-      "sm": "44px",
-      "md": "48px",
-      "lg": "56px"
+      "sm": "24px",
+      "md": "32px",
+      "lg": "40px"
     },
     "icon": {
-      "sm": "16px",
-      "md": "20px",
-      "lg": "24px"
+      "sm": "12px",
+      "md": "16px",
+      "lg": "20px"
     },
     "border": {
       "thin": "1px",
@@ -330,43 +329,43 @@ export const tokens = {
   "text": {
     "body": {
       "family": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
-      "size": "16px",
+      "size": "14px",
       "weight": 400,
       "line-height": 1.5
     },
     "caption": {
       "family": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
-      "size": "14px",
+      "size": "12px",
       "weight": 400,
       "line-height": 1.5
     },
     "heading": {
       "family": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
-      "size": "24px",
+      "size": "18px",
       "weight": 600,
       "line-height": 1.25
     },
     "label": {
       "family": "\"Inter Variable\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
-      "size": "16px",
+      "size": "14px",
       "weight": 500,
       "line-height": 1.25
     },
     "prose": {
       "family": "\"Source Serif 4 Variable\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
-      "size": "18px",
+      "size": "16px",
       "weight": 400,
       "line-height": 1.5
     },
     "display": {
       "family": "\"Fraunces Variable\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, \"Times New Roman\", serif",
-      "size": "36px",
+      "size": "24px",
       "weight": 600,
       "line-height": 1.25
     },
     "code": {
       "family": "\"JetBrains Mono Variable\", ui-monospace, \"SF Mono\", Menlo, Consolas, \"DejaVu Sans Mono\", monospace",
-      "size": "14px",
+      "size": "12px",
       "weight": 400,
       "line-height": 1.5
     },
@@ -378,7 +377,7 @@ export const tokens = {
     },
     "kicker": {
       "family": "\"Bitter Variable\", Rockwell, \"Rockwell Nova\", \"Roboto Slab\", Georgia, serif",
-      "size": "14px",
+      "size": "12px",
       "weight": 600,
       "line-height": 1.5
     },

@@ -135,7 +135,7 @@ Interaction: default, hover, focus-visible, active, disabled, loading. Lifecycle
 - Content: start with a verb and name the object, "Save changes" (WCAG 2.4.6 Headings and Labels, AA: labels describe purpose).
 - Icon-only: give an accessible name (WCAG 1.1.1 Non-text Content, A; 4.1.2, A).
 - Keyboard: Space and Enter activate it (APG Button pattern). Use the native element so this is free.
-- Target size: at least 24 by 24 CSS px (WCAG 2.5.8, AA). House floor 44px (WCAG 2.5.5, AAA figure; project decision).
+- Target size: at least 24 by 24 CSS px (WCAG 2.5.8, AA). 24px is the house floor (project decision). A control draws at `size.control.md`, 32px.
 - Responsive: let the label wrap; never truncate it (WCAG 1.4.10 Reflow, AA).
 - Loading: keep the label and width, block repeat presses, announce the result (Nielsen 1; WCAG 4.1.3 Status Messages, AA).
 - Disabled: exempt from text contrast (WCAG 1.4.3 exception for inactive components), but say why nearby (Bauhaus rule, see `../states/model.md`).

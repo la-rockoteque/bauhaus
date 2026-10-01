@@ -3,8 +3,8 @@
 .spec-elev-stage {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ds-space-8);
-  padding: var(--ds-space-8);
+  gap: var(--ds-space-6);
+  padding: var(--ds-space-6);
   background: var(--ds-surface-sunken);
   border: thin solid var(--ds-border-default);
   border-radius: var(--ds-radius-lg);
@@ -56,7 +56,7 @@
 
 .spec-elev-modal {
   position: relative;
-  padding: var(--ds-space-6) var(--ds-space-8);
+  padding: var(--ds-space-4) var(--ds-space-6);
   border-radius: var(--ds-radius-overlay);
 }
 

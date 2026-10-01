@@ -32,8 +32,7 @@ export const Showcase: StoryObj = {
         mode: 'consumed',
         note: 'It consumes the tokens of the button and adds none. The button stylesheet supplies the rest.',
         rows: [
-          { name: 'size.target.min', tier: '2', use: 'Width of the square hit area (the height comes from the button)' },
-          { name: 'space.inset.sm', tier: '2', use: 'Padding around the icon' },
+          { name: 'size.control.md', tier: '2', use: 'Width of the square (32px; the height comes from the button). The target is at least size.target.min (24px)' },
           { name: 'text.link', tier: 'role', use: 'Icon colour in the default tertiary variant, through currentColor', swatch: '--ds-text-link' },
         ],
       }}
@@ -53,9 +52,9 @@ export const Showcase: StoryObj = {
         ],
       }}
       specs={[
-        { label: 'Width', property: 'width', target: '.ds-icon-button', token: 'size.target.min', value: 'a square hit area, even when the icon is smaller' },
-        { label: 'Height', property: 'height', target: '.ds-icon-button', token: 'size.target.min', value: 'from the button' },
-        { label: 'Padding', property: 'padding-inline', target: '.ds-icon-button', token: 'space.inset.sm' },
+        { label: 'Width', property: 'width', target: '.ds-icon-button', token: 'size.control.md', value: '32px square, even when the icon is smaller' },
+        { label: 'Height', property: 'height', target: '.ds-icon-button', token: 'size.control.md', value: '32px, from the button' },
+        { label: 'Padding', property: 'padding-inline', target: '.ds-icon-button', value: '0; the icon is centred in the square' },
         { label: 'Icon colour', value: 'currentColor, so it follows the text tokens and both themes' },
         { label: 'Default variant', value: 'tertiary' },
       ]}
@@ -99,13 +98,13 @@ export const Showcase: StoryObj = {
       }}
       dos={[
         { text: 'Name the action in the imperative: "Close dialog", not "X".', basis: 'WCAG 1.1.1 (A); 4.1.2 (A)' },
-        { text: 'Keep the hit area at the target floor even when the icon is smaller.', basis: 'WCAG 2.5.8 (AA); house floor 44px' },
+        { text: 'Keep the square at size.control.md (32px) even when the icon is smaller.', basis: 'WCAG 2.5.8 (AA); 24px house floor' },
         { text: 'Give the icon currentColor so both themes work.', basis: 'WCAG 1.4.11 (AA)' },
       ]}
       donts={[
         { text: 'Rely on title alone for the name.', basis: 'WCAG 4.1.2 (A)', rule: 'icon-button.accessible-name' },
         { text: 'Leave the icon visible to screen readers.', basis: 'APG: decorative graphics carry no role', rule: 'icon-button.icon-hidden' },
-        { text: 'Ship a 24px icon with no padding.', basis: 'WCAG 2.5.8 (AA); house floor 44px', rule: 'icon-button.touch-target' },
+        { text: 'Ship a 24px icon with no padding.', basis: 'WCAG 2.5.8 (AA); 24px house floor', rule: 'icon-button.touch-target' },
         { text: 'Draw a custom symbol for a common action.', basis: 'Nielsen 6', rule: 'icon-button.known-icon' },
       ]}
       guide="clickables-icon-button--docs"

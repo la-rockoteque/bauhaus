@@ -32,7 +32,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'badge.neutral · info · success · warning · error', tier: 'role', use: 'Solid fill, one per status', swatch: '--ds-badge-info' },
           { name: 'badge.<…>-text', tier: 'role', use: 'Text on that fill; 4.5:1', swatch: '--ds-badge-info-text' },
           { name: 'text.label.* · text.caption.*', tier: '2', use: 'Weight of the text; size and line height' },
-          { name: 'space.inset.xs · space.inline.sm · space.6', tier: '2', use: 'Padding, and the minimum width so a single digit stays round' },
+          { name: 'size.control.sm · space.inline.sm', tier: '2', use: 'Padding, and the minimum width so a single digit stays round' },
           { name: 'radius.pill', tier: '2', use: 'Corner radius' },
         ],
       }}
@@ -49,9 +49,9 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Minimum width', value: 'space.6, 24px, so a single digit stays a circle' },
+        { label: 'Minimum width', value: 'size.control.sm, 24px, so a single digit stays a circle' },
         { label: 'Padding inline', property: 'padding-inline', target: '.ds-badge', token: 'space.inline.sm' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-badge', token: 'space.inset.xs' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-badge', value: '0' },
         { label: 'Radius', property: 'radius', target: '.ds-badge', token: 'radius.pill' },
         { label: 'Cap', value: 'max, default 99, shows "99+"' },
         { label: 'Target', value: 'Not a control, so no target floor applies' },

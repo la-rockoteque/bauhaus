@@ -36,7 +36,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 
 - **Remove button name.** The name says what the button removes: "Remove filter Status: Shipped". Pass `removeLabel="Remove filter"` and the chip adds the label. The text arrives as props, so a translation changes both (WCAG 4.1.2, A; 2.4.6, AA).
 - **One shape.** A removable chip is one outlined pill. The remove button sits inside the outline and has no border of its own, so the pair reads as one object (Gestalt common region). Its focus ring is the only extra outline.
-- **Sizes.** A pressable chip is 44px high inside its outline. The remove button is 44px wide and high. This is the house floor and the WCAG 2.5.5 (AAA) figure; 2.5.8 (AA) asks for 24px. A static chip is `space.8` high, since nothing presses it.
+- **Sizes.** A pressable chip is `size.control.md` (32px) high, border included, so it lines up with a button. The remove button is `size.control.sm` (24px) wide and high, inside the outline. The target is at least `size.target.min` (24px), the WCAG 2.5.8 (AA) minimum. A static chip is `size.control.sm` (24px) high, since nothing presses it.
 - **Wrap.** Put a row of chips in a `Stack` with `wrap`, and use `as="ul"` so a screen reader counts them. Chips flow onto new lines and never scroll sideways (WCAG 1.4.10, AA).
 - **Long labels.** The label is one line. Past `size.overlay.sm` it ends in an ellipsis. The text stays whole in the DOM, so the accessible name is complete. A tooltip shows the full text on hover and on focus while the label is cut, and only then (WCAG 1.4.13, AA).
 - **Keyboard.** Tab reaches the remove button or the selectable chip. Space and Enter press it. The components are native buttons, so this needs no code.

@@ -87,7 +87,7 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'toast.status-not-colour-alone': sourceMatches(`${TOAST}.tsx`, /<Icon glyph=\{GLYPH\[status\]\} label=/, 'the toast does not render a named icon for its status'),
   'toast.dismiss-target': all(
     sourceMatches(`${TOAST}.tsx`, /<IconButton label=\{dismissLabel\}/, 'the close button does not take a name'),
-    uses('components/clickables/button/button.css', '.ds-button', 'min-block-size', '--ds-size-target-min'),
+    uses('components/clickables/button/button.css', '.ds-button', 'min-block-size', '--ds-size-control-md'),
   ),
   'toast.reduced-motion': all(
     uses(`${TOAST}.css`, '.ds-toast', 'animation', '--ds-motion-duration-base'),

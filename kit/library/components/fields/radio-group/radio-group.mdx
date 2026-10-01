@@ -13,7 +13,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 
 **Precisely:** Component in the fields family. It picks one option from a small visible set. It is a `fieldset` with a `legend` and native radios that share one `name`. It is not for a long list (use the select) or for several choices (use checkboxes).
 
-**The layer.** A component. Each native radio is invisible and covers a 44px target. A drawn circle and dot sit under it. The browser owns focus, arrow keys, the single Tab stop and the form value.
+**The layer.** A component. Each native radio is invisible and covers a 24px target. A drawn circle and dot sit under it. The browser owns focus, arrow keys, the single Tab stop and the form value.
 
 ## 2. Usage
 
@@ -34,7 +34,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **Default.** Preselect only when one option is the honest default. A chosen radio hides the question, and users skip it (Nielsen heuristic 5). Once a radio is checked, the user cannot return to "none".
 - **Error.** Pass `error`. The message is tied to the group with `aria-describedby`, the group gets `aria-invalid`, and the circles take the invalid outline beside the icon and text (WCAG 3.3.1, A; WCAG 1.4.1, A).
 - **Blur.** `onBlur` is a group blur: it fires when focus leaves the fieldset, not when the arrows move it from one radio to the next. Validate there, so an empty required group shows its error once the user has passed it (Nielsen heuristic 5, error prevention). Safari does not focus a radio on a click, so a pointer user who never focused the group triggers no blur; submit still validates.
-- **Target.** Each option row is at least 44px high and its target column is 44px wide (WCAG 2.5.5 AAA house floor; 2.5.8 AA is 24px). Rows touch with no gap and none overlaps.
+- **Target.** Each option row is at least 24px high and its target column is 24px wide, the house floor (WCAG 2.5.8 AA). Rows touch with no gap and none overlaps.
 - **Contrast.** The empty circle outline and the selected fill reach 3:1 on the page (WCAG 1.4.11, AA).
 - **Disabled.** `disabled` on the group disables all options. `disabled` on one option disables it alone. Say why nearby.
 - **i18n.** All text arrives as props.

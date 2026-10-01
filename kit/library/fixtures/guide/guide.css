@@ -21,7 +21,7 @@
 
 .doc-guide-page {
   min-block-size: 100vh;
-  padding: var(--ds-space-12) var(--doc-gutter);
+  padding: var(--ds-space-8) var(--doc-gutter);
   background: var(--ds-surface-sunken);
 }
 
@@ -34,16 +34,16 @@
 }
 
 .doc-guide-page :is(h1, h2, h3) {
-  margin-block: var(--ds-space-8) var(--ds-space-3);
+  margin-block: var(--ds-space-6) var(--ds-space-3);
 }
 
 .doc-guide-page h3 {
-  margin-block-start: var(--ds-space-6);
+  margin-block-start: var(--ds-space-4);
 }
 
 .doc-guide-page h1 {
   margin-block-start: 0;
-  font-size: calc(var(--ds-text-heading-size) * 1.5);
+  font-size: calc(var(--ds-text-heading-size) * 1.25);
 }
 
 .doc-guide-page :is(p, ul, ol, blockquote) {
@@ -51,7 +51,7 @@
 }
 
 .doc-guide-page :is(ul, ol) {
-  padding-inline-start: var(--ds-space-6);
+  padding-inline-start: var(--ds-space-4);
 }
 
 .doc-guide-page li {
@@ -74,7 +74,7 @@
 .doc-guide-page hr {
   border: 0;
   border-block-start: thin solid var(--ds-border-default);
-  margin-block: var(--ds-space-8);
+  margin-block: var(--ds-space-6);
 }
 
 .doc-guide-page blockquote {

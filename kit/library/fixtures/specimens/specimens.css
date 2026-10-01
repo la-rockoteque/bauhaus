@@ -1,7 +1,7 @@
 /* Specimens (foundations and themes) */
 
 .spec-group {
-  margin-block-start: var(--ds-space-6);
+  margin-block-start: var(--ds-space-4);
 }
 
 .spec-group:first-child {
@@ -161,7 +161,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ds-space-6);
+  gap: var(--ds-space-4);
 }
 
 .spec-focus-ring {

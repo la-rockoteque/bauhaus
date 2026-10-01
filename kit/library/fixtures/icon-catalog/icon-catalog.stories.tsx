@@ -6,7 +6,7 @@ const meta = { title: 'Fixtures/Icon catalog', parameters: { layout: 'fullscreen
 
 export default meta;
 
-const frame = { padding: 'var(--ds-space-6)' } as const;
+const frame = { padding: 'var(--ds-space-4)' } as const;
 
 export const Catalog: StoryObj = {
   render: () => (

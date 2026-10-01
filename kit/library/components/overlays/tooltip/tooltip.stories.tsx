@@ -60,7 +60,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'shadow.1', tier: 'role', use: 'Elevation rung of a tooltip', swatch: '--ds-overlay-border' },
           { name: 'text.caption.*', tier: '2', use: 'Size, weight and line height' },
           { name: 'size.overlay.sm', tier: '2', use: 'Maximum inline size, capped to the screen minus space.6' },
-          { name: 'radius.control · space.inset.xs · space.inset.sm', tier: '2', use: 'Corner radius and padding' },
+          { name: 'radius.control · space.1 · space.2', tier: '2', use: 'Corner radius and padding' },
           { name: 'motion.duration.fast · motion.ease.enter · motion.ease.exit', tier: '2', use: 'Fade in and out; no travel' },
           { name: 'z.tooltip', tier: '2', use: 'Paint order, set by the overlay layer of React Aria' },
         ],

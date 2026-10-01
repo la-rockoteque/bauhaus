@@ -30,7 +30,7 @@
   place-items: center;
   inline-size: 100%;
   min-inline-size: 0;
-  padding: var(--ds-space-12);
+  padding: var(--ds-space-8);
   overflow-x: auto;
   background-color: var(--ds-surface-default);
   background-image: linear-gradient(var(--doc-grid-line) var(--doc-hairline), transparent 0),

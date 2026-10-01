@@ -36,7 +36,7 @@ export const Showcase: StoryObj = {
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator', swatch: '--ds-focus-ring-color' },
           { name: 'text.label.weight', tier: '2', use: 'Weight of the current link' },
           { name: 'size.border.thin · size.border.thick', tier: '2', use: 'Underline at rest, and on hover or current' },
-          { name: 'size.target.min', tier: '2', use: 'Minimum size of a standalone link' },
+          { name: 'size.control.md', tier: '2', use: 'Minimum size of a standalone link (32px; the target is at least size.target.min, 24px)' },
           { name: 'size.icon.sm · space.inline.xs', tier: '2', use: 'External icon and its gap' },
         ],
       }}
@@ -55,7 +55,7 @@ export const Showcase: StoryObj = {
       specs={[
         { label: 'Colour', value: 'text.link, 4.5:1 on surface.default' },
         { label: 'Underline', value: 'always on; size.border.thin at rest, size.border.thick on hover and when current' },
-        { label: 'Target', value: 'inline in a sentence; standalone gives size.target.min (44px)' },
+        { label: 'Target', value: 'inline in a sentence; standalone gives size.control.md (32px)' },
         { label: 'Focus', value: 'ring 2px, offset 2px, on :focus-visible' },
         { label: 'Element', value: 'native a; `as` swaps in a router link' },
       ]}
@@ -65,7 +65,7 @@ export const Showcase: StoryObj = {
         { label: 'external', value: 'Opens in a new tab with rel noopener, draws the external icon and adds the spoken warning.', control: { kind: 'boolean', value: true } },
         { label: 'externalLabel', value: 'The spoken warning, default "opens in a new tab". Pass it in the app language.', control: { kind: 'text', value: 'opens in a new tab' } },
         { label: 'current', value: 'true | "page" | "step" | "location". Sets aria-current and a cue beyond colour.', control: { kind: 'select', options: CURRENT, value: 'false' } },
-        { label: 'standalone', value: 'Takes the 44px target. Use it for nav items, crumbs and footer links, not inside a sentence.', control: { kind: 'boolean', value: false } },
+        { label: 'standalone', value: 'Draws at 32px (size.control.md). Use it for nav items, crumbs and footer links, not inside a sentence.', control: { kind: 'boolean', value: false } },
       ]}
       states={{
         cells: [
@@ -91,7 +91,7 @@ export const Showcase: StoryObj = {
       extra={[
         {
           title: 'In a sentence and standalone',
-          kicker: 'Inline links keep the text line; standalone links take the 44px target.',
+          kicker: 'Inline links keep the text line; standalone links draw at 32px.',
           content: (
             <div style={{ display: 'grid', gap: 'var(--ds-space-4)' }}>
               <p style={{ margin: 0, color: 'var(--ds-text-default)', font: 'var(--ds-text-body-size)/var(--ds-text-body-line-height) var(--ds-text-body-family)' }}>

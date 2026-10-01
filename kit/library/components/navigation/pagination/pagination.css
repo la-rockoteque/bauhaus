@@ -32,7 +32,9 @@
 
 /* A native select: the platform list, keyboard and screen reader support come free. */
 .ds-pagination__select {
-  min-block-size: var(--ds-size-target-min);
+  box-sizing: border-box;
+  min-block-size: var(--ds-size-control-md);
+  padding-block: 0;
   padding-inline: var(--ds-space-control-inline);
   border: var(--ds-size-border-thin) solid var(--ds-field-border);
   border-radius: var(--ds-radius-control);
@@ -69,8 +71,9 @@
   align-items: center;
   justify-content: center;
   gap: var(--ds-space-control-gap);
-  min-block-size: var(--ds-size-target-min);
-  min-inline-size: var(--ds-size-target-min);
+  min-block-size: var(--ds-size-control-md);
+  min-inline-size: var(--ds-size-control-md);
+  padding-block: 0;
   padding-inline: var(--ds-space-inline-md);
   border: var(--ds-size-border-thick) solid transparent;
   border-radius: var(--ds-radius-control);

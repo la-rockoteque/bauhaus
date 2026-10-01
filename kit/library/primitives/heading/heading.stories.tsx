@@ -31,7 +31,7 @@ export const Showcase: StoryObj = {
         rows: [
           { name: 'text.display.*', tier: '2', use: 'Family, size, weight and line height of size "display"' },
           { name: 'text.heading.*', tier: '2', use: 'Size "heading"; also the family, weight and line height of "subheading"' },
-          { name: 'font.size.lg', tier: '2', use: 'The size of "subheading", which has no text style of its own' },
+          { name: 'font.size.md', tier: '2', use: 'The size of "subheading", which has no text style of its own' },
           { name: 'text.label.*', tier: '2', use: 'Size "label"' },
           { name: 'text.default', tier: 'role', use: 'Colour', swatch: '--ds-text-default' },
         ],

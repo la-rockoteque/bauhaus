@@ -40,8 +40,8 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'disabled.text · disabled.surface · disabled.border', tier: 'role', use: 'Disabled value, fill and outline', swatch: '--ds-disabled-surface' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator', swatch: '--ds-focus-ring-color' },
           { name: 'text.body.* · text.label.* · text.caption.*', tier: '2', use: 'Value; label; description and error' },
-          { name: 'space.control.inline · space.inset.sm · space.field.gap · space.control.gap', tier: '2', use: 'Padding inside the input; gap between label, hint, input and message; gap between error icon and text' },
-          { name: 'size.control.md · size.border.thin', tier: '2', use: 'Minimum height (48px, above the 44px floor); hairline border' },
+          { name: 'space.control.inline · space.field.gap · space.control.gap', tier: '2', use: 'Padding inside the input; gap between label, hint, input and message; gap between error icon and text' },
+          { name: 'size.control.md · size.border.thin', tier: '2', use: 'Minimum height (32px, above the 24px floor); hairline border' },
           { name: 'radius.control', tier: '2', use: 'Corner radius' },
         ],
       }}
@@ -72,11 +72,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Height', property: 'height', target: '.ds-text-field__input', token: 'size.control.md', value: '48px' },
+        { label: 'Height', property: 'height', target: '.ds-text-field__input', token: 'size.control.md', value: '32px' },
         { label: 'Padding inline', value: 'space.control.inline, more at the end when a clear button or trailing content shows' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-text-field__input', token: 'space.inset.sm' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-text-field__input', token: 'space.0', value: '0, the text centres in size.control.md (32px)' },
         { label: 'Radius', property: 'radius', target: '.ds-text-field__input', token: 'radius.control' },
-        { label: 'Value', value: 'text.body.*, 16px: no zoom on iOS focus' },
+        { label: 'Value', value: 'text.body.*, 14px; 16px on a coarse pointer, so iOS does not zoom on focus' },
         { label: 'Label', value: 'text.label.*, above the input, never inside it' },
         { label: 'Focus', value: 'border.focus plus a ring, 2px, offset 2px, on :focus-visible' },
       ]}

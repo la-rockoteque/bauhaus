@@ -61,7 +61,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'disabled.text', tier: 'role', use: 'Label, description and shortcut of a disabled item', swatch: '--ds-disabled-text' },
           { name: 'focus.ring.color · width', tier: 'role', use: 'Focus ring, drawn inside the item', swatch: '--ds-focus-ring-color' },
           { name: 'text.body.* · text.caption.* · text.code.*', tier: '2', use: 'Label; description; shortcut' },
-          { name: 'size.target.min · size.icon.sm', tier: '2', use: 'Minimum height; icon box' },
+          { name: 'size.control.md · size.icon.sm', tier: '2', use: 'Minimum height; icon box' },
           { name: 'space.control.inline · space.control.gap · space.inset.xs · space.inline.md', tier: '2', use: 'Padding and gaps' },
           { name: 'radius.control', tier: '2', use: 'Corner radius of the highlight' },
         ],
@@ -89,7 +89,7 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Minimum height', value: 'size.target.min, 44px; a description makes the item taller' },
+        { label: 'Minimum height', value: 'size.control.md, 32px; a description makes the item taller' },
         { label: 'Padding inline', property: 'padding-inline', target: '.ds-menu-item', token: 'space.control.inline' },
         { label: 'Padding block', property: 'padding-block', target: '.ds-menu-item', token: 'space.inset.xs' },
         { label: 'Radius', property: 'radius', target: '.ds-menu-item', token: 'radius.control' },
@@ -138,7 +138,7 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Rely on red alone to mark a destructive item.', basis: 'WCAG 1.4.1 (A)', rule: 'menu-item.destructive-named' },
         { text: 'Let the icon name the item.', basis: 'WCAG 1.1.1 (A)', rule: 'menu-item.icon-hidden' },
         { text: 'Bind the key from the shortcut prop.', basis: 'Project decision', rule: 'menu-item.shortcut-hint' },
-        { text: 'Make an item shorter than 44px.', basis: 'House floor, WCAG 2.5.5 (AAA)', rule: 'menu-item.touch-target' },
+        { text: 'Make an item shorter than the 24px floor.', basis: 'WCAG 2.5.8 (AA); 24px house floor', rule: 'menu-item.touch-target' },
         { text: 'Write a colour or px literal in menu-item.css.', basis: 'misfile.raw-value-in-component', rule: 'menu-item.no-literal' },
       ]}
       guide="clickables-menu-item--docs"

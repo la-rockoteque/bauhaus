@@ -7,7 +7,7 @@
   --doc-grid-line: color-mix(in srgb, var(--ds-border-default) 45%, transparent);
   --doc-hairline: calc(var(--ds-space-1) / 4);
   --doc-page-width: calc(var(--ds-space-12) * 24);
-  --doc-gutter: max(var(--ds-space-4), min(var(--ds-space-12), 6vw), calc((100% - var(--doc-page-width)) / 2));
+  --doc-gutter: max(var(--ds-space-4), min(var(--ds-space-8), 6vw), calc((100% - var(--doc-page-width)) / 2));
   --doc-card-min: calc(var(--ds-space-12) * 5);
   box-sizing: border-box;
   color: var(--ds-text-default);
@@ -18,7 +18,7 @@
 
 .doc {
   min-block-size: 100vh;
-  padding: var(--ds-space-12) var(--doc-gutter) calc(var(--ds-space-12) * 2);
+  padding: var(--ds-space-8) var(--doc-gutter) calc(var(--ds-space-8) * 2);
   background: var(--ds-surface-sunken);
 }
 
@@ -40,7 +40,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--ds-space-4);
-  padding-block-end: var(--ds-space-6);
+  padding-block-end: var(--ds-space-4);
   border-block-end: thin solid var(--ds-border-default);
 }
 
@@ -55,15 +55,15 @@
 }
 
 .doc-h1 {
-  font-size: calc(var(--ds-text-heading-size) * 1.5);
+  font-size: calc(var(--ds-text-heading-size) * 1.25);
 }
 
 /* Sections */
 
 /* Each section is a panel. Its own data-theme re-resolves every role inside it, so it paints its own surface and text. */
 .doc-section {
-  margin-block-start: var(--ds-space-10);
-  padding: var(--ds-space-6);
+  margin-block-start: var(--ds-space-6);
+  padding: var(--ds-space-4);
   border: var(--ds-size-border-thin) solid var(--ds-border-default);
   border-radius: var(--ds-radius-lg);
   background: var(--ds-surface-sunken);
@@ -111,7 +111,7 @@
 }
 
 :is(.doc, .doc-guide-page) .doc-h3 {
-  margin-block: var(--ds-space-6) var(--ds-space-2);
+  margin-block: var(--ds-space-4) var(--ds-space-2);
   font-weight: var(--ds-font-weight-semibold);
 }
 
@@ -238,7 +238,7 @@
 }
 
 .doc-guide {
-  padding: var(--ds-space-4) var(--ds-space-6) var(--ds-space-6);
+  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-4);
   background: var(--ds-surface-default);
   border: thin solid var(--ds-border-default);
   border-block-start: var(--ds-space-1) solid var(--ds-border-default);
@@ -310,7 +310,7 @@
 }
 
 :is(.doc, .doc-guide-page) .doc-pointer {
-  margin-block-start: var(--ds-space-10);
+  margin-block-start: var(--ds-space-6);
 }
 
 /* Section 4 of a foundation: one card per condition, each as wide as its render. */

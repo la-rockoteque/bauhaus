@@ -44,7 +44,7 @@ export const breadcrumbRules = [
     component: 'Breadcrumb',
     rubric: 'semantics',
     severity: 'HIGH',
-    expectation: 'Each crumb is a Link, and the crumbs keep the 44px target.',
+    expectation: 'Each crumb is a Link, and the crumbs draw at size.control.md (32px), above the 24px target floor.',
     verify: 'auto',
     covers: ['keyboard', 'target-size', 'focus-visible'],
     basis: 'Native first; WCAG 2.5.8 (AA); WCAG 2.4.7 (AA)',

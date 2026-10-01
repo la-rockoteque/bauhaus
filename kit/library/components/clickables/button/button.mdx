@@ -34,10 +34,10 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 ### How
 
 - **Variants.** Show one primary per view region. Make the other actions secondary or tertiary. Use subtle for chrome that must stay quiet, such as a toolbar or a segmented control. Choice time grows with the number of options (Hick 1952), and extra emphasis competes with the important item (Nielsen heuristic 8).
-- **Narrow.** `size="narrow"` draws the button 32px high (`size.control.narrow`) with a caption-size label, for dense chrome. An invisible layer keeps the hit area at `size.target.min`, so the 44px floor holds (WCAG 2.5.5, AAA figure; 2.5.8, AA). Keep 12px or more between narrow buttons stacked vertically: each hit area grows 6px above and below, so closer ones overlap. (`button.narrow-hit-area`)
+- **Height and padding.** The button draws at `size.control.md`, 32px, with a label at `text.label` (14px). Its `padding-block` is 0 and its `padding-inline` is `space.inline.md`, so the block padding stays below the inline padding (`button.padding-flat`). The label sits centred in the 32px box.
 - **Content.** Start the label with a verb and name the object: "Save changes". A label describes its purpose (WCAG 2.4.6 Headings and Labels, AA).
 - **Keyboard.** Space and Enter activate the button. The component renders a native `button`, so this needs no code (APG Button pattern).
-- **Target size.** The target is at least 24 by 24 CSS px (WCAG 2.5.8, AA). The house floor is 44px, the WCAG 2.5.5 (AAA) figure. This is a project decision.
+- **Target size.** The button draws at `size.control.md` (32px). The target is at least 24 by 24 CSS px, `size.target.min` (WCAG 2.5.8, AA). 24px is the house floor. No invisible layer is needed.
 - **Loading.** Keep the label and the width. Ignore repeat presses. Keep the button focusable. Announce the result somewhere else in the view (Nielsen heuristic 1, visibility of system status; WCAG 4.1.3 Status Messages, AA).
 - **Disabled.** A disabled button is exempt from text contrast (WCAG 1.4.3 exception for inactive components). Say why, next to the button (Nielsen heuristic 1).
 - **Responsive.** Let the label wrap. Never truncate it (WCAG 1.4.10 Reflow, AA).

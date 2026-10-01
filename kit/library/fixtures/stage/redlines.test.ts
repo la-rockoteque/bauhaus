@@ -103,7 +103,7 @@ describe('wireframe', () => {
 
 describe('tokens', () => {
   it('reads a resolved token in px, and nothing else', () => {
-    expect(px(resolve('', cssName('size.target.min')))).toBe(44);
+    expect(px(resolve('', cssName('size.target.min')))).toBe(24);
     expect(px('var(--ds-space-2)')).toBeUndefined();
     expect(px('auto')).toBeUndefined();
     expect(px(resolve('', cssName('size.overlay.md')), 16)).toBe(480);

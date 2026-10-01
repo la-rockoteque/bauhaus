@@ -5,7 +5,8 @@
   flex-direction: column;
   gap: var(--ds-space-stack-sm);
   min-inline-size: 0;
-  padding: var(--ds-space-inset-md);
+  padding-block: var(--ds-space-inset-sm);
+  padding-inline: var(--ds-space-inset-md);
   border: var(--ds-size-border-thin) solid var(--ds-border-default);
   border-radius: var(--ds-radius-md);
   background: var(--ds-surface-raised);
@@ -46,7 +47,7 @@
 }
 
 .ds-card__footer {
-  padding-block-start: var(--ds-space-inset-sm);
+  padding-block-start: var(--ds-space-inset-xs);
   border-block-start: var(--ds-size-border-thin) solid var(--ds-border-default);
   color: var(--ds-text-muted);
   font-family: var(--ds-text-caption-family);

@@ -33,7 +33,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator around the box', swatch: '--ds-focus-ring-color' },
           { name: 'text.default · text.muted', tier: 'role', use: 'Label; description', swatch: '--ds-text-muted' },
           { name: 'text.body.* · text.caption.*', tier: '2', use: 'Label; description and error' },
-          { name: 'size.target.min · size.icon.lg · size.icon.sm · size.border.thick', tier: '2', use: 'Target (44px); box; check mark; box outline' },
+          { name: 'size.target.min · size.icon.md · size.icon.sm · size.border.thick', tier: '2', use: 'Target (24px); box; check mark; box outline' },
           { name: 'radius.sm', tier: '2', use: 'Box corner' },
         ],
       }}
@@ -51,17 +51,17 @@ export const Showcase: StoryObj<typeof meta> = {
             />,
           ),
         parts: [
-          { n: 1, label: 'Target', note: '44px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
+          { n: 1, label: 'Target', note: '24px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
           { n: 2, label: 'Box and check', note: 'drawn, decorative', target: '.ds-checkbox__box' },
           { n: 3, label: 'Label', note: 'required, part of the target', target: '.ds-field__choice-label', at: 'bottom-end' },
           { n: 4, label: 'Description', note: 'optional', target: '.ds-field__description' },
         ],
       }}
       specs={[
-        { label: 'Target height', property: 'height', target: '.ds-field__choice-target', token: 'size.target.min', value: '44px, the whole row is the target' },
+        { label: 'Target height', property: 'height', target: '.ds-field__choice-target', token: 'size.target.min', value: '24px, the WCAG 2.5.8 (AA) floor' },
         { label: 'Target width', property: 'width', target: '.ds-field__choice-target', token: 'size.target.min' },
-        { label: 'Box height', property: 'height', target: '.ds-checkbox__box', token: 'size.icon.lg', value: '24px, outline size.border.thick' },
-        { label: 'Box width', property: 'width', target: '.ds-checkbox__box', token: 'size.icon.lg' },
+        { label: 'Box height', property: 'height', target: '.ds-checkbox__box', token: 'size.icon.md', value: '16px, outline size.border.thick' },
+        { label: 'Box width', property: 'width', target: '.ds-checkbox__box', token: 'size.icon.md' },
         { label: 'Box radius', property: 'radius', target: '.ds-checkbox__box', token: 'radius.sm' },
         { label: 'Mark', value: 'check, or minus for mixed, size.icon.sm' },
         { label: 'Label', value: 'text.body.*, to the side, clickable' },

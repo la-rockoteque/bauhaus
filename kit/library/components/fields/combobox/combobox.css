@@ -5,18 +5,19 @@
 }
 
 .ds-combobox__input {
-  padding-inline-end: calc(var(--ds-size-target-min) + var(--ds-space-control-gap));
+  padding-inline-end: calc(var(--ds-size-control-md) + var(--ds-space-control-gap));
   text-overflow: ellipsis;
 }
 
 .ds-combobox__button {
+  box-sizing: border-box;
   position: absolute;
   inset-block: 0;
   inset-inline-end: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: var(--ds-size-target-min);
+  inline-size: var(--ds-size-control-md);
   padding: 0;
   border: var(--ds-focus-ring-width) solid transparent;
   border-radius: var(--ds-radius-control);
@@ -81,10 +82,11 @@
 }
 
 .ds-combobox__option {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: var(--ds-space-control-gap);
-  min-block-size: var(--ds-size-target-min);
+  min-block-size: var(--ds-size-control-md);
   padding-inline: var(--ds-space-control-gap);
   border-radius: var(--ds-radius-control);
   color: var(--ds-text-default);

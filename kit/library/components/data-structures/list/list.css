@@ -9,14 +9,15 @@
 }
 
 .ds-list__item {
+  box-sizing: border-box;
   position: relative;
   display: flex;
   align-items: center;
   gap: var(--ds-space-inline-md);
   min-inline-size: 0;
-  min-block-size: var(--ds-size-target-min);
-  padding-block: var(--ds-space-inset-sm);
-  padding-inline: var(--ds-space-inset-md);
+  min-block-size: var(--ds-size-control-md);
+  padding-block: var(--ds-space-inset-xs);
+  padding-inline: var(--ds-space-inline-md);
   color: var(--ds-text-default);
   font-family: var(--ds-text-body-family);
   font-size: var(--ds-text-body-size);
@@ -163,12 +164,12 @@
 
 .ds-list__skeleton--title {
   inline-size: 60%;
-  block-size: var(--ds-space-4);
+  block-size: var(--ds-space-3);
 }
 
 .ds-list__skeleton--description {
   inline-size: 85%;
-  block-size: var(--ds-space-3);
+  block-size: var(--ds-space-2);
   margin-block-start: var(--ds-space-1);
 }
 

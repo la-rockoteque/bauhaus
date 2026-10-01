@@ -43,7 +43,7 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Default elements', value: 'body is p · caption is span · heading is h2' },
-        { label: 'Body', value: 'text.body.*, 16px minimum' },
+        { label: 'Body', value: 'text.body.*, 14px minimum' },
         { label: 'Margin', value: '0; spacing belongs to the parent' },
       ]}
       api={[
@@ -86,7 +86,7 @@ export const Showcase: StoryObj<typeof meta> = {
       dos={[
         { text: 'Choose as from the outline of the page, and variant from the look you need.', basis: 'WCAG 1.3.1 (A)' },
         { text: 'Use tone="muted" for secondary content only.', basis: 'WCAG 1.4.3 (AA)' },
-        { text: 'Keep body text at 16px or more.', basis: 'WCAG 1.4.4 (AA); project decision' },
+        { text: 'Keep body text at 14px or more.', basis: 'WCAG 1.4.4 (AA); project decision' },
       ]}
       donts={[
         { text: 'Style a div as a heading.', basis: 'WCAG 1.3.1 (A)', rule: 'text.element-by-structure' },

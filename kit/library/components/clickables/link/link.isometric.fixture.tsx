@@ -4,7 +4,7 @@ import { FaceLabel, IsoStage, Slab } from '../../../fixtures/isometric/isometric
 /** The Link in isometric, for Storybook only: an underlined link on a ghosted page, fresh or visited. */
 
 const W = 156;
-const D = 44;
+const D = 32;
 
 export function LinkIsometric({ visited = false }: { visited?: boolean }) {
   return (

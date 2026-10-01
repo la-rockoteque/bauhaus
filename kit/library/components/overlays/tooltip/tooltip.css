@@ -1,7 +1,7 @@
 .ds-tooltip {
   max-inline-size: min(var(--ds-size-overlay-sm), calc(100vw - var(--ds-space-6)));
-  padding-block: var(--ds-space-inset-xs);
-  padding-inline: var(--ds-space-inset-sm);
+  padding-block: var(--ds-space-1);
+  padding-inline: var(--ds-space-2);
   border-radius: var(--ds-radius-control);
   background: var(--ds-surface-inverse);
   box-shadow: var(--ds-shadow-1);

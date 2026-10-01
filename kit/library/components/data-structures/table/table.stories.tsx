@@ -150,8 +150,8 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'status.error · status.warning-surface · status.warning-text', tier: 'role', use: 'Error row text; partial row fill and text', swatch: '--ds-status-warning-surface' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus indicator on sort, checkbox and scroll region', swatch: '--ds-focus-ring-color' },
           { name: 'text.body.* · text.label.* · text.caption.* · text.code.*', tier: '2', use: 'Cell, header, meta and figure text. Figures use text.code (mono)' },
-          { name: 'space.inset.xs … md · space.inline.xs … md · space.stack.xs … sm', tier: '2', use: 'Cell padding by density; gaps in the card stack' },
-          { name: 'size.target.min · size.icon.lg · size.icon.md · size.control.md', tier: '2', use: 'Row and control targets (44px; 24px in compact); checkbox size; scroll-padding under a sticky header' },
+          { name: 'space.inset.xs · space.inline.xs … md · space.stack.xs … sm', tier: '2', use: 'Cell padding by density; gaps in the card stack' },
+          { name: 'size.target.min · size.control.sm · size.icon.md · size.control.md', tier: '2', use: 'Row and control height (32px; 24px in compact; 24px checkbox cell width); checkbox size; scroll-padding under a sticky header' },
           { name: 'size.border.thin · radius.md · radius.sm', tier: '2', use: 'Rules, region corner, skeleton corner' },
           { name: 'z.sticky', tier: '2', use: 'Sticky header layer' },
           { name: 'motion.duration.fast · deliberate · ease.standard', tier: '2', use: 'Row hover fade; skeleton shimmer period' },
@@ -173,9 +173,9 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Row height', value: 'size.target.min, 44px, comfortable · about 32px, compact' },
-        { label: 'Cell padding inline', property: 'padding-inline', target: 'tbody .ds-table__cell--row-header', token: 'space.inset.md' },
-        { label: 'Cell padding block', property: 'padding-block', target: 'tbody .ds-table__cell--row-header', token: 'space.inset.sm' },
+        { label: 'Row height', value: 'size.control.md, 32px, comfortable · size.control.sm, 24px, compact' },
+        { label: 'Cell padding inline', property: 'padding-inline', target: 'tbody .ds-table__cell--row-header', token: 'space.inline.md' },
+        { label: 'Cell padding block', property: 'padding-block', target: 'tbody .ds-table__cell--row-header', token: 'space.inset.xs' },
         { label: 'Alignment', value: 'text left · figures right, mono, tabular' },
         { label: 'Header', value: 'table.header-surface, text.label.*, sticky on z.sticky' },
         { label: 'Card stack', value: '768px and below · thead becomes a sort bar · each value prints its data-label' },

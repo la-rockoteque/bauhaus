@@ -8,7 +8,7 @@ export default meta;
 
 export const Sample: StoryObj = {
   render: () => (
-    <div style={{ padding: 'var(--ds-space-6)' }}>
+    <div style={{ padding: 'var(--ds-space-4)' }}>
       <ThemeSwitch />
     </div>
   ),

@@ -43,7 +43,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'status.<s>-text', tier: 'role', use: 'Title and body text on the fill', swatch: '--ds-status-info-text' },
           { name: 'status.<s>-border', tier: 'role', use: 'Border of the banner; 3:1 on the page', swatch: '--ds-status-info-border' },
           { name: 'text.body.* · text.label.*', tier: '2', use: 'Body text, and the title in label weight' },
-          { name: 'space.inset.md · space.inline.md · space.stack.xs', tier: '2', use: 'Padding, gap between icon and content, gap between title, body and actions' },
+          { name: 'space.inset.sm · space.inset.md · space.inline.md · space.stack.xs', tier: '2', use: 'Padding, gap between icon and content, gap between title, body and actions' },
           { name: 'size.border.thin · radius.control', tier: '2', use: 'Border width and corner radius' },
         ],
       }}
@@ -72,11 +72,11 @@ export const Showcase: StoryObj<typeof meta> = {
       }}
       specs={[
         { label: 'Padding inline', property: 'padding-inline', target: '.ds-banner', token: 'space.inset.md' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-banner', token: 'space.inset.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-banner', token: 'space.inset.sm' },
         { label: 'Gap', property: 'gap', target: '.ds-banner', token: 'space.inline.md' },
         { label: 'Border', value: 'size.border.thin, status.<s>-border' },
         { label: 'Radius', property: 'radius', target: '.ds-banner', token: 'radius.control' },
-        { label: 'Close target', value: 'size.target.min, 44px (icon button)' },
+        { label: 'Close target', value: 'size.control.md, 32px (icon button); the target floor is size.target.min, 24px' },
         { label: 'Role', value: 'status by default · alert only for an urgent error' },
         { label: 'Width', value: 'Fills its container; text wraps, never truncates' },
       ]}

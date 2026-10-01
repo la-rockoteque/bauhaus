@@ -31,7 +31,7 @@ The drawing system comes first. A glyph that breaks one of these rules is reject
 ### One stroke weight, as a token
 
 - **`icon.stroke` is 2px at 24.** Every glyph has this stroke and no glyph sets its own. The token is in `iconography.tokens.json` and reaches the Icon as `--ds-icon-stroke`.
-- **It scales with the box through the viewBox.** In SVG a `px` length inside a `viewBox` is a user unit. So `stroke-width: 2px` means 2 units of the 24 grid. At `lg` (24 px) the line is 2 px. At `md` (20 px) it is 1.67 px. At `sm` (16 px) it is 1.33 px. The line keeps the same share of the box, 1/12, at every size.
+- **It scales with the box through the viewBox.** In SVG a `px` length inside a `viewBox` is a user unit. So `stroke-width: 2px` means 2 units of the 24 grid. At the 24 px grid the line is 2 px. At `lg` (20 px) it is 1.67 px. At `md` (16 px) it is 1.33 px. At `sm` (12 px) it is 1 px. The line keeps the same share of the box, 1/12, at every size.
 - **We do not use `vector-effect: non-scaling-stroke`.** It would keep a 2 px line in a 16 px box. The line would then weigh 1/8 of the box, and the small icon would look heavier than the large one. (knowledge/foundations/iconography.md rule 3: do not scale a 24 px icon down and keep the stroke visually thick.)
 - **No second weight and no optical sizes.** One set has one stroke. A bold or light icon needs a new decision and a new token, not a local override (`iconography.stroke-token`).
 
@@ -99,9 +99,9 @@ The original 16 keep their names: `check`, `close`, `chevron-down`, `chevron-up`
 
 | Size | Box | Live area | Pair with |
 |---|---|---|---|
-| `sm` | 16 px | 13.3 px | `text.caption` (14 px): dense rows, meta lines, inside small badges |
-| `md` | 20 px | 16.7 px | `text.body` and `text.label` (16 px): buttons, fields, menu items, banners |
-| `lg` | 24 px | 20 px | `text.heading` (24 px): titles, empty states, icon buttons in a toolbar |
+| `sm` | 12 px | 10 px | `text.caption` (12 px): dense rows, meta lines, inside small badges |
+| `md` | 16 px | 13.3 px | `text.body` and `text.label` (14 px): buttons, fields, menu items, banners |
+| `lg` | 20 px | 16.7 px | `text.heading` (18 px): titles, empty states, icon buttons in a toolbar |
 
 The live area of an icon is about the size of the em box of the text it pairs with. That is why the pairs read as one line.
 
@@ -158,7 +158,7 @@ An icon-only control is an `IconButton`, and the `label` prop is required. The l
 
 ### Target size
 
-The glyph is small. The target around it is not. The house standard is 44 px (`size.target.min`), which is WCAG 2.5.5 Target Size Enhanced (AAA). The floor is 24 px, WCAG 2.5.8 Target Size Minimum (AA). The `IconButton` gives a 44 px target around a 20 px glyph. Do not shrink the target to fit a dense toolbar. Add space and remove an action instead.
+The glyph is small. The target around it is not. The house floor is 24 px (`size.target.min`), WCAG 2.5.8 Target Size Minimum (AA). The `IconButton` draws at `size.control.md`, 32 px, around a 16 px glyph (`size.icon.md`). Do not shrink the target to fit a dense toolbar. Add space and remove an action instead.
 
 ### Contrast of meaningful icons
 
@@ -189,7 +189,7 @@ A new glyph goes through the same door as the first 42. The steps:
 3. **Pick the group and the keyline.** Navigation, actions, status or objects. Pick circle, square, portrait, landscape or triangle.
 4. **Draw it on the grid.** Use only `M L H V A Z`, one stroke, no fill. Put straight strokes on whole coordinates. Keep the ends of strokes between 3 and 21, and keep pointed vertices further in so the mitre tips stay inside 2 to 22. Do not use an angle under 30 degrees.
 5. **Add the data** to the right group in `glyphs.ts`. Do not draw a path at a call site.
-6. **Read it in the sheet.** Open the Iconography showcase and look at the construction sheet at 8 times, then at `sm`, `md` and `lg` in both themes. It must read at 16 px with a 1.33 px line.
+6. **Read it in the sheet.** Open the Iconography showcase and look at the construction sheet at 8 times, then at `sm`, `md` and `lg` in both themes. It must read at 12 px with a 1 px line.
 7. **Run the checks.** `iconography.grid`, `primary-forms`, `current-color` and `named-set-complete` run in the rulebook. The test file adds the live-area and the currentColor tests for every glyph.
 
 **The construction checklist**
@@ -231,7 +231,7 @@ A glyph has no interaction states, so the showcase marks the state matrix as not
 - **A local stroke or size.** A `stroke-width` on one icon, or a width in px, breaks the set. Use the token and a size (`iconography.stroke-token`).
 - **Mixing sets.** A third-party icon next to ours has another grid and another weight. Add a glyph to the set instead (Nielsen heuristic 4).
 - **A wrong-way arrow in right-to-left.** A "next" arrow that points left in a right-to-left layout sends people the wrong way. Use the mirrored glyphs (`iconography.mirror-directional`).
-- **A tiny target.** A 20 px glyph with no padding is under the 24 px floor and far under the 44 px house standard (WCAG 2.5.8, AA; 2.5.5, AAA).
+- **A tiny target.** A 20 px glyph with no padding is under the 24 px house floor (WCAG 2.5.8, AA).
 
 ## 8. Rules and their basis
 

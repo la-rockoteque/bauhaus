@@ -69,8 +69,8 @@ export const Showcase: StoryObj<typeof meta> = {
           { name: 'status.error · status.warning-surface · status.warning-text', tier: 'role', use: 'Error slot text; partial slot fill and text', swatch: '--ds-status-warning-surface' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Ring around the focused row', swatch: '--ds-focus-ring-color' },
           { name: 'text.body.* · text.label.* · text.caption.*', tier: '2', use: 'Row text, title and description' },
-          { name: 'space.inset.sm · space.inset.md · space.inline.md · space.stack.*', tier: '2', use: 'Row padding and the gap between slots' },
-          { name: 'size.target.min · size.border.thin · size.border.thick · size.icon.lg', tier: '2', use: 'Row height, divider, selection bar, skeleton leading' },
+          { name: 'space.inset.xs · space.inline.md · space.stack.*', tier: '2', use: 'Row padding and the gap between slots' },
+          { name: 'size.control.md · size.border.thin · size.border.thick · size.icon.lg', tier: '2', use: 'Row height, divider, selection bar, skeleton leading' },
           { name: 'motion.duration.deliberate', tier: '2', use: 'Skeleton shimmer period' },
         ],
       }}
@@ -95,9 +95,9 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       specs={[
-        { label: 'Row height', value: 'at least size.target.min, 44px' },
-        { label: 'Padding inline', property: 'padding-inline', target: '.ds-list__item', token: 'space.inset.md' },
-        { label: 'Padding block', property: 'padding-block', target: '.ds-list__item', token: 'space.inset.sm' },
+        { label: 'Row height', value: 'at least size.control.md, 32px; the target floor is size.target.min, 24px' },
+        { label: 'Padding inline', property: 'padding-inline', target: '.ds-list__item', token: 'space.inline.md' },
+        { label: 'Padding block', property: 'padding-block', target: '.ds-list__item', token: 'space.inset.xs' },
         { label: 'Gap between slots', property: 'gap', target: '.ds-list__item', token: 'space.inline.md' },
         { label: 'Divider', value: 'size.border.thin in border.default, opt-in' },
         { label: 'Interactive target', value: 'the whole row, through one stretched link or button' },

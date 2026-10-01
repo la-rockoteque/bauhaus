@@ -14,10 +14,10 @@ export const textRules = [
     component: 'Text',
     rubric: 'legibility',
     severity: 'MEDIUM',
-    expectation: 'Body text is at least 16px and resizes with the user setting.',
-    expected: '16px',
+    expectation: 'Body text is at least 14px and resizes with the user setting.',
+    expected: '14px',
     verify: 'auto',
-    basis: 'WCAG 1.4.4 Resize Text (AA); project decision for the 16px floor',
+    basis: 'WCAG 1.4.4 Resize Text (AA); project decision for the 14px floor',
   },
   {
     id: 'text.muted-contrast',

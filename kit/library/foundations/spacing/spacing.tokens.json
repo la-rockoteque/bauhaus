@@ -49,13 +49,13 @@
         "$value": "{space.2}"
       },
       "md": {
-        "$value": "{space.4}"
+        "$value": "{space.3}"
       },
       "lg": {
-        "$value": "{space.6}"
+        "$value": "{space.4}"
       },
       "xl": {
-        "$value": "{space.8}"
+        "$value": "{space.6}"
       }
     },
     "stack": {
@@ -66,13 +66,13 @@
         "$value": "{space.2}"
       },
       "md": {
-        "$value": "{space.4}"
+        "$value": "{space.3}"
       },
       "lg": {
-        "$value": "{space.6}"
+        "$value": "{space.4}"
       },
       "xl": {
-        "$value": "{space.10}"
+        "$value": "{space.6}"
       }
     },
     "inline": {
@@ -94,7 +94,7 @@
     },
     "control": {
       "inline": {
-        "$value": "{space.3}",
+        "$value": "{space.2}",
         "$description": "Horizontal padding inside a field or select."
       },
       "gap": {
@@ -110,7 +110,7 @@
     },
     "group": {
       "gap": {
-        "$value": "{space.4}",
+        "$value": "{space.3}",
         "$description": "Gap between the fields of a form or the items of a group."
       }
     }
@@ -119,33 +119,35 @@
     "$type": "dimension",
     "target": {
       "min": {
-        "$value": "44px",
-        "$description": "Smallest pointer target. WCAG 2.5.8 (AA) asks 24px; 44px is the house floor at the WCAG 2.5.5 (AAA) figure."
+        "$value": "24px",
+        "$description": "Smallest pointer target: WCAG 2.5.8 Target Size (Minimum) (AA). The house floor."
       }
     },
     "control": {
-      "$description": "Heights of pressable and typeable controls. Never below the 44px target floor, except narrow: it draws smaller and keeps a 44px hit area.",
-      "narrow": { "$value": "{space.8}", "$description": "Visible height of a narrow control. Its hit area stays at size.target.min." },
+      "$description": "Visible heights of pressable and typeable controls. md is the default; none is below size.target.min.",
       "sm": {
-        "$value": "{size.target.min}"
+        "$value": "{space.6}",
+        "$description": "Dense rows inside a control, such as a tag or a toolbar toggle."
       },
       "md": {
-        "$value": "{space.12}"
+        "$value": "{space.8}",
+        "$description": "Default height of a button, field, tab, menu item or row."
       },
       "lg": {
-        "$value": "56px"
+        "$value": "{space.10}",
+        "$description": "A single prominent call to action."
       }
     },
     "icon": {
       "$description": "Icon box sides.",
       "sm": {
-        "$value": "{space.4}"
+        "$value": "{space.3}"
       },
       "md": {
-        "$value": "{space.5}"
+        "$value": "{space.4}"
       },
       "lg": {
-        "$value": "{space.6}"
+        "$value": "{space.5}"
       }
     },
     "border": {

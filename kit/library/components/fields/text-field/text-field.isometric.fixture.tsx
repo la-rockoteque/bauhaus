@@ -10,7 +10,7 @@ import { FaceLabel, IsoCursor, IsoStage, Slab } from '../../../fixtures/isometri
 export type TextFieldIsometricPart = 'surface' | 'border' | 'border-hover' | 'border-focus' | 'border-invalid' | 'text' | 'placeholder';
 
 const W = 144;
-const D = 44;
+const D = 32;
 const HEIGHT = 2;
 const WORDS: Partial<Record<TextFieldIsometricPart, string>> = { text: 'Ada Lovelace', placeholder: 'Your name' };
 
@@ -31,7 +31,7 @@ export function TextFieldIsometric({ part = 'border' }: { part?: TextFieldIsomet
         ghost={Boolean(words)}
       >
         {words && (
-          <FaceLabel x={12} y={D / 2} anchor="start" color={`var(--ds-field-${part})`}>
+          <FaceLabel x={8} y={D / 2} anchor="start" color={`var(--ds-field-${part})`}>
             {words}
           </FaceLabel>
         )}

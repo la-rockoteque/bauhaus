@@ -4,8 +4,8 @@
   justify-content: center;
   gap: var(--ds-space-inline-xs);
   box-sizing: border-box;
-  min-inline-size: var(--ds-space-6);
-  padding-block: var(--ds-space-inset-xs);
+  min-inline-size: var(--ds-size-control-sm);
+  padding-block: 0;
   padding-inline: var(--ds-space-inline-sm);
   border-radius: var(--ds-radius-pill);
   font-family: var(--ds-text-label-family);

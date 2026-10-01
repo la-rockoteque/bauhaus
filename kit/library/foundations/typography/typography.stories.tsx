@@ -48,8 +48,8 @@ export const Showcase: StoryObj = {
       specs={[
         { label: 'Chain', value: 'typeface.* → font.<role> → text.<style>.family; components read text styles only' },
         { label: 'Roles', value: 'sans, serif, display, mono, handwriting, slab; a project may leave some unused' },
-        { label: 'Body', value: '16px, weight 400, line height 1.5' },
-        { label: 'Heading', value: '24px, weight 600, line height 1.25' },
+        { label: 'Body', value: '14px, weight 400, line height 1.5' },
+        { label: 'Heading', value: '18px, weight 600, line height 1.25' },
         { label: 'Loading', value: "opt in with the package's fonts.css; latin and latin-ext, font-display swap" },
       ]}
       conditions={{
@@ -58,14 +58,14 @@ export const Showcase: StoryObj = {
         ],
       }}
       dos={[
-        { text: 'Keep body at 16px or more and line height at 1.5.', basis: 'WCAG 1.4.12 (AA)' },
+        { text: 'Keep body at 14px or more and line height at 1.5.', basis: 'WCAG 1.4.12 (AA)' },
         { text: 'Size text in a unit that follows the user setting.', basis: 'WCAG 1.4.4 (AA)' },
         { text: 'Mark headings with heading elements, not bold or size.', basis: 'WCAG 1.3.1 (A)' },
         { text: 'Swap a family by editing one alias in fonts.tokens.json.', basis: 'Project decision; typefaces.md rule 17' },
       ]}
       donts={[
         { text: 'Add a new font size for one screen.', basis: 'Closed roles', rule: 'typography.roles-closed' },
-        { text: 'Set body text at 12px.', basis: 'Project decision, 16px floor', rule: 'typography.body-min-size' },
+        { text: 'Set body text at 12px.', basis: 'Project decision, 14px floor', rule: 'typography.body-min-size' },
         { text: 'Use a line height of 1.2 on paragraphs.', basis: 'WCAG 1.4.12 (AA)', rule: 'typography.line-height-min' },
         { text: 'Set body text, labels or errors in the handwriting face.', basis: 'typefaces.md rules 29 and 31', rule: 'typography.handwriting-accent-only' },
         { text: 'Use more than two text families plus mono on one surface.', basis: 'typefaces.md rule 12', rule: 'typography.max-families' },

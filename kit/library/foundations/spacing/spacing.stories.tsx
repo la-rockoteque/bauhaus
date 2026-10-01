@@ -39,9 +39,9 @@ export const Showcase: StoryObj = {
           { name: 'space.inline.xs … xl', tier: '2', use: 'Horizontal gap between siblings' },
           { name: 'space.control.inline · space.control.gap', tier: '2', use: 'Horizontal padding inside a field; gap between a control icon and its label' },
           { name: 'space.field.gap · space.group.gap', tier: '2', use: 'Gap between label, hint, control and message of one field; gap between the fields of a group' },
-          { name: 'size.target.min', tier: '2', use: '44px; the smallest pointer target. Spacing must not shrink it.' },
-          { name: 'size.control.sm · md · lg', tier: '2', use: 'Heights of buttons and fields: 44, 48, 56 px. Never below the target floor' },
-          { name: 'size.icon.sm · md · lg', tier: '2', use: 'Side of an icon box: 16, 20, 24 px' },
+          { name: 'size.target.min', tier: '2', use: '24px; the smallest pointer target (WCAG 2.5.8, AA). Spacing must not shrink it.' },
+          { name: 'size.control.sm · md · lg', tier: '2', use: 'Heights of buttons and fields: 24, 32, 40 px. md is the default. Never below the target floor' },
+          { name: 'size.icon.sm · md · lg', tier: '2', use: 'Side of an icon box: 12, 16, 20 px' },
           { name: 'size.border.thin · thick', tier: '2', use: 'Border widths: 1px hairline, and the focus ring width for emphasis' },
           { name: 'breakpoint.sm · md · lg', tier: '2', use: 'Viewport widths where the layout changes: 640, 768, 1024 px. A media query cannot read a custom property, so a stylesheet writes the same number and spacing.breakpoints-match holds them equal' },
           { name: 'size.overlay.sm · md · lg', tier: '2', use: 'Maximum inline size of a floating surface: 20, 30, 40 rem' },
@@ -68,7 +68,7 @@ export const Showcase: StoryObj = {
         { text: 'Use the same gap between and inside groups.', basis: 'Wertheimer 1923', rule: 'spacing.groups-distinct' },
         { text: 'Fix the height of a card that holds text.', basis: 'WCAG 1.4.12 (AA)', rule: 'spacing.text-spacing-safe' },
         { text: 'Add a step "just this once".', basis: 'Closed scale', rule: 'spacing.scale-closed' },
-        { text: 'Shrink a target below size.target.min to save room.', basis: 'WCAG 2.5.8 (AA); house floor 44px', rule: 'spacing.target-min' },
+        { text: 'Shrink a target below size.target.min to save room.', basis: 'WCAG 2.5.8 (AA); house floor 24px', rule: 'spacing.target-min' },
       ]}
       guide="foundations-spacing--docs"
       guideName="Spacing"

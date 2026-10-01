@@ -4,14 +4,14 @@ import { FaceIcon, FaceLabel, IsoStage, Slab } from '../../../fixtures/isometric
 /** The Checkbox in isometric, for Storybook only: a checked box beside its label. The mark role dims the label. */
 
 const W = 156;
-const D = 40;
-const BOX = 26;
+const D = 28;
+const BOX = 18;
 
 export function CheckboxIsometric({ part = 'surface' }: { part?: 'surface' | 'mark' }) {
   return (
     <IsoStage width={W} depth={D}>
       <Slab width={W} depth={D} height={1} radius="var(--ds-radius-md)" fill="var(--ds-surface-default)" dim>
-        <FaceLabel x={46} y={D / 2} anchor="start" color="var(--ds-text-default)">
+        <FaceLabel x={34} y={D / 2} anchor="start" color="var(--ds-text-default)">
           Remember me
         </FaceLabel>
       </Slab>

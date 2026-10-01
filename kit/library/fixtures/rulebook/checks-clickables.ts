@@ -1,4 +1,4 @@
-import { all, eachTheme, noLiteral, pxAtLeast, ratioAtLeast, sourceMatches, uses, type Check } from './checks';
+import { all, eachTheme, noLiteral, paddingFlat, pxAtLeast, ratioAtLeast, sourceMatches, uses, type Check } from './checks';
 import { rulesOf, sourceOf } from './sources';
 
 /**
@@ -25,7 +25,8 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   ),
   'chip.selectable-pressed': all(sourceMatches(`${CHIP}.tsx`, /<button[\s\S]*aria-pressed=\{pressed\}/, 'a selectable chip is not a native button with aria-pressed')),
   'chip.focus-ring': all(uses(`${CHIP}.css`, '.ds-chip--selectable:focus-visible', 'outline', '--ds-focus-ring-color'), uses(`${CHIP}.css`, '.ds-chip--selectable:focus-visible', 'outline-offset', '--ds-focus-ring-offset')),
-  'chip.touch-target': all(uses(`${CHIP}.css`, '.ds-chip--selectable', 'min-block-size', '--ds-size-target-min'), uses(`${CHIP}.css`, '.ds-chip--removable', 'min-block-size', '--ds-size-target-min'), uses('components/clickables/icon-button/icon-button.css', '.ds-icon-button', 'inline-size', '--ds-size-target-min'), pxAtLeast('--ds-size-target-min', 24)),
+  'chip.touch-target': all(uses(`${CHIP}.css`, '.ds-chip--selectable', 'min-block-size', '--ds-size-control-md'), uses(`${CHIP}.css`, '.ds-chip--removable', 'min-block-size', '--ds-size-control-md'), uses(`${CHIP}.css`, '.ds-chip .ds-chip__remove', 'min-block-size', '--ds-size-control-sm'), uses(`${CHIP}.css`, '.ds-chip .ds-chip__remove', 'inline-size', '--ds-size-control-sm'), pxAtLeast('--ds-size-control-sm', 24)),
+  'chip.padding-flat': paddingFlat(`${CHIP}.css`, '.ds-chip'),
   'chip.selected-not-colour-alone': all(
     sourceMatches(`${CHIP}.tsx`, /pressed && <Icon glyph="check"/, 'a selected chip draws no check'),
     uses(`${CHIP}.css`, '.ds-chip--selectable[aria-pressed="true"]', 'background', '--ds-selection-surface'),
@@ -46,7 +47,7 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'link.not-colour-alone': uses(`${LINK}.css`, '.ds-link', 'text-decoration-line', 'underline'),
   'link.text-contrast': eachTheme(ratioAtLeast('--ds-text-link', '--ds-surface-default', 4.5)),
   'link.focus-ring': all(uses(`${LINK}.css`, '.ds-link:focus-visible', 'outline', '--ds-focus-ring-color'), uses(`${LINK}.css`, '.ds-link:focus-visible', 'outline-offset', '--ds-focus-ring-offset')),
-  'link.touch-target': all(uses(`${LINK}.css`, '.ds-link--standalone', 'min-block-size', '--ds-size-target-min'), uses(`${LINK}.css`, '.ds-link--standalone', 'min-inline-size', '--ds-size-target-min'), pxAtLeast('--ds-size-target-min', 24)),
+  'link.touch-target': all(uses(`${LINK}.css`, '.ds-link--standalone', 'min-block-size', '--ds-size-control-md'), uses(`${LINK}.css`, '.ds-link--standalone', 'min-inline-size', '--ds-size-control-md'), pxAtLeast('--ds-size-control-md', 24)),
   'link.no-literal': noLiteral(`${LINK}.css`),
   'link.no-router': sourceMatches(`${LINK}.tsx`, /^(?!.*from '(?:react-router|next\/|@tanstack)).*$/s, 'link.tsx imports a router'),
   'link.external-warned': all(
@@ -61,7 +62,8 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   ),
   'link.states.hover-guarded': hoverGuarded(`${LINK}.css`),
 
-  'menu-item.touch-target': all(uses(`${MENU_ITEM}.css`, '.ds-menu-item', 'min-block-size', '--ds-size-target-min'), pxAtLeast('--ds-size-target-min', 24)),
+  'menu-item.touch-target': all(uses(`${MENU_ITEM}.css`, '.ds-menu-item', 'min-block-size', '--ds-size-control-md'), pxAtLeast('--ds-size-control-md', 24)),
+  'menu-item.padding-flat': paddingFlat(`${MENU_ITEM}.css`, '.ds-menu-item'),
   'menu-item.focus-ring': all(uses(`${MENU_ITEM}.css`, '.ds-menu-item[data-focus-visible]', 'outline', '--ds-focus-ring-color'), uses(`${MENU_ITEM}.css`, '.ds-menu-item[data-focus-visible]', 'outline-offset', '--ds-focus-ring-width')),
   'menu-item.state.tokens': all(
     uses(`${MENU_ITEM}.css`, '.ds-menu-item[data-focused]', 'background', '--ds-state-hover-layer'),

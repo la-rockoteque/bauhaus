@@ -3,9 +3,10 @@
   display: inline-flex;
   align-items: center;
   box-sizing: border-box;
-  inline-size: var(--ds-space-11);
-  block-size: var(--ds-space-6);
-  padding: var(--ds-space-1);
+  inline-size: var(--ds-space-9);
+  block-size: var(--ds-space-5);
+  padding-block: 0;
+  padding-inline: var(--ds-size-border-thin);
   border: var(--ds-size-border-thin) solid var(--ds-field-border);
   border-radius: var(--ds-radius-full);
   background: var(--ds-field-surface);
@@ -16,8 +17,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: var(--ds-size-icon-sm);
-  block-size: var(--ds-size-icon-sm);
+  inline-size: var(--ds-size-icon-md);
+  block-size: var(--ds-size-icon-md);
   border-radius: var(--ds-radius-full);
   background: var(--ds-field-border);
   color: var(--ds-selection-surface);
@@ -40,7 +41,7 @@
 }
 
 .ds-switch__input:checked + .ds-switch__track .ds-switch__thumb {
-  translate: calc(var(--ds-space-4) + var(--ds-size-border-thick)) 0;
+  translate: var(--ds-space-4) 0;
   background: var(--ds-selection-mark);
 }
 

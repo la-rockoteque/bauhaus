@@ -12,7 +12,7 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   externalLabel?: string;
   /** The link points at the place the user is in. Sets `aria-current`; `true` means "page". */
   current?: boolean | 'page' | 'step' | 'location';
-  /** The link stands alone (a nav item, a crumb, a footer link), so it takes the 44px target. Leave it off inside a sentence. */
+  /** The link stands alone (a nav item, a crumb, a footer link), so it draws at 32px (size.control.md). Leave it off inside a sentence. */
   standalone?: boolean;
 }
 

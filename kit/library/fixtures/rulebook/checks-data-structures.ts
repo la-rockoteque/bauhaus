@@ -1,4 +1,4 @@
-import { all, noLiteral, sourceMatches, uses } from './checks';
+import { all, noLiteral, paddingFlat, sourceMatches, uses } from './checks';
 import type { Check } from './checks';
 import { sourceOf } from './sources';
 
@@ -79,15 +79,16 @@ export const CHECKS: Readonly<Record<string, Check>> = {
     sourceMatches(`${TABLE}.tsx`, /tabIndex=\{0\}/, 'the scroll region is not keyboard focusable'),
   ),
   'table.touch-target': all(
-    uses(`${TABLE}.css`, '.ds-table__sort', 'min-block-size', '--ds-size-target-min'),
+    uses(`${TABLE}.css`, '.ds-table__sort', 'min-block-size', '--ds-size-control-md'),
     uses(`${TABLE}.css`, '.ds-table__check', 'min-inline-size', '--ds-size-target-min'),
-    uses(`${TABLE}.css`, '.ds-table__check', 'min-block-size', '--ds-size-target-min'),
+    uses(`${TABLE}.css`, '.ds-table__check', 'min-block-size', '--ds-size-control-md'),
   ),
+  'table.padding-flat': paddingFlat(`${TABLE}.css`, '.ds-table__sort'),
   'table.focus-ring': all(ring(`${TABLE}.css`, '.ds-table__sort:focus-visible'), ring(`${TABLE}.css`, '.ds-table__check input:focus-visible'), ring(`${TABLE}.css`, '.ds-table__scroll:focus-visible')),
   'table.no-literal': noLiteral(`${TABLE}.css`),
   'table.reduced-motion': skeletonStops(`${TABLE}.css`, '.ds-table__skeleton'),
   'table.density': all(
-    uses(`${TABLE}.css`, '.ds-table--compact .ds-table__cell', 'padding-block', '--ds-space-inset-xs'),
+    uses(`${TABLE}.css`, '.ds-table--compact .ds-table__cell', 'padding-block', '0'),
     sourceMatches(`${TABLE}.tsx`, /density\?: 'comfortable' \| 'compact'/, 'density is not comfortable or compact'),
   ),
   'table.state.loading': all(
@@ -109,7 +110,7 @@ export const CHECKS: Readonly<Record<string, Check>> = {
     () => ((sourceOf(`${LIST}.tsx`)?.match(/className="ds-list__control"/g) ?? []).length === 2 ? null : 'a row can hold more than one control'),
   ),
   'list.row-target-covers': all(uses(`${LIST}.css`, '.ds-list__control::after', 'position', 'absolute'), uses(`${LIST}.css`, '.ds-list__control::after', 'inset', '0'), uses(`${LIST}.css`, '.ds-list__item', 'position', 'relative')),
-  'list.touch-target': uses(`${LIST}.css`, '.ds-list__item', 'min-block-size', '--ds-size-target-min'),
+  'list.touch-target': uses(`${LIST}.css`, '.ds-list__item', 'min-block-size', '--ds-size-control-md'),
   'list.focus-ring': ring(`${LIST}.css`, '.ds-list__item:has(.ds-list__control:focus-visible)'),
   'list.no-literal': noLiteral(`${LIST}.css`),
   'list.dividers': uses(`${LIST}.css`, '.ds-list--divided > .ds-list__item + .ds-list__item', 'border-block-start', '--ds-border-default'),
@@ -179,7 +180,8 @@ export const CHECKS: Readonly<Record<string, Check>> = {
     sourceMatches(`${DISCLOSURE}.css`, /prefers-reduced-motion: reduce\)[\s\S]*@keyframes ds-disclosure-reveal\s*\{\s*from \{ opacity: 0; \}\s*to \{ opacity: 1; \}/, 'the reveal keeps its travel under reduced motion'),
     skeletonStops(`${DISCLOSURE}.css`, '.ds-disclosure__skeleton'),
   ),
-  'disclosure.touch-target': uses(`${DISCLOSURE}.css`, '.ds-disclosure__trigger', 'min-block-size', '--ds-size-target-min'),
+  'disclosure.touch-target': uses(`${DISCLOSURE}.css`, '.ds-disclosure__trigger', 'min-block-size', '--ds-size-control-md'),
+  'disclosure.padding-flat': paddingFlat(`${DISCLOSURE}.css`, '.ds-disclosure__trigger'),
   'disclosure.focus-ring': ring(`${DISCLOSURE}.css`, '.ds-disclosure__trigger:focus-visible'),
   'disclosure.no-literal': noLiteral(`${DISCLOSURE}.css`),
   'disclosure.states.hover-guarded': hoverGuarded(`${DISCLOSURE}.css`, '.ds-disclosure__trigger:hover'),

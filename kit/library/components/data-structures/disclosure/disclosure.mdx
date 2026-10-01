@@ -39,7 +39,7 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 - **Single-open.** `single` closes the other items when one opens. The open item can still be closed, so the group can be fully collapsed. Use it when the panels are long and parallel, so the reader keeps one in view. Leave it off when readers compare panels.
 - **Keyboard.** Enter and Space toggle the focused header, from the native button. Down and Up move focus to the next and previous header and wrap. Home and End move to the first and last. A disabled header is skipped, because a native disabled button leaves the tab order (APG Accordion, optional keys; WCAG 2.1.1, A).
 - **Disabled.** A disabled header is a native disabled button. `disabledReason` prints under its title and is tied with `aria-describedby`. A disabled control that does not explain itself is a dead end (Nielsen heuristic 1).
-- **Target size.** A header is at least 44px high and as wide as the item.
+- **Target size.** A header draws at 32px (`size.control.md`) and is as wide as the item. The target floor is 24px (WCAG 2.5.8, AA).
 - **Titles.** The title wraps beside the chevron and is never truncated. The chevron is decoration and is hidden from assistive technology.
 - **i18n.** The title, the reason and the loading label arrive as props.
 
