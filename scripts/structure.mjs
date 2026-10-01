@@ -34,6 +34,8 @@ const KEBAB = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
 const APP_MODULES = ['i18next', 'react-i18next', 'react-intl', 'react-router', 'react-router-dom', 'next/router', 'next/navigation', '@tanstack/react-query', 'axios', 'swr', '@apollo/client'];
 const APP_ALIAS = /^(?:[@~]\/|src\/)/;
 const STORY_FILE = /\.stories\.[jt]sx?$/;
+/** A Storybook-only view kept beside its component, such as `button.isometric.fixture.tsx`. It counts as a fixture. */
+const FIXTURE_FILE = /\.fixture(?:\.[jt]sx?)?$/;
 const SOURCE_FILE = /\.(?:[cm]?[jt]sx?|vue|svelte)$/;
 const IMPORT = /(?:\bfrom\s*|\bimport\s*\(?\s*|\brequire\s*\(\s*)['"]([^'"]+)['"]/g;
 const LITERAL = /#[0-9a-f]{3,8}\b|\b(?:rgb|hsl|oklch|hwb|lab)a?\(|(?<![\w.])(?!0px)\d*\.?\d+px\b/i;
@@ -248,8 +250,9 @@ function relativeImport(file, spec, files) {
   // A story may import from .storybook, outside the package layers.
   if (STORY_FILE.test(file) && target.split('/')[0] === '.storybook') return null;
   // A fixture is Storybook-only. Stories, tests and other fixtures may use it; nothing else in the library may.
-  if (target.split('/')[0] === 'fixtures' && file.split('/')[0] !== 'fixtures' && !STORY_FILE.test(file) && !/\.test\.[jt]sx?$/.test(file)) {
-    return finding('fixture.exposed', 'HIGH', file, `Imports a fixture ("${spec}"). Fixtures are Storybook-only and never ship.`, 'Only *.stories.tsx, *.test.tsx, .storybook/ and other fixtures may import fixtures.');
+  const isFixture = (f) => f.split('/')[0] === 'fixtures' || FIXTURE_FILE.test(f);
+  if (isFixture(target) && !isFixture(file) && !STORY_FILE.test(file) && !/\.test\.[jt]sx?$/.test(file)) {
+    return finding('fixture.exposed', 'HIGH', file, `Imports a fixture ("${spec}"). Fixtures are Storybook-only and never ship.`, 'Only *.stories.tsx, *.test.tsx, .storybook/ and other fixtures (fixtures/, *.fixture.tsx) may import fixtures.');
   }
   if (target.split('/')[0] === 'fixtures') return null;
   if (target.startsWith('..')) return finding('misfile.library-imports-app', 'HIGH', file, `"${spec}" reaches out of the package.`, 'Take the value as a prop; the library never imports the app.');

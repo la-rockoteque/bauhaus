@@ -58,6 +58,11 @@ export const GLYPH_GROUPS = {
     folder: 'M3 19V5h6l3 3h9v11z',
     link: 'M10 7H9a5 5 0 0 0 0 10h1M14 7h1a5 5 0 0 1 0 10h-1M8 12h8',
   },
+  cursors: {
+    // A hand, index finger up, then the same hand turned to press down. Fingertips are half circles.
+    pointer: 'M8 14V5a2 2 0 0 1 4 0v6a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v4a6 6 0 0 1-6 6h-2a6 6 0 0 1-5-3l-3-5a2 2 0 0 1 3-2l1 1',
+    press: 'M8 11v9a2 2 0 0 0 4 0v-6a2 2 0 0 0 4 0v-1a2 2 0 0 0 4 0V9a6 6 0 0 0-6-6h-2a6 6 0 0 0-5 3l-3 5a2 2 0 0 0 3 2l1-1',
+  },
 } as const;
 
 export type GlyphGroup = keyof typeof GLYPH_GROUPS;

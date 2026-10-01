@@ -16,7 +16,7 @@ import './icon-catalog.css';
  * `SizePairing` sets each icon size beside the text style it goes with.
  */
 const SIZES: readonly IconSize[] = ['sm', 'md', 'lg'];
-const GROUP_TITLE: Record<GlyphGroup, string> = { navigation: 'Navigation', actions: 'Actions', status: 'Status', objects: 'Objects' };
+const GROUP_TITLE: Record<GlyphGroup, string> = { navigation: 'Navigation', actions: 'Actions', status: 'Status', objects: 'Objects', cursors: 'Cursors' };
 
 export interface GlyphMatch {
   group: GlyphGroup;

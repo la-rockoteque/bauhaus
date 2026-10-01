@@ -10,7 +10,7 @@ afterEach(cleanup);
 describe('filterGlyphs', () => {
   it('returns every glyph, by group, for an empty query', () => {
     const matches = filterGlyphs('  ');
-    expect(matches.map((match) => match.group)).toEqual(['navigation', 'actions', 'status', 'objects']);
+    expect(matches.map((match) => match.group)).toEqual(['navigation', 'actions', 'status', 'objects', 'cursors']);
     expect(matches.flatMap((match) => match.names)).toEqual(GLYPH_NAMES);
   });
 

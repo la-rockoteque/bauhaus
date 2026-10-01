@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
-import { ContrastPairs, RoleChips, RoleSwatches } from '../../fixtures/specimens/specimens';
+import { RoleSwatches } from '../../fixtures/specimens/specimens';
+import { ContrastMatrix } from '../../fixtures/contrast-matrix/contrast-matrix';
 import { HueRamps } from '../../fixtures/hue-ramp/hue-ramp';
 import { colorRules } from './color.rules';
 
@@ -54,20 +55,13 @@ export const Showcase: StoryObj = {
         { label: 'Role scales', value: 'seven, plus ink (translucent, for shadows and scrims); primary is dark-blue, secondary teal, error scarlet, success green, warning amber, info dark-blue, neutral gray' },
         { label: 'Contrast', value: 'text 4.5:1 · borders, action fills and focus ring 3:1 · measured below in the selected theme' },
       ]}
-      states={{
-        note: 'Roles carry the interaction states. Each state colour differs from its base in lightness and never carries meaning alone.',
-        cells: [
-          { id: 'default', status: 'designed', label: 'Action roles', render: <RoleChips roles={['action.primary', 'action.secondary']} />, trigger: 'action.*' },
-          { id: 'hover', status: 'designed', render: <RoleChips roles={['action.primary-hover', 'state.hover-layer']} />, trigger: 'action.*-hover · state.hover-layer' },
-          { id: 'active', status: 'designed', label: 'Pressed', render: <RoleChips roles={['action.primary-pressed', 'state.pressed-layer']} />, trigger: 'action.*-pressed · state.pressed-layer' },
-          { id: 'focus-visible', status: 'designed', render: <RoleChips roles={['focus.ring.color']} />, trigger: 'focus.ring.color' },
-          { id: 'disabled', status: 'designed', render: <RoleChips roles={['disabled.text', 'disabled.surface', 'disabled.border']} />, trigger: 'disabled.*', note: 'Exempt from contrast (WCAG 1.4.3, 1.4.11). Not in pairs.json.' },
-          { id: 'selected', status: 'designed', render: <RoleChips roles={['state.selected']} />, trigger: 'state.selected' },
-        ],
+      conditions={{
+        cells: [],
+        reason: 'Colour answers no user condition of its own. The theme sets every role, and the Roles section shows the selected theme.',
       }}
       extra={[
         { title: 'Roles', kicker: 'The roles of the selected theme; switch it in the header or the toolbar. The lines under a value are the hex and the alias it reads.', content: <RoleSwatches /> },
-        { title: 'Contrast', kicker: 'Every pair of foundations/color/pairs.json, measured in the selected theme from the built tokens.', content: <ContrastPairs /> },
+        { title: 'Contrast', kicker: 'Every pair of foundations/color/pairs.json, measured in the selected theme from the built tokens.', content: <ContrastMatrix /> },
       ]}
       dos={[
         { text: 'Read a role for every colour in a stylesheet.', basis: 'Project decision' },

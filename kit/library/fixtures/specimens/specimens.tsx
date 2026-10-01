@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
-import pairs from '../../foundations/color/pairs.json';
 import { Button } from '../../components/clickables/button/button';
 import { Text } from '../../primitives/text/text';
+import { isometricOf } from '../iso-role/iso-role';
 import { useTheme } from '../theme-switch/theme-store';
 import { alias, contrastOf, ratioText, resolve, roleNames } from '../rulebook/tokens';
 import './specimens.css';
@@ -39,9 +39,14 @@ const roleGroups = (theme: string): [string, string[]][] => {
 };
 
 function RoleCard({ theme, name }: { theme: string; name: string }) {
+  const drawing = isometricOf(name);
   return (
     <div className="spec-role">
-      <div className="spec-role-chip" style={{ background: `var(${name})` }} />
+      {drawing ? (
+        <div className="spec-role-chip spec-role-chip-iso">{drawing}</div>
+      ) : (
+        <div className="spec-role-chip" style={{ background: `var(${name})` }} />
+      )}
       <div className="spec-role-meta">
         <code>{dotted(name)}</code>
         <code className="doc-muted">{resolve(theme, name)}</code>
@@ -62,38 +67,6 @@ export function RoleSwatches() {
         </Group>
       ))}
     </>
-  );
-}
-
-/** The pairs of `foundations/color/pairs.json`, measured in the selected theme. */
-export function ContrastPairs() {
-  const theme = useTheme();
-  return (
-    <section className="spec-theme">
-      <div className="spec-theme-head">
-        <Text as="h3" className="doc-h3">{`Contrast · ${theme}`}</Text>
-        <span className="doc-muted">text 4.5:1 · non-text 3:1</span>
-      </div>
-      {pairs.map((pair) => {
-        const fg = cssVar(pair.fg);
-        const bg = cssVar(pair.bg);
-        const ratio = contrastOf(theme, fg, bg);
-        const ok = ratio !== null && ratio >= (pair.use === 'text' ? 4.5 : 3);
-        return (
-          <div key={`${pair.fg}/${pair.bg}`} className="spec-pair">
-            <span>
-              <code>{pair.fg}</code>
-              <span className="doc-muted">{' on '}</span>
-              <code>{pair.bg}</code>
-            </span>
-            <span className="spec-pair-sample" style={{ color: `var(${fg})`, background: `var(${bg})` }}>
-              Aa
-            </span>
-            <span className={ok ? 'spec-ok' : 'spec-bad'}>{`${ratioText(ratio)} ${ok ? 'pass' : 'fail'}`}</span>
-          </div>
-        );
-      })}
-    </section>
   );
 }
 

@@ -1,0 +1,160 @@
+/* Isometric drawing: a component as a slab, and the cursor that acts on it. */
+.iso {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+
+/* The sides: the top face repeated down, darkened once for the whole stack so the layers never compound. */
+.iso-side {
+  filter: brightness(0.72);
+}
+
+.iso-shadow {
+  fill: var(--ds-colors-ink-a16);
+}
+
+.iso-ring {
+  fill: none;
+  stroke-width: var(--ds-focus-ring-width);
+}
+
+.iso-label {
+  dominant-baseline: central;
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-font-size-sm);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+/* A cursor as the system draws one: a light hand outlined in dark ink. */
+.iso-cursor {
+  fill: var(--ds-surface-default);
+  stroke: var(--ds-text-default);
+  stroke-width: calc(var(--ds-space-1) / 3);
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+}
+
+/* Dim: a part the scene is not about recedes, so the role's own part leads. */
+.iso-dim {
+  opacity: 0.28;
+}
+
+.iso-icon {
+  fill: none;
+  stroke-width: var(--ds-icon-stroke);
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+/* Ghost: the body fades and its top face keeps a dotted edge, so the label on it is what you read. */
+.iso-ghost .iso-face,
+.iso-outline .iso-face {
+  fill-opacity: 0.12;
+}
+
+.iso-ghost .iso-side,
+.iso-outline .iso-side {
+  opacity: 0.35;
+}
+
+.iso-ghost .iso-top {
+  stroke-width: calc(var(--ds-space-1) / 3);
+  stroke-dasharray: calc(var(--ds-space-1) / 2) var(--ds-space-1);
+  stroke-linecap: round;
+  stroke-opacity: 0.5;
+}
+
+/* Hover: the pointer drifts on a small slow circle, eight stops apart. */
+.iso-orbit {
+  --iso-r: calc(var(--ds-space-1) * 0.75);
+  animation: iso-orbit calc(var(--ds-motion-duration-loop) * 3) linear infinite;
+}
+
+@keyframes iso-orbit {
+  0%, 100% { transform: translate(var(--iso-r), 0); }
+  12.5% { transform: translate(calc(var(--iso-r) * 0.71), calc(var(--iso-r) * 0.71)); }
+  25% { transform: translate(0, var(--iso-r)); }
+  37.5% { transform: translate(calc(var(--iso-r) * -0.71), calc(var(--iso-r) * 0.71)); }
+  50% { transform: translate(calc(var(--iso-r) * -1), 0); }
+  62.5% { transform: translate(calc(var(--iso-r) * -0.71), calc(var(--iso-r) * -0.71)); }
+  75% { transform: translate(0, calc(var(--iso-r) * -1)); }
+  87.5% { transform: translate(calc(var(--iso-r) * 0.71), calc(var(--iso-r) * -0.71)); }
+}
+
+/*
+ * Press: the hand falls, accelerating like a weight (ease-exit), lands, sinks a hair with the slab,
+ * holds, and lifts away (ease-enter). The slab gives on impact; a ripple spreads from its base.
+ */
+.iso-press-hand,
+.iso-thump,
+.iso-ripple {
+  --iso-cycle: calc(var(--ds-motion-duration-loop) * 1.5);
+  --iso-drop: calc(var(--ds-space-4) * -1.25);
+  --iso-give: calc(var(--ds-space-1) / 2);
+  animation-duration: var(--iso-cycle);
+  animation-iteration-count: infinite;
+}
+
+.iso-press-hand {
+  animation-name: iso-press;
+}
+
+@keyframes iso-press {
+  0% { transform: translateY(var(--iso-drop)); opacity: 0; animation-timing-function: linear; }
+  12% { transform: translateY(var(--iso-drop)); opacity: 1; animation-timing-function: var(--ds-motion-ease-exit); }
+  42% { transform: translateY(0); animation-timing-function: var(--ds-motion-ease-standard); }
+  48% { transform: translateY(var(--iso-give)); }
+  58% { transform: translateY(var(--iso-give)); animation-timing-function: var(--ds-motion-ease-standard); }
+  64% { transform: translateY(0); animation-timing-function: var(--ds-motion-ease-enter); }
+  88% { transform: translateY(var(--iso-drop)); opacity: 1; }
+  100% { transform: translateY(var(--iso-drop)); opacity: 0; }
+}
+
+.iso-thump {
+  animation-name: iso-thump;
+}
+
+@keyframes iso-thump {
+  0%, 42% { transform: translateY(0); }
+  48%, 58% { transform: translateY(var(--iso-give)); animation-timing-function: var(--ds-motion-ease-standard); }
+  64%, 100% { transform: translateY(0); }
+}
+
+.iso-ripple {
+  fill: none;
+  stroke-width: calc(var(--ds-space-1) / 2);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: iso-ripple;
+  animation-timing-function: var(--ds-motion-ease-enter);
+}
+
+@keyframes iso-ripple {
+  0%, 42% { opacity: 0; transform: scale(1); }
+  44% { opacity: 0.7; transform: scale(1); }
+  80%, 100% { opacity: 0; transform: scale(1.4); }
+}
+
+/* Skeleton: the highlight breathes over the base. It animates fill-opacity, so a dimmed bar stays dim. */
+.iso-shimmer {
+  animation: iso-shimmer var(--ds-motion-duration-loop) var(--ds-motion-ease-standard) infinite alternate;
+}
+
+@keyframes iso-shimmer {
+  from { fill-opacity: 0; }
+  to { fill-opacity: 1; }
+}
+
+/* Still under reduced motion: the pointer rests on its target, the hand rests on the pressed slab. */
+@media (prefers-reduced-motion: reduce) {
+  .iso-orbit,
+  .iso-shimmer,
+  .iso-press-hand,
+  .iso-thump,
+  .iso-ripple {
+    animation: none;
+  }
+}

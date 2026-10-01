@@ -291,3 +291,19 @@
 :is(.doc, .doc-guide-page) .doc-pointer {
   margin-block-start: var(--ds-space-10);
 }
+
+/* Section 4 of a foundation: one card per condition, each as wide as its render. */
+.doc-conditions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3);
+}
+
+.doc-conditions > li {
+  flex: 0 1 auto;
+  min-inline-size: min(100%, var(--doc-card-min));
+  max-inline-size: 100%;
+}

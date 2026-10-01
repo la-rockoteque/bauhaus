@@ -54,7 +54,7 @@ A page documents one foundation, token group, component or pattern. Each slice c
 1. **Introduction** — what it is, the job it does, and the layer it belongs to. Plain words first.
 2. **Anatomy** — the named parts, and which are required or optional. For a foundation: the scale and its structure.
 3. **Tokens** — the tokens it defines (foundation, token group) or consumes (component, pattern), with values and intent.
-4. **States** — the state matrix. For a foundation or token group: the states it provides tokens for.
+4. **States** — the state matrix. For a token group: the states it provides tokens for. A foundation page has no interaction section: its section 4 is **Conditions**, the user preferences and settings it answers (reduced motion, text at 200%, forced colors), or n/a with a reason.
 5. **Usage** — an exhaustive guide to when to use it, when not to, and what to use instead, and how to use it: variants, composition, content, responsive, accessibility.
 6. **Pitfalls and don'ts** — the common mistakes, each with why it fails.
 

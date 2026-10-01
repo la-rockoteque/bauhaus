@@ -31,10 +31,9 @@ export const Showcase: StoryObj = {
         { label: 'Offset', value: 'outline-offset from focus.ring.offset, so the ring sits on the page and not on the control fill' },
         { label: 'Trigger', value: ':focus-visible; mouse presses do not show it' },
       ]}
-      states={{
-        cells: [
-          { id: 'focus-visible', status: 'designed', render: <span className="spec-focus-ring"><button type="button" style={{ padding: 'var(--ds-space-inset-md)' }}>Ring drawn permanently</button></span>, trigger: ':focus-visible', note: 'The ring is the focus-visible state of every component.' },
-        ],
+      conditions={{
+        cells: [],
+        reason: 'No user setting changes the ring. The Stage shows it as every component draws it on :focus-visible.',
       }}
       dos={[
         { text: 'Draw the ring on every interactive component.', basis: 'WCAG 2.4.7 (AA)' },

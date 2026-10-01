@@ -12,9 +12,9 @@ describe('the glyph set', () => {
     expect(GLYPH_NAMES).toEqual(grouped);
   });
 
-  it('holds 42 glyphs in four groups and keeps the original sixteen names', () => {
-    expect(Object.values(GLYPH_GROUPS).map((group) => Object.keys(group).length)).toEqual([12, 14, 5, 11]);
-    expect(GLYPH_NAMES).toHaveLength(42);
+  it('holds 44 glyphs in five groups and keeps the original sixteen names', () => {
+    expect(Object.values(GLYPH_GROUPS).map((group) => Object.keys(group).length)).toEqual([12, 14, 5, 11, 2]);
+    expect(GLYPH_NAMES).toHaveLength(44);
     expect(GLYPH_NAMES).toEqual(expect.arrayContaining(ORIGINAL_SIXTEEN));
   });
 

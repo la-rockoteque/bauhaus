@@ -1,4 +1,5 @@
-import { ContrastPairs, RoleSwatches, ThemeSample } from '../specimens/specimens';
+import { RoleSwatches, ThemeSample } from '../specimens/specimens';
+import { ContrastMatrix } from '../contrast-matrix/contrast-matrix';
 import { THEMES } from '../rulebook/tokens';
 import type { DocPageProps } from '../doc-page/types';
 
@@ -38,7 +39,7 @@ export function themePage(guide: string, guideName: string): DocPageProps {
     },
     extra: [
       { title: 'Roles', kicker: 'Every role of the selected theme. The lines under a value are the hex and the alias it reads.', content: <RoleSwatches /> },
-      { title: 'Contrast', kicker: 'Every pair of foundations/color/pairs.json, measured in the selected theme.', content: <ContrastPairs /> },
+      { title: 'Contrast', kicker: 'Every pair of foundations/color/pairs.json, measured in the selected theme.', content: <ContrastMatrix /> },
     ],
     dos: [
       { text: 'Keep the role names identical in every theme.', basis: 'Carbon: same roles across themes' },
