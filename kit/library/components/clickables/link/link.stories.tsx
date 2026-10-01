@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Link } from './link';
 import type { LinkProps } from './link';
 import { linkRules } from './link.rules';
@@ -130,4 +133,104 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Link" layer="Component" family="Clickables" rules={linkRules} guide="clickables-link--docs" guideName="Link" />,
+};
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Link"
+      layer="Component"
+      family="Clickables"
+      imports="import { Link, Stack, Text } from '@acme/design-system';"
+      guide="clickables-link--docs"
+      guideName="Link"
+      groups={[
+        {
+          title: 'Basics',
+          kicker: 'A link goes to a URL. The underline stays at rest.',
+          examples: [
+            { title: 'In a sentence', when: 'A link inside running text. It stays inline and keeps the line height.', render: <Text as="p">Read the <Link href="#shipping">shipping policy</Link> before you order.</Text> },
+            { title: 'Standalone', when: 'A link that stands alone, such as a footer link. It draws a 32px target.', render: <Link href="#privacy" standalone>Privacy notice</Link> },
+            { title: 'Descriptive text', when: 'Name the destination, so the link makes sense out of context.', render: <Link href="#accessibility">Accessibility statement</Link> },
+          ],
+        },
+        {
+          title: 'External and current',
+          kicker: 'Two props change the meaning of the link.',
+          examples: [
+            { title: 'External', when: 'The link leaves the app and opens in a new tab. The icon and the spoken warning come with it.', render: <Link href="https://example.com/terms" external>Terms of service</Link> },
+            { title: 'External, translated warning', when: 'The app is not in English: pass the warning in the app language.', render: <Link href="https://example.com/conditions" external externalLabel="s’ouvre dans un nouvel onglet">Conditions d’utilisation</Link> },
+            { title: 'Current page', when: 'The link points at the page the user is on. aria-current is "page".', render: <Link href="#shipments" current standalone>Shipments</Link> },
+            { title: 'Current step', when: 'The link marks the step the user is on in a process.', render: <Link href="#payment" current="step" standalone>Payment</Link> },
+            { title: 'Current location', when: 'The link marks the place the user is in a set that is not pages or steps, such as a site map.', render: <Link href="#warehouse" current="location" standalone>Warehouse</Link> },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'Standalone links in a list or a nav carry the 32px target.',
+          examples: [
+            { title: 'Footer links', when: 'A short list of standalone links, one destination each.', render: (
+              <Stack as="ul" direction="horizontal" gap={4} wrap aria-label="Footer">
+                <li><Link href="#about" standalone>About</Link></li>
+                <li><Link href="#careers" standalone>Careers</Link></li>
+                <li><Link href="#privacy" standalone>Privacy</Link></li>
+              </Stack>
+            ) },
+            { title: 'Navigation list', when: 'Each destination has its own URL; the current one is marked.', render: (
+              <Stack as="nav" aria-label="Orders" gap={1}>
+                <Link href="#all" standalone current>All orders</Link>
+                <Link href="#open" standalone>Open orders</Link>
+                <Link href="#returns" standalone>Returns</Link>
+              </Stack>
+            ) },
+            { title: 'Link beside a caption', when: 'A secondary line that points to more detail.', render: (
+              <Stack gap={1} align="start">
+                <Text>Your plan renews on 1 March.</Text>
+                <Text variant="caption" tone="muted" as="p">Questions? <Link href="#billing">See billing details</Link>.</Text>
+              </Stack>
+            ) },
+          ],
+        },
+        {
+          title: 'Router',
+          kicker: 'The library never imports a router. Pass your own link component through as.',
+          examples: [
+            {
+              title: 'With a router link',
+              when: 'The app has a router. The component receives every prop, href included.',
+              render: <Link as="a" href="#orders" standalone>Orders</Link>,
+              code: `// NavLink: your router's link component.
+
+<Link as={NavLink} to="/orders" standalone>Orders</Link>`,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The text wraps and never truncates. A long address breaks anywhere.',
+          examples: [
+            { title: 'Long text', when: 'A long link text in a narrow column. It wraps.', frame: 'narrow', render: <Link href="#guide">Read the full guide to writing accessible link text for a public sector website</Link> },
+            { title: 'Long URL', when: 'A bare address as the link text. It breaks instead of overflowing.', frame: 'phone', render: <Link href="#long">https://example.com/documents/2026/annual-report/section-4/appendix-b/final-version.pdf</Link> },
+            { title: 'Long external link', when: 'An external link that wraps. The icon follows the last word.', frame: 'narrow', render: <Link href="https://example.com/handbook" external>Employee handbook for the regional offices</Link> },
+            { title: 'Long translated text', when: 'A long French label in a narrow column.', frame: 'narrow', render: <Link href="#aide">Consulter l’aide à la déclaration des revenus de l’année précédente</Link> },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'Every native anchor attribute passes through.',
+          examples: [
+            { title: 'Described by a hint', when: 'The link needs a consequence or a file size read after its name.', render: (
+              <Stack gap={1} align="start">
+                <Link href="#report" aria-describedby="link-report-hint">Annual report</Link>
+                <Text variant="caption" tone="muted" as="p" id="link-report-hint">PDF, 2.4 MB.</Text>
+              </Stack>
+            ) },
+            { title: 'Language of the target', when: 'The destination is in another language than the page.', render: <Link href="#fr" hrefLang="fr" lang="fr">Politique de confidentialité</Link> },
+            { title: 'Download', when: 'The link saves a file. Say so in the text.', render: <Link href="#invoice.pdf" download>Download invoice 1042 (PDF)</Link> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

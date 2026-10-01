@@ -1,8 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Badge } from '../../feedback/badge/badge';
 import { Button } from '../../clickables/button/button';
 import { Icon } from '../../../primitives/icon/icon';
 import { Text } from '../../../primitives/text/text';
@@ -160,4 +163,284 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="List" layer="Component" family="Data structures" rules={listRules} guide="data-structures-list--docs" guideName="List" />,
+};
+
+function PickOneFile() {
+  const [current, setCurrent] = useState('budget');
+  return (
+    <List aria-label="Files" divided>
+      <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" selected={current === 'budget'} onPress={() => setCurrent('budget')} />
+      <ListItem title="Site plan" description="PDF · 8 MB" selected={current === 'plan'} onPress={() => setCurrent('plan')} />
+      <ListItem title="Permit" description="PDF · 1 MB" selected={current === 'permit'} onPress={() => setCurrent('permit')} />
+    </List>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="List"
+      layer="Component"
+      family="Data structures"
+      imports="import { Badge, Button, Icon, List, ListItem, Stack, Text } from '@acme/design-system';"
+      guide="data-structures-list--docs"
+      guideName="List"
+      groups={[
+        {
+          title: 'Rows',
+          kicker: 'One thing per row. The title names it; the other slots help people choose.',
+          examples: [
+            {
+              title: 'Titles only',
+              when: 'A plain set of like items that people read, not open.',
+              render: (
+                <List aria-label="Rooms">
+                  <ListItem title="Kitchen" />
+                  <ListItem title="Garage" />
+                  <ListItem title="Attic" />
+                </List>
+              ),
+            },
+            {
+              title: 'One row',
+              when: 'The set has a single item. It is still a list.',
+              render: (
+                <List aria-label="Rooms">
+                  <ListItem title="Kitchen" />
+                </List>
+              ),
+            },
+            {
+              title: 'Title and description',
+              when: 'A second line of detail helps people pick: a size, a date, an owner.',
+              render: (
+                <List aria-label="Files">
+                  <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" />
+                  <ListItem title="Site plan" description="PDF · 8 MB" />
+                  <ListItem title="Permit" description="PDF · 1 MB" />
+                </List>
+              ),
+            },
+            {
+              title: 'Leading and trailing',
+              when: 'An icon before the title and a value after it. Both are static.',
+              render: (
+                <List aria-label="Files">
+                  <ListItem leading={<Icon glyph="file" />} title="Budget 2026" description="Updated Monday" trailing="2 MB" />
+                  <ListItem leading={<Icon glyph="folder" />} title="Site photos" description="Updated Friday" trailing="48 files" />
+                </List>
+              ),
+            },
+            {
+              title: 'Badge as trailing',
+              when: 'A status the reader scans for: a badge carries a word and a colour.',
+              render: (
+                <List aria-label="Orders">
+                  <ListItem title="Order 1042" description="Aciers Laurentides" trailing={<Badge status="success">Shipped</Badge>} />
+                  <ListItem title="Order 1043" description="Boulons Beauce" trailing={<Badge status="warning">Late</Badge>} />
+                  <ListItem title="Order 1044" description="Cuivre du Nord" trailing={<Badge status="neutral">Draft</Badge>} />
+                </List>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Structure',
+          kicker: 'The list is a real ul or ol. Dividers are opt-in.',
+          examples: [
+            {
+              title: 'Divided',
+              when: 'Rows with descriptions run together without a rule between them.',
+              render: (
+                <List aria-label="Files" divided>
+                  <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" />
+                  <ListItem title="Site plan" description="PDF · 8 MB" />
+                  <ListItem title="Permit" description="PDF · 1 MB" />
+                </List>
+              ),
+            },
+            {
+              title: 'Ordered',
+              when: 'The order carries meaning: steps or a ranking.',
+              render: (
+                <List ordered aria-label="Steps" divided>
+                  <ListItem title="Pour the foundation" />
+                  <ListItem title="Frame the walls" />
+                  <ListItem title="Close the roof" />
+                </List>
+              ),
+            },
+            {
+              title: 'Named by nearby text',
+              when: 'A heading already names the list: tie them with aria-labelledby.',
+              render: (
+                <Stack gap={2}>
+                  <Text as="h3" id="rooms-heading">Rooms</Text>
+                  <List aria-labelledby="rooms-heading">
+                    <ListItem title="Kitchen" />
+                    <ListItem title="Garage" />
+                  </List>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Interactive rows',
+          kicker: 'A row holds one control. The title is its text and its target covers the row.',
+          examples: [
+            {
+              title: 'Link rows',
+              when: 'Each row opens a page: files, messages, search results.',
+              render: (
+                <List aria-label="Messages" divided>
+                  <ListItem title="Welcome to the project" description="Marie · 9:41" href="#welcome" />
+                  <ListItem title="Permit approved" description="Jean · Yesterday" href="#permit" />
+                  <ListItem title="Cabinet delivery" description="Aciers Laurentides · Monday" href="#delivery" />
+                </List>
+              ),
+            },
+            {
+              title: 'Link rows with a chevron',
+              when: 'A trailing chevron hints that the row opens something. It is decoration.',
+              render: (
+                <List aria-label="Settings" divided>
+                  <ListItem title="Account" href="#account" trailing={<Icon glyph="chevron-right" />} />
+                  <ListItem title="Notifications" href="#notifications" trailing={<Icon glyph="chevron-right" />} />
+                </List>
+              ),
+            },
+            {
+              title: 'Current page',
+              when: 'The row is the page the reader is on. A selected link row sets aria-current.',
+              render: (
+                <List aria-label="Settings" divided>
+                  <ListItem title="Account" href="#account" selected />
+                  <ListItem title="Notifications" href="#notifications" />
+                  <ListItem title="Privacy" href="#privacy" />
+                </List>
+              ),
+            },
+            {
+              title: 'Button rows',
+              when: 'A row runs an action in the view, such as picking an item.',
+              render: (
+                <List aria-label="Templates" divided>
+                  <ListItem title="Blank project" description="Start from nothing" onPress={() => {}} />
+                  <ListItem title="Renovation" description="Rooms, budget and permits" onPress={() => {}} />
+                </List>
+              ),
+              code: `<List aria-label="Templates" divided>
+  <ListItem title="Blank project" description="Start from nothing" onPress={() => createProject('blank')} />
+  <ListItem title="Renovation" description="Rooms, budget and permits" onPress={() => createProject('renovation')} />
+</List>`,
+            },
+            {
+              title: 'Pick one row',
+              when: 'The reader picks one item. The selected row shows a fill and a bar and sets aria-pressed.',
+              render: <PickOneFile />,
+              code: `function PickOneFile() {
+  const [current, setCurrent] = useState('budget');
+  return (
+    <List aria-label="Files" divided>
+      <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" selected={current === 'budget'} onPress={() => setCurrent('budget')} />
+      <ListItem title="Site plan" description="PDF · 8 MB" selected={current === 'plan'} onPress={() => setCurrent('plan')} />
+      <ListItem title="Permit" description="PDF · 1 MB" selected={current === 'permit'} onPress={() => setCurrent('permit')} />
+    </List>
+  );
+}`,
+            },
+            {
+              title: 'Disabled, with the reason',
+              when: 'A row cannot be opened. The description says why.',
+              render: (
+                <List aria-label="Reports" divided>
+                  <ListItem title="Monthly report" description="Ready" href="#monthly" />
+                  <ListItem title="Annual report" description="Available in January" onPress={() => {}} disabled />
+                </List>
+              ),
+              code: `<List aria-label="Reports" divided>
+  <ListItem title="Monthly report" description="Ready" href="/reports/monthly" />
+  <ListItem title="Annual report" description="Available in January" onPress={openAnnual} disabled />
+</List>`,
+            },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'The caller owns the words. The list renders no ul when it has no rows.',
+          examples: [
+            { title: 'Loading', when: 'Rows are on their way. Skeleton rows keep the shape of the slots.', render: <List aria-label="Files" loading /> },
+            { title: 'Loading, five rows', when: 'You know about how many rows will arrive: match skeletonRows.', render: <List aria-label="Files" loading skeletonRows={5} /> },
+            { title: 'Loading, with its own label', when: 'The app is not in English: pass the spoken text for the wait.', render: <List aria-label="Fichiers" loading loadingLabel="Chargement des fichiers" /> },
+            {
+              title: 'Empty, first use',
+              when: 'Nothing exists yet. Invite the reader to start.',
+              render: <List aria-label="Files" empty={<Stack gap={2} align="start"><Text>No files yet. Upload your first file.</Text><Button variant="secondary">Upload a file</Button></Stack>} />,
+            },
+            { title: 'Empty, no match', when: 'A filter returned nothing. Say what happened, not what to do first.', render: <List aria-label="Files" empty={<Text>No files match “permit”.</Text>} /> },
+            {
+              title: 'Error with a retry',
+              when: 'The rows failed to load. The alert replaces them; a retry sits inside it.',
+              render: <List aria-label="Files" error={<Stack gap={2} align="start"><Text>The files did not load.</Text><Button variant="secondary">Try again</Button></Stack>} />,
+            },
+            {
+              title: 'Partial',
+              when: 'Some rows loaded and some did not. Keep the rows and say what is missing.',
+              render: (
+                <List aria-label="Files" divided partial={<Text>3 files did not load.</Text>}>
+                  <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" />
+                  <ListItem title="Site plan" description="PDF · 8 MB" />
+                </List>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'Titles and descriptions wrap inside the row. A long name never widens it.',
+          examples: [
+            {
+              title: 'Long title and description',
+              when: 'Long file names, unbroken references and translated text all wrap.',
+              frame: 'narrow',
+              render: (
+                <List aria-label="Files" divided>
+                  <ListItem leading={<Icon glyph="file" />} title="Quarterly-inspection-report-final-revised-signed-2026-Q3-north-tower" description="INSPECTION-2026-Q3-NORTH-TOWER-LEVEL-14-SECTION-C" trailing="2 MB" href="#report" />
+                </List>
+              ),
+            },
+            {
+              title: 'On a phone',
+              when: 'A row spans the container. The control stays one easy target.',
+              frame: 'phone',
+              render: (
+                <List aria-label="Messages" divided>
+                  <ListItem leading={<Icon glyph="mail" />} title="Welcome to the project" description="Marie · 9:41" trailing={<Badge status="info">New</Badge>} href="#welcome" />
+                  <ListItem leading={<Icon glyph="mail" />} title="Permit approved" description="Jean · Yesterday" href="#permit" />
+                </List>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The title is the link text. Never label a row "Open" or "Details".',
+          examples: [
+            {
+              title: 'Name for the whole list',
+              when: 'Nearby text does not name the list: give it an aria-label.',
+              render: (
+                <List aria-label="Recent messages">
+                  <ListItem title="Welcome to the project" href="#welcome" />
+                  <ListItem title="Permit approved" href="#permit" />
+                </List>
+              ),
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

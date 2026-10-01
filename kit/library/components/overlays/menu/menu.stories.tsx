@@ -1,13 +1,16 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
 import { Button } from '../../clickables/button/button';
 import { IconButton } from '../../clickables/icon-button/icon-button';
 import { MenuItem } from '../../clickables/menu-item/menu-item';
+import type { Key } from 'react-aria-components';
 import { Menu, MenuSection, MenuSeparator, type MenuProps } from './menu';
 import { menuRules } from './menu.rules';
 
@@ -188,4 +191,357 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Menu" layer="Component" family="Overlays" rules={menuRules} guide="overlays-menu--docs" guideName="Menu" />,
+};
+
+function RowActions() {
+  const [status, setStatus] = useState('');
+  return (
+    <Stack gap={2} align="start">
+      <Menu trigger={<IconButton label="More actions" icon={<Icon glyph="more" />} variant="secondary" />} label="More actions" placement="bottom end" onAction={(key) => setStatus(`You chose ${String(key)}.`)}>
+        <MenuItem id="rename">Rename</MenuItem>
+        <MenuItem id="duplicate">Duplicate</MenuItem>
+        <MenuSeparator />
+        <MenuItem id="delete" destructive>Delete project</MenuItem>
+      </Menu>
+      <Text as="p" role="status">{status}</Text>
+    </Stack>
+  );
+}
+
+function SortOrder() {
+  const [sort, setSort] = useState<Set<Key>>(new Set(['recent']));
+  const names: Record<string, string> = { recent: 'Most recent', name: 'Name', size: 'Size' };
+  return (
+    <Stack gap={2} align="start">
+      <Menu trigger={<Button variant="secondary">Sort</Button>} label="Sort" selectionMode="single" selectedKeys={sort} onSelectionChange={(keys) => setSort(new Set(keys))}>
+        <MenuItem id="recent">Most recent</MenuItem>
+        <MenuItem id="name">Name</MenuItem>
+        <MenuItem id="size">Size</MenuItem>
+      </Menu>
+      <Text as="p" role="status">{`Sorted by ${names[String([...sort][0])] ?? ''}.`}</Text>
+    </Stack>
+  );
+}
+
+function OpenFromElsewhere() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Stack direction="horizontal" gap={3} wrap>
+      <Menu trigger={<Button variant="secondary">Actions</Button>} label="Actions" isOpen={open} onOpenChange={setOpen}>
+        <MenuItem id="rename">Rename</MenuItem>
+        <MenuItem id="duplicate">Duplicate</MenuItem>
+      </Menu>
+      <Text as="p">{open ? 'The menu is open.' : 'The menu is closed.'}</Text>
+    </Stack>
+  );
+}
+
+const fileTypes = [{ id: 'pdf', name: 'PDF document' }, { id: 'csv', name: 'CSV file' }, { id: 'png', name: 'PNG image' }];
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Menu"
+      layer="Component"
+      family="Overlays"
+      imports="import { useState } from 'react'; import { Button, Icon, IconButton, Menu, MenuItem, MenuSection, MenuSeparator, Stack, Text } from '@acme/design-system';"
+      guide="overlays-menu--docs"
+      guideName="Menu"
+      groups={[
+        {
+          title: 'Triggers',
+          kicker: 'The trigger is the one tab stop. Enter, Space or Down opens the menu. Each example starts closed.',
+          examples: [
+            {
+              title: 'Text button',
+              when: 'The menu holds the secondary actions of a view, and the trigger has room for a word.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Actions</Button>} label="Actions">
+                  <MenuItem id="rename">Rename</MenuItem>
+                  <MenuItem id="duplicate">Duplicate</MenuItem>
+                  <MenuItem id="archive">Archive</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Row actions',
+              when: 'A table row or a card holds rare actions. An icon button opens the menu and names it. The menu aligns to the end.',
+              render: <RowActions />,
+              code: `function Example() {
+  const [status, setStatus] = useState('');
+  return (
+    <Stack gap={2} align="start">
+      <Menu
+        trigger={<IconButton label="More actions" icon={<Icon glyph="more" />} variant="secondary" />}
+        label="More actions"
+        placement="bottom end"
+        onAction={(key) => setStatus(\`You chose \${String(key)}.\`)}
+      >
+        <MenuItem id="rename">Rename</MenuItem>
+        <MenuItem id="duplicate">Duplicate</MenuItem>
+        <MenuSeparator />
+        <MenuItem id="delete" destructive>Delete project</MenuItem>
+      </Menu>
+      <Text as="p" role="status">{status}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Items',
+          kicker: 'An item takes an icon, a description, a shortcut hint, a disabled state and a destructive look.',
+          examples: [
+            {
+              title: 'Icons and shortcuts',
+              when: 'The actions are known by an icon or a key combination. The shortcut is a hint; the app binds the key.',
+              render: (
+                <Menu trigger={<Button variant="secondary">File</Button>} label="File">
+                  <MenuItem id="new" icon="plus" shortcut="Ctrl+N">New file</MenuItem>
+                  <MenuItem id="edit" icon="edit" shortcut="F2">Rename</MenuItem>
+                  <MenuItem id="copy" icon="copy" shortcut="Ctrl+D">Duplicate</MenuItem>
+                  <MenuItem id="download" icon="download">Download</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Descriptions',
+              when: 'Two actions sound alike, and a second line says what each does.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Export</Button>} label="Export">
+                  <MenuItem id="current" description="The rows on this page">Export page</MenuItem>
+                  <MenuItem id="all" description="Every row, with the active filters">Export everything</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Disabled item',
+              when: 'An action exists but does not apply now. The item stays in place so the menu does not shift.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Actions</Button>} label="Actions" disabledKeys={['archive']}>
+                  <MenuItem id="rename">Rename</MenuItem>
+                  <MenuItem id="archive">Archive</MenuItem>
+                  <MenuItem id="share">Share</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Destructive item',
+              when: 'An action deletes something. It goes last, in its own group, and its label names what it deletes.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Project</Button>} label="Project">
+                  <MenuItem id="rename">Rename</MenuItem>
+                  <MenuItem id="duplicate">Duplicate</MenuItem>
+                  <MenuSeparator />
+                  <MenuItem id="delete" icon="close" destructive>Delete project</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Items from data',
+              when: 'The items come from a list, such as the formats a server supports.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Download as</Button>} label="Download as" items={fileTypes}>
+                  {(type) => <MenuItem id={type.id}>{type.name}</MenuItem>}
+                </Menu>
+              ),
+              code: `const fileTypes = [
+  { id: 'pdf', name: 'PDF document' },
+  { id: 'csv', name: 'CSV file' },
+  { id: 'png', name: 'PNG image' },
+];
+
+<Menu trigger={<Button variant="secondary">Download as</Button>} label="Download as" items={fileTypes}>
+  {(type) => <MenuItem id={type.id}>{type.name}</MenuItem>}
+</Menu>`,
+            },
+          ],
+        },
+        {
+          title: 'Groups',
+          examples: [
+            {
+              title: 'Named sections',
+              when: 'Many actions fall into groups, and the group name helps people scan. The title also names the group for assistive technology.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Document</Button>} label="Document">
+                  <MenuSection title="Edit">
+                    <MenuItem id="rename">Rename</MenuItem>
+                    <MenuItem id="duplicate">Duplicate</MenuItem>
+                  </MenuSection>
+                  <MenuSection title="Share">
+                    <MenuItem id="link">Copy link</MenuItem>
+                    <MenuItem id="invite">Invite people</MenuItem>
+                  </MenuSection>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Separator',
+              when: 'Two groups need a rule between them and no names.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Document</Button>} label="Document">
+                  <MenuItem id="rename">Rename</MenuItem>
+                  <MenuItem id="duplicate">Duplicate</MenuItem>
+                  <MenuSeparator />
+                  <MenuItem id="print">Print</MenuItem>
+                </Menu>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Choosing',
+          kicker: 'A chosen item shows a check and a fill, never the fill alone.',
+          examples: [
+            {
+              title: 'Single choice',
+              when: 'The user picks one view. Choosing an item closes the menu.',
+              render: (
+                <Menu trigger={<Button variant="secondary">View</Button>} label="View" selectionMode="single" defaultSelectedKeys={['list']}>
+                  <MenuItem id="list">List</MenuItem>
+                  <MenuItem id="grid">Grid</MenuItem>
+                  <MenuItem id="details">Details</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Multiple choice',
+              when: 'The user toggles several options. The menu stays open between choices.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Columns</Button>} label="Columns" selectionMode="multiple" defaultSelectedKeys={['name', 'date']}>
+                  <MenuItem id="name">Name</MenuItem>
+                  <MenuItem id="owner">Owner</MenuItem>
+                  <MenuItem id="date">Date</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Controlled choice',
+              when: 'The app reads the choice, such as a sort order that drives a list.',
+              render: <SortOrder />,
+              code: `function Example() {
+  const [sort, setSort] = useState(new Set(['recent']));
+  const names = { recent: 'Most recent', name: 'Name', size: 'Size' };
+  return (
+    <Stack gap={2} align="start">
+      <Menu
+        trigger={<Button variant="secondary">Sort</Button>}
+        label="Sort"
+        selectionMode="single"
+        selectedKeys={sort}
+        onSelectionChange={(keys) => setSort(new Set(keys))}
+      >
+        <MenuItem id="recent">Most recent</MenuItem>
+        <MenuItem id="name">Name</MenuItem>
+        <MenuItem id="size">Size</MenuItem>
+      </Menu>
+      <Text as="p" role="status">{\`Sorted by \${names[[...sort][0]]}.\`}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Placement and open state',
+          examples: [
+            {
+              title: 'Opens above',
+              when: 'The trigger sits at the bottom of the screen. The menu still flips when it does not fit.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Actions</Button>} label="Actions" placement="top start">
+                  <MenuItem id="rename">Rename</MenuItem>
+                  <MenuItem id="duplicate">Duplicate</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Opens to the side',
+              when: 'The trigger sits in a narrow column, such as a sidebar. The menu opens beside it.',
+              render: (
+                <Menu trigger={<Button variant="secondary">Actions</Button>} label="Actions" placement="end top">
+                  <MenuItem id="rename">Rename</MenuItem>
+                  <MenuItem id="duplicate">Duplicate</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'Controlled open state',
+              when: 'The app needs to know whether the menu is open.',
+              render: <OpenFromElsewhere />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Stack direction="horizontal" gap={3} wrap>
+      <Menu trigger={<Button variant="secondary">Actions</Button>} label="Actions" isOpen={open} onOpenChange={setOpen}>
+        <MenuItem id="rename">Rename</MenuItem>
+        <MenuItem id="duplicate">Duplicate</MenuItem>
+      </Menu>
+      <Text as="p">{open ? 'The menu is open.' : 'The menu is closed.'}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          examples: [
+            {
+              title: 'Long list',
+              when: 'The menu holds many items. It scrolls inside the viewport, and typeahead reaches any item.',
+              render: (
+                <Menu trigger={<Button variant="secondary">City</Button>} label="City" selectionMode="single">
+                  {cities.map((city) => <MenuItem key={city} id={city}>{city}</MenuItem>)}
+                </Menu>
+              ),
+              code: `<Menu trigger={<Button variant="secondary">City</Button>} label="City" selectionMode="single">
+  {cities.map((city) => <MenuItem key={city} id={city}>{city}</MenuItem>)}
+</Menu>`,
+            },
+            {
+              title: 'Long labels in a narrow column',
+              when: 'Translated labels run long. The menu caps its width to the screen.',
+              frame: 'narrow',
+              render: (
+                <Menu trigger={<Button variant="secondary">Actions</Button>} label="Actions">
+                  <MenuItem id="rename" description="Donnez un nouveau nom à ce projet">Renommer le projet</MenuItem>
+                  <MenuItem id="archive" shortcut="Ctrl+Maj+A">Archiver ce projet et ses fichiers</MenuItem>
+                </Menu>
+              ),
+            },
+            {
+              title: 'On a phone',
+              when: 'The trigger sits in a 320px view. The menu stays inside the screen.',
+              frame: 'phone',
+              render: (
+                <Menu trigger={<IconButton label="More actions" icon={<Icon glyph="more" />} variant="secondary" />} label="More actions" placement="bottom end">
+                  <MenuItem id="rename" icon="edit">Rename</MenuItem>
+                  <MenuItem id="duplicate" icon="copy">Duplicate</MenuItem>
+                </Menu>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'In the flow',
+          examples: [
+            {
+              title: 'Without a trigger',
+              when: 'A preview or an embedded panel draws the open list in the flow, with no popover and no focus move.',
+              render: (
+                <Menu label="Project actions">
+                  <MenuItem id="rename">Rename</MenuItem>
+                  <MenuItem id="duplicate">Duplicate</MenuItem>
+                </Menu>
+              ),
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

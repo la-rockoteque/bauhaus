@@ -1,7 +1,12 @@
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Tooltip } from '../../overlays/tooltip/tooltip';
+import { Button } from '../button/button';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Icon } from '../../../primitives/icon/icon';
 import type { IconGlyph } from '../../../primitives/icon/icon';
 import { IconButton } from './icon-button';
@@ -116,4 +121,133 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Icon button" layer="Component" family="Clickables" rules={iconButtonRules} guide="clickables-icon-button--docs" guideName="Icon button" />,
+};
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Icon button"
+      layer="Component"
+      family="Clickables"
+      imports="import { Button, Icon, IconButton, Stack, Text, Tooltip } from '@acme/design-system';"
+      guide="clickables-icon-button--docs"
+      guideName="Icon button"
+      groups={[
+        {
+          title: 'Variants',
+          kicker: 'The icon button is a button, so it takes the button variants. Tertiary is the default.',
+          examples: [
+            { title: 'Tertiary', when: 'The default. A common action with a known symbol, such as closing a dialog.', render: <IconButton label="Close dialog" icon={<Icon glyph="close" />} /> },
+            { title: 'Secondary', when: 'An icon action that needs an outline to read as pressable.', render: <IconButton variant="secondary" label="Search the catalogue" icon={<Icon glyph="search" />} /> },
+            { title: 'Primary', when: 'The one main action of a region, when its symbol is universal.', render: <IconButton variant="primary" label="Add item" icon={<Icon glyph="plus" />} /> },
+            { title: 'Subtle', when: 'Quiet chrome in a dense toolbar, where a fill would compete with the content.', render: <IconButton variant="subtle" label="Open settings" icon={<Icon glyph="settings" />} /> },
+          ],
+        },
+        {
+          title: 'Icons',
+          kicker: 'The icon is any node, already sized by its own component. It follows currentColor.',
+          examples: [
+            { title: 'Small glyph', when: 'A dense toolbar. The target stays 32px even when the glyph is smaller.', render: <IconButton label="Open menu" icon={<Icon glyph="menu" size="sm" />} /> },
+            { title: 'Default glyph', when: 'The usual size.', render: <IconButton label="Open menu" icon={<Icon glyph="menu" />} /> },
+            { title: 'More actions', when: 'A row or card that holds a menu of further actions.', render: <IconButton label="More actions for Invoice 1042" icon={<Icon glyph="more" />} /> },
+            { title: 'Mirrored in right-to-left', when: 'A direction glyph. It flips by itself when the page reads right to left.', render: <IconButton label="Previous page" icon={<Icon glyph="chevron-left" />} /> },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'States are props, as on the button.',
+          examples: [
+            { title: 'Loading', when: 'The action is running. The icon stays, dimmed, and the button reports aria-busy.', render: <IconButton label="Refresh results" icon={<Icon glyph="refresh" />} loading /> },
+            { title: 'Disabled', when: 'The action cannot run yet. Say why next to it.', render: (
+              <Stack gap={2} align="start">
+                <IconButton label="Delete file" icon={<Icon glyph="delete" />} disabled aria-describedby="icon-delete-why" />
+                <Text variant="caption" tone="muted" as="p" id="icon-delete-why">Select a file to delete it.</Text>
+              </Stack>
+            ) },
+            { title: 'Disabled, primary', when: 'A main icon action that has no input yet.', render: <IconButton variant="primary" label="Add item" icon={<Icon glyph="plus" />} disabled /> },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'Give each button a name that says what it acts on.',
+          examples: [
+            { title: 'Dialog close', when: 'The corner button of a dialog or a panel.', render: (
+              <Stack direction="horizontal" gap={3} align="center" justify="between">
+                <Text as="h3">Edit address</Text>
+                <IconButton label="Close dialog" icon={<Icon glyph="close" />} />
+              </Stack>
+            ) },
+            { title: 'Toolbar', when: 'Several icon actions over content, all subtle so none claims to be the main one.', render: (
+              <Stack direction="horizontal" gap={1} role="toolbar" aria-label="Document actions">
+                <IconButton variant="subtle" label="Edit document" icon={<Icon glyph="edit" />} />
+                <IconButton variant="subtle" label="Copy document" icon={<Icon glyph="copy" />} />
+                <IconButton variant="subtle" label="Download document" icon={<Icon glyph="download" />} />
+                <IconButton variant="subtle" label="Delete document" icon={<Icon glyph="delete" />} />
+              </Stack>
+            ) },
+            { title: 'Beside a text button', when: 'A text action with an icon action for a secondary job.', render: (
+              <Stack direction="horizontal" gap={3} align="center">
+                <Button>Save changes</Button>
+                <IconButton label="Copy link to this page" icon={<Icon glyph="link" />} />
+              </Stack>
+            ) },
+            { title: 'Row actions', when: 'One icon button per table row. The name carries the row, so each is unique.', render: (
+              <Stack as="ul" gap={2}>
+                <li><Stack direction="horizontal" gap={3} align="center" justify="between"><Text as="span">Invoice 1042</Text><IconButton variant="subtle" label="Delete invoice 1042" icon={<Icon glyph="delete" />} /></Stack></li>
+                <li><Stack direction="horizontal" gap={3} align="center" justify="between"><Text as="span">Invoice 1043</Text><IconButton variant="subtle" label="Delete invoice 1043" icon={<Icon glyph="delete" />} /></Stack></li>
+              </Stack>
+            ) },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The label never shows, so it never wraps or truncates. A narrow column changes nothing.',
+          examples: [
+            { title: 'Long label', when: 'A precise name for a screen reader. The square keeps its size.', frame: 'narrow', render: <IconButton label="Remove the shipping address from the saved addresses list" icon={<Icon glyph="close" />} /> },
+            { title: 'Translated label', when: 'The app is not in English: pass the name in the app language.', render: <IconButton label="Fermer la boîte de dialogue" icon={<Icon glyph="close" />} /> },
+          ],
+        },
+        {
+          title: 'In a form',
+          kicker: 'The type is button by default, so an icon button in a form does not submit unless asked.',
+          examples: [
+            { title: 'Submit', when: 'A search field whose button sends the query.', render: (
+              <Stack as="form" direction="horizontal" gap={2} align="center" onSubmit={(event) => event.preventDefault()}>
+                <input type="search" aria-label="Search the catalogue" />
+                <IconButton type="submit" label="Search" icon={<Icon glyph="search" />} />
+              </Stack>
+            ), code: `<Stack as="form" direction="horizontal" gap={2} align="center" onSubmit={handleSubmit}>
+  <input type="search" aria-label="Search the catalogue" />
+  <IconButton type="submit" label="Search" icon={<Icon glyph="search" />} />
+</Stack>` },
+            { title: 'Reset', when: 'Clear the fields of a form.', render: (
+              <Stack as="form" direction="horizontal" gap={2} align="center">
+                <input type="search" aria-label="Search the catalogue" defaultValue="lamp" />
+                <IconButton type="reset" label="Clear search" icon={<Icon glyph="close" />} />
+              </Stack>
+            ) },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The label is the name. A Tooltip adds a visible hint and never replaces it.',
+          examples: [
+            { title: 'With a tooltip', when: 'Mouse users may not know the symbol. The tooltip repeats the name.', render: (
+              <Tooltip content="Download report"><IconButton label="Download report" icon={<Icon glyph="download" />} /></Tooltip>
+            ) },
+            { title: 'Described by a hint', when: 'A consequence the user should hear after the name.', render: (
+              <Stack gap={2} align="start">
+                <IconButton label="Delete project" icon={<Icon glyph="delete" />} aria-describedby="icon-delete-hint" />
+                <Text variant="caption" tone="muted" as="p" id="icon-delete-hint">This also deletes its files.</Text>
+              </Stack>
+            ) },
+            { title: 'Controls a region', when: 'A button that opens or closes a panel. Wire it with aria-expanded and aria-controls.', render: (
+              <IconButton label="Open filters" icon={<Icon glyph="filter" />} aria-expanded={false} aria-controls="icon-filters-panel" />
+            ) },
+          ],
+        },
+      ]}
+    />
+  ),
 };

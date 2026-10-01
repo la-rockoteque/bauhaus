@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Button } from '../../clickables/button/button';
 import { Select } from './select';
 import { selectRules } from './select.rules';
 
@@ -127,4 +132,195 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Select" layer="Component" family="Fields" rules={selectRules} guide="fields-select--docs" guideName="Select" />,
+};
+
+const COUNTRY_OPTIONS = [
+  { value: 'ca', label: 'Canada' },
+  { value: 'fr', label: 'France' },
+  { value: 'us', label: 'United States' },
+];
+
+/** The view owns the value and shows what it means. */
+function ShippingSpeed() {
+  const [speed, setSpeed] = useState('standard');
+  return (
+    <Stack gap={2}>
+      <Select
+        label="Shipping speed"
+        value={speed}
+        onChange={(event) => setSpeed(event.target.value)}
+        options={[
+          { value: 'standard', label: 'Standard' },
+          { value: 'express', label: 'Express' },
+          { value: 'overnight', label: 'Overnight' },
+        ]}
+      />
+      <Text as="p" role="status" variant="caption" tone="muted">{speed === 'standard' ? 'Arrives in five days.' : speed === 'express' ? 'Arrives in two days.' : 'Arrives tomorrow.'}</Text>
+    </Stack>
+  );
+}
+
+/** A required select starts on the empty choice and shows its error when the user leaves it unchosen. */
+function RequiredCountry() {
+  const [country, setCountry] = useState('');
+  const [error, setError] = useState('');
+  return (
+    <Select
+      label="Country"
+      required
+      emptyLabel="Choose a country"
+      value={country}
+      error={error}
+      onChange={(event) => {
+        setCountry(event.target.value);
+        setError('');
+      }}
+      onBlur={() => setError(country === '' ? 'Choose a country' : '')}
+      options={[
+        { value: 'ca', label: 'Canada' },
+        { value: 'fr', label: 'France' },
+        { value: 'us', label: 'United States' },
+      ]}
+    />
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Select"
+      layer="Component"
+      family="Fields"
+      imports="import { Select, Stack, Text, Button } from '@acme/design-system';"
+      guide="fields-select--docs"
+      guideName="Select"
+      groups={[
+        {
+          title: 'Basics',
+          kicker: 'One choice from a short list. The browser draws the open list.',
+          examples: [
+            { title: 'With a preselected value', when: 'One option is the honest default, so the field always holds a value.', render: <Select label="Language" defaultValue="en" options={[{ value: 'en', label: 'English' }, { value: 'fr', label: 'Français' }, { value: 'es', label: 'Español' }]} /> },
+            { title: 'With an empty choice', when: 'The user must pick. The first option says what to do.', render: <Select label="Country" emptyLabel="Choose a country" options={COUNTRY_OPTIONS} /> },
+            { title: 'With a description', when: 'The user needs a hint before choosing.', render: <Select label="Shipping speed" description="Express orders leave the warehouse the same day." emptyLabel="Choose a speed" options={[{ value: 'standard', label: 'Standard' }, { value: 'express', label: 'Express' }]} /> },
+            { title: 'Required', when: 'The form cannot go on without a choice. Pair required with the empty choice, so the form can tell not chosen from chosen.', render: <Select label="Country" required emptyLabel="Choose a country" options={COUNTRY_OPTIONS} /> },
+            { title: 'Required, in another language', when: 'Change the word of the marker with requiredText for a translated view.', render: <Select label="Pays" required requiredText="obligatoire" emptyLabel="Choisissez un pays" options={[{ value: 'ca', label: 'Canada' }, { value: 'fr', label: 'France' }, { value: 'us', label: 'États-Unis' }]} /> },
+          ],
+        },
+        {
+          title: 'Options',
+          kicker: 'Each option has a value, a label and an optional disabled flag.',
+          examples: [
+            { title: 'With a chosen value', when: 'The field shows the option the user picked or the view loaded.', render: <Select label="Country" defaultValue="fr" emptyLabel="Choose a country" options={COUNTRY_OPTIONS} /> },
+            { title: 'Disabled option', when: 'An option exists but is not available now. Say why nearby.', render: <Select label="Plan" description="Team is full until 1 June." defaultValue="solo" options={[{ value: 'solo', label: 'Solo' }, { value: 'team', label: 'Team', disabled: true }, { value: 'company', label: 'Company' }]} /> },
+            { title: 'Name for a form', when: 'Give the field a name so a native form submits its value.', render: <Select label="Country" name="country" emptyLabel="Choose a country" options={COUNTRY_OPTIONS} /> },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'States are props. The native attributes do the work.',
+          examples: [
+            { title: 'Error', when: 'The user left the empty choice. Name the field and the fix.', render: <Select label="Country" required emptyLabel="Choose a country" error="Choose a country" options={COUNTRY_OPTIONS} /> },
+            { title: 'Error, in another language', when: 'Change the hidden word before the error with errorPrefix.', render: <Select label="Pays" emptyLabel="Choisissez un pays" error="Choisissez un pays" errorPrefix="Erreur" options={[{ value: 'ca', label: 'Canada' }, { value: 'fr', label: 'France' }]} /> },
+            { title: 'Disabled', when: 'The user cannot change the choice now. Say why in the description.', render: <Select label="Currency" description="Set by the country of your account." disabled defaultValue="cad" options={[{ value: 'cad', label: 'Canadian dollar' }, { value: 'eur', label: 'Euro' }]} /> },
+            { title: 'Read-only', when: 'The user can focus and read the value but not change it. The keys and clicks that open the list are cancelled.', render: <Select label="Country" readOnly defaultValue="ca" options={COUNTRY_OPTIONS} /> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The chosen text shortens with an ellipsis in the box. The browser list shows it in full.',
+          examples: [
+            { title: 'Long option label', when: 'An option longer than the box: the box shortens it, the list does not.', render: <Select label="Plan" defaultValue="annual" options={[{ value: 'annual', label: 'Annual plan, billed once a year, with priority support and a dedicated account manager' }, { value: 'monthly', label: 'Monthly plan' }]} /> },
+            { title: 'Long label and description in a narrow column', when: 'Translated text runs longer: the label and the description wrap rather than truncate.', frame: 'narrow', render: <Select label="Pays de résidence fiscale principale" description="Choisissez le pays où vous payez vos impôts." emptyLabel="Choisissez un pays" options={[{ value: 'ca', label: 'Canada' }, { value: 'fr', label: 'France' }]} /> },
+            { title: 'Error in a narrow column', when: 'The error wraps below its icon and stays whole.', frame: 'narrow', render: <Select label="Country" emptyLabel="Choose a country" error="Choose the country where your card was issued" options={COUNTRY_OPTIONS} /> },
+            { title: 'On a phone', when: 'The field fills the width of its container, and the phone shows its own picker.', frame: 'phone', render: <Select label="Country" required emptyLabel="Choose a country" options={COUNTRY_OPTIONS} /> },
+          ],
+        },
+        {
+          title: 'Controlled and uncontrolled',
+          kicker: 'The select is a native element: onChange and value work as in React.',
+          examples: [
+            { title: 'Uncontrolled', when: 'The browser holds the choice; read it from the form on submit.', render: <Select label="Country" name="country" defaultValue="ca" options={COUNTRY_OPTIONS} /> },
+            {
+              title: 'Controlled',
+              when: 'The view owns the value and reacts to a change, such as a delivery estimate.',
+              render: <ShippingSpeed />,
+              code: `function ShippingSpeed() {
+  const [speed, setSpeed] = useState('standard');
+  return (
+    <Stack gap={2}>
+      <Select
+        label="Shipping speed"
+        value={speed}
+        onChange={(event) => setSpeed(event.target.value)}
+        options={[
+          { value: 'standard', label: 'Standard' },
+          { value: 'express', label: 'Express' },
+          { value: 'overnight', label: 'Overnight' },
+        ]}
+      />
+      <Text as="p" role="status" variant="caption" tone="muted">{estimate(speed)}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'In a form',
+          examples: [
+            {
+              title: 'Validate on blur',
+              when: 'A required select shows its error once the user leaves it unchosen, and clears it on a choice.',
+              render: <RequiredCountry />,
+              code: `function RequiredCountry() {
+  const [country, setCountry] = useState('');
+  const [error, setError] = useState('');
+  return (
+    <Select
+      label="Country"
+      required
+      emptyLabel="Choose a country"
+      value={country}
+      error={error}
+      onChange={(event) => {
+        setCountry(event.target.value);
+        setError('');
+      }}
+      onBlur={() => setError(country === '' ? 'Choose a country' : '')}
+      options={[
+        { value: 'ca', label: 'Canada' },
+        { value: 'fr', label: 'France' },
+        { value: 'us', label: 'United States' },
+      ]}
+    />
+  );
+}`,
+            },
+            {
+              title: 'An address form',
+              when: 'A select among other fields, with one primary action at the end.',
+              render: (
+                <Stack as="form" gap={4} onSubmit={(event) => event.preventDefault()}>
+                  <Select label="Country" name="country" required emptyLabel="Choose a country" options={COUNTRY_OPTIONS} />
+                  <Select label="Delivery" name="delivery" defaultValue="standard" options={[{ value: 'standard', label: 'Standard' }, { value: 'express', label: 'Express' }]} />
+                  <Stack direction="horizontal" justify="end">
+                    <Button type="submit">Continue to payment</Button>
+                  </Stack>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The label, description and error are tied to the select with for, id and aria-describedby.',
+          examples: [
+            { title: 'Autocomplete token', when: 'Personal data: name the purpose so the browser can fill the field.', render: <Select label="Country" autoComplete="country" emptyLabel="Choose a country" options={COUNTRY_OPTIONS} /> },
+            { title: 'Your own id', when: 'Another element must point to the select, such as a skip link or an error summary.', render: <Select label="Country" id="billing-country" emptyLabel="Choose a country" options={COUNTRY_OPTIONS} /> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

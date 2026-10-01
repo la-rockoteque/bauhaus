@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
 import { Switch } from './switch';
 import { switchRules } from './switch.rules';
 
@@ -103,4 +107,154 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Switch" layer="Component" family="Fields" rules={switchRules} guide="fields-switch--docs" guideName="Switch" />,
+};
+
+/** The switch takes effect at once, so it shows the result in a status message. */
+function EmailAlerts() {
+  const [on, setOn] = useState(true);
+  return (
+    <Stack gap={2}>
+      <Switch label="Email alerts" checked={on} onChange={(event) => setOn(event.target.checked)} />
+      <Text as="p" role="status" variant="caption" tone="muted">{on ? 'Email alerts are on.' : 'Email alerts are off.'}</Text>
+    </Stack>
+  );
+}
+
+/** The change can fail: the switch goes back and a status message says so. */
+function SyncWithRollback() {
+  const [on, setOn] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState('');
+  const toggle = (next: boolean) => {
+    setOn(next);
+    setBusy(true);
+    setStatus('');
+    window.setTimeout(() => {
+      setOn(!next);
+      setBusy(false);
+      setStatus('Could not change the setting. It is back to its previous value.');
+    }, 1200);
+  };
+  return (
+    <Stack gap={2}>
+      <Switch label="Sync across devices" checked={on} disabled={busy} onChange={(event) => toggle(event.target.checked)} />
+      <Text as="p" role="status" variant="caption" tone="muted">{status}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Switch"
+      layer="Component"
+      family="Fields"
+      imports="import { Switch, Stack, Text } from '@acme/design-system';"
+      guide="fields-switch--docs"
+      guideName="Switch"
+      groups={[
+        {
+          title: 'Basics',
+          kicker: 'A setting that applies as soon as it changes. The label names the setting and never changes with the state.',
+          examples: [
+            { title: 'Off', when: 'A setting that is off by default.', render: <Switch label="Email alerts" /> },
+            { title: 'On', when: 'A setting that is on by default, or one the user already chose.', render: <Switch label="Email alerts" defaultChecked /> },
+            { title: 'With a description', when: 'The label needs a line of context. The description joins aria-describedby.', render: <Switch label="Email alerts" description="We email you when a build fails." defaultChecked /> },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'States are props. The on state moves the thumb and draws a check, so colour is never the only cue.',
+          examples: [
+            { title: 'Disabled, off', when: 'The user cannot change the setting now. Say why in the description.', render: <Switch label="Two-factor sign-in" disabled description="Your admin must turn this on first." /> },
+            { title: 'Disabled, on', when: 'A setting that is fixed on. Say why in the description.', render: <Switch label="Security alerts" disabled defaultChecked description="Always on for your account." /> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The label wraps inside its column. The switch stays at the start of the first line.',
+          examples: [
+            { title: 'Long label', when: 'A setting that needs a full sentence to name it.', render: <Switch label="Share my reading history with the people I follow on this service" /> },
+            { title: 'Long label and description in a narrow column', when: 'Translated text runs longer: both wrap rather than truncate.', frame: 'narrow', render: <Switch label="Alertes par courriel pour les échecs de compilation" description="Nous vous écrivons dès qu’une compilation échoue sur la branche principale." /> },
+            { title: 'On a phone', when: 'The row fills the width of its container, with a target at least 24px high.', frame: 'phone', render: <Switch label="Dark mode" description="Follows your device when this is off." /> },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'Several settings in a list: each switch keeps its own label.',
+          examples: [
+            {
+              title: 'A settings list',
+              when: 'Related settings under one heading, each applied as soon as it changes.',
+              render: (
+                <Stack as="fieldset" gap={3}>
+                  <legend>Notifications</legend>
+                  <Switch label="Email alerts" defaultChecked />
+                  <Switch label="Push notifications" />
+                  <Switch label="Weekly summary" description="Sent on Monday morning." defaultChecked />
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Controlled and uncontrolled',
+          examples: [
+            { title: 'Uncontrolled', when: 'The browser holds the state; the effect reads it from the change event.', render: <Switch label="Email alerts" name="alerts" defaultChecked /> },
+            {
+              title: 'Controlled, with a status message',
+              when: 'The view owns the state and announces the new value in a status message.',
+              render: <EmailAlerts />,
+              code: `function EmailAlerts() {
+  const [on, setOn] = useState(true);
+  return (
+    <Stack gap={2}>
+      <Switch label="Email alerts" checked={on} onChange={(event) => setOn(event.target.checked)} />
+      <Text as="p" role="status" variant="caption" tone="muted">{on ? 'Email alerts are on.' : 'Email alerts are off.'}</Text>
+    </Stack>
+  );
+}`,
+            },
+            {
+              title: 'A change that can fail',
+              when: 'The effect is a network call. Put the switch back on failure and say so in a status message.',
+              render: <SyncWithRollback />,
+              code: `function SyncWithRollback() {
+  const [on, setOn] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState('');
+  const toggle = async (next: boolean) => {
+    setOn(next);
+    setBusy(true);
+    setStatus('');
+    try {
+      await saveSetting('sync', next);
+    } catch {
+      setOn(!next);
+      setStatus('Could not change the setting. It is back to its previous value.');
+    }
+    setBusy(false);
+  };
+  return (
+    <Stack gap={2}>
+      <Switch label="Sync across devices" checked={on} disabled={busy} onChange={(event) => toggle(event.target.checked)} />
+      <Text as="p" role="status" variant="caption" tone="muted">{status}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'A native checkbox with role="switch": a screen reader says "switch, on" or "off". Space toggles.',
+          examples: [
+            { title: 'Your own id', when: 'Another element must point to the switch, such as a skip link.', render: <Switch label="Email alerts" id="email-alerts" /> },
+            { title: 'Name for a form', when: 'Give the switch a name, so a native form submits its state.', render: <Switch label="Email alerts" name="alerts" value="on" /> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

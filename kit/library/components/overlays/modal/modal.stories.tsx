@@ -3,10 +3,15 @@ import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Text } from '../../../primitives/text/text';
 import { Button } from '../../clickables/button/button';
+import { Banner } from '../../feedback/banner/banner';
+import { Spinner } from '../../feedback/spinner/spinner';
+import { Checkbox } from '../../fields/checkbox/checkbox';
+import { TextField } from '../../fields/text-field/text-field';
 import { IconButton } from '../../clickables/icon-button/icon-button';
 import { Modal, type ModalProps, type ModalSize } from './modal';
 import { modalRules } from './modal.rules';
@@ -181,4 +186,473 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Modal" layer="Component" family="Overlays" rules={modalRules} guide="overlays-modal--docs" guideName="Modal" />,
+};
+
+/** A trigger and its modal, closed until the user presses the trigger. `build` receives the close function for the actions. */
+function ModalDemo({ trigger, build }: { trigger: string; build: (close: () => void) => Omit<ModalProps, 'open' | 'onClose'> }) {
+  const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>{trigger}</Button>
+      <Modal open={open} onClose={close} {...build(close)} />
+    </>
+  );
+}
+
+const terms = (
+  <Stack gap={3}>
+    <Text>The terms apply to every order placed through the shop, whatever the carrier.</Text>
+    <Text>Returns are free for 30 days.</Text>
+  </Stack>
+);
+
+function EditAddress() {
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState('');
+  const save = () => {
+    setOpen(false);
+    setStatus('Address saved.');
+  };
+  return (
+    <Stack gap={2} align="start">
+      <Button onClick={() => setOpen(true)}>Edit address</Button>
+      <Text as="p" role="status">{status}</Text>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Edit address"
+        closeLabel="Close"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={save}>Save address</Button>
+          </>
+        }
+      >
+        <Stack gap={3}>
+          <TextField label="Street" defaultValue="12 Rue des Érables" />
+          <TextField label="City" defaultValue="Québec" />
+        </Stack>
+      </Modal>
+    </Stack>
+  );
+}
+
+/** A save that fails once more, then works. "Try again" keeps the dialog open until the save works. */
+function FailedSaveModal() {
+  const [open, setOpen] = useState(false);
+  const [tries, setTries] = useState(0);
+  const retry = () => {
+    if (tries >= 1) {
+      setOpen(false);
+      return;
+    }
+    setTries(tries + 1);
+  };
+  const show = () => {
+    setTries(0);
+    setOpen(true);
+  };
+  return (
+    <>
+      <Button variant="secondary" onClick={show}>Open failed save</Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Edit address"
+        closeLabel="Close"
+        footer={<><Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button><Button onClick={retry}>Try again</Button></>}
+      >
+        <Stack gap={3}>
+          <Banner status="error" urgent>The address could not be saved. Check your connection and try again.</Banner>
+          <TextField label="Street" defaultValue="12 Rue des Érables" />
+        </Stack>
+      </Modal>
+    </>
+  );
+}
+
+function LoadingModal() {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const show = () => {
+    setOpen(true);
+    setBusy(true);
+    window.setTimeout(() => setBusy(false), 2000);
+  };
+  return (
+    <>
+      <Button variant="secondary" onClick={show}>Open order details</Button>
+      <Modal open={open} onClose={() => setOpen(false)} title="Order 4821" closeLabel="Close" busy={busy}>
+        {busy ? <Spinner label="Loading order details" showLabel /> : <Text>Shipped on 12 March. 3 items.</Text>}
+      </Modal>
+    </>
+  );
+}
+
+function AcceptTerms() {
+  const [open, setOpen] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Review the terms</Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Terms of sale"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>Decline</Button>
+            <Button disabled={!agreed} onClick={() => setOpen(false)}>Accept terms</Button>
+          </>
+        }
+      >
+        <Stack gap={3}>
+          {terms}
+          <Checkbox label="I have read the terms" description="Accept terms stays off until you check this box." checked={agreed} onChange={(event) => setAgreed(event.target.checked)} />
+        </Stack>
+      </Modal>
+    </>
+  );
+}
+
+const manyTopics = ['Deliveries', 'Billing', 'Returns', 'Gift wrap', 'Customs', 'Insurance', 'Pickup points', 'Holiday hours'];
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Modal"
+      layer="Component"
+      family="Overlays"
+      imports="import { useState } from 'react'; import { Banner, Button, Checkbox, Modal, Spinner, Stack, Text, TextField } from '@acme/design-system';"
+      guide="overlays-modal--docs"
+      guideName="Modal"
+      groups={[
+        {
+          title: 'A task in context',
+          kicker: 'The parent owns open. Escape, the close button and the actions all call onClose.',
+          examples: [
+            {
+              title: 'Edit a record',
+              when: 'The user edits one record without leaving the view.',
+              render: <EditAddress />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState('');
+  const save = () => {
+    setOpen(false);
+    setStatus('Address saved.');
+  };
+  return (
+    <Stack gap={2} align="start">
+      <Button onClick={() => setOpen(true)}>Edit address</Button>
+      <Text as="p" role="status">{status}</Text>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Edit address"
+        closeLabel="Close"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={save}>Save address</Button>
+          </>
+        }
+      >
+        <Stack gap={3}>
+          <TextField label="Street" defaultValue="12 Rue des Érables" />
+          <TextField label="City" defaultValue="Québec" />
+        </Stack>
+      </Modal>
+    </Stack>
+  );
+}`,
+            },
+            {
+              title: 'Terms that need a reply',
+              when: 'The user must accept or decline before going on. The accept action stays off until the box is checked.',
+              render: <AcceptTerms />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Review the terms</Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Terms of sale"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>Decline</Button>
+            <Button disabled={!agreed} onClick={() => setOpen(false)}>Accept terms</Button>
+          </>
+        }
+      >
+        <Stack gap={3}>
+          <Text>The terms apply to every order placed through the shop, whatever the carrier.</Text>
+          <Text>Returns are free for 30 days.</Text>
+          <Checkbox
+            label="I have read the terms"
+            description="Accept terms stays off until you check this box."
+            checked={agreed}
+            onChange={(event) => setAgreed(event.target.checked)}
+          />
+        </Stack>
+      </Modal>
+    </>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Sizes',
+          kicker: 'The size sets the maximum inline size: 20, 30 and 40 rem. The default is md.',
+          examples: SIZES.map((size) => ({
+            title: { sm: 'Small', md: 'Medium', lg: 'Large' }[size],
+            when: { sm: 'A short question or one field.', md: 'The default, for a small form.', lg: 'A wide body, such as a table or a long text.' }[size],
+            render: <ModalDemo trigger={`Open ${size}`} build={(close) => ({ title: 'Delivery notes', size, closeLabel: 'Close', children: <Text>Leave the parcel at the side door.</Text>, footer: <Button onClick={close}>Done</Button> })} />,
+            code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Open ${size}</Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Delivery notes"
+        size="${size}"
+        closeLabel="Close"
+        footer={<Button onClick={() => setOpen(false)}>Done</Button>}
+      >
+        <Text>Leave the parcel at the side door.</Text>
+      </Modal>
+    </>
+  );
+}`,
+          })),
+        },
+        {
+          title: 'Ways out',
+          examples: [
+            {
+              title: 'Close button',
+              when: 'The content is read-only and needs no action. The close label names the button.',
+              render: <ModalDemo trigger="Open details" build={() => ({ title: 'Parcel details', closeLabel: 'Close', children: <Text>Weight 2.4 kg. Insured up to 500 CAD.</Text> })} />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Open details</Button>
+      <Modal open={open} onClose={() => setOpen(false)} title="Parcel details" closeLabel="Close">
+        <Text>Weight 2.4 kg. Insured up to 500 CAD.</Text>
+      </Modal>
+    </>
+  );
+}`,
+            },
+            {
+              title: 'Actions only',
+              when: 'The footer holds the way out, so no close button is needed. Escape still closes it.',
+              render: <ModalDemo trigger="Open notice" build={(close) => ({ title: 'Delivery window', children: <Text>Your parcel arrives between 9:00 and 12:00.</Text>, footer: <Button onClick={close}>Done</Button> })} />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Open notice</Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Delivery window"
+        footer={<Button onClick={() => setOpen(false)}>Done</Button>}
+      >
+        <Text>Your parcel arrives between 9:00 and 12:00.</Text>
+      </Modal>
+    </>
+  );
+}`,
+            },
+            {
+              title: 'Scrim closes it',
+              when: 'The content holds no typed work, so a click outside the dialog may close it.',
+              render: <ModalDemo trigger="Terms (scrim closes)" build={(close) => ({ title: 'Terms of sale', dismissOnScrim: true, closeLabel: 'Close', children: terms, footer: <Button onClick={close}>I have read the terms</Button> })} />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Terms (scrim closes)</Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Terms of sale"
+        dismissOnScrim
+        closeLabel="Close"
+        footer={<Button onClick={() => setOpen(false)}>I have read the terms</Button>}
+      >
+        <Text>The terms apply to every order placed through the shop, whatever the carrier.</Text>
+        <Text>Returns are free for 30 days.</Text>
+      </Modal>
+    </>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'States',
+          examples: [
+            {
+              title: 'Loading',
+              when: 'The body waits for data. The panel keeps its size, and the body is marked busy.',
+              render: <LoadingModal />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const show = () => {
+    setOpen(true);
+    setBusy(true);
+    window.setTimeout(() => setBusy(false), 2000);
+  };
+  return (
+    <>
+      <Button variant="secondary" onClick={show}>Open order details</Button>
+      <Modal open={open} onClose={() => setOpen(false)} title="Order 4821" closeLabel="Close" busy={busy}>
+        {busy ? <Spinner label="Loading order details" showLabel /> : <Text>Shipped on 12 March. 3 items.</Text>}
+      </Modal>
+    </>
+  );
+}`,
+            },
+            {
+              title: 'Error that keeps it open',
+              when: 'A save fails. The message says what failed, and the user can retry.',
+              render: <FailedSaveModal />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState(true);
+  const save = async () => {
+    try {
+      await saveAddress();
+      setError(false);
+      setOpen(false);
+    } catch {
+      setError(true); // the dialog stays open
+    }
+  };
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Open failed save</Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Edit address"
+        closeLabel="Close"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={save}>Try again</Button>
+          </>
+        }
+      >
+        <Stack gap={3}>
+          {error && <Banner status="error" urgent>The address could not be saved. Check your connection and try again.</Banner>}
+          <TextField label="Street" defaultValue="12 Rue des Érables" />
+        </Stack>
+      </Modal>
+    </>
+  );
+}`,
+            },
+            {
+              title: 'Long content',
+              when: 'The body runs past the screen. Only the body scrolls; the title row and the actions stay in view.',
+              render: <ModalDemo trigger="Open the full terms" build={(close) => ({ title: 'Terms of sale', size: 'lg', closeLabel: 'Close', children: <Stack gap={3}>{manyTopics.map((topic) => <Text key={topic}>{`${topic}: the terms apply to every order placed through the shop, whatever the carrier. Read them before you pay.`}</Text>)}</Stack>, footer: <Button onClick={close}>I have read the terms</Button> })} />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  const manyTopics = ['Deliveries', 'Billing', 'Returns', 'Gift wrap', 'Customs', 'Insurance', 'Pickup points', 'Holiday hours'];
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Open the full terms</Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Terms of sale"
+        size="lg"
+        closeLabel="Close"
+        footer={<Button onClick={() => setOpen(false)}>I have read the terms</Button>}
+      >
+        <Stack gap={3}>
+          {manyTopics.map((topic) => (
+            <Text key={topic}>{\`\${topic}: the terms apply to every order placed through the shop, whatever the carrier. Read them before you pay.\`}</Text>
+          ))}
+        </Stack>
+      </Modal>
+    </>
+  );
+}`,
+            },
+            {
+              title: 'On a phone',
+              when: 'At 768px and narrower the dialog fills the screen, so nothing needs a horizontal scroll.',
+              frame: 'phone',
+              render: <ModalDemo trigger="Edit address" build={(close) => ({ title: 'Edit address', closeLabel: 'Close', children: <TextField label="Street" defaultValue="12 Rue des Érables" />, footer: <><Button variant="secondary" onClick={close}>Cancel</Button><Button onClick={close}>Save address</Button></> })} />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Edit address</Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Edit address"
+        closeLabel="Close"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={() => setOpen(false)}>Save address</Button>
+          </>
+        }
+      >
+        <TextField label="Street" defaultValue="12 Rue des Érables" />
+      </Modal>
+    </>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'In the flow',
+          examples: [
+            {
+              title: 'Inline',
+              when: 'A preview or an embedded panel draws the open dialog in the flow, with no scrim and no focus trap.',
+              render: <Modal inline open onClose={noop} title="Edit address" closeLabel="Close" footer={cancelSave}><Address /></Modal>,
+              code: `<Modal
+  inline
+  open
+  onClose={() => {}}
+  title="Edit address"
+  closeLabel="Close"
+  footer={
+    <>
+      <Button variant="secondary">Cancel</Button>
+      <Button>Save address</Button>
+    </>
+  }
+>
+  <Stack gap={3}>
+    <Text>Deliveries go to this address.</Text>
+    <Text tone="muted" variant="caption">12 Rue des Érables, Québec QC G1R 2K4</Text>
+  </Stack>
+</Modal>`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

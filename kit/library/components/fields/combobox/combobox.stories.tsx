@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Button } from '../../clickables/button/button';
 import { Combobox, ForceOpenContext } from './combobox';
 import { comboboxRules } from './combobox.rules';
 
@@ -153,4 +157,228 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Combobox" layer="Component" family="Fields" rules={comboboxRules} guide="fields-combobox--docs" guideName="Combobox" />,
+};
+
+const CITIES = [
+  { id: 'mtl', label: 'Montréal' },
+  { id: 'qc', label: 'Québec' },
+  { id: 'ott', label: 'Ottawa' },
+  { id: 'tor', label: 'Toronto' },
+  { id: 'van', label: 'Vancouver' },
+];
+
+/** The view owns the selection and reacts to it. */
+function CityPicker() {
+  const [city, setCity] = useState<string | null>('qc');
+  const name = CITIES.find((option) => option.id === city)?.label;
+  return (
+    <Stack gap={2}>
+      <Combobox label="City" options={CITIES} selectedKey={city} onSelectionChange={setCity} />
+      <Text as="p" role="status" variant="caption" tone="muted">{name ? `Delivering to ${name}.` : 'No city chosen.'}</Text>
+    </Stack>
+  );
+}
+
+/** The server filters. The view keeps inputValue controlled, sets loading while it fetches, and passes the new options. */
+function ServerSearch() {
+  const [text, setText] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [found, setFound] = useState<readonly { id: string; label: string }[]>([]);
+  const search = (next: string) => {
+    setText(next);
+    if (next === '') {
+      setFound([]);
+      return;
+    }
+    setLoading(true);
+    window.setTimeout(() => {
+      setFound(CITIES.filter((city) => city.label.toLowerCase().includes(next.toLowerCase())));
+      setLoading(false);
+    }, 800);
+  };
+  return <Combobox label="Delivery city" description="Type two letters or more." options={found} inputValue={text} onInputChange={search} loading={loading} />;
+}
+
+/** A required combobox shows its error when the user leaves it with no choice. */
+function RequiredCity() {
+  const [city, setCity] = useState<string | null>(null);
+  const [error, setError] = useState('');
+  return (
+    <Combobox
+      label="City"
+      required
+      options={CITIES}
+      selectedKey={city}
+      error={error}
+      onSelectionChange={(key) => {
+        setCity(key);
+        setError(key === null ? 'Choose a city from the list' : '');
+      }}
+    />
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Combobox"
+      layer="Component"
+      family="Fields"
+      imports="import { Combobox, Stack, Text, Button } from '@acme/design-system';"
+      guide="fields-combobox--docs"
+      guideName="Combobox"
+      groups={[
+        {
+          title: 'Basics',
+          kicker: 'Type to filter a long list. Focus stays in the input; the list opens on Down or on the toggle button.',
+          examples: [
+            { title: 'Label only', when: 'A long list where typing finds the item faster than scrolling.', render: <Combobox label="Country" options={COUNTRIES} /> },
+            { title: 'With a placeholder', when: 'Show a sample of what to type. The label still names the field.', render: <Combobox label="City" placeholder="Start typing a city" options={CITIES} /> },
+            { title: 'With a description', when: 'The user needs a hint before typing.', render: <Combobox label="Country" description="Where your card was issued." options={COUNTRIES} /> },
+            { title: 'Required', when: 'The form cannot go on without a choice. The marker is a word, not an asterisk.', render: <Combobox label="City" required options={CITIES} /> },
+            { title: 'Required, in another language', when: 'Change the word of the marker with requiredText for a translated view.', render: <Combobox label="Ville" required requiredText="obligatoire" options={CITIES} /> },
+            { title: 'Name for a form', when: 'Give the field a name so a native form submits the chosen key.', render: <Combobox label="Country" name="country" options={COUNTRIES} /> },
+          ],
+        },
+        {
+          title: 'Options',
+          kicker: 'Each option has an id, a label and an optional disabled flag.',
+          examples: [
+            { title: 'Disabled option', when: 'An option exists but is not available now. Say why nearby.', render: <Combobox label="Country" description="Italy is closed for new orders." options={COUNTRIES} /> },
+            { title: 'Many options', when: 'Dozens of options: the list scrolls and the typed text narrows it.', render: <Combobox label="Seat number" options={MANY} /> },
+            { title: 'Starts with a choice', when: 'The field holds a value the user chose before, or one the view loaded.', render: <Combobox label="City" options={CITIES} defaultSelectedKey="mtl" /> },
+            { title: 'Starts with typed text', when: 'Open the field on a search the user left half done.', render: <Combobox label="City" options={CITIES} defaultInputValue="Mon" /> },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'States are props. A really open list is the user own action.',
+          examples: [
+            { title: 'Error', when: 'The user left the field with no valid choice. Name the field and the fix.', render: <Combobox label="City" required options={CITIES} defaultInputValue="Mon" error="Choose a city from the list" /> },
+            { title: 'Error, in another language', when: 'Change the hidden word before the error with errorPrefix.', render: <Combobox label="Ville" options={CITIES} error="Choisissez une ville dans la liste" errorPrefix="Erreur" /> },
+            { title: 'No match', when: 'The typed text matches nothing. The list says so; change the words with emptyText.', render: <Combobox label="City" options={CITIES} defaultInputValue="Zzz" emptyText="No city matches your search" /> },
+            { title: 'Loading', when: 'The view is fetching options. The list says so and the field sets aria-busy. Change the words with loadingText.', render: <Combobox label="Delivery city" options={[]} loading loadingText="Searching cities" /> },
+            { title: 'Disabled', when: 'The user cannot change the choice now. Say why in the description.', render: <Combobox label="City" description="Pick a country first." options={CITIES} disabled /> },
+            { title: 'Read-only', when: 'The user can focus and read the choice but not change it.', render: <Combobox label="City" options={CITIES} defaultSelectedKey="mtl" readOnly /> },
+          ],
+        },
+        {
+          title: 'Open list',
+          kicker: 'The list is a popup under the input. These pictures keep it open so the options can be seen.',
+          examples: [
+            {
+              title: 'Options matching the text',
+              when: 'The list narrows to the options that contain the typed text.',
+              render: (
+                <ForceOpenContext value>
+                  <Combobox label="Country" options={COUNTRIES} defaultInputValue="an" />
+                </ForceOpenContext>
+              ),
+              code: `<Combobox label="Country" options={COUNTRIES} />`,
+            },
+            {
+              title: 'Chosen and disabled options',
+              when: 'The chosen option has a check; the disabled one is dimmed.',
+              render: (
+                <ForceOpenContext value>
+                  <Combobox label="Country" options={COUNTRIES} defaultSelectedKey="fr" defaultInputValue="" />
+                </ForceOpenContext>
+              ),
+              code: `<Combobox label="Country" options={COUNTRIES} defaultSelectedKey="fr" />`,
+            },
+          ],
+        },
+        {
+          title: 'Controlled and uncontrolled',
+          kicker: 'The selection and the typed text can each be controlled.',
+          examples: [
+            { title: 'Uncontrolled', when: 'The component holds the choice; read it from the form on submit.', render: <Combobox label="City" name="city" options={CITIES} defaultSelectedKey="ott" /> },
+            {
+              title: 'Controlled selection',
+              when: 'The view owns the choice and reacts to it, such as a delivery estimate.',
+              render: <CityPicker />,
+              code: `function CityPicker() {
+  const [city, setCity] = useState<string | null>('qc');
+  const name = CITIES.find((option) => option.id === city)?.label;
+  return (
+    <Stack gap={2}>
+      <Combobox label="City" options={CITIES} selectedKey={city} onSelectionChange={setCity} />
+      <Text as="p" role="status" variant="caption" tone="muted">{name ? \`Delivering to \${name}.\` : 'No city chosen.'}</Text>
+    </Stack>
+  );
+}`,
+            },
+            {
+              title: 'Search on the server',
+              when: 'The list is too long to ship. Keep the typed text controlled, fetch on input and pass the new options.',
+              render: <ServerSearch />,
+              code: `function ServerSearch() {
+  const [text, setText] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [found, setFound] = useState<readonly ComboboxOption[]>([]);
+  const search = async (next: string) => {
+    setText(next);
+    setLoading(true);
+    setFound(await fetchCities(next));
+    setLoading(false);
+  };
+  return <Combobox label="Delivery city" description="Type two letters or more." options={found} inputValue={text} onInputChange={search} loading={loading} />;
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'Labels wrap. The input keeps one line.',
+          examples: [
+            { title: 'Long option label', when: 'An option longer than the box: the list shows the label in full.', render: <Combobox label="Plan" options={[{ id: 'annual', label: 'Annual plan, billed once a year, with priority support and a dedicated account manager' }, { id: 'monthly', label: 'Monthly plan' }]} defaultSelectedKey="annual" /> },
+            { title: 'Long label and description in a narrow column', when: 'Translated text runs longer: both wrap rather than truncate.', frame: 'narrow', render: <Combobox label="Ville de livraison principale de la commande" description="Tapez le début du nom pour filtrer la liste." options={CITIES} /> },
+            { title: 'Error in a narrow column', when: 'The error wraps below its icon and stays whole.', frame: 'narrow', render: <Combobox label="City" options={CITIES} error="Choose a city from the list, not a free text" /> },
+            { title: 'On a phone', when: 'The field fills the width of its container.', frame: 'phone', render: <Combobox label="City" required options={CITIES} placeholder="Start typing a city" /> },
+          ],
+        },
+        {
+          title: 'In a form',
+          examples: [
+            {
+              title: 'Required, with an error',
+              when: 'A required combobox shows its error when the user clears the choice, and drops it on a new choice.',
+              render: <RequiredCity />,
+              code: `function RequiredCity() {
+  const [city, setCity] = useState<string | null>(null);
+  const [error, setError] = useState('');
+  return (
+    <Combobox
+      label="City"
+      required
+      options={CITIES}
+      selectedKey={city}
+      error={error}
+      onSelectionChange={(key) => {
+        setCity(key);
+        setError(key === null ? 'Choose a city from the list' : '');
+      }}
+    />
+  );
+}`,
+            },
+            {
+              title: 'An address form',
+              when: 'A combobox among other fields, with one primary action at the end.',
+              render: (
+                <Stack as="form" gap={4} onSubmit={(event) => event.preventDefault()}>
+                  <Combobox label="Country" name="country" required options={COUNTRIES} />
+                  <Combobox label="City" name="city" required options={CITIES} />
+                  <Stack direction="horizontal" justify="end">
+                    <Button type="submit">Continue to payment</Button>
+                  </Stack>
+                </Stack>
+              ),
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

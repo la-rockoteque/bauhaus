@@ -3,6 +3,9 @@ import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Badge } from '../../feedback/badge/badge';
 import { Button } from '../../clickables/button/button';
 import { Text } from '../../../primitives/text/text';
 import { Card } from './card';
@@ -151,4 +154,150 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Card" layer="Component" family="Data structures" rules={cardRules} guide="data-structures-card--docs" guideName="Card" />,
+};
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Card"
+      layer="Component"
+      family="Data structures"
+      imports="import { Badge, Button, Card, Stack, Text } from '@acme/design-system';"
+      guide="data-structures-card--docs"
+      guideName="Card"
+      groups={[
+        {
+          title: 'Basics',
+          kicker: 'A card summarises one entity. The title is required; every other part is optional.',
+          examples: [
+            { title: 'Title and body', when: 'The smallest card: a name and a few lines of detail.', render: <Card title="Kitchen renovation"><Text>Cabinets arrive on 14 October.</Text></Card> },
+            { title: 'With meta', when: 'A short status word or date beside the title. It is text, never a control.', render: <Card title="Kitchen renovation" meta="On track"><Text>Cabinets arrive on 14 October.</Text></Card> },
+            { title: 'With a footer', when: 'A note at the bottom: who changed the entity, and when.', render: <Card title="Kitchen renovation" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October.</Text></Card> },
+            { title: 'Every part', when: 'A full summary: title, meta, body and footer.', render: <Card title="Kitchen renovation" meta="On track" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text></Card> },
+            { title: 'Title only', when: 'The entity has no detail yet. The card still shows its name.', render: <Card title="Garden shed" /> },
+          ],
+        },
+        {
+          title: 'As a link',
+          kicker: 'With href, the title is the one link and its target covers the card.',
+          examples: [
+            { title: 'Linked card', when: 'The card opens the entity it summarises. Click anywhere on it.', render: <Card title="Kitchen renovation" meta="On track" href="#kitchen"><Text>Cabinets arrive on 14 October.</Text></Card> },
+            { title: 'Linked card with a text footer', when: 'A linked card needs a note at the bottom. The footer holds text only.', render: <Card title="Kitchen renovation" href="#kitchen" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October.</Text></Card> },
+            {
+              title: 'Static card with two actions',
+              when: 'The card needs more than one action: leave the title unlinked and put the buttons in the footer.',
+              render: (
+                <Card
+                  title="Kitchen renovation"
+                  footer={
+                    <Stack direction="horizontal" gap={3} wrap>
+                      <Button variant="secondary">Archive</Button>
+                      <Button>Open project</Button>
+                    </Stack>
+                  }
+                >
+                  <Text>Cabinets arrive on 14 October.</Text>
+                </Card>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'The caller owns the words of every state. The card keeps its header and its size.',
+          examples: [
+            { title: 'Loading', when: 'The body is on its way. Two placeholder lines hold its space.', render: <Card title="Kitchen renovation" meta="On track" loading /> },
+            { title: 'Loading, with its own label', when: 'The app is not in English: pass the spoken text for the wait.', render: <Card title="Rénovation de cuisine" loading loadingLabel="Chargement du projet" /> },
+            { title: 'Linked card, loading', when: 'The title is known and links already. Only the body waits.', render: <Card title="Kitchen renovation" href="#kitchen" loading /> },
+            { title: 'Empty', when: 'The entity exists but has no content. Say why, and what to do.', render: <Card title="Kitchen renovation" empty={<Text>No notes on this project yet.</Text>} /> },
+            {
+              title: 'Error with a retry',
+              when: 'The body failed to load. The alert replaces the body; a retry sits inside it.',
+              render: (
+                <Card
+                  title="Kitchen renovation"
+                  error={
+                    <Stack gap={2} align="start">
+                      <Text>The project did not load.</Text>
+                      <Button variant="secondary">Try again</Button>
+                    </Stack>
+                  }
+                />
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'Text wraps inside the card. A long reference never widens its column.',
+          examples: [
+            {
+              title: 'Long title and body',
+              when: 'Long titles, unbroken references and translated text: everything wraps.',
+              frame: 'narrow',
+              render: (
+                <Card title="Quarterly-inspection-report-final-revised-signed-2026-Q3-north-tower" meta="Signed" footer="Updated Monday by Marie-Ève Tremblay-Gagnon">
+                  <Text>INSPECTION-2026-Q3-NORTH-TOWER-LEVEL-14-SECTION-C wraps inside the card.</Text>
+                </Card>
+              ),
+            },
+            {
+              title: 'On a phone',
+              when: 'A card takes the width of its container. At phone width it stays one column.',
+              frame: 'phone',
+              render: (
+                <Card title="Kitchen renovation" meta="On track" footer="Updated Monday by Marie" href="#kitchen">
+                  <Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text>
+                </Card>
+              ),
+            },
+            {
+              title: 'Rich body',
+              when: 'The body holds mixed content: a status badge and a line of text.',
+              render: (
+                <Card title="Kitchen renovation" footer="Updated Monday by Marie">
+                  <Stack gap={2} align="start">
+                    <Badge status="success">On track</Badge>
+                    <Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text>
+                  </Stack>
+                </Card>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'A few cards read well side by side. Past about a dozen, use a list or a table.',
+          examples: [
+            {
+              title: 'A set of project cards',
+              when: 'Several entities of one kind, each a link, stacked in one column.',
+              render: (
+                <Stack gap={4}>
+                  <Card title="Kitchen renovation" meta="On track" href="#kitchen"><Text>Cabinets arrive on 14 October.</Text></Card>
+                  <Card title="Garden shed" meta="Late" href="#shed"><Text>The permit is still pending.</Text></Card>
+                  <Card title="Roof repair" meta="Done" href="#roof"><Text>The final inspection passed.</Text></Card>
+                </Stack>
+              ),
+            },
+            {
+              title: 'Status badge as meta',
+              when: 'The status is a word with a colour: a badge carries both.',
+              render: <Card title="Garden shed" meta={<Badge status="warning">Late</Badge>} href="#shed"><Text>The permit is still pending.</Text></Card>,
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The title is a heading and, with href, the link name.',
+          examples: [
+            { title: 'Heading level from the page outline', when: 'The cards sit under an h2 section. Set headingLevel to 3, or 4 under an h3.', render: <Card title="Kitchen renovation" headingLevel={4}><Text>Cabinets arrive on 14 October.</Text></Card> },
+            { title: 'Level 2 on its own', when: 'The card is the first thing under the page title.', render: <Card title="Kitchen renovation" headingLevel={2}><Text>Cabinets arrive on 14 October.</Text></Card> },
+            { title: 'Describe the card', when: 'Tie the body to the card with aria-describedby. Any article attribute reaches the element.', render: <Card id="card-kitchen" title="Kitchen renovation" aria-describedby="card-kitchen-note"><Text id="card-kitchen-note">Cabinets arrive on 14 October.</Text></Card> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

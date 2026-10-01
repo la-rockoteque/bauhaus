@@ -1,6 +1,11 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Card } from '../../data-structures/card/card';
 import { Icon } from '../../../primitives/icon/icon';
 import type { HeadingLevel } from '../../../primitives/heading/heading';
 import { Button } from '../../clickables/button/button';
@@ -148,4 +153,191 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Empty state" layer="Component" family="Feedback" rules={emptyStateRules} guide="feedback-empty-state--docs" guideName="Empty state" />,
+};
+
+const ORDERS = ['Order 1042', 'Order 1043', 'Order 1047'];
+
+/** Clearing the filters swaps the empty state for the rows. A status region announces the change. */
+function FilteredList() {
+  const [filtered, setFiltered] = useState(true);
+  return (
+    <Stack gap={3}>
+      <div role="status">
+        {filtered && (
+          <EmptyState title="No orders match these filters" headingLevel={3} media={<Icon glyph="search" size="lg" />} actions={<Button variant="secondary" onClick={() => setFiltered(false)}>Clear filters</Button>}>
+            Status: Shipped. Date: last 7 days.
+          </EmptyState>
+        )}
+      </div>
+      {!filtered && (
+        <Stack as="ul" gap={1}>
+          {ORDERS.map((order) => <Text as="li" key={order}>{order}</Text>)}
+        </Stack>
+      )}
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Empty state"
+      layer="Component"
+      family="Feedback"
+      imports="import { Button, Card, EmptyState, Icon, Stack, Text } from '@acme/design-system';"
+      guide="feedback-empty-state--docs"
+      guideName="Empty state"
+      groups={[
+        {
+          title: 'Kinds',
+          kicker: 'One component, five kinds. Each kind has its own copy and its own action.',
+          examples: [
+            {
+              title: 'First use',
+              when: 'Nothing exists yet. Invite the user to create the first item.',
+              render: <EmptyState title="No projects yet" media={<Icon glyph="plus" size="lg" />} actions={<Button>Create a project</Button>}>Projects you create appear here.</EmptyState>,
+            },
+            {
+              title: 'Filter or search found nothing',
+              when: 'Rows exist, but none match. Name the filters and offer a way out.',
+              render: <EmptyState title="No orders match these filters" headingLevel={3} media={<Icon glyph="search" size="lg" />} actions={<Button variant="secondary">Clear filters</Button>}>Status: Shipped. Date: last 7 days.</EmptyState>,
+            },
+            {
+              title: 'Cleared by the user',
+              when: 'The user finished the list. Say so; no action is needed.',
+              render: <EmptyState title="All caught up" media={<Icon glyph="success" size="lg" />}>You read every message.</EmptyState>,
+            },
+            {
+              title: 'Load failed',
+              when: 'The list could not load. Say it failed, and offer a retry.',
+              render: <EmptyState title="We could not load projects" media={<Icon glyph="error" size="lg" />} actions={<Button>Try again</Button>}>The server did not answer. Check your connection and try again.</EmptyState>,
+            },
+            {
+              title: 'Blocked by permission',
+              when: 'The user may not see the list. Say who can grant access.',
+              render: <EmptyState title="You cannot view this list" media={<Icon glyph="lock" size="lg" />} actions={<Button variant="secondary">Request access</Button>}>Only members of the Finance team can see invoices.</EmptyState>,
+            },
+          ],
+        },
+        {
+          title: 'Anatomy',
+          kicker: 'Only the title is required. All text comes from props.',
+          examples: [
+            { title: 'Title only', when: 'The fact says it all and no step follows.', render: <EmptyState title="No new notifications" /> },
+            { title: 'Title and body', when: 'A reason and a hint, with no button.', render: <EmptyState title="No invoices this month">Invoices appear here when you send them.</EmptyState> },
+            { title: 'With media', when: 'An icon supports the title. It is hidden from assistive technology.', render: <EmptyState title="No files yet" media={<Icon glyph="folder" size="lg" />}>Upload a file to see it here.</EmptyState> },
+            {
+              title: 'One action',
+              when: 'The next step is one primary button.',
+              render: <EmptyState title="No teammates yet" actions={<Button>Invite a teammate</Button>}>Invite people to work on projects with you.</EmptyState>,
+            },
+            {
+              title: 'Two actions',
+              when: 'A main step and one alternative, no more.',
+              render: (
+                <EmptyState
+                  title="No contacts yet"
+                  actions={
+                    <>
+                      <Button>Add a contact</Button>
+                      <Button variant="secondary">Import a file</Button>
+                    </>
+                  }
+                >
+                  Add people one by one, or import a list.
+                </EmptyState>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Heading level',
+          kicker: 'Pick the level from the page outline. The look does not change.',
+          examples: [
+            { title: 'Level 2, the default', when: 'The empty state sits under the page title.', render: <EmptyState title="No projects yet">Projects you create appear here.</EmptyState> },
+            { title: 'Level 3', when: 'The empty state sits inside a section that has its own level 2 heading.', render: <EmptyState title="No comments yet" headingLevel={3}>Be the first to comment.</EmptyState> },
+            { title: 'Level 4', when: 'The empty state sits inside a card or panel under a level 3 heading.', render: <EmptyState title="No tags" headingLevel={4}>Add a tag to group tasks.</EmptyState> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The block stops at 30rem and wraps. Text never truncates.',
+          examples: [
+            {
+              title: 'Long title and body',
+              when: 'Copy that runs over several lines.',
+              render: (
+                <EmptyState title="We could not find any orders that match your search and the filters you set" headingLevel={3} actions={<Button variant="secondary">Clear filters</Button>}>
+                  Try a shorter search word, remove one of the filters, or widen the date range. Orders older than two years live in the archive.
+                </EmptyState>
+              ),
+            },
+            {
+              title: 'Narrow column',
+              when: 'A side panel. Media, title, body and button stack and wrap.',
+              frame: 'narrow',
+              render: <EmptyState title="No saved searches" headingLevel={3} media={<Icon glyph="search" size="lg" />} actions={<Button variant="secondary">Save this search</Button>}>Saved searches appear here.</EmptyState>,
+            },
+            {
+              title: 'Phone width',
+              when: 'A phone. The block fills the width.',
+              frame: 'phone',
+              render: <EmptyState title="No projects yet" media={<Icon glyph="plus" size="lg" />} actions={<Button>Create a project</Button>}>Projects you create appear here.</EmptyState>,
+            },
+            {
+              title: 'Translated copy',
+              when: 'The app is not in English. The component holds no string, so all copy comes from props.',
+              frame: 'narrow',
+              render: <EmptyState title="Aucun projet pour le moment" headingLevel={3} actions={<Button>Créer un projet</Button>}>Les projets que vous créez apparaissent ici.</EmptyState>,
+            },
+          ],
+        },
+        {
+          title: 'Composition',
+          examples: [
+            {
+              title: 'Inside a card',
+              when: 'A card has a body slot for the empty case. Pass the empty state there.',
+              render: <Card title="Recent activity" empty={<EmptyState title="No activity yet" headingLevel={4}>Actions on this project appear here.</EmptyState>} />,
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          examples: [
+            {
+              title: 'Announced after a user action',
+              when: 'The empty state appears after the user filters. Wrap it in a status region that is already on the page.',
+              render: <FilteredList />,
+              code: `function FilteredList() {
+  const [filtered, setFiltered] = useState(true);
+  return (
+    <Stack gap={3}>
+      <div role="status">
+        {filtered && (
+          <EmptyState
+            title="No orders match these filters"
+            headingLevel={3}
+            media={<Icon glyph="search" size="lg" />}
+            actions={<Button variant="secondary" onClick={() => setFiltered(false)}>Clear filters</Button>}
+          >
+            Status: Shipped. Date: last 7 days.
+          </EmptyState>
+        )}
+      </div>
+      {!filtered && (
+        <Stack as="ul" gap={1}>
+          {orders.map((order) => <Text as="li" key={order}>{order}</Text>)}
+        </Stack>
+      )}
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

@@ -4,8 +4,10 @@ import type { Placement } from 'react-aria-components';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
 import { Button } from '../../clickables/button/button';
 import { IconButton } from '../../clickables/icon-button/icon-button';
 import { Tooltip } from './tooltip';
@@ -142,4 +144,156 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Tooltip" layer="Component" family="Overlays" rules={tooltipRules} guide="overlays-tooltip--docs" guideName="Tooltip" />,
+};
+
+function OpenFromElsewhere() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Stack direction="horizontal" gap={3} align="center" wrap>
+      <Tooltip content="Copy the link" isOpen={open} onOpenChange={setOpen}>
+        <IconButton label="Share" icon={<Icon glyph="external" />} variant="secondary" />
+      </Tooltip>
+      <Text as="p">{open ? 'The tooltip is open.' : 'The tooltip is closed.'}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Tooltip"
+      layer="Component"
+      family="Overlays"
+      imports="import { useState } from 'react'; import { Button, Icon, IconButton, Stack, Text, Tooltip } from '@acme/design-system';"
+      guide="overlays-tooltip--docs"
+      guideName="Tooltip"
+      groups={[
+        {
+          title: 'Triggers',
+          kicker: 'Hover a trigger or focus it with the keyboard to see its tooltip. The trigger keeps its own name; the tooltip adds a detail.',
+          examples: [
+            {
+              title: 'Icon button',
+              when: 'An icon button has its own label, and the tooltip adds the consequence of the action.',
+              render: (
+                <Tooltip content="Copy the link">
+                  <IconButton label="Share" icon={<Icon glyph="external" />} variant="secondary" />
+                </Tooltip>
+              ),
+            },
+            {
+              title: 'Button with a shortcut',
+              when: 'A button has a visible name, and the tooltip shows its key combination.',
+              render: (
+                <Tooltip content="Save (Ctrl+S)">
+                  <Button>Save changes</Button>
+                </Tooltip>
+              ),
+            },
+            {
+              title: 'Consequence of an action',
+              when: 'The label alone leaves a doubt about what happens next.',
+              render: (
+                <Tooltip content="The page stays private until you publish it.">
+                  <Button variant="secondary">Save draft</Button>
+                </Tooltip>
+              ),
+            },
+            {
+              title: 'Toolbar',
+              when: 'Several icon buttons sit together, and each one adds its own detail.',
+              render: (
+                <Stack direction="horizontal" gap={2}>
+                  <Tooltip content="Copy the link"><IconButton label="Copy" icon={<Icon glyph="copy" />} variant="secondary" /></Tooltip>
+                  <Tooltip content="Download as PDF"><IconButton label="Download" icon={<Icon glyph="download" />} variant="secondary" /></Tooltip>
+                  <Tooltip content="Edit this page"><IconButton label="Edit" icon={<Icon glyph="edit" />} variant="secondary" /></Tooltip>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Placement',
+          kicker: 'The tooltip flips to the opposite side when it does not fit. The default is top.',
+          examples: [
+            { title: 'Top', when: 'The default, when there is room above the trigger.', render: <Tooltip content="Copy the link" placement="top">{share}</Tooltip> },
+            { title: 'Bottom', when: 'The trigger sits at the top of the screen.', render: <Tooltip content="Copy the link" placement="bottom">{share}</Tooltip> },
+            { title: 'Start', when: 'The trigger sits in a row, and the tooltip must not cover its neighbours above or below.', render: <Tooltip content="Copy the link" placement="start">{share}</Tooltip> },
+            { title: 'End', when: 'The trigger sits at the start of a row, such as a sidebar.', render: <Tooltip content="Copy the link" placement="end">{share}</Tooltip> },
+          ],
+        },
+        {
+          title: 'Timing',
+          examples: [
+            {
+              title: 'No delay',
+              when: 'The trigger is in a dense toolbar where people scan from one button to the next.',
+              render: <Tooltip content="Copy the link" delay={0}>{share}</Tooltip>,
+            },
+            {
+              title: 'Longer delay',
+              when: 'The trigger sits in a busy area where a fast tooltip would flash as the pointer crosses.',
+              render: <Tooltip content="Copy the link" delay={1500}>{share}</Tooltip>,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          examples: [
+            {
+              title: 'Long text',
+              when: 'The hint runs long. It wraps at 20rem. A hint that needs more room is a popover.',
+              render: (
+                <Tooltip content="Everyone with the link can read this page, even if they have no account. You can turn the link off at any time in the sharing settings.">
+                  <Button variant="secondary">Anyone with the link</Button>
+                </Tooltip>
+              ),
+            },
+            {
+              title: 'In a narrow column',
+              when: 'The trigger sits in a 192px column. The tooltip stays within the screen.',
+              frame: 'narrow',
+              render: (
+                <Tooltip content="Everyone with the link can read this page.">
+                  <Button variant="secondary">Anyone with the link</Button>
+                </Tooltip>
+              ),
+            },
+            {
+              title: 'On a phone',
+              when: 'The trigger sits in a 320px view. The hint opens on focus, because touch has no hover.',
+              frame: 'phone',
+              render: (
+                <Tooltip content="Copy the link" placement="bottom">
+                  <IconButton label="Share" icon={<Icon glyph="external" />} variant="secondary" />
+                </Tooltip>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Controlled open state',
+          examples: [
+            {
+              title: 'Read the open state',
+              when: 'The app needs to know whether the tooltip is open.',
+              render: <OpenFromElsewhere />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Stack direction="horizontal" gap={3} align="center" wrap>
+      <Tooltip content="Copy the link" isOpen={open} onOpenChange={setOpen}>
+        <IconButton label="Share" icon={<Icon glyph="external" />} variant="secondary" />
+      </Tooltip>
+      <Text as="p">{open ? 'The tooltip is open.' : 'The tooltip is closed.'}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

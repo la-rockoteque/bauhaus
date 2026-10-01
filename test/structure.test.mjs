@@ -25,7 +25,7 @@ test('check: the bad library yields every finding id', () => {
   const ids = new Set(findings.map((f) => f.id));
   for (const id of [
     'misfile.folder-by-file-type', 'structure.root', 'structure.family', 'structure.slice-name',
-    'slice.story', 'slice.page', 'slice.showcase', 'slice.rules', 'slice.test', 'slice.tokens',
+    'slice.story', 'slice.page', 'slice.showcase', 'slice.examples', 'slice.rules', 'slice.test', 'slice.tokens',
     'misfile.story-far-from-component', 'misfile.library-imports-app', 'structure.direction', 'pattern.no-styles',
   ]) assert.ok(ids.has(id), `missing ${id}`);
   for (const f of findings) {
@@ -72,6 +72,15 @@ test('check: slice.showcase needs a DocPage import from fixtures/doc-page/doc-pa
   assert.deepEqual(at("import { DocPage } from './somewhere';\nexport const A = () => <DocPage />;"), ['primitives/box/box.stories.tsx'], 'wrong import path');
   assert.deepEqual(at("import { DocPage } from '../../fixtures/doc-page/doc-page';"), ['primitives/box/box.stories.tsx'], 'imported but never rendered');
   assert.deepEqual(at(DOC_STORY), []);
+});
+
+test('check: slice.examples needs an ExamplesPage in a component story, and only there', () => {
+  const at = (dir, name, story) => checkStructure(tmpLibrary(SLICE(dir, name, { [`${name}.stories.tsx`]: story }))).filter((f) => f.id === 'slice.examples').map((f) => f.path);
+  const EXAMPLES = "import { ExamplesPage } from '../../../fixtures/examples/examples';\nexport const Examples = { render: () => <ExamplesPage /> };\n";
+  assert.deepEqual(at('components/clickables/button', 'button', DOC_STORY), ['components/clickables/button/button.stories.tsx']);
+  assert.deepEqual(at('components/clickables/button', 'button', "import { ExamplesPage } from '../../../fixtures/examples/examples';\n"), ['components/clickables/button/button.stories.tsx'], 'imported but never rendered');
+  assert.deepEqual(at('components/clickables/button', 'button', DOC_STORY + EXAMPLES), []);
+  assert.deepEqual(at('primitives/box', 'box', DOC_STORY), [], 'a primitive needs no Examples page');
 });
 
 test('check: a story may import the page builder from fixtures', () => {

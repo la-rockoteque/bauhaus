@@ -28,6 +28,8 @@ Each slice has two pages, and they never repeat each other's tables.
 - **The showcase** is `<name>.stories.tsx`. One story renders `<DocPage …/>`. It shows what a reader can see.
 - **The guide** is `<name>.mdx`. It holds the prose a picture cannot show. It declares `<Meta of={Stories}/>`, so one Storybook entry shows the guide as "Docs" and the showcase as a story.
 
+Beside the showcase, the stories file holds two more stories. `Advisories` renders `<AdvisoriesPage …/>`: the live Rulebook, the Accessibility coverage and the slice's tests. A component's stories file has a third story, `Examples`. It renders `<ExamplesPage …/>` from `fixtures/examples/examples`: every use case drawn live, each with the code that draws it and a copy button. The use cases are exhaustive: every prop and variant, every state, the content cases, composition, form wiring and accessibility wiring. The code is the rendered element printed back as JSX, so the picture and the code cannot drift; an example that needs state gives its own `code`. Examples show how to use the component. They never repeat the guide's reasons or the showcase's Do and don't. The sidebar lists Showcase, Advisories, Examples, then the Docs guide.
+
 | Section | Showcase (`DocPage` props) | Guide (`.mdx`) |
 |---|---|---|
 | 1 Introduction | short: `name`, `layer`, `family` (eyebrow), `plain`, `precise`, `usedFor` | full: plain words, then precise, the layer |
@@ -39,7 +41,7 @@ Each slice has two pages, and they never repeat each other's tables.
 | Rulebook | `rules`: the `<name>.rules.ts` export, graded live | every rule with its basis |
 | Accessibility | derived from the rules' `covers` (no prop) | keyboard and ARIA prose |
 
-`DocPage` lives in `fixtures/doc-page/`, a Storybook-only fixture outside the published package. `extra` adds sections between States and Do and don't; `guide` and `guideName` point to the guide. The props are typed in `.storybook/doc-page/types.ts` (`DocPageProps`). `scripts/structure.mjs` reports `slice.page` when the guide is missing and `slice.showcase` when the stories file does not render `DocPage`.
+`DocPage` lives in `fixtures/doc-page/`, a Storybook-only fixture outside the published package. `extra` adds sections between States and Do and don't; `guide` and `guideName` point to the guide. The props are typed in `.storybook/doc-page/types.ts` (`DocPageProps`). `scripts/structure.mjs` reports `slice.page` when the guide is missing, `slice.showcase` when the stories file does not render `DocPage`, and `slice.examples` when a component's stories file does not render `ExamplesPage`.
 
 ## Rules
 

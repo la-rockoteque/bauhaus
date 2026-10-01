@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Button } from '../../clickables/button/button';
 import { Checkbox } from './checkbox';
 import { checkboxRules } from './checkbox.rules';
 
@@ -118,4 +122,203 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Checkbox" layer="Component" family="Fields" rules={checkboxRules} guide="fields-checkbox--docs" guideName="Checkbox" />,
+};
+
+/** The view owns the box, so it can reset it and read it. */
+function NewsletterOptIn() {
+  const [subscribed, setSubscribed] = useState(false);
+  return <Checkbox label="Send me the newsletter" checked={subscribed} onChange={(event) => setSubscribed(event.target.checked)} />;
+}
+
+/** A box that must be ticked: the view checks it when the user leaves it, and clears the error on a tick. */
+function AcceptTerms() {
+  const [accepted, setAccepted] = useState(false);
+  const [error, setError] = useState('');
+  return (
+    <Checkbox
+      label="I accept the terms of service"
+      required
+      checked={accepted}
+      error={error}
+      onChange={(event) => {
+        setAccepted(event.target.checked);
+        if (event.target.checked) setError('');
+      }}
+      onBlur={() => setError(accepted ? '' : 'Accept the terms of service to create your account')}
+    />
+  );
+}
+
+/** The parent box is mixed while some children are checked, and a toggle sets them all. */
+function SelectAllRows() {
+  const [rows, setRows] = useState([true, false, false]);
+  const checked = rows.filter(Boolean).length;
+  return (
+    <Stack gap={2}>
+      <Checkbox
+        label="Select all invoices"
+        checked={checked === rows.length}
+        indeterminate={checked > 0 && checked < rows.length}
+        onChange={() => setRows(rows.map(() => checked !== rows.length))}
+      />
+      <Stack gap={2} role="group" aria-label="Invoices">
+        {['Invoice 2041', 'Invoice 2042', 'Invoice 2043'].map((name, n) => (
+          <Checkbox key={name} label={name} checked={rows[n]} onChange={(event) => setRows(rows.map((on, k) => (k === n ? event.target.checked : on)))} />
+        ))}
+      </Stack>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Checkbox"
+      layer="Component"
+      family="Fields"
+      imports="import { Checkbox, Stack, Button } from '@acme/design-system';"
+      guide="fields-checkbox--docs"
+      guideName="Checkbox"
+      groups={[
+        {
+          title: 'Basics',
+          kicker: 'One independent yes or no that a form saves. The label is part of the target.',
+          examples: [
+            { title: 'Unchecked', when: 'An option the user turns on, off by default.', render: <Checkbox label="Send me the newsletter" /> },
+            { title: 'Checked', when: 'An option that is on by default, or one the user already chose.', render: <Checkbox label="Send me the newsletter" defaultChecked /> },
+            { title: 'With a description', when: 'The label needs a line of context. The description joins aria-describedby.', render: <Checkbox label="Send me the newsletter" description="One email a month. You can leave at any time." /> },
+            { title: 'Required', when: 'The box must be ticked to go on. The marker is a word, not an asterisk.', render: <Checkbox label="I accept the terms of service" required /> },
+            { title: 'Required, in another language', when: 'Change the word of the marker with requiredText for a translated view.', render: <Checkbox label="J’accepte les conditions d’utilisation" required requiredText="obligatoire" /> },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'States are props. The native attributes do the work.',
+          examples: [
+            { title: 'Error', when: 'A box that must be ticked is not. Name what is missing and the fix.', render: <Checkbox label="I accept the terms of service" required error="Accept the terms of service to create your account" /> },
+            { title: 'Error, in another language', when: 'Change the hidden word before the error with errorPrefix.', render: <Checkbox label="J’accepte les conditions d’utilisation" required requiredText="obligatoire" error="Acceptez les conditions pour créer votre compte" errorPrefix="Erreur" /> },
+            { title: 'Mixed', when: 'A parent whose children are partly checked. A toggle by the user clears the mixed state.', render: <Checkbox label="Select all invoices" indeterminate /> },
+            { title: 'Disabled, unchecked', when: 'The user cannot change the box now. Say why in the description.', render: <Checkbox label="Share with the whole team" disabled description="Ask an admin to turn on sharing." /> },
+            { title: 'Disabled, checked', when: 'A choice that is fixed on. Say why in the description.', render: <Checkbox label="Receive security alerts" disabled defaultChecked description="Always on for your account." /> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The label wraps inside its column. The box stays at the start of the first line.',
+          examples: [
+            { title: 'Long label', when: 'A consent sentence: the label wraps and the whole text stays a target.', render: <Checkbox label="I agree that the company may contact me about products and services that are similar to the ones I already bought" /> },
+            { title: 'Long label and description in a narrow column', when: 'Translated text runs longer: both wrap rather than truncate.', frame: 'narrow', render: <Checkbox label="Envoyez-moi le bulletin d’information mensuel" description="Un courriel par mois. Vous pouvez vous désabonner à tout moment." /> },
+            { title: 'Error in a narrow column', when: 'The error wraps below its icon and stays whole.', frame: 'narrow', render: <Checkbox label="I accept the terms" required error="Accept the terms of service to create your account" /> },
+            { title: 'On a phone', when: 'The row fills the width of its container, with a target at least 24px high.', frame: 'phone', render: <Checkbox label="Remember me on this device" description="Do not use this on a shared computer." /> },
+          ],
+        },
+        {
+          title: 'A group of boxes',
+          kicker: 'Wrap several boxes in a fieldset with a legend, as the radio group does.',
+          examples: [
+            {
+              title: 'Several answers',
+              when: 'The user may tick any number of options. The legend is the question.',
+              render: (
+                <Stack as="fieldset" gap={2}>
+                  <legend>Which topics interest you?</legend>
+                  <Checkbox label="Product news" defaultChecked />
+                  <Checkbox label="Events" />
+                  <Checkbox label="Tips and guides" />
+                </Stack>
+              ),
+            },
+            {
+              title: 'Parent and children',
+              when: 'A parent box that selects all rows and shows the mixed state while some are checked.',
+              render: <SelectAllRows />,
+              code: `function SelectAllRows() {
+  const [rows, setRows] = useState([true, false, false]);
+  const checked = rows.filter(Boolean).length;
+  return (
+    <Stack gap={2}>
+      <Checkbox
+        label="Select all invoices"
+        checked={checked === rows.length}
+        indeterminate={checked > 0 && checked < rows.length}
+        onChange={() => setRows(rows.map(() => checked !== rows.length))}
+      />
+      <Stack gap={2} role="group" aria-label="Invoices">
+        {['Invoice 2041', 'Invoice 2042', 'Invoice 2043'].map((name, n) => (
+          <Checkbox key={name} label={name} checked={rows[n]} onChange={(event) => setRows(rows.map((on, k) => (k === n ? event.target.checked : on)))} />
+        ))}
+      </Stack>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Controlled and uncontrolled',
+          examples: [
+            { title: 'Uncontrolled', when: 'The browser holds the box; read it from the form on submit.', render: <Checkbox label="Send me the newsletter" name="newsletter" defaultChecked /> },
+            {
+              title: 'Controlled',
+              when: 'The view owns the box, so it can reset it or read it before a submit.',
+              render: <NewsletterOptIn />,
+              code: `function NewsletterOptIn() {
+  const [subscribed, setSubscribed] = useState(false);
+  return <Checkbox label="Send me the newsletter" checked={subscribed} onChange={(event) => setSubscribed(event.target.checked)} />;
+}`,
+            },
+          ],
+        },
+        {
+          title: 'In a form',
+          examples: [
+            {
+              title: 'A box that must be ticked',
+              when: 'Check it when focus leaves the box, and clear the error on a tick.',
+              render: <AcceptTerms />,
+              code: `function AcceptTerms() {
+  const [accepted, setAccepted] = useState(false);
+  const [error, setError] = useState('');
+  return (
+    <Checkbox
+      label="I accept the terms of service"
+      required
+      checked={accepted}
+      error={error}
+      onChange={(event) => {
+        setAccepted(event.target.checked);
+        if (event.target.checked) setError('');
+      }}
+      onBlur={() => setError(accepted ? '' : 'Accept the terms of service to create your account')}
+    />
+  );
+}`,
+            },
+            {
+              title: 'Sign-up consent',
+              when: 'One required box and one optional box, then one primary action.',
+              render: (
+                <Stack as="form" gap={4} onSubmit={(event) => event.preventDefault()}>
+                  <Checkbox label="I accept the terms of service" name="terms" required />
+                  <Checkbox label="Send me the newsletter" name="newsletter" description="One email a month." />
+                  <Stack direction="horizontal" justify="end">
+                    <Button type="submit">Create account</Button>
+                  </Stack>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The label, description and error are tied to the input with for, id and aria-describedby.',
+          examples: [
+            { title: 'Your own id', when: 'Another element must point to the box, such as an error summary.', render: <Checkbox label="I accept the terms of service" id="accept-terms" required /> },
+            { title: 'Value for a form', when: 'Give the box a name and a value, so a native form submits what the user chose.', render: <Checkbox label="Gift wrap" name="extras" value="gift-wrap" /> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

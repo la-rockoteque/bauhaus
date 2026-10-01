@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
 import { Chip } from './chip';
 import type { ChipVariant } from './chip';
 import { chipRules } from './chip.rules';
@@ -138,4 +141,202 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Chip" layer="Component" family="Clickables" rules={chipRules} guide="clickables-chip--docs" guideName="Chip" />,
+};
+
+const FILTERS = ['Status: Shipped', 'Owner: Dana', 'Region: Europe'] as const;
+
+/** A filter bar: each active filter is a removable chip, and removing one is announced in a status region. */
+function FilterBar() {
+  const [filters, setFilters] = useState<readonly string[]>(FILTERS);
+  const [status, setStatus] = useState('');
+  const remove = (filter: string) => {
+    setFilters(filters.filter((item) => item !== filter));
+    setStatus(`Removed filter ${filter}.`);
+  };
+  return (
+    <Stack gap={2} align="start">
+      <Stack as="ul" direction="horizontal" gap={2} wrap aria-label="Active filters">
+        {filters.map((filter) => (
+          <li key={filter}>
+            <Chip variant="removable" removeLabel="Remove filter" onRemove={() => remove(filter)}>{filter}</Chip>
+          </li>
+        ))}
+      </Stack>
+      <Text variant="caption" tone="muted" as="p" role="status">{status || `${filters.length} filters active.`}</Text>
+    </Stack>
+  );
+}
+
+/** A chip row where the view owns the selection, so it can be shown, reset or saved. */
+function ControlledChips() {
+  const [selected, setSelected] = useState<readonly string[]>(['Open']);
+  const toggle = (name: string, on: boolean) => setSelected(on ? [...selected, name] : selected.filter((item) => item !== name));
+  return (
+    <Stack gap={2} align="start">
+      <Stack direction="horizontal" gap={2} wrap role="group" aria-label="Ticket status">
+        {['Open', 'Blocked', 'Done'].map((name) => (
+          <Chip key={name} variant="selectable" selected={selected.includes(name)} onSelectedChange={(on) => toggle(name, on)}>{name}</Chip>
+        ))}
+      </Stack>
+      <Text variant="caption" tone="muted" as="p" role="status">{selected.length > 0 ? `Showing: ${selected.join(', ')}.` : 'Showing all tickets.'}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Chip"
+      layer="Component"
+      family="Clickables"
+      imports="import { Chip, Stack, Text } from '@acme/design-system';"
+      guide="clickables-chip--docs"
+      guideName="Chip"
+      groups={[
+        {
+          title: 'Variants',
+          kicker: 'The variant says what the user can do with the value.',
+          examples: [
+            { title: 'Static', when: 'A value that is shown and never changed, such as a tag on a record.', render: <Chip>Design system</Chip> },
+            { title: 'Removable', when: 'An active filter the user can take off on its own.', render: <Chip variant="removable" removeLabel="Remove filter" onRemove={() => {}}>Status: Shipped</Chip> },
+            { title: 'Selectable', when: 'A filter the user switches on and off in a short row.', render: <Chip variant="selectable">Assigned to me</Chip> },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'Only the removable and selectable variants are pressed, so only they have a pressed or disabled look.',
+          examples: [
+            { title: 'Selected, uncontrolled', when: 'The chip starts on and the user can switch it off.', render: <Chip variant="selectable" defaultSelected>Assigned to me</Chip> },
+            { title: 'Selected, controlled', when: 'The view owns the state, so it can show or reset it.', render: <Chip variant="selectable" selected onSelectedChange={() => {}}>Assigned to me</Chip> },
+            { title: 'Disabled, selectable', when: 'The filter does not apply to the current view.', render: <Chip variant="selectable" disabled>Assigned to me</Chip> },
+            { title: 'Disabled, selected', when: 'A filter is locked on by something else, such as a saved view.', render: <Chip variant="selectable" disabled defaultSelected>Assigned to me</Chip> },
+            { title: 'Disabled, removable', when: 'The filter stays visible but the user cannot remove it now.', render: <Chip variant="removable" disabled onRemove={() => {}}>Status: Shipped</Chip> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The label is one line. A long one ends in an ellipsis and a Tooltip shows the rest.',
+          examples: [
+            { title: 'Long label, static', when: 'A value longer than the maximum width. Hover or focus shows the full text.', frame: 'narrow', render: <Chip>Quarterly planning workshop with the platform team</Chip> },
+            { title: 'Long label, removable', when: 'A long filter value. The remove button name keeps the whole text.', frame: 'narrow', render: <Chip variant="removable" removeLabel="Remove filter" onRemove={() => {}}>Owner: Alexandria Montgomery-Fitzgerald</Chip> },
+            { title: 'Long label, selectable', when: 'A long choice in a toggle row.', frame: 'narrow', render: <Chip variant="selectable">Waiting for a reply from the customer</Chip> },
+            { title: 'Translated remove label', when: 'The app is not in English: pass the words before the label in the remove button name.', render: <Chip variant="removable" removeLabel="Supprimer le filtre" onRemove={() => {}}>Statut : Expédié</Chip> },
+            { title: 'Long translated label on a phone', when: 'A long French label in a narrow column.', frame: 'phone', render: <Chip variant="selectable">Livraison express sous vingt-quatre heures</Chip> },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'Put a row of chips in a Stack with wrap, as a list, so a screen reader counts them.',
+          examples: [
+            {
+              title: 'Row of static chips',
+              when: 'Several tags on one record. They flow onto new lines and never scroll sideways.',
+              frame: 'phone',
+              render: (
+                <Stack as="ul" direction="horizontal" gap={2} wrap aria-label="Tags">
+                  <li><Chip>Design system</Chip></li>
+                  <li><Chip>Accessibility</Chip></li>
+                  <li><Chip>Tokens</Chip></li>
+                  <li><Chip>Documentation</Chip></li>
+                </Stack>
+              ),
+            },
+            {
+              title: 'Row of selectable chips',
+              when: 'A few independent toggles. They are not a choice of one; for that, use a radio group.',
+              frame: 'phone',
+              render: (
+                <Stack direction="horizontal" gap={2} wrap role="group" aria-label="Show tickets">
+                  <Chip variant="selectable" defaultSelected>Open</Chip>
+                  <Chip variant="selectable">Blocked</Chip>
+                  <Chip variant="selectable">Done</Chip>
+                </Stack>
+              ),
+            },
+            {
+              title: 'Mixed row',
+              when: 'A selectable chip and a removable chip side by side. Both are 32px high, so the row stays even.',
+              render: (
+                <Stack as="ul" direction="horizontal" gap={2} wrap aria-label="Filters">
+                  <li><Chip variant="selectable" defaultSelected>Assigned to me</Chip></li>
+                  <li><Chip variant="removable" removeLabel="Remove filter" onRemove={() => {}}>Status: Shipped</Chip></li>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Controlled and uncontrolled',
+          kicker: 'Selectable chips run on their own, or the view owns the state.',
+          examples: [
+            {
+              title: 'Active filters with removal',
+              when: 'Each active filter has its own remove button, and the view announces what it removed.',
+              render: <FilterBar />,
+              code: `function FilterBar() {
+  const [filters, setFilters] = useState(['Status: Shipped', 'Owner: Dana', 'Region: Europe']);
+  const [status, setStatus] = useState('');
+  const remove = (filter) => {
+    setFilters(filters.filter((item) => item !== filter));
+    setStatus(\`Removed filter \${filter}.\`);
+  };
+  return (
+    <Stack gap={2} align="start">
+      <Stack as="ul" direction="horizontal" gap={2} wrap aria-label="Active filters">
+        {filters.map((filter) => (
+          <li key={filter}>
+            <Chip variant="removable" removeLabel="Remove filter" onRemove={() => remove(filter)}>{filter}</Chip>
+          </li>
+        ))}
+      </Stack>
+      <Text variant="caption" tone="muted" as="p" role="status">{status || \`\${filters.length} filters active.\`}</Text>
+    </Stack>
+  );
+}`,
+            },
+            {
+              title: 'Controlled selection',
+              when: 'The view needs to read the chosen chips, for example to filter a list.',
+              render: <ControlledChips />,
+              code: `function ControlledChips() {
+  const [selected, setSelected] = useState(['Open']);
+  const toggle = (name, on) => setSelected(on ? [...selected, name] : selected.filter((item) => item !== name));
+  return (
+    <Stack gap={2} align="start">
+      <Stack direction="horizontal" gap={2} wrap role="group" aria-label="Ticket status">
+        {['Open', 'Blocked', 'Done'].map((name) => (
+          <Chip key={name} variant="selectable" selected={selected.includes(name)} onSelectedChange={(on) => toggle(name, on)}>{name}</Chip>
+        ))}
+      </Stack>
+      <Text variant="caption" tone="muted" as="p" role="status">{selected.length > 0 ? \`Showing: \${selected.join(', ')}.\` : 'Showing all tickets.'}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The chip passes native attributes to its root, so a label or an id wires like on any element.',
+          examples: [
+            { title: 'Remove button name', when: 'Name what the button removes: the chip adds the label after your words.', render: <Chip variant="removable" removeLabel="Remove filter" onRemove={() => {}}>Status: Shipped</Chip> },
+            { title: 'Described by a hint', when: 'A selectable chip that needs a consequence read out with its name.', render: (
+              <Stack gap={2} align="start">
+                <Chip variant="selectable" aria-describedby="chip-hint">Include archived</Chip>
+                <Text variant="caption" tone="muted" as="p" id="chip-hint">Archived projects count toward the total.</Text>
+              </Stack>
+            ) },
+            { title: 'Labelled group', when: 'Name a row of toggles, so a screen reader announces what the chips filter.', render: (
+              <Stack direction="horizontal" gap={2} wrap role="group" aria-label="Priority">
+                <Chip variant="selectable">High</Chip>
+                <Chip variant="selectable">Medium</Chip>
+                <Chip variant="selectable">Low</Chip>
+              </Stack>
+            ) },
+          ],
+        },
+      ]}
+    />
+  ),
 };

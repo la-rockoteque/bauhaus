@@ -1,6 +1,11 @@
+import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Button } from '../../clickables/button/button';
 import { Spinner } from './spinner';
 import type { SpinnerSize } from './spinner';
 import { spinnerRules } from './spinner.rules';
@@ -110,4 +115,139 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Spinner" layer="Component" family="Feedback" rules={spinnerRules} guide="feedback-spinner--docs" guideName="Spinner" />,
+};
+
+/** The wait lasts two seconds. The spinner mounts after 300 ms, so a fast load never shows it. */
+function DelayedSpinner() {
+  const [loading, setLoading] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    if (!loading) return;
+    const reveal = window.setTimeout(() => setShowSpinner(true), 300);
+    const finish = window.setTimeout(() => {
+      setLoading(false);
+      setShowSpinner(false);
+      setDone(true);
+    }, 2000);
+    return () => {
+      window.clearTimeout(reveal);
+      window.clearTimeout(finish);
+    };
+  }, [loading]);
+  const load = () => {
+    setDone(false);
+    setLoading(true);
+  };
+  return (
+    <Stack gap={3} align="start">
+      <Button variant="secondary" onClick={load} disabled={loading}>Load orders</Button>
+      <div aria-busy={loading}>
+        {showSpinner && <Spinner label="Loading orders" showLabel />}
+        {done && <Text as="p">3 orders loaded.</Text>}
+      </div>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Spinner"
+      layer="Component"
+      family="Feedback"
+      imports="import { Button, Spinner, Stack, Text } from '@acme/design-system';"
+      guide="feedback-spinner--docs"
+      guideName="Spinner"
+      groups={[
+        {
+          title: 'Sizes',
+          kicker: 'Match the size to the text beside it. The label is always there; by default only assistive technology reads it.',
+          examples: SIZES.map((size) => ({
+            title: size === 'sm' ? 'Small' : size === 'md' ? 'Medium, the default' : 'Large',
+            when: size === 'sm' ? 'Beside caption text, or inside a dense row.' : size === 'md' ? 'Beside body text.' : 'In the middle of a panel that loads.',
+            render: <Spinner size={size} label="Loading orders" />,
+            code: size === 'md' ? '<Spinner label="Loading orders" />' : `<Spinner size="${size}" label="Loading orders" />`,
+          })),
+        },
+        {
+          title: 'Visible label',
+          kicker: 'Set showLabel when the wait is long enough that the user asks what happens.',
+          examples: [
+            { title: 'Hidden label', when: 'A small, in-place spinner. The label is for assistive technology only.', render: <Spinner label="Loading orders" /> },
+            { title: 'Visible label', when: 'A wait of a second or two where the user needs to know what loads.', render: <Spinner label="Loading orders" showLabel /> },
+            { title: 'Large with a visible label', when: 'A panel that loads. The ring and the words sit together.', render: <Spinner size="lg" label="Loading your dashboard" showLabel /> },
+            { title: 'Small with a visible label', when: 'A caption-size note, such as a sync status.', render: <Spinner size="sm" label="Syncing changes" showLabel /> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'A long label wraps. It never truncates, because it says what the user waits for.',
+          examples: [
+            { title: 'Long label', when: 'A label with detail about the work.', frame: 'narrow', render: <Spinner label="Loading the last 90 days of orders for the Montreal warehouse" showLabel /> },
+            { title: 'Translated label', when: 'The app is not in English. The label comes from props.', frame: 'narrow', render: <Spinner label="Chargement des commandes" showLabel /> },
+          ],
+        },
+        {
+          title: 'Composition',
+          examples: [
+            {
+              title: 'Beside text',
+              when: 'A short in-place wait next to a line of text.',
+              render: (
+                <Stack direction="horizontal" gap={2} align="center">
+                  <Text as="span" variant="caption" tone="muted">Checking the address</Text>
+                  <Spinner size="sm" label="Checking the address" />
+                </Stack>
+              ),
+            },
+            {
+              title: 'In a panel',
+              when: 'One region loads. Keep the rest of the screen working. Mark the region busy.',
+              render: (
+                <Stack gap={3} aria-busy="true">
+                  <Text as="h3" variant="heading">Recent orders</Text>
+                  <Spinner label="Loading recent orders" showLabel />
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Loading, then the result',
+          kicker: 'The component has no timer. You decide when it mounts and when it leaves.',
+          examples: [
+            {
+              title: 'Delayed by 300 ms',
+              when: 'The wait may be short. Mount the spinner after 300 ms so a fast load never flickers.',
+              render: <DelayedSpinner />,
+              code: `function DelayedSpinner() {
+  const [loading, setLoading] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [orders, setOrders] = useState<string[]>([]);
+  const load = async () => {
+    setLoading(true);
+    const reveal = window.setTimeout(() => setShowSpinner(true), 300);
+    setOrders(await fetchOrders());
+    window.clearTimeout(reveal);
+    setShowSpinner(false);
+    setLoading(false);
+  };
+  return (
+    <Stack gap={3} align="start">
+      <Button variant="secondary" onClick={load} disabled={loading}>Load orders</Button>
+      <div aria-busy={loading}>
+        {showSpinner && <Spinner label="Loading orders" showLabel />}
+        {orders.length > 0 && <Text as="p">{orders.length} orders loaded.</Text>}
+      </div>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

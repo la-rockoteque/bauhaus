@@ -1,7 +1,11 @@
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Button } from '../../clickables/button/button';
 import { Text } from '../../../primitives/text/text';
 import { Skeleton, SkeletonRegion } from './skeleton';
 import { skeletonRules } from './skeleton.rules';
@@ -160,4 +164,196 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Skeleton" layer="Component" family="Feedback" rules={skeletonRules} guide="feedback-skeleton--docs" guideName="Skeleton" />,
+};
+
+const REQUISITIONS = ['Requisition 204', 'Requisition 205', 'Requisition 209'];
+
+/** Three rows load for two seconds. The placeholders mirror the rows, so nothing moves when they arrive. */
+function RequisitionList() {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (!loading) return;
+    const timer = window.setTimeout(() => setLoading(false), 2000);
+    return () => window.clearTimeout(timer);
+  }, [loading]);
+  return (
+    <Stack gap={3} align="start">
+      <SkeletonRegion loading={loading} label="Loading 3 requisitions">
+        {loading ? (
+          <Stack gap={2}>
+            <Skeleton width="calc(var(--ds-space-12) * 3)" />
+            <Skeleton width="calc(var(--ds-space-12) * 3)" />
+            <Skeleton width="calc(var(--ds-space-12) * 3)" />
+          </Stack>
+        ) : (
+          <Stack as="ul" gap={2}>
+            {REQUISITIONS.map((name) => <Text as="li" key={name}>{name}</Text>)}
+          </Stack>
+        )}
+      </SkeletonRegion>
+      <Button variant="secondary" onClick={() => setLoading(true)} disabled={loading}>Reload</Button>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Skeleton"
+      layer="Component"
+      family="Feedback"
+      imports="import { Button, Skeleton, SkeletonRegion, Stack, Text } from '@acme/design-system';"
+      guide="feedback-skeleton--docs"
+      guideName="Skeleton"
+      groups={[
+        {
+          title: 'Shapes',
+          kicker: 'Draw the shape of the content that will arrive: a line, a block or a circle.',
+          examples: [
+            { title: 'Text line', when: 'One line of text, such as a name or a title.', render: <Skeleton width="calc(var(--ds-space-12) * 3)" /> },
+            { title: 'Several lines of text', when: 'A paragraph. The last line is shorter.', render: <Skeleton lines={3} width="calc(var(--ds-space-12) * 4)" /> },
+            { title: 'Block', when: 'An image or a chart. Give it the size of the real one.', render: <Skeleton shape="block" width="calc(var(--ds-space-12) * 3)" /> },
+            { title: 'Circle', when: 'An avatar.', render: <Skeleton shape="circle" /> },
+          ],
+        },
+        {
+          title: 'Sizes',
+          kicker: 'Width and height take a token expression. The component holds no pixel value.',
+          examples: [
+            { title: 'Narrow line', when: 'A short value, such as a date or a count.', render: <Skeleton width="var(--ds-space-12)" /> },
+            { title: 'Tall block', when: 'A hero image that is taller than the default.', render: <Skeleton shape="block" width="calc(var(--ds-space-12) * 3)" height="calc(var(--ds-space-12) * 2)" /> },
+            { title: 'Large circle', when: 'A profile photo that is larger than the default avatar.', render: <Skeleton shape="circle" width="var(--ds-space-12)" height="var(--ds-space-12)" /> },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'Mirror the real layout. The same box holds the placeholders, then the content.',
+          examples: [
+            {
+              title: 'Profile',
+              when: 'An avatar, a name and two lines of text.',
+              render: (
+                <SkeletonRegion loading label="Loading profile">
+                  <Stack direction="horizontal" gap={4} align="start">
+                    <Skeleton shape="circle" />
+                    <Stack gap={2}>
+                      <Skeleton width="calc(var(--ds-space-12) * 2)" />
+                      <Skeleton lines={2} width="calc(var(--ds-space-12) * 3)" />
+                    </Stack>
+                  </Stack>
+                </SkeletonRegion>
+              ),
+            },
+            {
+              title: 'Card with an image',
+              when: 'An image on top, then a title and a line of text.',
+              render: (
+                <SkeletonRegion loading label="Loading article">
+                  <Stack gap={3}>
+                    <Skeleton shape="block" width="calc(var(--ds-space-12) * 4)" />
+                    <Skeleton width="calc(var(--ds-space-12) * 2)" />
+                    <Skeleton lines={2} width="calc(var(--ds-space-12) * 4)" />
+                  </Stack>
+                </SkeletonRegion>
+              ),
+            },
+            {
+              title: 'List rows',
+              when: 'A list. Show as many rows as fit the screen, not the full count.',
+              render: (
+                <SkeletonRegion loading label="Loading 3 requisitions">
+                  <Stack gap={3}>
+                    {[0, 1, 2].map((row) => (
+                      <Stack key={row} direction="horizontal" gap={3} align="center">
+                        <Skeleton shape="circle" width="var(--ds-space-6)" height="var(--ds-space-6)" />
+                        <Skeleton width="calc(var(--ds-space-12) * 3)" />
+                      </Stack>
+                    ))}
+                  </Stack>
+                </SkeletonRegion>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          examples: [
+            { title: 'Narrow column', when: 'A side panel. Text placeholders fill the width.', frame: 'narrow', render: (
+              <SkeletonRegion loading label="Loading comments">
+                <Stack gap={2}>
+                  <Skeleton width="60%" />
+                  <Skeleton lines={3} />
+                </Stack>
+              </SkeletonRegion>
+            ) },
+            { title: 'Phone width', when: 'A phone. The block takes the full width and keeps its height.', frame: 'phone', render: (
+              <SkeletonRegion loading label="Loading photo">
+                <Stack gap={2}>
+                  <Skeleton shape="block" />
+                  <Skeleton width="50%" />
+                </Stack>
+              </SkeletonRegion>
+            ) },
+          ],
+        },
+        {
+          title: 'Loading and loaded',
+          kicker: 'The region sets aria-busy while loading. When loading is false it shows the real content.',
+          examples: [
+            {
+              title: 'Loaded region',
+              when: 'The data arrived. The region renders the real content in the same box and stops being busy.',
+              render: (
+                <SkeletonRegion loading={false} label="Loading profile">
+                  <Stack gap={1}>
+                    <Text as="strong">Amara Kone</Text>
+                    <Text tone="muted">Product designer in Montreal.</Text>
+                  </Stack>
+                </SkeletonRegion>
+              ),
+            },
+            {
+              title: 'Placeholders, then rows',
+              when: 'A list that loads for about two seconds. Press Reload to see it again.',
+              render: <RequisitionList />,
+              code: `function RequisitionList() {
+  const { data, isLoading } = useRequisitions();
+  return (
+    <SkeletonRegion loading={isLoading} label="Loading 3 requisitions">
+      {isLoading ? (
+        <Stack gap={2}>
+          <Skeleton width="calc(var(--ds-space-12) * 3)" />
+          <Skeleton width="calc(var(--ds-space-12) * 3)" />
+          <Skeleton width="calc(var(--ds-space-12) * 3)" />
+        </Stack>
+      ) : (
+        <Stack as="ul" gap={2}>
+          {data.map((name) => <Text as="li" key={name}>{name}</Text>)}
+        </Stack>
+      )}
+    </SkeletonRegion>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          examples: [
+            { title: 'A label about the content', when: 'The region speaks its label once. Say what loads, not just "Loading".', render: (
+              <SkeletonRegion loading label="Loading 3 requisitions">
+                <Skeleton lines={3} width="calc(var(--ds-space-12) * 3)" />
+              </SkeletonRegion>
+            ) },
+            { title: 'A label in the app language', when: 'The app is not in English. The label comes from props.', render: (
+              <SkeletonRegion loading label="Chargement de 3 demandes">
+                <Skeleton lines={3} width="calc(var(--ds-space-12) * 3)" />
+              </SkeletonRegion>
+            ) },
+          ],
+        },
+      ]}
+    />
+  ),
 };

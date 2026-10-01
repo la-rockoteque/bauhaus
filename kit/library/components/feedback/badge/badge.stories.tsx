@@ -1,6 +1,12 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Button } from '../../clickables/button/button';
+import { Card } from '../../data-structures/card/card';
 import { Badge } from './badge';
 import type { BadgeStatus } from './badge';
 import { badgeRules } from './badge.rules';
@@ -132,4 +138,136 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Badge" layer="Component" family="Feedback" rules={badgeRules} guide="feedback-badge--docs" guideName="Badge" />,
+};
+
+/** Pressing the button adds a message. The badge shows the count; the status line says it aloud. */
+function UnreadCounter() {
+  const [unread, setUnread] = useState(2);
+  return (
+    <Stack gap={3} align="start">
+      <Stack direction="horizontal" gap={2} align="center">
+        <Text as="span">Inbox</Text>
+        <Badge count={unread} label="unread messages" />
+      </Stack>
+      <Button variant="secondary" onClick={() => setUnread(unread + 1)}>Receive a message</Button>
+      <Text as="p" role="status" variant="caption" tone="muted">{unread} unread messages</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Badge"
+      layer="Component"
+      family="Feedback"
+      imports="import { Badge, Button, Card, Stack, Text } from '@acme/design-system';"
+      guide="feedback-badge--docs"
+      guideName="Badge"
+      groups={[
+        {
+          title: 'Status',
+          kicker: 'The status sets the fill. The word says what it means: colour never works alone.',
+          examples: [
+            { title: 'Neutral', when: 'A state with no good or bad reading, such as Draft.', render: <Badge>Draft</Badge> },
+            { title: 'Info', when: 'A fact worth a glance, such as New.', render: <Badge status="info">New</Badge> },
+            { title: 'Success', when: 'A finished, healthy state, such as Paid.', render: <Badge status="success">Paid</Badge> },
+            { title: 'Warning', when: 'A state that needs attention soon, such as Due soon.', render: <Badge status="warning">Due soon</Badge> },
+            { title: 'Error', when: 'A failed or late state, such as Overdue.', render: <Badge status="error">Overdue</Badge> },
+          ],
+        },
+        {
+          title: 'Counts',
+          kicker: 'A count caps at max and shows the plus sign. Assistive technology still hears the full number.',
+          examples: [
+            { title: 'A count with its noun', when: 'A number the user scans for, such as unread messages.', render: <Badge count={3} label="unread messages" /> },
+            { title: 'A count of one', when: 'The smallest count to show. Hide the badge at zero unless zero matters.', render: <Badge count={1} label="unread message" /> },
+            { title: 'A count above the cap', when: 'A large number. The pill shows 99+ and the full number stays in the accessible text.', render: <Badge count={142} label="unread messages" /> },
+            { title: 'A lower cap', when: 'A narrow space. max={9} shows 9+.', render: <Badge count={24} max={9} label="open tasks" /> },
+            { title: 'A higher cap', when: 'A number the user needs in full, up to a limit you pick.', render: <Badge count={142} max={999} label="open tasks" /> },
+            { title: 'A status with a count', when: 'The count belongs to a status, such as failed imports. The word still comes first.', render: <Badge status="error" count={3} label="failed imports">Failed</Badge> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'A badge keeps its size. Long words wrap in a narrow column.',
+          examples: [
+            { title: 'A long status word', when: 'A translated word that is longer than the English one.', frame: 'narrow', render: <Badge status="warning">Waiting for approval</Badge> },
+            { title: 'Badges in a row', when: 'Several statuses side by side. They wrap to a new line when the row is full.', frame: 'narrow', render: (
+              <Stack direction="horizontal" gap={2} wrap>
+                <Badge status="success">Paid</Badge>
+                <Badge status="info">Shipped</Badge>
+                <Badge>Gift</Badge>
+                <Badge status="warning">Partial refund</Badge>
+              </Stack>
+            ) },
+          ],
+        },
+        {
+          title: 'Composition',
+          examples: [
+            {
+              title: 'In a card header',
+              when: 'The status of the thing the card names, beside its title.',
+              render: <Card title="Invoice 2041" meta={<Badge status="success">Paid</Badge>}>Issued on 3 March, due on 2 April.</Card>,
+            },
+            {
+              title: 'Beside a label',
+              when: 'A count next to a nav item or a tab.',
+              render: (
+                <Stack direction="horizontal" gap={2} align="center">
+                  <Text as="span">Inbox</Text>
+                  <Badge count={12} label="unread messages" />
+                </Stack>
+              ),
+            },
+            {
+              title: 'Beside a row of text',
+              when: 'A status in a list row, after the name of the item.',
+              render: (
+                <Stack gap={2}>
+                  <Stack direction="horizontal" gap={2} align="center"><Text as="span">Invoice 2041</Text><Badge status="success">Paid</Badge></Stack>
+                  <Stack direction="horizontal" gap={2} align="center"><Text as="span">Invoice 2042</Text><Badge status="error">Overdue</Badge></Stack>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          examples: [
+            {
+              title: 'Decorative, when the text says it',
+              when: 'The text beside the badge already gives the fact. The badge hides from assistive technology, so it is read once.',
+              render: (
+                <Stack direction="horizontal" gap={2} align="center">
+                  <Text as="span">12 unread messages</Text>
+                  <Badge count={12} decorative />
+                </Stack>
+              ),
+            },
+            {
+              title: 'A count that changes',
+              when: 'The count updates while the user is on the page. The badge does not announce, so you write a polite status message.',
+              render: <UnreadCounter />,
+              code: `function UnreadCounter() {
+  const [unread, setUnread] = useState(2);
+  return (
+    <Stack gap={3} align="start">
+      <Stack direction="horizontal" gap={2} align="center">
+        <Text as="span">Inbox</Text>
+        <Badge count={unread} label="unread messages" />
+      </Stack>
+      <Button variant="secondary" onClick={() => setUnread(unread + 1)}>Receive a message</Button>
+      <Text as="p" role="status">{unread} unread messages</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

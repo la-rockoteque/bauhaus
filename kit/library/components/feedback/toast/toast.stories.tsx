@@ -3,6 +3,10 @@ import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Banner } from '../banner/banner';
 import { Button } from '../../clickables/button/button';
 import { ToastRegion } from './toast';
 import type { ToastData, ToastStatus } from './toast';
@@ -173,4 +177,400 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Toast" layer="Component" family="Feedback" rules={toastRules} guide="feedback-toast--docs" guideName="Toast" />,
+};
+
+type DemoToast = Omit<ToastData, 'id'>;
+
+/** Buttons that raise toasts. The region stays in the flow here (static); in an app it keeps its default fixed corner. */
+function ToastDemo({ buttons, region }: { buttons: readonly { label: string; toasts: readonly DemoToast[] }[]; region?: { max?: number; duration?: number; dismissLabel?: string; moreLabel?: (count: number) => string } }) {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <Stack gap={3} align="start">
+      <Stack direction="horizontal" gap={3} wrap>
+        {buttons.map((button) => (
+          <Button key={button.label} variant="secondary" onClick={() => button.toasts.forEach((toast) => show(toast))}>{button.label}</Button>
+        ))}
+      </Stack>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} position="static" {...region} />
+    </Stack>
+  );
+}
+
+/** Archive shows a toast with Undo. Pressing Undo restores the item and shows a second toast. */
+function ArchiveWithUndo() {
+  const { toasts, show, dismiss } = useToast();
+  const [archived, setArchived] = useState(false);
+  const archive = () => {
+    setArchived(true);
+    show({
+      message: 'Conversation archived.',
+      action: {
+        label: 'Undo',
+        onAction: () => {
+          setArchived(false);
+          show({ status: 'success', message: 'Archive undone.' });
+        },
+      },
+    });
+  };
+  return (
+    <Stack gap={3} align="start">
+      <Text as="p">{archived ? 'Conversation: archived' : 'Conversation: in your inbox'}</Text>
+      <Button variant="secondary" onClick={archive} disabled={archived}>Archive</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} position="static" />
+    </Stack>
+  );
+}
+
+/** A toast stays while work runs, then closes by id. A second toast reports the result. */
+function CloseEarly() {
+  const { toasts, show, dismiss } = useToast();
+  const start = () => {
+    const id = show({ message: 'Export started.', duration: null });
+    window.setTimeout(() => {
+      dismiss(id);
+      show({ status: 'success', message: 'Export ready.' });
+    }, 2000);
+  };
+  return (
+    <Stack gap={3} align="start">
+      <Button variant="secondary" onClick={start}>Start export</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} position="static" />
+    </Stack>
+  );
+}
+
+/** A failed save raises an error toast and also keeps the error on the page, because a toast vanishes. */
+function SaveFailure() {
+  const { toasts, show, dismiss } = useToast();
+  const [failed, setFailed] = useState(false);
+  const save = () => {
+    setFailed(true);
+    show({ status: 'error', title: 'Save failed', message: 'The server did not answer.' });
+  };
+  return (
+    <Stack gap={3}>
+      {failed && (
+        <Banner status="error" title="Your changes were not saved" actions={<Button variant="secondary" onClick={() => setFailed(false)}>Dismiss</Button>}>
+          The server did not answer. Your edits are still on this page.
+        </Banner>
+      )}
+      <Stack direction="horizontal" gap={3}>
+        <Button onClick={save}>Save changes</Button>
+      </Stack>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} position="static" />
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Toast"
+      layer="Component"
+      family="Feedback"
+      imports="import { Banner, Button, Stack, Text, ToastRegion, useToast } from '@acme/design-system';"
+      guide="feedback-toast--docs"
+      guideName="Toast"
+      groups={[
+        {
+          title: 'Wiring',
+          kicker: 'Mount one ToastRegion near the root. Call show from anywhere you hold it.',
+          examples: [
+            { title: 'Show a toast', when: 'The smallest wiring: one hook, one region, one call to show.', render: <ToastDemo buttons={[{ label: 'Save draft', toasts: [{ status: 'success', message: 'Draft saved.' }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'success', message: 'Draft saved.' })}>Save draft</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+          ],
+        },
+        {
+          title: 'Status',
+          kicker: 'The status sets the icon and the spoken word. Info, success and warning use the polite region; errors use the assertive one.',
+          examples: [
+            { title: 'Info', when: 'A neutral fact about something the user started.', render: <ToastDemo buttons={[{ label: 'Start export', toasts: [{ message: 'Export started.' }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ message: 'Export started.' })}>Start export</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+            { title: 'Success', when: 'A result: saved, sent, copied.', render: <ToastDemo buttons={[{ label: 'Save draft', toasts: [{ status: 'success', message: 'Draft saved.' }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'success', message: 'Draft saved.' })}>Save draft</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+            { title: 'Warning', when: 'A heads-up that does not stop the user.', render: <ToastDemo buttons={[{ label: 'Add photo', toasts: [{ status: 'warning', message: 'Storage is almost full.' }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'warning', message: 'Storage is almost full.' })}>Add photo</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+            { title: 'Error', when: 'A failure. It goes to the assertive region and interrupts speech. Repeat the error where the user can find it.', render: <ToastDemo buttons={[{ label: 'Upload file', toasts: [{ status: 'error', title: 'Upload failed', message: 'report.pdf is larger than 10 MB.' }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'error', title: 'Upload failed', message: 'report.pdf is larger than 10 MB.' })}>Upload file</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+          ],
+        },
+        {
+          title: 'Anatomy',
+          kicker: 'Put the result first and name the object: "Draft saved", not "Success".',
+          examples: [
+            { title: 'Message only', when: 'The result says it all.', render: <ToastDemo buttons={[{ label: 'Copy link', toasts: [{ status: 'success', message: 'Link copied.' }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'success', message: 'Link copied.' })}>Copy link</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+            { title: 'Title and message', when: 'A lead line, then the detail.', render: <ToastDemo buttons={[{ label: 'Upload file', toasts: [{ status: 'error', title: 'Upload failed', message: 'report.pdf is larger than 10 MB.' }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'error', title: 'Upload failed', message: 'report.pdf is larger than 10 MB.' })}>Upload file</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+          ],
+        },
+        {
+          title: 'Timing',
+          kicker: 'The default is 5000 ms. The timer pauses on hover and on focus, and resumes with the time left.',
+          examples: [
+            { title: 'Shorter on-screen time', when: 'A very short message, set for the whole region.', render: <ToastDemo buttons={[{ label: 'Copy link', toasts: [{ status: 'success', message: 'Link copied.' }] }]} region={{ duration: 2000 }} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'success', message: 'Link copied.' })}>Copy link</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} duration={2000} />
+    </>
+  );
+}` },
+            { title: 'Longer on-screen time', when: 'A longer message needs more time: about 200 ms per word.', render: <ToastDemo buttons={[{ label: 'Show tip', toasts: [{ message: 'Press Shift and ? at any time to see every keyboard shortcut in the app.' }] }]} region={{ duration: 10000 }} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ message: 'Press Shift and ? at any time to see every keyboard shortcut in the app.' })}>Show tip</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} duration={10000} />
+    </>
+  );
+}` },
+            { title: 'Time for one toast', when: 'One toast needs a different time from the rest of the region.', render: <ToastDemo buttons={[{ label: 'Invite teammate', toasts: [{ status: 'success', message: 'Invitation sent to amara@example.com.', duration: 10000 }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'success', message: 'Invitation sent to amara@example.com.', duration: 10000 })}>Invite teammate</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+            { title: 'Until the user closes it', when: 'The user must be able to read it again. Set duration to null.', render: <ToastDemo buttons={[{ label: 'Start export', toasts: [{ status: 'warning', title: 'Export is large', message: 'It may take a few minutes. You can leave this page.', duration: null }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'warning', title: 'Export is large', message: 'It may take a few minutes. You can leave this page.', duration: null })}>Start export</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+          ],
+        },
+        {
+          title: 'Action',
+          kicker: 'A toast has at most one action. A toast with an action stays until the user closes it.',
+          examples: [
+            {
+              title: 'Undo',
+              when: 'A result the user can reverse. Pressing the action runs your handler and closes the toast.',
+              render: <ArchiveWithUndo />,
+              code: `function ArchiveWithUndo() {
+  const { toasts, show, dismiss } = useToast();
+  const archive = () => {
+    archiveConversation();
+    show({
+      message: 'Conversation archived.',
+      action: {
+        label: 'Undo',
+        onAction: () => {
+          restoreConversation();
+          show({ status: 'success', message: 'Archive undone.' });
+        },
+      },
+    });
+  };
+  return (
+    <>
+      <Button variant="secondary" onClick={archive}>Archive</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}`,
+            },
+            { title: 'Action that opens a place', when: 'A result with a next step, such as View.', render: <ToastDemo buttons={[{ label: 'Publish page', toasts: [{ status: 'success', message: 'Page published.', action: { label: 'View page', onAction: () => {} } }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'success', message: 'Page published.', action: { label: 'View page', onAction: openPage } })}>Publish page</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+          ],
+        },
+        {
+          title: 'Stack',
+          kicker: 'At most max toasts show, three by default. The rest wait, and a count says how many.',
+          examples: [
+            {
+              title: 'Past the limit',
+              when: 'Five toasts at once. Three show and the region counts the other two.',
+              render: <ToastDemo buttons={[{ label: 'Raise five toasts', toasts: [1, 2, 3, 4, 5].map((n): DemoToast => ({ message: `Photo ${n} added.`, duration: null })) }]} />,
+              code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  const addPhotos = () => [1, 2, 3, 4, 5].forEach((n) => show({ message: \`Photo \${n} added.\`, duration: null }));
+  return (
+    <>
+      <Button variant="secondary" onClick={addPhotos}>Raise five toasts</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}`,
+            },
+            {
+              title: 'A lower limit',
+              when: 'A small screen. Show one toast at a time.',
+              render: <ToastDemo buttons={[{ label: 'Raise three toasts', toasts: [1, 2, 3].map((n): DemoToast => ({ message: `Photo ${n} added.`, duration: null })) }]} region={{ max: 1 }} />,
+              code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  const addPhotos = () => [1, 2, 3].forEach((n) => show({ message: \`Photo \${n} added.\`, duration: null }));
+  return (
+    <>
+      <Button variant="secondary" onClick={addPhotos}>Raise three toasts</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} max={1} />
+    </>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          examples: [
+            { title: 'Long message', when: 'A message of several words. It wraps inside the toast.', frame: 'narrow', render: <ToastDemo buttons={[{ label: 'Share file', toasts: [{ status: 'info', title: 'File shared', message: 'Amara Kone can now edit the quarterly report, and 4 other people can view it.', duration: null }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'info', title: 'File shared', message: 'Amara Kone can now edit the quarterly report, and 4 other people can view it.', duration: null })}>Share file</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}` },
+            { title: 'Translated copy', when: 'The app is not in English. The status word, the close label and the count come from props.', frame: 'narrow', render: <ToastDemo buttons={[{ label: 'Enregistrer', toasts: [{ status: 'success', statusLabel: 'Succès', message: 'Brouillon enregistré.', duration: null }] }]} region={{ dismissLabel: 'Fermer la notification' }} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'success', statusLabel: 'Succès', message: 'Brouillon enregistré.', duration: null })}>Enregistrer</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} dismissLabel="Fermer la notification" />
+    </>
+  );
+}` },
+          ],
+        },
+        {
+          title: 'Controlled from code',
+          examples: [
+            {
+              title: 'Close early by id',
+              when: 'Show returns the id. Close a toast when the work it reports ends, then report the result.',
+              render: <CloseEarly />,
+              code: `function CloseEarly() {
+  const { toasts, show, dismiss } = useToast();
+  const start = async () => {
+    const id = show({ message: 'Export started.', duration: null });
+    await runExport();
+    dismiss(id);
+    show({ status: 'success', message: 'Export ready.' });
+  };
+  return (
+    <>
+      <Button variant="secondary" onClick={start}>Start export</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Composition',
+          examples: [
+            {
+              title: 'An error toast beside a banner',
+              when: 'A save fails. The toast announces it at once; the banner keeps it on the page.',
+              render: <SaveFailure />,
+              code: `function SaveFailure() {
+  const { toasts, show, dismiss } = useToast();
+  const [failed, setFailed] = useState(false);
+  const save = async () => {
+    try {
+      await saveChanges();
+    } catch {
+      setFailed(true);
+      show({ status: 'error', title: 'Save failed', message: 'The server did not answer.' });
+    }
+  };
+  return (
+    <>
+      {failed && (
+        <Banner status="error" title="Your changes were not saved" actions={<Button variant="secondary" onClick={save}>Retry</Button>}>
+          The server did not answer. Your edits are still on this page.
+        </Banner>
+      )}
+      <Button onClick={save}>Save changes</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} />
+    </>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Placement',
+          examples: [
+            { title: 'Fixed or static', when: 'The default sits at the corner of the viewport. Set position="static" to keep the region in the page flow, as these examples do.', render: <ToastDemo buttons={[{ label: 'Save draft', toasts: [{ status: 'success', message: 'Draft saved.' }] }]} />, code: `function ToastExample() {
+  const { toasts, show, dismiss } = useToast();
+  return (
+    <>
+      <Button variant="secondary" onClick={() => show({ status: 'success', message: 'Draft saved.' })}>Save draft</Button>
+      <ToastRegion toasts={toasts} onDismiss={dismiss} position="static" />
+    </>
+  );
+}` },
+          ],
+        },
+      ]}
+    />
+  ),
 };

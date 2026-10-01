@@ -1,0 +1,126 @@
+/* The Examples page: a list of use cases, each a live preview over its code. */
+
+.doc-example-imports {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-3);
+  margin-block-start: var(--ds-space-4);
+}
+
+.doc-example-imports code,
+.doc-example-code pre {
+  font-family: var(--ds-text-code-family);
+  font-size: var(--ds-text-code-size);
+  line-height: var(--ds-text-code-line-height);
+}
+
+.doc-example-note {
+  margin-block-start: var(--ds-space-1);
+}
+
+.doc-example-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ds-space-4);
+}
+
+.doc-example {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+  min-inline-size: 0;
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-default);
+  overflow: hidden;
+}
+
+.doc-example-head {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-block-end: var(--ds-size-border-thin) solid var(--ds-border-default);
+}
+
+.doc-example-title {
+  margin: 0;
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-example-preview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: safe center;
+  gap: var(--ds-space-3);
+  min-inline-size: 0;
+  padding: var(--ds-space-6) var(--ds-space-4);
+  overflow-x: auto;
+}
+
+/* A frame narrows the preview to show wrapping. Dashed, so it reads as a measure and not as part of the component. */
+.doc-example-frame {
+  display: block;
+  inline-size: 100%;
+  padding: var(--ds-space-2);
+  border: var(--ds-size-border-thin) dashed var(--ds-border-default);
+}
+
+.doc-example-frame--narrow { max-inline-size: calc(var(--ds-space-12) * 4); }
+.doc-example-frame--phone { max-inline-size: calc(var(--ds-space-12) * 20 / 3); }
+
+.doc-example-code {
+  position: relative;
+  border-block-start: var(--ds-size-border-thin) solid var(--ds-border-default);
+  background: var(--ds-surface-sunken);
+}
+
+.doc-example-code pre {
+  margin: 0;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  padding-inline-end: calc(var(--ds-space-12) * 1.5);
+  overflow-x: auto;
+  color: var(--ds-text-default);
+  white-space: pre;
+}
+
+.doc-example-code pre:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: calc(var(--ds-focus-ring-width) * -1);
+}
+
+.doc-example-copy {
+  position: absolute;
+  inset-block-start: var(--ds-space-2);
+  inset-inline-end: var(--ds-space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.doc-example-copy-status {
+  color: var(--ds-text-muted);
+  font-size: var(--ds-text-caption-size);
+}
+
+.doc-example-copy button {
+  min-block-size: var(--ds-size-target-min);
+  padding-inline: var(--ds-space-2);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface-default);
+  color: var(--ds-text-default);
+  font: inherit;
+  font-size: var(--ds-text-caption-size);
+  cursor: pointer;
+}
+
+.doc-example-copy button:hover {
+  background-image: linear-gradient(var(--ds-state-hover-layer), var(--ds-state-hover-layer));
+}
+
+.doc-example-copy button:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}

@@ -79,14 +79,14 @@ A slice is one folder per thing. It holds every file about that thing, named aft
 |---|---|---|
 | `<name>.tsx` | The component (framework file: `.vue`, `.svelte`, `.ts` for a custom element). | Component, primitive |
 | `<name>.css` | Its styles. Semantic tokens only; no literals. | If it has styles |
-| `<name>.stories.tsx` | The showcase. One story renders `<DocPage …/>` like moship-web's pages: short introduction, the Stage (the component with an anatomy layer, an anchor on each part and a parts panel, and a specs layer of measured redlines, each layer hideable), tokens with swatches, Specs and API tables, the state matrix (every designed state rendered live, `n/a` cells with their reason, `missing` cells badged), live specimens, a compact Do / Don't and a pointer to the guide. A second story, Advisories, holds the live Rulebook table and the Accessibility coverage. | Every slice |
+| `<name>.stories.tsx` | The showcase. One story renders `<DocPage …/>` like moship-web's pages: short introduction, the Stage (the component with an anatomy layer, an anchor on each part and a parts panel, and a specs layer of measured redlines, each layer hideable), tokens with swatches, Specs and API tables, the state matrix (every designed state rendered live, `n/a` cells with their reason, `missing` cells badged), live specimens, a compact Do / Don't and a pointer to the guide. A second story, Advisories, holds the live Rulebook table and the Accessibility coverage. A component has a third story, Examples: every use case drawn live over the code that draws it. | Every slice |
 | `<name>.mdx` | The guide. It declares `<Meta of={Stories}/>`, so one Storybook entry shows the guide as "Docs" and the showcase as a story. It holds the full Introduction, Usage in depth, the reasoning behind each state, Pitfalls with their reasons, and every rule with its basis. | Every slice |
 | `<name>.rules.ts` | Its rulebook entries. | Every slice |
 | `<name>.test.tsx` | Behaviour and accessibility tests. | Component, primitive |
 | `<name>.tokens.json` | Tokens this slice defines. | Foundation; theme; component only if it has component tokens |
 | `<part>.tsx` | A part that cannot stand alone (dialog header, field label). | As needed |
 
-A slice has two pages that never repeat each other's tables. The showcase shows what a reader can see. The guide explains what a picture cannot show. `scripts/structure.mjs check` reports `slice.page` when the guide is missing and `slice.showcase` when the stories file does not render `DocPage`.
+A slice has two pages that never repeat each other's tables. The showcase shows what a reader can see. The guide explains what a picture cannot show. `scripts/structure.mjs check` reports `slice.page` when the guide is missing, `slice.showcase` when the stories file does not render `DocPage`, and `slice.examples` when a component's stories file does not render `ExamplesPage`.
 
 Delete a slice folder and the thing is gone everywhere. That is the test of a good slice.
 
@@ -141,7 +141,7 @@ A fixture has no `.mdx` and no `.rules.ts`.
 1. **A fixture ships nowhere.** `index.ts`, `package.json` `files` and the `vite build` graph never reach `fixtures/`.
 2. **Who may import a fixture.** `*.stories.tsx`, `*.test.tsx`, `.storybook/` and other fixtures. Any other library file that imports one is `fixture.exposed` (HIGH).
 3. **What a fixture may import.** The slices of the library: foundations, themes, primitives, components, patterns. Not `index.ts`.
-4. **Slice showcases use `DocPage`.** A story that documents a slice imports `DocPage` from `fixtures/doc-page/doc-page` (`slice.showcase`).
+4. **Slice showcases use `DocPage`.** A story that documents a slice imports `DocPage` from `fixtures/doc-page/doc-page` (`slice.showcase`). A component's stories file also renders `ExamplesPage` from `fixtures/examples/examples` (`slice.examples`).
 5. **Tokens only.** `storybook.literal` reads `fixtures/**` as it reads `.storybook/**`.
 
 `scripts/structure.mjs check` asserts the naming rules, the slice rules and the isolation rules.

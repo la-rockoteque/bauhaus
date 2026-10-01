@@ -1,6 +1,11 @@
+import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Button } from '../../clickables/button/button';
 import { Progress } from './progress';
 import { progressRules } from './progress.rules';
 
@@ -109,4 +114,154 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Progress" layer="Component" family="Feedback" rules={progressRules} guide="feedback-progress--docs" guideName="Progress" />,
+};
+
+/** The length is unknown at first (indeterminate). Then it is known and the bar fills. A status line announces the end. */
+function UploadProgress() {
+  const [running, setRunning] = useState(false);
+  const [value, setValue] = useState<number | undefined>(undefined);
+  const [status, setStatus] = useState('');
+  useEffect(() => {
+    if (!running) return;
+    const timer = window.setInterval(() => {
+      setValue((current) => {
+        const next = (current ?? 0) + 20;
+        if (next >= 100) {
+          window.clearInterval(timer);
+          setRunning(false);
+          setStatus('Upload complete.');
+          return 100;
+        }
+        return next;
+      });
+    }, 600);
+    const start = window.setTimeout(() => setValue(0), 1200);
+    return () => {
+      window.clearInterval(timer);
+      window.clearTimeout(start);
+    };
+  }, [running]);
+  const start = () => {
+    setValue(undefined);
+    setStatus('');
+    setRunning(true);
+  };
+  return (
+    <Stack gap={3} align="start">
+      {(running || value !== undefined) && <Progress label="Uploading report.pdf" value={value} valueText={value === 100 ? 'Done' : undefined} />}
+      <Button variant="secondary" onClick={start} disabled={running}>Start upload</Button>
+      <Text as="p" role="status" variant="caption" tone="muted">{status}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Progress"
+      layer="Component"
+      family="Feedback"
+      imports="import { Button, Progress, Stack, Text } from '@acme/design-system';"
+      guide="feedback-progress--docs"
+      guideName="Progress"
+      groups={[
+        {
+          title: 'Determinate',
+          kicker: 'Pass value. The bar shows how much is done, and the percent shows beside the label.',
+          examples: [
+            { title: 'Not started', when: 'The work exists and has not begun. The bar sits at zero.', render: <Progress label="Importing contacts" value={0} /> },
+            { title: 'Partway', when: 'The work runs and you know how far it went.', render: <Progress label="Uploading report.pdf" value={42} /> },
+            { title: 'Done', when: 'The work ended. Replace the percent with a word.', render: <Progress label="Uploading report.pdf" value={100} valueText="Done" /> },
+            { title: 'Your own scale', when: 'The work counts items, not percent. Set max to the total.', render: <Progress label="Uploading files" value={3} max={12} valueText="3 of 12 files" /> },
+            { title: 'Value text in words', when: 'A size or a time says more than a percent.', render: <Progress label="Downloading update" value={64} valueText="64 MB of 100 MB" /> },
+          ],
+        },
+        {
+          title: 'Indeterminate',
+          kicker: 'Leave value out when the length is unknown. The label still says what waits.',
+          examples: [
+            { title: 'Unknown length', when: 'The work takes a while and you cannot say how far it went.', render: <Progress label="Preparing your export" /> },
+            { title: 'Unknown length, with a word', when: 'A short status beside the label helps the user wait.', render: <Progress label="Preparing your export" valueText="Starting" /> },
+          ],
+        },
+        {
+          title: 'Failure',
+          kicker: 'Pass error. The message shows as text with an icon, and the bar takes the error colour.',
+          examples: [
+            { title: 'Failed partway', when: 'The work stopped. The bar keeps the value it reached.', render: <Progress label="Uploading report.pdf" value={42} error="The connection dropped. Try again." /> },
+            {
+              title: 'Failure with a retry',
+              when: 'Put the next step beside the error.',
+              render: (
+                <Stack gap={3} align="start">
+                  <Progress label="Uploading report.pdf" value={42} error="The connection dropped." />
+                  <Button variant="secondary">Retry upload</Button>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          examples: [
+            { title: 'Long label', when: 'A long file name or a long phrase. The label wraps.', frame: 'narrow', render: <Progress label="Uploading quarterly-financial-report-final-v3.pdf" value={58} /> },
+            { title: 'Translated label and value', when: 'The app is not in English. Label and value text come from props.', frame: 'narrow', render: <Progress label="Téléversement du rapport" value={3} max={12} valueText="3 fichiers sur 12" /> },
+            { title: 'Phone width', when: 'A phone. The bar fills the width.', frame: 'phone', render: <Progress label="Uploading report.pdf" value={42} /> },
+          ],
+        },
+        {
+          title: 'Composition',
+          examples: [
+            {
+              title: 'Several jobs',
+              when: 'A list of uploads, each with its own bar and label.',
+              render: (
+                <Stack gap={4}>
+                  <Progress label="report.pdf" value={100} valueText="Done" />
+                  <Progress label="photos.zip" value={35} />
+                  <Progress label="notes.txt" />
+                  <Progress label="video.mov" value={12} error="The file is larger than 2 GB." />
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The label names the bar. The bar does not announce that it is done: you do.',
+          examples: [
+            {
+              title: 'From unknown to known, then announced',
+              when: 'The work starts with no length, then reports its value. Announce the end in a status line.',
+              render: <UploadProgress />,
+              code: `function UploadProgress() {
+  const [running, setRunning] = useState(false);
+  const [value, setValue] = useState<number | undefined>(undefined);
+  const [status, setStatus] = useState('');
+  const start = async () => {
+    setValue(undefined);
+    setStatus('');
+    setRunning(true);
+    await uploadFile({ onProgress: setValue });
+    setRunning(false);
+    setStatus('Upload complete.');
+  };
+  return (
+    <Stack gap={3} align="start">
+      {(running || value !== undefined) && (
+        <Progress label="Uploading report.pdf" value={value} valueText={value === 100 ? 'Done' : undefined} />
+      )}
+      <Button variant="secondary" onClick={start} disabled={running}>Start upload</Button>
+      <Text as="p" role="status">{status}</Text>
+    </Stack>
+  );
+}`,
+            },
+            { title: 'A stable id', when: 'Another element must point at the bar, for example with aria-controls.', render: <Progress id="export-progress" label="Exporting orders" value={70} /> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

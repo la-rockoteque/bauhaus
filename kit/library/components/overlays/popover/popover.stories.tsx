@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Icon } from '../../../primitives/icon/icon';
 import { Stack } from '../../../primitives/stack/stack';
 import { Text } from '../../../primitives/text/text';
 import { Button } from '../../clickables/button/button';
+import { Checkbox } from '../../fields/checkbox/checkbox';
+import { TextField } from '../../fields/text-field/text-field';
 import { Popover } from './popover';
 import { popoverRules } from './popover.rules';
 
@@ -154,4 +158,277 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Popover" layer="Component" family="Overlays" rules={popoverRules} guide="overlays-popover--docs" guideName="Popover" />,
+};
+
+function StatusFilters() {
+  const [paid, setPaid] = useState(true);
+  const [shipped, setShipped] = useState(false);
+  const [summary, setSummary] = useState('Showing every order.');
+  return (
+    <Stack gap={2} align="start">
+      <Popover trigger={<Button variant="secondary">Filters</Button>} label="Filters">
+        {({ close }) => (
+          <Stack gap={3}>
+            <Checkbox label="Paid" checked={paid} onChange={(event) => setPaid(event.target.checked)} />
+            <Checkbox label="Shipped" checked={shipped} onChange={(event) => setShipped(event.target.checked)} />
+            <Button
+              onClick={() => {
+                setSummary(`Showing ${[paid && 'paid', shipped && 'shipped'].filter(Boolean).join(' and ') || 'every'} orders.`);
+                close();
+              }}
+            >
+              Apply filters
+            </Button>
+          </Stack>
+        )}
+      </Popover>
+      <Text as="p" role="status">{summary}</Text>
+    </Stack>
+  );
+}
+
+function OpenFromElsewhere() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Stack direction="horizontal" gap={3} wrap>
+      <Popover trigger={<Button variant="secondary">Details</Button>} label="Order details" isOpen={open} onOpenChange={setOpen}>
+        <Text>Order 4821 ships on 12 March.</Text>
+      </Popover>
+      <Text as="p">{open ? 'The popover is open.' : 'The popover is closed.'}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Popover"
+      layer="Component"
+      family="Overlays"
+      imports="import { useState } from 'react'; import { Button, Checkbox, Popover, Stack, Text, TextField } from '@acme/design-system';"
+      guide="overlays-popover--docs"
+      guideName="Popover"
+      groups={[
+        {
+          title: 'Content',
+          kicker: 'A popover keeps the user in context: the panel sits beside its trigger. Each example starts closed.',
+          examples: [
+            {
+              title: 'Summary',
+              when: 'A control hides a short summary that does not need to be on the page all the time.',
+              render: (
+                <Popover trigger={<Button variant="secondary">Delivery date</Button>} label="Delivery date">
+                  <Stack gap={2}>
+                    <Text>Arrives on Tuesday, 12 March.</Text>
+                    <Text variant="caption" tone="muted">Between 9:00 and 12:00.</Text>
+                  </Stack>
+                </Popover>
+              ),
+            },
+            {
+              title: 'Short form',
+              when: 'The user fills one or two fields tied to a control, such as a share panel.',
+              render: (
+                <Popover trigger={<Button variant="secondary">Share</Button>} label="Share this page">
+                  <Stack gap={3}>
+                    <TextField label="Email address" type="email" description="We send the link to this address." />
+                    <Button>Send link</Button>
+                  </Stack>
+                </Popover>
+              ),
+            },
+            {
+              title: 'Filters that close on apply',
+              when: 'An action inside the panel finishes the task. Children receive close, and the action calls it.',
+              render: <StatusFilters />,
+              code: `function Example() {
+  const [paid, setPaid] = useState(true);
+  const [shipped, setShipped] = useState(false);
+  const [summary, setSummary] = useState('Showing every order.');
+  return (
+    <Stack gap={2} align="start">
+      <Popover trigger={<Button variant="secondary">Filters</Button>} label="Filters">
+        {({ close }) => (
+          <Stack gap={3}>
+            <Checkbox label="Paid" checked={paid} onChange={(event) => setPaid(event.target.checked)} />
+            <Checkbox label="Shipped" checked={shipped} onChange={(event) => setShipped(event.target.checked)} />
+            <Button
+              onClick={() => {
+                setSummary(\`Showing \${[paid && 'paid', shipped && 'shipped'].filter(Boolean).join(' and ') || 'every'} orders.\`);
+                close();
+              }}
+            >
+              Apply filters
+            </Button>
+          </Stack>
+        )}
+      </Popover>
+      <Text as="p" role="status">{summary}</Text>
+    </Stack>
+  );
+}`,
+            },
+            {
+              title: 'Long content',
+              when: 'The panel holds more than the screen allows. The panel never grows past the viewport, and the content scrolls inside.',
+              render: (
+                <Popover trigger={<Button variant="secondary">Cities</Button>} label="Cities">
+                  <Stack gap={2}>
+                    {['Montréal', 'Québec', 'Gatineau', 'Laval', 'Sherbrooke', 'Saguenay', 'Lévis', 'Trois-Rivières', 'Terrebonne', 'Longueuil'].map((city) => <Text key={city}>{city}</Text>)}
+                  </Stack>
+                </Popover>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Modal and non-modal',
+          examples: [
+            {
+              title: 'Non-modal (default)',
+              when: 'The page behind stays reachable. Moving focus away closes the popover.',
+              render: (
+                <Popover trigger={<Button variant="secondary">Filters</Button>} label="Filters">
+                  <Text>Paid, shipped, or waiting for pickup.</Text>
+                </Popover>
+              ),
+            },
+            {
+              title: 'Modal',
+              when: 'The panel holds a task that must finish first. The page behind goes inert, and a press outside closes the panel.',
+              render: (
+                <Popover trigger={<Button variant="secondary">Filters (modal)</Button>} label="Filters" modal>
+                  {({ close }) => (
+                    <Stack gap={3}>
+                      <Text>Paid, shipped, or waiting for pickup.</Text>
+                      <Button onClick={close}>Apply filters</Button>
+                    </Stack>
+                  )}
+                </Popover>
+              ),
+              code: `<Popover trigger={<Button variant="secondary">Filters (modal)</Button>} label="Filters" modal>
+  {({ close }) => (
+    <Stack gap={3}>
+      <Text>Paid, shipped, or waiting for pickup.</Text>
+      <Button onClick={close}>Apply filters</Button>
+    </Stack>
+  )}
+</Popover>`,
+            },
+          ],
+        },
+        {
+          title: 'Placement and open state',
+          examples: [
+            {
+              title: 'Aligned to the end',
+              when: 'The trigger sits at the end of a row, so the panel aligns to its end edge.',
+              render: (
+                <Popover trigger={<Button variant="secondary">Filters</Button>} label="Filters" placement="bottom end">
+                  <Text>Paid, shipped, or waiting for pickup.</Text>
+                </Popover>
+              ),
+            },
+            {
+              title: 'Opens above',
+              when: 'The trigger sits at the bottom of the screen. The panel still flips when it does not fit.',
+              render: (
+                <Popover trigger={<Button variant="secondary">Filters</Button>} label="Filters" placement="top start">
+                  <Text>Paid, shipped, or waiting for pickup.</Text>
+                </Popover>
+              ),
+            },
+            {
+              title: 'Opens to the side',
+              when: 'The trigger sits in a narrow column. The panel opens beside it.',
+              render: (
+                <Popover trigger={<Button variant="secondary">Filters</Button>} label="Filters" placement="end top">
+                  <Text>Paid, shipped, or waiting for pickup.</Text>
+                </Popover>
+              ),
+            },
+            {
+              title: 'Controlled open state',
+              when: 'The app needs to know whether the popover is open.',
+              render: <OpenFromElsewhere />,
+              code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Stack direction="horizontal" gap={3} wrap>
+      <Popover trigger={<Button variant="secondary">Details</Button>} label="Order details" isOpen={open} onOpenChange={setOpen}>
+        <Text>Order 4821 ships on 12 March.</Text>
+      </Popover>
+      <Text as="p">{open ? 'The popover is open.' : 'The popover is closed.'}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Narrow screens',
+          examples: [
+            {
+              title: 'In a narrow column',
+              when: 'The trigger sits in a 192px column. The panel keeps within the screen.',
+              frame: 'narrow',
+              render: (
+                <Popover trigger={<Button variant="secondary">Filters</Button>} label="Filters">
+                  <Text>Show the orders that are paid, shipped, or waiting for pickup at a store.</Text>
+                </Popover>
+              ),
+            },
+            {
+              title: 'On a phone',
+              when: 'The trigger sits in a 320px view. The width is the screen minus the gutter.',
+              frame: 'phone',
+              render: (
+                <Popover trigger={<Button variant="secondary">Share</Button>} label="Share this page" placement="bottom end">
+                  <Stack gap={3}>
+                    <TextField label="Email address" type="email" />
+                    <Button>Send link</Button>
+                  </Stack>
+                </Popover>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          examples: [
+            {
+              title: 'Disabled trigger',
+              when: 'The panel does not apply now. A disabled trigger does not open, so say why next to it.',
+              render: (
+                <Stack direction="horizontal" gap={3} align="center" wrap>
+                  <Popover trigger={<Button variant="secondary" disabled>Filters</Button>} label="Filters">
+                    <Text>Paid, shipped, or waiting for pickup.</Text>
+                  </Popover>
+                  <Text variant="caption" tone="muted">Filters are off while the list loads.</Text>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'In the flow',
+          examples: [
+            {
+              title: 'Without a trigger',
+              when: 'A preview or an embedded panel draws the open panel in the flow, with no anchoring and no focus move.',
+              render: (
+                <Popover label="Filters">
+                  <Stack gap={3}>
+                    <Text variant="caption" tone="muted">Show orders that are</Text>
+                    <Text>Paid, shipped, or waiting for pickup.</Text>
+                  </Stack>
+                </Popover>
+              ),
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

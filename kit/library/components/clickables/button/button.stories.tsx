@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
 import { Button } from './button';
 import type { ButtonProps, ButtonVariant } from './button';
 import { buttonRules } from './button.rules';
@@ -126,4 +130,197 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Button" layer="Component" family="Clickables" rules={buttonRules} guide="clickables-button--docs" guideName="Button" />,
+};
+
+/** Presses run a two-second save, so the loading state can be seen end to end. */
+function SaveWithFeedback() {
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState('');
+  const save = () => {
+    setSaving(true);
+    setStatus('');
+    window.setTimeout(() => {
+      setSaving(false);
+      setStatus('Changes saved.');
+    }, 2000);
+  };
+  return (
+    <Stack gap={2} align="start">
+      <Button loading={saving} onClick={save}>Save changes</Button>
+      <Text as="p" role="status">{status}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Button"
+      layer="Component"
+      family="Clickables"
+      imports="import { Button } from '@acme/design-system';"
+      guide="clickables-button--docs"
+      guideName="Button"
+      groups={[
+        {
+          title: 'Variants',
+          kicker: 'The variant ranks the action. It changes nothing else.',
+          examples: [
+            { title: 'Primary', when: 'The one main action of a view region.', render: <Button>Save changes</Button> },
+            { title: 'Secondary', when: 'An action beside the primary, such as Cancel or Back.', render: <Button variant="secondary">Cancel</Button> },
+            { title: 'Tertiary', when: 'A low-rank action that still reads as an action, such as Skip.', render: <Button variant="tertiary">Skip for now</Button> },
+            { title: 'Subtle', when: 'Quiet chrome: a toolbar or a dense table row, where the fill would compete with the content.', render: <Button variant="subtle">Edit</Button> },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'One primary per region; the others step down.',
+          examples: [
+            {
+              title: 'Dialog footer',
+              when: 'Confirm and dismiss side by side: the primary last in reading order, the secondary before it.',
+              render: (
+                <Stack direction="horizontal" gap={3} justify="end" wrap>
+                  <Button variant="secondary">Cancel</Button>
+                  <Button>Save changes</Button>
+                </Stack>
+              ),
+            },
+            {
+              title: 'Form actions with a way out',
+              when: 'A primary, a secondary and a tertiary escape, ranked by how often each is picked.',
+              render: (
+                <Stack direction="horizontal" gap={3} wrap>
+                  <Button>Publish</Button>
+                  <Button variant="secondary">Save draft</Button>
+                  <Button variant="tertiary">Discard</Button>
+                </Stack>
+              ),
+            },
+            {
+              title: 'Toolbar',
+              when: 'Several equal actions over content: all subtle, so none claims to be the main one.',
+              render: (
+                <Stack direction="horizontal" gap={1} role="toolbar" aria-label="Text formatting">
+                  <Button variant="subtle">Bold</Button>
+                  <Button variant="subtle">Italic</Button>
+                  <Button variant="subtle">Link</Button>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'States are props, so any variant can be loading or disabled.',
+          examples: [
+            { title: 'Loading', when: 'The action is running. The label and width stay; presses are ignored.', render: <Button loading>Save changes</Button> },
+            { title: 'Loading, secondary', when: 'A lower-rank action that also takes time.', render: <Button variant="secondary" loading>Export</Button> },
+            {
+              title: 'Disabled, with the reason beside it',
+              when: 'The action cannot run yet. Say why next to it, and point to the fix.',
+              render: (
+                <Stack gap={2} align="start">
+                  <Button disabled aria-describedby="publish-why">Publish</Button>
+                  <Text variant="caption" tone="muted" as="p" id="publish-why">Add a title to publish.</Text>
+                </Stack>
+              ),
+            },
+            {
+              title: 'Loading, then a status message',
+              when: 'The press starts work, and the result is announced elsewhere in the view.',
+              render: <SaveWithFeedback />,
+              code: `function SaveWithFeedback() {
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState('');
+  const save = async () => {
+    setSaving(true);
+    setStatus('');
+    await saveChanges();
+    setSaving(false);
+    setStatus('Changes saved.');
+  };
+  return (
+    <Stack gap={2} align="start">
+      <Button loading={saving} onClick={save}>Save changes</Button>
+      <Text as="p" role="status">{status}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'In a form',
+          kicker: 'The default type is button: a button in a form does not submit unless asked.',
+          examples: [
+            {
+              title: 'Submit and reset',
+              when: 'The button that sends the form, and one that clears it.',
+              render: (
+                <Stack as="form" direction="horizontal" gap={3} onSubmit={(event) => event.preventDefault()}>
+                  <Button type="submit">Send message</Button>
+                  <Button type="reset" variant="tertiary">Clear</Button>
+                </Stack>
+              ),
+              code: `<Stack as="form" direction="horizontal" gap={3} onSubmit={handleSubmit}>
+  <Button type="submit">Send message</Button>
+  <Button type="reset" variant="tertiary">Clear</Button>
+</Stack>`,
+            },
+            {
+              title: 'An action inside a form that does not submit',
+              when: 'Add a row, preview, open a helper: keep the default type.',
+              render: <Button variant="secondary">Add another address</Button>,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'A verb, then the object. The label wraps; it never truncates.',
+          examples: [
+            { title: 'Verb and object', when: 'Every label: say what happens to what.', render: <Button>Delete 3 files</Button> },
+            {
+              title: 'Long label in a narrow space',
+              when: 'Translated or long labels: the label wraps onto a second line.',
+              frame: 'narrow',
+              render: <Button variant="secondary">Save changes to the shipping address and the billing address</Button>,
+            },
+            {
+              title: 'Full width on a phone',
+              when: 'A single primary at the end of a mobile form: let the container size it.',
+              frame: 'phone',
+              render: (
+                <Stack>
+                  <Button>Continue to payment</Button>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The native button gives focus, Space and Enter for free.',
+          examples: [
+            {
+              title: 'Opens a dialog',
+              when: 'A button that opens a modal says so with aria-haspopup.',
+              render: <Button variant="secondary" aria-haspopup="dialog">Rename…</Button>,
+            },
+            {
+              title: 'Toggles a region',
+              when: 'A button that shows and hides a panel exposes aria-expanded and aria-controls.',
+              render: <Button variant="tertiary" aria-expanded={false} aria-controls="filters-panel">Show filters</Button>,
+            },
+            {
+              title: 'A label that needs more context',
+              when: 'Repeated "Remove" buttons in a list: add the object for assistive technology.',
+              render: <Button variant="subtle" aria-label="Remove Invoice 2024-03">Remove</Button>,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Button } from '../../clickables/button/button';
 import { RadioGroup } from './radio-group';
 import { radioGroupRules } from './radio-group.rules';
 
@@ -134,4 +138,192 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Radio group" layer="Component" family="Fields" rules={radioGroupRules} guide="fields-radio-group--docs" guideName="Radio group" />,
+};
+
+const SIZES = [
+  { value: 'small', label: 'Small' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'large', label: 'Large' },
+];
+
+/** The view owns the value and shows what it means. */
+function DeliveryChoice() {
+  const [delivery, setDelivery] = useState('standard');
+  return (
+    <Stack gap={2}>
+      <RadioGroup
+        legend="Delivery"
+        value={delivery}
+        onValueChange={setDelivery}
+        options={[
+          { value: 'standard', label: 'Standard, 3 to 5 days' },
+          { value: 'express', label: 'Express, next day' },
+          { value: 'pickup', label: 'Pickup in store' },
+        ]}
+      />
+      <Text as="p" role="status" variant="caption" tone="muted">{delivery === 'pickup' ? 'Pickup is free.' : delivery === 'express' ? 'Express costs 12 dollars.' : 'Standard is free over 50 dollars.'}</Text>
+    </Stack>
+  );
+}
+
+/** The group blur fires when focus leaves the fieldset, so an empty required group shows its error once the user has passed it. */
+function RequiredDelivery() {
+  const [delivery, setDelivery] = useState('');
+  const [error, setError] = useState('');
+  return (
+    <RadioGroup
+      legend="Delivery"
+      required
+      value={delivery}
+      error={error}
+      onValueChange={(next) => {
+        setDelivery(next);
+        setError('');
+      }}
+      onBlur={() => setError(delivery === '' ? 'Choose a delivery option' : '')}
+      options={[
+        { value: 'standard', label: 'Standard, 3 to 5 days' },
+        { value: 'express', label: 'Express, next day' },
+        { value: 'pickup', label: 'Pickup in store' },
+      ]}
+    />
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Radio group"
+      layer="Component"
+      family="Fields"
+      imports="import { RadioGroup, Stack, Text, Button } from '@acme/design-system';"
+      guide="fields-radio-group--docs"
+      guideName="Radio group"
+      groups={[
+        {
+          title: 'Basics',
+          kicker: 'One choice from two to five options that fit on screen. The legend is the question.',
+          examples: [
+            { title: 'No choice yet', when: 'The question has no honest default, so no option is checked. Tab enters at the first option.', render: <RadioGroup legend="Delivery" options={DELIVERY} /> },
+            { title: 'With a default', when: 'One option is the honest default. A chosen option hides the question, so preselect with a reason.', render: <RadioGroup legend="Delivery" options={DELIVERY} defaultValue="standard" /> },
+            { title: 'With a description', when: 'The user needs a hint about the question before choosing.', render: <RadioGroup legend="Delivery" description="Prices include tax." options={DELIVERY} /> },
+            { title: 'Two options', when: 'A choice between two things that are not a yes or no.', render: <RadioGroup legend="Billing period" options={[{ value: 'monthly', label: 'Monthly' }, { value: 'annual', label: 'Annual, two months free' }]} /> },
+            { title: 'Five options', when: 'The upper end of the range. More than five: use a select.', render: <RadioGroup legend="Rate your visit" options={[{ value: '1', label: 'Poor' }, { value: '2', label: 'Fair' }, { value: '3', label: 'Good' }, { value: '4', label: 'Very good' }, { value: '5', label: 'Excellent' }]} /> },
+            { title: 'Required', when: 'The form cannot go on without a choice. The marker is a word, not an asterisk.', render: <RadioGroup legend="Delivery" required options={DELIVERY} /> },
+            { title: 'Required, in another language', when: 'Change the word of the marker with requiredText for a translated view.', render: <RadioGroup legend="Livraison" required requiredText="obligatoire" options={[{ value: 'standard', label: 'Standard, 3 à 5 jours' }, { value: 'express', label: 'Express, le lendemain' }]} /> },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'States are props. Disabled works on the group or on one option.',
+          examples: [
+            { title: 'Error', when: 'The user passed the group with no choice. Name the field and the fix.', render: <RadioGroup legend="Delivery" required error="Choose a delivery option" options={DELIVERY} /> },
+            { title: 'Error, in another language', when: 'Change the hidden word before the error with errorPrefix.', render: <RadioGroup legend="Livraison" error="Choisissez un mode de livraison" errorPrefix="Erreur" options={[{ value: 'standard', label: 'Standard, 3 à 5 jours' }, { value: 'express', label: 'Express, le lendemain' }]} /> },
+            { title: 'Disabled group', when: 'The user cannot change the answer now. Say why in the description.', render: <RadioGroup legend="Delivery" disabled description="The order has shipped." defaultValue="standard" options={DELIVERY} /> },
+            { title: 'Disabled option', when: 'One option is not available now. Say why nearby.', render: <RadioGroup legend="Delivery" description="Express is closed on Sundays." options={[{ value: 'standard', label: 'Standard, 3 to 5 days' }, { value: 'express', label: 'Express, next day', disabled: true }, { value: 'pickup', label: 'Pickup in store' }]} /> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'An option label is any content. It wraps inside its column.',
+          examples: [
+            { title: 'Rich label', when: 'An option with a price or a note next to its name.', render: <RadioGroup legend="Plan" defaultValue="team" options={[{ value: 'solo', label: <><strong>Solo</strong>, 9 dollars a month</> }, { value: 'team', label: <><strong>Team</strong>, 29 dollars a month</> }]} /> },
+            { title: 'Long option labels', when: 'An option that needs a full sentence: the label wraps and the whole text stays a target.', render: <RadioGroup legend="Data retention" options={[{ value: '30', label: 'Keep my data for 30 days after I close the account, then delete it for good' }, { value: '0', label: 'Delete my data as soon as I close the account' }]} /> },
+            { title: 'Long legend and description in a narrow column', when: 'Translated text runs longer: both wrap rather than truncate.', frame: 'narrow', render: <RadioGroup legend="Mode de livraison préféré pour cette commande" description="Les frais s’affichent à l’étape suivante." options={[{ value: 'standard', label: 'Standard, 3 à 5 jours ouvrables' }, { value: 'express', label: 'Express, le lendemain' }]} /> },
+            { title: 'Error in a narrow column', when: 'The error wraps below its icon and stays whole.', frame: 'narrow', render: <RadioGroup legend="Delivery" error="Choose a delivery option before you pay" options={DELIVERY} /> },
+            { title: 'On a phone', when: 'Each row fills the width of its container, with a target at least 24px high.', frame: 'phone', render: <RadioGroup legend="Delivery" required options={DELIVERY} /> },
+          ],
+        },
+        {
+          title: 'Controlled and uncontrolled',
+          kicker: 'The browser owns the arrow keys and the single Tab stop in both.',
+          examples: [
+            { title: 'Uncontrolled', when: 'The browser holds the choice; read it from the form on submit.', render: <RadioGroup legend="Size" name="size" defaultValue="medium" options={SIZES} /> },
+            {
+              title: 'Controlled',
+              when: 'The view owns the value and reacts to a change, such as a price note.',
+              render: <DeliveryChoice />,
+              code: `function DeliveryChoice() {
+  const [delivery, setDelivery] = useState('standard');
+  return (
+    <Stack gap={2}>
+      <RadioGroup
+        legend="Delivery"
+        value={delivery}
+        onValueChange={setDelivery}
+        options={[
+          { value: 'standard', label: 'Standard, 3 to 5 days' },
+          { value: 'express', label: 'Express, next day' },
+          { value: 'pickup', label: 'Pickup in store' },
+        ]}
+      />
+      <Text as="p" role="status" variant="caption" tone="muted">{priceNote(delivery)}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'In a form',
+          examples: [
+            {
+              title: 'Validate on group blur',
+              when: 'Show the error when focus leaves the group, not when the arrows move between options.',
+              render: <RequiredDelivery />,
+              code: `function RequiredDelivery() {
+  const [delivery, setDelivery] = useState('');
+  const [error, setError] = useState('');
+  return (
+    <RadioGroup
+      legend="Delivery"
+      required
+      value={delivery}
+      error={error}
+      onValueChange={(next) => {
+        setDelivery(next);
+        setError('');
+      }}
+      onBlur={() => setError(delivery === '' ? 'Choose a delivery option' : '')}
+      options={[
+        { value: 'standard', label: 'Standard, 3 to 5 days' },
+        { value: 'express', label: 'Express, next day' },
+        { value: 'pickup', label: 'Pickup in store' },
+      ]}
+    />
+  );
+}`,
+            },
+            {
+              title: 'Shared name',
+              when: 'Give the group a name so a native form submits the chosen value. Without one, the group makes its own.',
+              render: <RadioGroup legend="Shirt size" name="shirt-size" options={SIZES} />,
+            },
+            {
+              title: 'A checkout step',
+              when: 'Two questions, then one primary action.',
+              render: (
+                <Stack as="form" gap={4} onSubmit={(event) => event.preventDefault()}>
+                  <RadioGroup legend="Delivery" name="delivery" required options={DELIVERY} />
+                  <RadioGroup legend="Gift wrap" name="wrap" defaultValue="no" options={[{ value: 'no', label: 'No wrap' }, { value: 'yes', label: 'Wrap as a gift' }]} />
+                  <Stack direction="horizontal" justify="end">
+                    <Button type="submit">Continue to payment</Button>
+                  </Stack>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'A fieldset with role="radiogroup": the legend, description and error are tied to the group.',
+          examples: [
+            { title: 'Your own id', when: 'Another element must point to the group, such as an error summary.', render: <RadioGroup legend="Delivery" id="delivery-group" options={DELIVERY} /> },
+            { title: 'Group with a description and an error', when: 'The description comes first in aria-describedby, then the error.', render: <RadioGroup legend="Delivery" description="Prices include tax." error="Choose a delivery option" options={DELIVERY} /> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

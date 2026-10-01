@@ -2,6 +2,10 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
+import { Link } from '../../clickables/link/link';
 import { Button } from '../../clickables/button/button';
 import { Banner } from './banner';
 import type { BannerStatus } from './banner';
@@ -158,4 +162,197 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Banner" layer="Component" family="Feedback" rules={bannerRules} guide="feedback-banner--docs" guideName="Banner" />,
+};
+
+/** Pressing Retry runs the save again. The banner leaves once the save works. */
+function SaveErrorBanner() {
+  const [failed, setFailed] = useState(true);
+  return failed ? (
+    <Banner
+      status="error"
+      title="Your changes were not saved"
+      actions={<Button variant="secondary" onClick={() => setFailed(false)}>Retry</Button>}
+    >
+      The server did not answer. Your edits are still on this page.
+    </Banner>
+  ) : (
+    <Text as="p" role="status">Changes saved.</Text>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Banner"
+      layer="Component"
+      family="Feedback"
+      imports="import { Banner, Button, Link, Stack, Text } from '@acme/design-system';"
+      guide="feedback-banner--docs"
+      guideName="Banner"
+      groups={[
+        {
+          title: 'Status',
+          kicker: 'The status sets the icon, the colour and the spoken word. The text says what happened.',
+          examples: [
+            { title: 'Info', when: 'A fact about the page or the system, such as a plan that ends soon.', render: <Banner status="info">Your trial ends in 3 days.</Banner> },
+            { title: 'Success', when: 'A result the user may want to read again.', render: <Banner status="success">Your plan is now Team. The new limits apply today.</Banner> },
+            { title: 'Warning', when: 'Something will go wrong soon unless the user acts.', render: <Banner status="warning">Maintenance starts tonight at 22:00. Saving is off for 15 minutes.</Banner> },
+            { title: 'Error', when: 'Something failed and the user must know.', render: <Banner status="error">The import failed. No rows were added.</Banner> },
+          ],
+        },
+        {
+          title: 'Anatomy',
+          kicker: 'Title, message and actions are all optional parts. Use the ones the message needs.',
+          examples: [
+            { title: 'Message only', when: 'A short note that needs no lead line.', render: <Banner>Prices include tax.</Banner> },
+            { title: 'Title only', when: 'The lead line says everything.', render: <Banner status="success" title="Payment received" /> },
+            { title: 'Title and message', when: 'A lead line, then the reason or the detail.', render: <Banner status="warning" title="Your plan ends on 30 June">After that date, projects become read-only.</Banner> },
+            {
+              title: 'With an action',
+              when: 'The message has a next step. Put it in the banner, so the message is not a dead end.',
+              render: (
+                <Banner status="warning" title="Your plan ends on 30 June" actions={<Button variant="secondary">Renew plan</Button>}>
+                  After that date, projects become read-only.
+                </Banner>
+              ),
+            },
+            {
+              title: 'With two actions',
+              when: 'A main step and a way out.',
+              render: (
+                <Banner
+                  status="info"
+                  title="A new version is ready"
+                  actions={
+                    <Stack direction="horizontal" gap={3} wrap>
+                      <Button variant="secondary">Reload now</Button>
+                      <Button variant="tertiary">Later</Button>
+                    </Stack>
+                  }
+                >
+                  Reload to get the latest fixes.
+                </Banner>
+              ),
+            },
+            {
+              title: 'With a link',
+              when: 'The detail lives on another page.',
+              render: <Banner status="info">The export format changed. <Link href="#changes">Read what changed</Link>.</Banner>,
+            },
+          ],
+        },
+        {
+          title: 'Dismiss',
+          kicker: 'Pass onDismiss and dismissLabel together. The parent removes the banner.',
+          examples: [
+            {
+              title: 'Dismissable banner',
+              when: 'The user can clear a message that does not need to stay.',
+              render: <DismissDemo />,
+              code: `function DismissDemo() {
+  const [open, setOpen] = useState(true);
+  return open ? (
+    <Banner status="info" onDismiss={() => setOpen(false)} dismissLabel="Dismiss message">
+      Your trial ends in 3 days.
+    </Banner>
+  ) : (
+    <Button variant="secondary" onClick={() => setOpen(true)}>Show the banner again</Button>
+  );
+}`,
+            },
+            {
+              title: 'Dismiss with an action',
+              when: 'A message with a next step that the user can also close.',
+              render: (
+                <Banner status="warning" title="Your card expires soon" actions={<Button variant="secondary">Update card</Button>} onDismiss={() => {}} dismissLabel="Dismiss card warning">
+                  Update it before 1 July to keep your plan.
+                </Banner>
+              ),
+              code: `<Banner
+  status="warning"
+  title="Your card expires soon"
+  actions={<Button variant="secondary">Update card</Button>}
+  onDismiss={() => setOpen(false)}
+  dismissLabel="Dismiss card warning"
+>
+  Update it before 1 July to keep your plan.
+</Banner>`,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The banner fills its container and wraps its text. It never truncates.',
+          examples: [
+            {
+              title: 'A long message',
+              when: 'A message of several sentences. It wraps.',
+              render: (
+                <Banner status="info" title="We moved your files">
+                  Your projects now live in the Team workspace. Folders keep their names, and shared links still work. Ask an admin if a project is missing.
+                </Banner>
+              ),
+            },
+            {
+              title: 'Narrow column',
+              when: 'A side panel. Title, message and action stack inside the width.',
+              frame: 'narrow',
+              render: <Banner status="warning" title="Storage almost full" actions={<Button variant="secondary">Free up space</Button>}>You used 94% of your space.</Banner>,
+            },
+            {
+              title: 'Phone width',
+              when: 'A phone. The close button stays in reach.',
+              frame: 'phone',
+              render: <Banner status="error" title="You are offline" onDismiss={() => {}} dismissLabel="Dismiss offline message">Changes are saved on this device and sent when you reconnect.</Banner>,
+            },
+          ],
+        },
+        {
+          title: 'Composition',
+          examples: [
+            {
+              title: 'Several banners',
+              when: 'Two causes at once. They stack in the flow. Keep the count low.',
+              render: (
+                <Stack gap={3}>
+                  <Banner status="error" title="Sync is paused">Reconnect to send your changes.</Banner>
+                  <Banner status="warning">Your plan ends on 30 June.</Banner>
+                </Stack>
+              ),
+            },
+            {
+              title: 'Page-level save error with a retry',
+              when: 'A save failed. The user needs to read the cause again and try again.',
+              render: <SaveErrorBanner />,
+              code: `function SaveErrorBanner() {
+  const [failed, setFailed] = useState(true);
+  return failed ? (
+    <Banner
+      status="error"
+      title="Your changes were not saved"
+      actions={<Button variant="secondary" onClick={retrySave}>Retry</Button>}
+    >
+      The server did not answer. Your edits are still on this page.
+    </Banner>
+  ) : (
+    <Text as="p" role="status">Changes saved.</Text>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The default role is status, a polite live region. Only a blocking error asks for more.',
+          examples: [
+            { title: 'Urgent error', when: 'An error the user must act on now. It gets role="alert" and interrupts speech.', render: <Banner status="error" urgent title="Payment failed">Your card was declined. Use another card to keep your plan.</Banner> },
+            { title: 'Calm message', when: 'Any message that can wait. Leave urgent off.', render: <Banner status="warning">Your session ends in 10 minutes.</Banner> },
+            { title: 'Translated status word', when: 'The app is not in English. Pass the spoken name of the icon in the app language.', render: <Banner status="error" statusLabel="Erreur">L'envoi a échoué. Réessayez dans quelques minutes.</Banner> },
+            { title: 'Translated close label', when: 'The close button needs a name in the app language.', render: <Banner status="info" onDismiss={() => {}} dismissLabel="Fermer le message">Votre essai se termine dans 3 jours.</Banner> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

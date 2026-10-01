@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Text } from '../../../primitives/text/text';
+import { Stack } from '../../../primitives/stack/stack';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Breadcrumb, type BreadcrumbItem } from './breadcrumb';
 import { breadcrumbRules } from './breadcrumb.rules';
 
@@ -117,4 +120,104 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Breadcrumb" layer="Component" family="Navigation" rules={breadcrumbRules} guide="navigation-breadcrumb--docs" guideName="Breadcrumb" />,
+};
+
+const HOME = { label: 'Home', href: '#home' };
+const SHOP = { label: 'Shop', href: '#shop' };
+const FURNITURE = { label: 'Furniture', href: '#furniture' };
+const LIGHTING = { label: 'Lighting', href: '#lighting' };
+const LAMPS = { label: 'Desk lamps', href: '#lamps' };
+const DEEP_PATH = [HOME, SHOP, FURNITURE, LIGHTING, LAMPS, { label: 'Arc lamp' }] as const;
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Breadcrumb"
+      layer="Component"
+      family="Navigation"
+      imports="import { Breadcrumb, Stack, Text } from '@acme/design-system';"
+      guide="navigation-breadcrumb--docs"
+      guideName="Breadcrumb"
+      groups={[
+        {
+          title: 'Paths',
+          kicker: 'The last item is the current page. Use the page names the user knows, not URL slugs.',
+          examples: [
+            { title: 'Two levels', when: 'A page one step below the top. A breadcrumb adds little here.', render: <Breadcrumb label="Breadcrumb" items={[HOME, { label: 'Shipping policy' }]} /> },
+            { title: 'Three levels', when: 'The common case in a hierarchy: the user can go up one or two levels.', render: <Breadcrumb label="Breadcrumb" items={[HOME, SHOP, { label: 'Furniture' }]} /> },
+            { title: 'Current page as a link', when: 'The last item has an href. It stays marked as the current page.', render: <Breadcrumb label="Breadcrumb" items={[HOME, SHOP, { label: 'Furniture', href: '#furniture' }]} /> },
+            { title: 'Current page as plain text', when: 'The current page needs no link. Leave href off the last item.', render: <Breadcrumb label="Breadcrumb" items={[HOME, SHOP, FURNITURE, { label: 'Lighting' }]} /> },
+          ],
+        },
+        {
+          title: 'Too many levels',
+          kicker: 'More items than maxItems collapse into a "…" button. It opens the whole path and moves focus to the first revealed link.',
+          examples: [
+            { title: 'Collapsed path', when: 'A deep hierarchy. The default maxItems is 4, so it shows the first item, "…" and the last two.', render: <Breadcrumb label="Breadcrumb" items={DEEP_PATH} /> },
+            { title: 'Lower maxItems', when: 'A narrow area where three items are the most that fit.', render: <Breadcrumb label="Breadcrumb" items={[HOME, SHOP, FURNITURE, { label: 'Lighting' }]} maxItems={3} /> },
+            { title: 'Higher maxItems', when: 'A wide header that has room for more of the path before it collapses.', render: <Breadcrumb label="Breadcrumb" items={DEEP_PATH} maxItems={6} /> },
+            { title: 'At the limit', when: 'The path has exactly maxItems items. It stays whole.', render: <Breadcrumb label="Breadcrumb" items={[HOME, SHOP, FURNITURE, { label: 'Lighting' }]} /> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The list wraps onto a new line. No item truncates.',
+          examples: [
+            { title: 'Long names', when: 'Long page titles in a narrow column. The path wraps.', frame: 'narrow', render: <Breadcrumb label="Breadcrumb" items={[HOME, { label: 'Annual reports and financial statements', href: '#reports' }, { label: 'Consolidated results for the fiscal year' }]} /> },
+            { title: 'Phone width', when: 'A four-level path on a phone.', frame: 'phone', render: <Breadcrumb label="Breadcrumb" items={[HOME, SHOP, FURNITURE, { label: 'Lighting' }]} /> },
+            { title: 'Translated path', when: 'The app is not in English: pass the landmark name and the expand label in its language.', render: <Breadcrumb label="Fil d’Ariane" expandLabel="Afficher tous les niveaux" items={[{ label: 'Accueil', href: '#accueil' }, { label: 'Boutique', href: '#boutique' }, { label: 'Meubles', href: '#meubles' }, { label: 'Luminaires', href: '#luminaires' }, { label: 'Lampes de bureau' }]} /> },
+          ],
+        },
+        {
+          title: 'Router',
+          kicker: 'The library imports no router. Pass your own link component through linkAs.',
+          examples: [
+            {
+              title: 'With a router link',
+              when: 'The app has a router. Every crumb link renders with your component.',
+              render: <Breadcrumb label="Breadcrumb" linkAs="a" items={[HOME, SHOP, { label: 'Furniture' }]} />,
+              code: `// RouterLink: your router's link component.
+
+<Breadcrumb
+  label="Breadcrumb"
+  linkAs={RouterLink}
+  items={[
+    { label: 'Home', href: '/' },
+    { label: 'Shop', href: '/shop' },
+    { label: 'Furniture' },
+  ]}
+/>`,
+            },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'A breadcrumb sits above the page title. It never replaces the main navigation.',
+          examples: [
+            { title: 'Above a page title', when: 'The usual place: the trail first, then the heading of the current page.', render: (
+              <Stack gap={2}>
+                <Breadcrumb label="Breadcrumb" items={[HOME, SHOP, { label: 'Furniture' }]} />
+                <Text as="h2" variant="heading">Furniture</Text>
+              </Stack>
+            ) },
+            { title: 'Two breadcrumbs on a page', when: 'A page holds two trails, such as the site and a document set. Give each landmark its own name.', render: (
+              <Stack gap={2}>
+                <Breadcrumb label="Site" items={[HOME, { label: 'Documents' }]} />
+                <Breadcrumb label="Document set" items={[{ label: 'Contracts', href: '#contracts' }, { label: '2026', href: '#2026' }, { label: 'Supplier agreement' }]} />
+              </Stack>
+            ) },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The label names the landmark. Separators are hidden from assistive technology.',
+          examples: [
+            { title: 'Named landmark', when: 'The label tells a screen reader user what this nav is, among the other landmarks.', render: <Breadcrumb label="You are here" items={[HOME, SHOP, { label: 'Furniture' }]} /> },
+            { title: 'Expand button name', when: 'Name what the "…" button does, in the app language.', render: <Breadcrumb label="Breadcrumb" expandLabel="Show the full path" items={DEEP_PATH} /> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

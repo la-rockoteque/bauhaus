@@ -2,10 +2,12 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
 import { Button } from '../../clickables/button/button';
 import type { ModalSize } from '../modal/modal';
-import { ConfirmationDialog } from './confirmation-dialog';
+import { ConfirmationDialog, type ConfirmationDialogProps } from './confirmation-dialog';
 import { confirmationDialogRules } from './confirmation-dialog.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -134,4 +136,152 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Confirmation dialog" layer="Component" family="Overlays" rules={confirmationDialogRules} guide="overlays-confirmation-dialog--docs" guideName="Confirmation dialog" />,
+};
+
+type ConfirmCopy = Pick<ConfirmationDialogProps, 'title' | 'confirmLabel' | 'cancelLabel' | 'size'> & { description: string; destructive?: boolean; result: string };
+
+/** The trigger and its dialog, closed until the user presses the trigger. The status line shows which answer closed it. */
+function ConfirmExample({ trigger, result, ...copy }: ConfirmCopy & { trigger: string }) {
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState('');
+  return (
+    <Stack gap={2} align="start">
+      <Button variant="secondary" onClick={() => setOpen(true)}>{trigger}</Button>
+      <Text as="p" role="status">{status}</Text>
+      <ConfirmationDialog
+        {...copy}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          setStatus('Cancelled. Nothing changed.');
+        }}
+        onConfirm={() => {
+          setOpen(false);
+          setStatus(result);
+        }}
+      />
+    </Stack>
+  );
+}
+
+/** The source a consumer writes for a ConfirmExample. */
+function confirmSource(trigger: string, { result, ...copy }: ConfirmCopy) {
+  const lines = Object.entries(copy)
+    .map(([key, value]) => (typeof value === 'boolean' ? `        ${key}` : `        ${key}="${value}"`))
+    .join('\n');
+  return `function Example() {
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState('');
+  return (
+    <Stack gap={2} align="start">
+      <Button variant="secondary" onClick={() => setOpen(true)}>${trigger}</Button>
+      <Text as="p" role="status">{status}</Text>
+      <ConfirmationDialog
+        open={open}
+${lines}
+        onClose={() => {
+          setOpen(false);
+          setStatus('Cancelled. Nothing changed.');
+        }}
+        onConfirm={() => {
+          setOpen(false);
+          setStatus('${result}');
+        }}
+      />
+    </Stack>
+  );
+}`;
+}
+
+const confirmExample = (trigger: string, copy: ConfirmCopy) => ({ render: <ConfirmExample trigger={trigger} {...copy} />, code: confirmSource(trigger, copy) });
+
+const deleteCopy: ConfirmCopy = { ...del, destructive: true, result: 'Project deleted.' };
+const publishCopy: ConfirmCopy = { ...publish, result: 'Page published.' };
+const discard: ConfirmCopy = {
+  title: 'Discard your changes?', description: 'You edited 4 fields. They are lost if you leave this page.', confirmLabel: 'Discard changes', cancelLabel: 'Keep editing', destructive: true, result: 'Changes discarded.',
+};
+const longCopy: ConfirmCopy = {
+  title: 'Remove the team?',
+  description: 'The team Platform loses its 14 members, its 6 shared boards and its billing plan. Members keep their own accounts. The boards move to the archive for 30 days, then the system deletes them. Billing stops at the end of the month. Nobody can restore the plan, and you will have to set it up again to bring the team back.',
+  confirmLabel: 'Remove team', cancelLabel: 'Cancel', destructive: true, result: 'Team removed.',
+};
+const french: ConfirmCopy = {
+  title: 'Supprimer ce projet ?', description: 'Cette action supprime 3 fichiers et ne peut pas être annulée.', confirmLabel: 'Supprimer définitivement le projet', cancelLabel: 'Conserver le projet', destructive: true, result: 'Projet supprimé.',
+};
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Confirmation dialog"
+      layer="Component"
+      family="Overlays"
+      imports="import { useState } from 'react'; import { Button, ConfirmationDialog, Stack, Text } from '@acme/design-system';"
+      guide="overlays-confirmation-dialog--docs"
+      guideName="Confirmation dialog"
+      groups={[
+        {
+          title: 'Kinds of choice',
+          kicker: 'The title asks the question. The confirm label names the action and its object.',
+          examples: [
+            { title: 'Destructive', when: 'The action cannot be undone. Focus starts on Cancel, so a habit Enter keeps the data.', ...confirmExample('Delete project', deleteCopy) },
+            { title: 'Discard changes', when: 'The user leaves a form with unsaved work.', ...confirmExample('Leave the page', discard) },
+            { title: 'Reaches other people', when: 'The action is not destructive but others will see it. Focus starts on the confirm action.', ...confirmExample('Publish page', publishCopy) },
+          ],
+        },
+        {
+          title: 'Sizes',
+          kicker: 'The size sets the maximum inline size. The default is md.',
+          examples: [
+            { title: 'Small', when: 'A short question with a short cost.', ...confirmExample('Delete project', { ...deleteCopy, size: 'sm' }) },
+            { title: 'Large', when: 'A longer cost that reads better on a wider line.', ...confirmExample('Remove team', { ...longCopy, size: 'lg' }) },
+          ],
+        },
+        {
+          title: 'Content',
+          examples: [
+            { title: 'Long message', when: 'The cost needs several sentences. The message wraps, and the body scrolls when the dialog runs out of room.', ...confirmExample('Remove team', longCopy) },
+            { title: 'Long labels on a phone', when: 'A translated confirm label is long. The dialog fills the screen at this width.', frame: 'phone', ...confirmExample('Supprimer le projet', french) },
+          ],
+        },
+        {
+          title: 'In the flow',
+          kicker: 'Inline draws the open dialog in the flow, with no scrim and no focus move. It serves previews and embedded panels.',
+          examples: [
+            {
+              title: 'Inline, destructive',
+              when: 'A preview shows the dialog with its focus rule: Cancel first.',
+              render: <ConfirmationDialog inline open onClose={noop} onConfirm={noop} {...del} destructive />,
+              code: `<ConfirmationDialog
+  inline
+  open
+  onClose={() => {}}
+  onConfirm={() => {}}
+  title="Delete this project?"
+  description="This removes 3 files and cannot be undone."
+  confirmLabel="Delete project"
+  cancelLabel="Cancel"
+  destructive
+/>`,
+            },
+            {
+              title: 'Inline, not destructive',
+              when: 'A preview shows the dialog with its focus rule: the confirm action first.',
+              render: <ConfirmationDialog inline open onClose={noop} onConfirm={noop} {...publish} />,
+              code: `<ConfirmationDialog
+  inline
+  open
+  onClose={() => {}}
+  onConfirm={() => {}}
+  title="Publish this page?"
+  description="Everyone with the link can read it. You can unpublish it later."
+  confirmLabel="Publish page"
+  cancelLabel="Cancel"
+/>`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

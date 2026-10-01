@@ -3,6 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Badge } from '../../feedback/badge/badge';
+import { Pagination } from '../../navigation/pagination/pagination';
 import { Button } from '../../clickables/button/button';
 import { Text } from '../../../primitives/text/text';
 import { VisuallyHidden } from '../../../primitives/visually-hidden/visually-hidden';
@@ -244,4 +248,380 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Table" layer="Component" family="Data structures" rules={tableRules} guide="data-structures-table--docs" guideName="Table" />,
+};
+
+const STATUS_TONE = { Approved: 'success', Draft: 'neutral', Rejected: 'error', Pending: 'warning' } as const;
+
+const BADGE_COLUMNS: TableColumn<Requisition>[] = COLUMNS.map((column) =>
+  column.key === 'status' ? { ...column, cell: (row: Requisition) => <Badge status={STATUS_TONE[row.status as keyof typeof STATUS_TONE]}>{row.status}</Badge> } : column,
+);
+
+const PLAIN: TableColumn<Requisition>[] = COLUMNS.filter((column) => column.key !== 'actions').map((column) => ({ ...column, sortable: false }));
+const FIRST_ROWS = DATA.slice(0, 4);
+const FRENCH_LABELS: NonNullable<TableProps<Requisition>['labels']> = {
+  selectAll: (count) => `Sélectionner les ${count} lignes de cette page`,
+  selectRow: (label) => `Sélectionner ${label}`,
+  sorted: (header, direction) => `Trié par ${header}, ${direction === 'ascending' ? 'croissant' : 'décroissant'}`,
+  selectionSummary: (selected, total) => `${selected} lignes sur ${total} sélectionnées sur cette page`,
+  loading: 'Chargement des lignes',
+};
+
+function SortableRequisitions() {
+  const [sort, setSort] = useState<TableSort | null>({ key: 'total', direction: 'descending' });
+  return <Table caption="Requisitions" columns={PLAIN.map((column) => ({ ...column, sortable: column.key !== 'status' }))} rows={sorted(DATA, sort)} getRowId={(row) => row.id} sort={sort} onSortChange={setSort} />;
+}
+
+function SelectableRequisitions({ initial = [] }: { initial?: string[] }) {
+  const [selectedIds, setSelectedIds] = useState<string[]>(initial);
+  return <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} selectedIds={selectedIds} onSelectionChange={setSelectedIds} />;
+}
+
+function BulkApprove() {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  return (
+    <Stack gap={3} align="start">
+      <Button disabled={selectedIds.length === 0}>{selectedIds.length === 0 ? 'Approve' : `Approve ${selectedIds.length}`}</Button>
+      <Table caption="Requisitions to review" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} selectedIds={selectedIds} onSelectionChange={setSelectedIds} />
+    </Stack>
+  );
+}
+
+function PagedRequisitions() {
+  const [page, setPage] = useState(1);
+  const rows = DATA.slice((page - 1) * 4, page * 4);
+  return (
+    <Stack gap={3}>
+      <Table caption="Requisitions" columns={PLAIN} rows={rows} getRowId={(row) => row.id} />
+      <Pagination label="Requisitions pages" page={page} pageCount={2} onPageChange={setPage} total={`${(page - 1) * 4 + 1}–${Math.min(page * 4, DATA.length)} of ${DATA.length}`} />
+    </Stack>
+  );
+}
+
+const COLUMNS_CODE = `const columns: TableColumn<Requisition>[] = [
+  { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
+  { key: 'supplier', header: 'Supplier', cell: (row) => row.supplier },
+  { key: 'status', header: 'Status', cell: (row) => row.status },
+  { key: 'total', header: 'Total (CAD)', align: 'number', cell: (row) => money.format(row.total) },
+];`;
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Table"
+      layer="Component"
+      family="Data structures"
+      imports="import { Badge, Button, Pagination, Stack, Table, VisuallyHidden } from '@acme/design-system';"
+      guide="data-structures-table--docs"
+      guideName="Table"
+      groups={[
+        {
+          title: 'Columns and rows',
+          kicker: 'The caller defines the columns, sorts and pages the rows. The table draws what it is given.',
+          examples: [
+            {
+              title: 'Basic table',
+              when: 'Records with three or more attributes that people compare down a column.',
+              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: `${COLUMNS_CODE}
+
+<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+            },
+            {
+              title: 'Hidden caption',
+              when: 'A heading above the table already names it. Keep the caption for assistive technology only.',
+              render: <Table caption="Requisitions" hideCaption columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: '<Table caption="Requisitions" hideCaption columns={columns} rows={rows} getRowId={(row) => row.id} />',
+            },
+            {
+              title: 'Figures aligned',
+              when: 'A column of amounts: align: \'number\' right-aligns them in the mono style so digits line up.',
+              render: <Table caption="Totals" columns={PLAIN.filter((column) => ['id', 'total'].includes(column.key))} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: `const columns: TableColumn<Requisition>[] = [
+  { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
+  { key: 'total', header: 'Total (CAD)', align: 'number', cell: (row) => money.format(row.total) },
+];
+
+<Table caption="Totals" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+            },
+            {
+              title: 'A value pushed to the end',
+              when: 'A value that is not a figure and belongs at the right edge, such as a status.',
+              render: (
+                <Table
+                  caption="Statuses"
+                  columns={[
+                    { key: 'id', header: 'Requisition', rowHeader: true, cell: (row: Requisition) => row.id },
+                    { key: 'status', header: 'Status', align: 'end', cell: (row: Requisition) => row.status },
+                  ]}
+                  rows={FIRST_ROWS}
+                  getRowId={(row) => row.id}
+                />
+              ),
+              code: `const columns: TableColumn<Requisition>[] = [
+  { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
+  { key: 'status', header: 'Status', align: 'end', cell: (row) => row.status },
+];
+
+<Table caption="Statuses" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+            },
+            {
+              title: 'Badges in cells',
+              when: 'A status the reader scans for: a badge carries a word and a colour.',
+              render: <Table caption="Requisitions" columns={BADGE_COLUMNS.filter((column) => column.key !== 'actions')} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: `const columns: TableColumn<Requisition>[] = [
+  { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
+  { key: 'status', header: 'Status', cell: (row) => <Badge status={toneOf(row.status)}>{row.status}</Badge> },
+];
+
+<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+            },
+            {
+              title: 'Row actions',
+              when: 'A visible button per row, in an actions column. The header stays for assistive technology.',
+              render: <Table caption="Requisitions" columns={COLUMNS.filter((column) => ['id', 'total', 'actions'].includes(column.key)).map((column) => ({ ...column, sortable: false }))} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: `const columns: TableColumn<Requisition>[] = [
+  { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
+  { key: 'total', header: 'Total (CAD)', align: 'number', cell: (row) => money.format(row.total) },
+  {
+    key: 'actions',
+    header: 'Actions',
+    actions: true,
+    cell: (row) => (
+      <Button variant="tertiary">
+        Open<VisuallyHidden> {row.id}</VisuallyHidden>
+      </Button>
+    ),
+  },
+];`,
+            },
+          ],
+        },
+        {
+          title: 'Sorting',
+          kicker: 'The table asks for a sort. The caller sorts the rows and passes the sort back.',
+          examples: [
+            {
+              title: 'Sortable columns',
+              when: 'People look up exact values. Press a header to sort; press again to reverse. Each change is announced.',
+              render: <SortableRequisitions />,
+              code: `function SortableRequisitions() {
+  const [sort, setSort] = useState<TableSort | null>({ key: 'total', direction: 'descending' });
+  return (
+    <Table
+      caption="Requisitions"
+      columns={columns}
+      rows={sortRows(rows, sort)}
+      getRowId={(row) => row.id}
+      sort={sort}
+      onSortChange={setSort}
+    />
+  );
+}`,
+            },
+            {
+              title: 'Sort set by the caller',
+              when: 'The view opens already sorted, for example by a saved preference. Pass sort without a handler to only show it.',
+              render: <Table caption="Requisitions" columns={PLAIN.map((column) => ({ ...column, sortable: column.key === 'total' }))} rows={sorted(FIRST_ROWS, { key: 'total', direction: 'descending' })} getRowId={(row) => row.id} sort={{ key: 'total', direction: 'descending' }} />,
+              code: '<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} sort={{ key: \'total\', direction: \'descending\' }} />',
+            },
+          ],
+        },
+        {
+          title: 'Selection',
+          kicker: 'onSelectionChange adds a checkbox column. Select all changes this page only.',
+          examples: [
+            {
+              title: 'Select rows',
+              when: 'People pick some rows to act on. A line under the table counts the selection.',
+              render: <SelectableRequisitions />,
+              code: `function SelectableRequisitions() {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  return <Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} selectedIds={selectedIds} onSelectionChange={setSelectedIds} />;
+}`,
+            },
+            {
+              title: 'Some rows selected at first',
+              when: 'The view restores a selection. The header box shows the mixed state.',
+              render: <SelectableRequisitions initial={['REQ-1042', 'REQ-1043']} />,
+              code: `function RestoredSelection() {
+  const [selectedIds, setSelectedIds] = useState(['REQ-1042', 'REQ-1043']);
+  return <Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} selectedIds={selectedIds} onSelectionChange={setSelectedIds} />;
+}`,
+            },
+            {
+              title: 'Name each row by its supplier',
+              when: 'The row id is a poor name for a checkbox. getRowLabel gives a clearer one.',
+              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} getRowLabel={(row) => `${row.id}, ${row.supplier}`} selectedIds={[]} onSelectionChange={() => {}} />,
+              code: `<Table
+  caption="Requisitions"
+  columns={columns}
+  rows={rows}
+  getRowId={(row) => row.id}
+  getRowLabel={(row) => \`\${row.id}, \${row.supplier}\`}
+  selectedIds={selectedIds}
+  onSelectionChange={setSelectedIds}
+/>`,
+            },
+            {
+              title: 'A bulk action',
+              when: 'Selecting rows enables the action that works on them. The button says how many.',
+              render: <BulkApprove />,
+              code: `function BulkApprove() {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  return (
+    <Stack gap={3} align="start">
+      <Button disabled={selectedIds.length === 0}>{selectedIds.length === 0 ? 'Approve' : \`Approve \${selectedIds.length}\`}</Button>
+      <Table caption="Requisitions to review" columns={columns} rows={rows} getRowId={(row) => row.id} selectedIds={selectedIds} onSelectionChange={setSelectedIds} />
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Density and size',
+          kicker: 'Comfortable rows are 32px. Compact rows keep every control at 24px or more.',
+          examples: [
+            {
+              title: 'Compact',
+              when: 'A dense view with many rows, such as a back-office list.',
+              render: <Table caption="Requisitions" density="compact" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: '<Table caption="Requisitions" density="compact" columns={columns} rows={rows} getRowId={(row) => row.id} />',
+            },
+            {
+              title: 'Comfortable',
+              when: 'The default: a table people read more than scan.',
+              render: <Table caption="Requisitions" density="comfortable" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: '<Table caption="Requisitions" density="comfortable" columns={columns} rows={rows} getRowId={(row) => row.id} />',
+            },
+            {
+              title: 'Wide table in a narrow space',
+              when: 'More columns than the width: the region scrolls sideways inside its own box, and keyboard users can scroll it.',
+              frame: 'narrow',
+              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: '<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />',
+            },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'The caller owns the words. The table keeps its header in every state.',
+          examples: [
+            { title: 'Loading', when: 'Rows are on their way. Skeleton rows keep the columns\' alignment.', render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} loading />, code: '<Table caption="Requisitions" columns={columns} rows={[]} getRowId={(row) => row.id} loading />' },
+            { title: 'Loading, three rows', when: 'You know about how many rows will arrive: match skeletonRows.', render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} />, code: '<Table caption="Requisitions" columns={columns} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} />' },
+            {
+              title: 'Loading with selection',
+              when: 'The selection column draws a skeleton box per row. The selection count is hidden while loading.',
+              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} selectedIds={[]} onSelectionChange={() => {}} />,
+              code: '<Table caption="Requisitions" columns={columns} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} selectedIds={[]} onSelectionChange={setSelectedIds} />',
+            },
+            {
+              title: 'Empty, first use',
+              when: 'No record exists yet. Invite the reader to create one.',
+              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} empty={<Stack gap={2} align="start"><Text>No requisitions yet. Create your first one.</Text><Button variant="secondary">New requisition</Button></Stack>} />,
+              code: `<Table
+  caption="Requisitions"
+  columns={columns}
+  rows={[]}
+  getRowId={(row) => row.id}
+  empty={
+    <Stack gap={2} align="start">
+      <Text>No requisitions yet. Create your first one.</Text>
+      <Button variant="secondary">New requisition</Button>
+    </Stack>
+  }
+/>`,
+            },
+            { title: 'Empty, no match', when: 'A filter returned nothing. Say what happened.', render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} empty={<Text>No requisition matches “copper”.</Text>} />, code: '<Table caption="Requisitions" columns={columns} rows={[]} getRowId={(row) => row.id} empty={<Text>No requisition matches “copper”.</Text>} />' },
+            {
+              title: 'Error with a retry',
+              when: 'The rows failed to load. One spanning row holds the alert and a retry.',
+              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} error={<Stack gap={2} align="start"><Text>The requisitions did not load.</Text><Button variant="secondary">Try again</Button></Stack>} />,
+              code: `<Table
+  caption="Requisitions"
+  columns={columns}
+  rows={[]}
+  getRowId={(row) => row.id}
+  error={
+    <Stack gap={2} align="start">
+      <Text>The requisitions did not load.</Text>
+      <Button variant="secondary">Try again</Button>
+    </Stack>
+  }
+/>`,
+            },
+            {
+              title: 'Partial',
+              when: 'Some rows loaded and some did not. Keep the rows and say what is missing.',
+              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS.slice(0, 2)} getRowId={(row) => row.id} partial={<Text>6 requisitions did not load.</Text>} />,
+              code: '<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} partial={<Text>6 requisitions did not load.</Text>} />',
+            },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'Paging, filtering and fetching belong to the caller.',
+          examples: [
+            {
+              title: 'With pagination',
+              when: 'More rows than one page. The caller slices the rows; the pagination component moves between pages.',
+              render: <PagedRequisitions />,
+              code: `function PagedRequisitions() {
+  const [page, setPage] = useState(1);
+  const rows = allRows.slice((page - 1) * 4, page * 4);
+  return (
+    <Stack gap={3}>
+      <Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />
+      <Pagination label="Requisitions pages" page={page} pageCount={2} onPageChange={setPage} total={\`\${(page - 1) * 4 + 1}–\${Math.min(page * 4, allRows.length)} of \${allRows.length}\`} />
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Content and language',
+          kicker: 'The caption, headers and cells arrive as props. The table speaks a few phrases of its own.',
+          examples: [
+            {
+              title: 'Another language',
+              when: 'The app is not in English: pass labels for the select boxes, the sort announcement, the count and the wait.',
+              render: <Table caption="Réquisitions" columns={PLAIN.map((column) => ({ ...column, sortable: column.key === 'total' }))} rows={FIRST_ROWS} getRowId={(row) => row.id} selectedIds={['REQ-1042']} onSelectionChange={() => {}} labels={FRENCH_LABELS} />,
+              code: `<Table
+  caption="Réquisitions"
+  columns={columns}
+  rows={rows}
+  getRowId={(row) => row.id}
+  selectedIds={selectedIds}
+  onSelectionChange={setSelectedIds}
+  labels={{
+    selectAll: (count) => \`Sélectionner les \${count} lignes de cette page\`,
+    selectRow: (label) => \`Sélectionner \${label}\`,
+    sorted: (header, direction) => \`Trié par \${header}, \${direction === 'ascending' ? 'croissant' : 'décroissant'}\`,
+    selectionSummary: (selected, total) => \`\${selected} lignes sur \${total} sélectionnées sur cette page\`,
+    loading: 'Chargement des lignes',
+  }}
+/>`,
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'Real table markup: caption, scoped headers, aria-sort, native checkboxes.',
+          examples: [
+            {
+              title: 'Row header',
+              when: 'Mark the human-readable identifier column with rowHeader, so a screen reader announces it with each cell.',
+              render: <Table caption="Requisitions" columns={PLAIN.filter((column) => column.key !== 'status')} rows={FIRST_ROWS.slice(0, 3)} getRowId={(row) => row.id} />,
+              code: `const columns: TableColumn<Requisition>[] = [
+  { key: 'supplier', header: 'Supplier', rowHeader: true, cell: (row) => row.supplier },
+  { key: 'total', header: 'Total (CAD)', align: 'number', cell: (row) => money.format(row.total) },
+];`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

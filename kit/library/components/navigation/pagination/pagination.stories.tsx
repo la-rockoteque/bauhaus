@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Text } from '../../../primitives/text/text';
+import { Stack } from '../../../primitives/stack/stack';
+import { useState } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Pagination, type PaginationProps } from './pagination';
 import { paginationRules } from './pagination.rules';
 
@@ -133,4 +137,183 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Pagination" layer="Component" family="Navigation" rules={paginationRules} guide="navigation-pagination--docs" guideName="Pagination" />,
+};
+
+const TOTAL_ROWS = 1342;
+const rangeOf = (page: number, size: number) => `${(page - 1) * size + 1}–${Math.min(page * size, TOTAL_ROWS)} of ${TOTAL_ROWS.toLocaleString('en')}`;
+
+/** A pager that owns its page and page size, and announces each change. */
+function PagedResults() {
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(25);
+  const count = Math.ceil(TOTAL_ROWS / size);
+  return (
+    <Pagination
+      label="Results"
+      page={page}
+      pageCount={count}
+      onPageChange={setPage}
+      total={rangeOf(page, size)}
+      pageSize={{ label: 'Rows per page', value: size, options: [10, 25, 50], onChange: (next) => { setSize(next); setPage(1); } }}
+      status={`Page ${page} of ${count}`}
+    />
+  );
+}
+
+/** A pager in link mode: each page has an address, and the route change is yours. */
+function LinkedResults() {
+  const [page, setPage] = useState(3);
+  return (
+    <Stack gap={2}>
+      <Pagination label="Search results" page={page} pageCount={12} getHref={(n) => `#page-${n}`} onPageChange={setPage} total="51–75 of 300" status={`Page ${page} of 12`} />
+      <Text variant="caption" tone="muted" as="p">Current page: {page}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Pagination"
+      layer="Component"
+      family="Navigation"
+      imports="import { Pagination, Stack, Text } from '@acme/design-system';"
+      guide="navigation-pagination--docs"
+      guideName="Pagination"
+      groups={[
+        {
+          title: 'Page position',
+          kicker: 'The pager clamps the page to 1 through pageCount. Previous and next are dimmed at the ends but stay focusable.',
+          examples: [
+            { title: 'First page', when: 'The user is at the start. Previous is dimmed.', render: <Pagination label="Pagination" page={1} pageCount={8} total="1–25 of 200" /> },
+            { title: 'Middle page', when: 'Both directions are open.', render: <Pagination label="Pagination" page={4} pageCount={8} total="76–100 of 200" /> },
+            { title: 'Last page', when: 'The user reached the end. Next is dimmed.', render: <Pagination label="Pagination" page={8} pageCount={8} total="176–200 of 200" /> },
+            { title: 'One page', when: 'There is nothing to move through. The list hides; the total stays.', render: <Pagination label="Pagination" page={1} pageCount={1} total="1–12 of 12" /> },
+            { title: 'No results', when: 'The query matched nothing. The total says so.', render: <Pagination label="Pagination" page={1} pageCount={1} total="0 results" /> },
+          ],
+        },
+        {
+          title: 'Long ranges',
+          kicker: 'A long range shows the first and last page, the current page and its siblings, with gaps between.',
+          examples: [
+            { title: 'Gap at the end', when: 'Near the start of a long range.', render: <Pagination label="Pagination" page={2} pageCount={60} total="26–50 of 1,500" /> },
+            { title: 'Gap on both sides', when: 'In the middle of a long range.', render: <Pagination label="Pagination" page={30} pageCount={60} total="726–750 of 1,500" /> },
+            { title: 'Gap at the start', when: 'Near the end of a long range.', render: <Pagination label="Pagination" page={59} pageCount={60} total="1,451–1,475 of 1,500" /> },
+            { title: 'More siblings', when: 'A wide screen with room for two pages on each side of the current one.', render: <Pagination label="Pagination" page={30} pageCount={60} siblings={2} total="726–750 of 1,500" /> },
+            { title: 'No siblings', when: 'A tight area. Only the current page shows between the gaps.', render: <Pagination label="Pagination" page={30} pageCount={60} siblings={0} total="726–750 of 1,500" /> },
+            { title: 'Short range', when: 'Few enough pages to list all of them, with no gap.', render: <Pagination label="Pagination" page={3} pageCount={7} total="51–75 of 175" /> },
+          ],
+        },
+        {
+          title: 'Buttons or links',
+          kicker: 'Buttons page in place. Links give each page an address, so back, reload and sharing work.',
+          examples: [
+            { title: 'Buttons', when: 'A table that keeps its URL. onPageChange gets the number.', render: <Pagination label="Pagination" page={2} pageCount={8} onPageChange={() => {}} total="26–50 of 200" /> },
+            { title: 'Links with getHref', when: 'Each page has its own URL, for search results that people share.', render: <Pagination label="Search results" page={2} pageCount={8} getHref={(page) => `#page-${page}`} total="26–50 of 200" />, code: `<Pagination label="Search results" page={2} pageCount={8} getHref={(page) => \`/results?page=\${page}\`} total="26–50 of 200" />` },
+            {
+              title: 'Links with a router',
+              when: 'The app has a router. Pass its link component as linkAs; onPageChange runs on click.',
+              render: <Pagination label="Search results" page={2} pageCount={8} linkAs="a" getHref={(page) => `#page-${page}`} total="26–50 of 200" />,
+              code: `// RouterLink: your router's link component.
+
+<Pagination
+  label="Search results"
+  page={page}
+  pageCount={8}
+  linkAs={RouterLink}
+  getHref={(n) => \`/search?page=\${n}\`}
+  onPageChange={(n) => track(n)}
+  total="26–50 of 200"
+/>`,
+            },
+            {
+              title: 'Links that update the view',
+              when: 'Links with a client-side route change. The view reads the new page from onPageChange.',
+              render: <LinkedResults />,
+              code: `function LinkedResults() {
+  const [page, setPage] = useState(3);
+  return (
+    <Stack gap={2}>
+      <Pagination label="Search results" page={page} pageCount={12} getHref={(n) => \`/search?page=\${n}\`} onPageChange={setPage} total="51–75 of 300" status={\`Page \${page} of 12\`} />
+      <Text variant="caption" tone="muted" as="p">Current page: {page}</Text>
+    </Stack>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Total and page size',
+          kicker: 'Pass the total as text you formatted. A pager with no total hides how much there is.',
+          examples: [
+            { title: 'Total only', when: 'A fixed page size. The total tells the user how much there is.', render: <Pagination label="Pagination" page={2} pageCount={8} total="26–50 of 200" /> },
+            { title: 'Total and page size', when: 'The user picks how many rows to see. The select has a visible label.', render: <Pagination label="Pagination" page={2} pageCount={8} total="26–50 of 200" pageSize={{ label: 'Rows per page', value: 25, options: [10, 25, 50], onChange: () => {} }} /> },
+            { title: 'Page size, one page', when: 'Everything fits on one page. The select stays so the user can change the size.', render: <Pagination label="Pagination" page={1} pageCount={1} total="1–8 of 8" pageSize={{ label: 'Rows per page', value: 25, options: [10, 25, 50], onChange: () => {} }} /> },
+          ],
+        },
+        {
+          title: 'Controlled and uncontrolled',
+          kicker: 'The pager holds no page of its own: the view owns the page, the page size and the announcement.',
+          examples: [
+            {
+              title: 'Paged results with an announcement',
+              when: 'A table or list that pages in place. Changing the size returns to page 1; each change is announced.',
+              render: <PagedResults />,
+              code: `function PagedResults() {
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(25);
+  const count = Math.ceil(1342 / size);
+  return (
+    <Pagination
+      label="Results"
+      page={page}
+      pageCount={count}
+      onPageChange={setPage}
+      total={\`\${(page - 1) * size + 1}–\${Math.min(page * size, 1342)} of 1,342\`}
+      pageSize={{ label: 'Rows per page', value: size, options: [10, 25, 50], onChange: (next) => { setSize(next); setPage(1); } }}
+      status={\`Page \${page} of \${count}\`}
+    />
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The list wraps onto a new line on a narrow screen. Every word is a prop.',
+          examples: [
+            { title: 'Phone width', when: 'A long range on a phone. The controls wrap.', frame: 'phone', render: <Pagination label="Pagination" page={30} pageCount={60} total="726–750 of 1,500" pageSize={{ label: 'Rows per page', value: 25, options: [10, 25, 50], onChange: () => {} }} /> },
+            { title: 'Narrow column', when: 'A side panel. The pager wraps and nothing is cut.', frame: 'narrow', render: <Pagination label="Pagination" page={4} pageCount={8} total="76–100 of 200" /> },
+            { title: 'Translated pager', when: 'The app is not in English: pass every word, including the page name.', render: <Pagination label="Pagination" page={2} pageCount={8} total="26–50 sur 200" previousLabel="Précédent" nextLabel="Suivant" pageLabel={(page) => `Page ${page}`} status="Page 2 sur 8" pageSize={{ label: 'Lignes par page', value: 25, options: [10, 25, 50], onChange: () => {} }} />,
+              code: `<Pagination
+  label="Pagination"
+  page={2}
+  pageCount={8}
+  total="26–50 sur 200"
+  previousLabel="Précédent"
+  nextLabel="Suivant"
+  pageLabel={(page) => \`Page \${page}\`}
+  status="Page 2 sur 8"
+  pageSize={{ label: 'Lignes par page', value: size, options: [10, 25, 50], onChange: setSize }}
+/>` },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'Each page name contains its visible number. The status goes into a polite live region.',
+          examples: [
+            { title: 'Custom page name', when: 'A page needs more context than "Page 3", such as "Results page 3". The name keeps the number.', render: <Pagination label="Search results" page={3} pageCount={8} pageLabel={(page) => `Results page ${page}`} total="51–75 of 200" />, code: `<Pagination label="Search results" page={3} pageCount={8} pageLabel={(page) => \`Results page \${page}\`} total="51–75 of 200" />` },
+            { title: 'Announced change', when: 'Say the new position without moving focus.', render: <Pagination label="Pagination" page={3} pageCount={8} status="Page 3 of 8" total="51–75 of 200" /> },
+            { title: 'Named landmark', when: 'Two pagers on a page, such as above and below a table. Give each its own name.', render: (
+              <Stack gap={3}>
+                <Pagination label="Pagination, top" page={2} pageCount={8} total="26–50 of 200" />
+                <Pagination label="Pagination, bottom" page={2} pageCount={8} total="26–50 of 200" />
+              </Stack>
+            ) },
+          ],
+        },
+      ]}
+    />
+  ),
 };

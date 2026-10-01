@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Button } from '../../clickables/button/button';
+import { TextField } from '../text-field/text-field';
 import { Textarea } from './textarea';
 import { textareaRules } from './textarea.rules';
 
@@ -127,4 +132,188 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Textarea" layer="Component" family="Fields" rules={textareaRules} guide="fields-textarea--docs" guideName="Textarea" />,
+};
+
+/** The counter takes the current length; the native maxLength stops the input at the limit. */
+function MessageWithCounter() {
+  const [message, setMessage] = useState('');
+  return (
+    <Textarea
+      label="Message"
+      description="At most 200 characters."
+      maxLength={200}
+      count={message.length}
+      value={message}
+      onChange={(event) => setMessage(event.target.value)}
+    />
+  );
+}
+
+/** The view checks the note when the user leaves it, then on each input once an error shows. */
+function RequiredNote() {
+  const [note, setNote] = useState('');
+  const [error, setError] = useState('');
+  const validate = (next: string) => setError(next.trim() === '' ? 'Write a note before you send the request' : '');
+  return (
+    <Textarea
+      label="Note"
+      required
+      value={note}
+      error={error}
+      onChange={(event) => {
+        setNote(event.target.value);
+        if (error) validate(event.target.value);
+      }}
+      onBlur={(event) => validate(event.target.value)}
+    />
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Textarea"
+      layer="Component"
+      family="Fields"
+      imports="import { Textarea, TextField, Stack, Button } from '@acme/design-system';"
+      guide="fields-textarea--docs"
+      guideName="Textarea"
+      groups={[
+        {
+          title: 'Basics',
+          kicker: 'Label, description and required work as in the text field.',
+          examples: [
+            { title: 'Label only', when: 'Text longer than one line, with nothing more to explain.', render: <Textarea label="Comment" /> },
+            { title: 'With a description', when: 'The user needs a hint about what to write.', render: <Textarea label="Cover note" description="Say why you are a good fit. Two or three sentences are enough." /> },
+            { title: 'Required', when: 'The form cannot go on without text. The marker is a word, not an asterisk.', render: <Textarea label="Reason for the request" required /> },
+            { title: 'Required, in another language', when: 'Change the word of the marker with requiredText for a translated view.', render: <Textarea label="Commentaire" required requiredText="obligatoire" /> },
+            { title: 'Placeholder as an example', when: 'Show a sample of the text. The label still names the field.', render: <Textarea label="Delivery instructions" placeholder="Leave the parcel with the neighbour at number 12." /> },
+          ],
+        },
+        {
+          title: 'Height',
+          kicker: 'The box is sized by rows and resizes vertically, so no text is cut off.',
+          examples: [
+            { title: 'Default height', when: 'A short note: four rows.', render: <Textarea label="Comment" /> },
+            { title: 'Two rows', when: 'An optional remark that most users leave short.', render: <Textarea label="Remark" rows={2} /> },
+            { title: 'Eight rows', when: 'Long-form text such as a bio or a report.', render: <Textarea label="Biography" rows={8} /> },
+          ],
+        },
+        {
+          title: 'Counter and limit',
+          kicker: 'Pass maxLength and count to show "count / maxLength". The browser stops the input at the limit.',
+          examples: [
+            {
+              title: 'Live counter',
+              when: 'A text with a hard limit. Say the limit in the description so the user knows it before reaching it.',
+              render: <MessageWithCounter />,
+              code: `function MessageWithCounter() {
+  const [message, setMessage] = useState('');
+  return (
+    <Textarea
+      label="Message"
+      description="At most 200 characters."
+      maxLength={200}
+      count={message.length}
+      value={message}
+      onChange={(event) => setMessage(event.target.value)}
+    />
+  );
+}`,
+            },
+            { title: 'Counter near the limit', when: 'A value already close to the limit.', render: <Textarea label="Title for the listing" description="At most 60 characters." maxLength={60} count={54} defaultValue="Two-bedroom flat with a south-facing balcony, near trans" /> },
+            { title: 'Limit without a counter', when: 'A native limit the user is unlikely to reach: leave count out.', render: <Textarea label="Comment" maxLength={500} /> },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'States are props. The native attributes do the work.',
+          examples: [
+            { title: 'With a value', when: 'Text the user typed or the view loaded.', render: <Textarea label="Comment" defaultValue={'The parcel arrived on Monday.\nThe box was dented but the contents were fine.'} /> },
+            { title: 'Error', when: 'The text is wrong or missing. Name the field and the fix.', render: <Textarea label="Reason for the request" required error="Write a reason of at least ten characters" defaultValue="Too short" /> },
+            { title: 'Error, in another language', when: 'Change the hidden word before the error with errorPrefix.', render: <Textarea label="Commentaire" error="Écrivez au moins dix caractères" errorPrefix="Erreur" defaultValue="Trop court" /> },
+            { title: 'Error with a counter', when: 'The text is over the limit your rule allows. The error and the counter both stay.', render: <Textarea label="Message" description="At most 200 characters." maxLength={220} count={214} error="Shorten the message to 200 characters" defaultValue="A long message that goes past the rule the view enforces." /> },
+            { title: 'Disabled', when: 'The user cannot edit now. Say why in the description.', render: <Textarea label="Internal note" description="Only the owner can edit this note." disabled defaultValue="Call back after the audit." /> },
+            { title: 'Read-only', when: 'The user can focus, scroll and copy the text but not change it.', render: <Textarea label="Terms accepted on 12 March" readOnly defaultValue="You agree to pay the invoice within thirty days of receipt." /> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'Text wraps in the box. The label and messages wrap too.',
+          examples: [
+            { title: 'Long text', when: 'More lines than rows: the box scrolls, and the user can drag the handle to see more.', render: <Textarea label="Notes" rows={3} defaultValue={'Line one of the notes.\nLine two of the notes.\nLine three of the notes.\nLine four of the notes.\nLine five of the notes.'} /> },
+            { title: 'Long label and description in a narrow column', when: 'Translated text runs longer: both wrap rather than truncate.', frame: 'narrow', render: <Textarea label="Commentaires supplémentaires sur la livraison" description="Dites-nous tout ce qui peut aider le livreur à trouver l’entrée." /> },
+            { title: 'Counter in a narrow column', when: 'The counter stays below the box and never overlaps the text.', frame: 'narrow', render: <Textarea label="Message" maxLength={200} count={42} defaultValue="Hello, I would like to ask" /> },
+            { title: 'On a phone', when: 'The box fills the width of its container, and the text is 16px so iOS does not zoom.', frame: 'phone', render: <Textarea label="Message" description="We reply within two days." required /> },
+          ],
+        },
+        {
+          title: 'In a form',
+          kicker: 'Enter adds a line. Submit with a button, not with Enter.',
+          examples: [
+            {
+              title: 'Validate on blur',
+              when: 'Check the text when the user leaves the field, then on each input once an error shows.',
+              render: <RequiredNote />,
+              code: `function RequiredNote() {
+  const [note, setNote] = useState('');
+  const [error, setError] = useState('');
+  const validate = (next: string) => setError(next.trim() === '' ? 'Write a note before you send the request' : '');
+  return (
+    <Textarea
+      label="Note"
+      required
+      value={note}
+      error={error}
+      onChange={(event) => {
+        setNote(event.target.value);
+        if (error) validate(event.target.value);
+      }}
+      onBlur={(event) => validate(event.target.value)}
+    />
+  );
+}`,
+            },
+            {
+              title: 'A contact form',
+              when: 'A one-line field, then the multi-line one, then one primary action.',
+              render: (
+                <Stack as="form" gap={4} onSubmit={(event) => event.preventDefault()}>
+                  <TextField label="Subject" required />
+                  <Textarea label="Message" required description="Tell us what happened and what you expected." />
+                  <Stack direction="horizontal" justify="end">
+                    <Button type="submit">Send message</Button>
+                  </Stack>
+                </Stack>
+              ),
+              code: `<Stack as="form" gap={4} onSubmit={handleSubmit}>
+  <TextField label="Subject" required />
+  <Textarea label="Message" required description="Tell us what happened and what you expected." />
+  <Stack direction="horizontal" justify="end">
+    <Button type="submit">Send message</Button>
+  </Stack>
+</Stack>`,
+            },
+          ],
+        },
+        {
+          title: 'Uncontrolled',
+          kicker: 'The live counter above shows the controlled form.',
+          examples: [
+            { title: 'Default value', when: 'The browser holds the text; read it from the form on submit.', render: <Textarea label="Comment" name="comment" defaultValue="Thanks for the quick delivery." /> },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The label, description, counter and error are tied to the box with for, id and aria-describedby.',
+          examples: [
+            { title: 'Autocomplete token', when: 'Text that the browser can fill, such as a street address over several lines.', render: <Textarea label="Delivery address" autoComplete="street-address" rows={3} /> },
+            { title: 'Your own id', when: 'Another element must point to the box, such as a skip link or an error summary.', render: <Textarea label="Comment" id="order-comment" /> },
+            { title: 'Spelling and language', when: 'Set the language of text that differs from the page, so the checker and the screen reader pick the right one.', render: <Textarea label="Commentaire" lang="fr" spellCheck defaultValue="Merci pour la livraison rapide." /> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

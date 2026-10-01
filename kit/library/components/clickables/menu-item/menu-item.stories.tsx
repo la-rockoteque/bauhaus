@@ -3,7 +3,9 @@ import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
-import { Menu } from '../../overlays/menu/menu';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Button } from '../button/button';
+import { Menu, MenuSection, MenuSeparator } from '../../overlays/menu/menu';
 import { MenuItem } from './menu-item';
 import type { IconGlyph } from '../../../primitives/icon/icon';
 import { menuItemRules } from './menu-item.rules';
@@ -150,4 +152,123 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Menu item" layer="Component" family="Clickables" rules={menuItemRules} guide="clickables-menu-item--docs" guideName="Menu item" />,
+};
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Menu item"
+      layer="Component"
+      family="Clickables"
+      imports="import { Button, Menu, MenuItem, MenuSection, MenuSeparator } from '@acme/design-system';"
+      guide="clickables-menu-item--docs"
+      guideName="Menu item"
+      groups={[
+        {
+          title: 'Content',
+          kicker: 'An item holds a label, and may add an icon, a description and a shortcut hint. Without a trigger, the Menu draws the list open, in the flow.',
+          examples: [
+            { title: 'Label only', when: 'A plain action. Start with a verb and name the object.', render: <Menu label="File actions"><MenuItem id="duplicate">Duplicate file</MenuItem></Menu> },
+            { title: 'With an icon', when: 'An action with a well-known symbol. The icon is decoration; the label names the item.', render: <Menu label="File actions"><MenuItem id="edit" icon="edit">Rename file</MenuItem></Menu> },
+            { title: 'With a description', when: 'Add a consequence, or the reason the item is unavailable. It is read as the item description.', render: <Menu label="File actions"><MenuItem id="share" icon="user" description="Anyone with the link can view">Share file</MenuItem></Menu> },
+            { title: 'With a shortcut hint', when: 'The app binds a key for this action. The prop shows it and binds nothing.', render: <Menu label="File actions"><MenuItem id="save" icon="check" shortcut="Ctrl+S">Save file</MenuItem></Menu> },
+            { title: 'All parts', when: 'A frequent action that needs an icon, a detail line and a key hint.', render: <Menu label="File actions"><MenuItem id="download" icon="download" description="Saves a copy as a PDF" shortcut="Ctrl+D">Download file</MenuItem></Menu> },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'Hover and keyboard focus share one highlight. Disabled items stay in the list.',
+          examples: [
+            { title: 'Disabled', when: 'The action is not available. The description says why.', render: <Menu label="Project actions"><MenuItem id="archive" icon="folder" isDisabled description="Only owners can archive">Archive project</MenuItem></Menu> },
+            { title: 'Destructive', when: 'The item deletes or discards something. The label names what goes.', render: <Menu label="Project actions"><MenuItem id="delete" icon="delete" destructive>Delete project</MenuItem></Menu> },
+            { title: 'Destructive and disabled', when: 'A delete the user is not allowed to run now.', render: <Menu label="Project actions"><MenuItem id="delete" icon="delete" destructive isDisabled description="Remove the members first">Delete project</MenuItem></Menu> },
+          ],
+        },
+        {
+          title: 'Selection',
+          kicker: 'In a choosing menu a check takes the place of the icon.',
+          examples: [
+            { title: 'Single choice', when: 'One value out of a short list, such as a view mode.', render: (
+              <Menu label="View" selectionMode="single" defaultSelectedKeys={['list']}>
+                <MenuItem id="list">List</MenuItem>
+                <MenuItem id="grid">Grid</MenuItem>
+                <MenuItem id="board">Board</MenuItem>
+              </Menu>
+            ) },
+            { title: 'Multiple choice', when: 'Several independent options, such as the columns of a table.', render: (
+              <Menu label="Columns" selectionMode="multiple" defaultSelectedKeys={['name', 'owner']}>
+                <MenuItem id="name">Name</MenuItem>
+                <MenuItem id="owner">Owner</MenuItem>
+                <MenuItem id="updated">Last updated</MenuItem>
+              </Menu>
+            ) },
+            { title: 'Selected and disabled', when: 'A choice that is on and cannot be changed now.', render: (
+              <Menu label="Columns" selectionMode="multiple" defaultSelectedKeys={['name']} disabledKeys={['name']}>
+                <MenuItem id="name" description="Always shown">Name</MenuItem>
+                <MenuItem id="owner">Owner</MenuItem>
+              </Menu>
+            ) },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'Items live in a Menu. Sections and separators group them.',
+          examples: [
+            { title: 'Menu with a trigger', when: 'The usual case. A button opens the menu; Escape closes it and returns focus.', render: (
+              <Menu label="Project actions" trigger={<Button variant="secondary">Actions</Button>}>
+                <MenuItem id="rename" icon="edit">Rename project</MenuItem>
+                <MenuItem id="duplicate" icon="copy">Duplicate project</MenuItem>
+                <MenuItem id="delete" icon="delete" destructive>Delete project</MenuItem>
+              </Menu>
+            ) },
+            { title: 'Named sections', when: 'Related items under a title that a screen reader announces.', render: (
+              <Menu label="Document actions">
+                <MenuSection title="Edit">
+                  <MenuItem id="rename" icon="edit">Rename</MenuItem>
+                  <MenuItem id="copy" icon="copy">Copy</MenuItem>
+                </MenuSection>
+                <MenuSection title="Share">
+                  <MenuItem id="download" icon="download">Download</MenuItem>
+                  <MenuItem id="mail" icon="mail">Send by email</MenuItem>
+                </MenuSection>
+              </Menu>
+            ) },
+            { title: 'Separator before a destructive item', when: 'Keep the item that deletes apart from the safe ones.', render: (
+              <Menu label="Project actions">
+                <MenuItem id="rename" icon="edit">Rename project</MenuItem>
+                <MenuItem id="duplicate" icon="copy">Duplicate project</MenuItem>
+                <MenuSeparator />
+                <MenuItem id="delete" icon="delete" destructive>Delete project</MenuItem>
+              </Menu>
+            ) },
+            { title: 'With a typeahead text value', when: 'The visible label is not the best text to match. Set textValue for the typeahead and the name.', render: <Menu label="Sort"><MenuItem id="newest" textValue="Newest first">Newest first (default)</MenuItem></Menu> },
+          ],
+        },
+        {
+          title: 'Content cases',
+          kicker: 'The label and the description wrap. Nothing truncates.',
+          examples: [
+            { title: 'Long label', when: 'A long label in a narrow menu. It wraps onto a second line.', frame: 'narrow', render: <Menu label="Folder actions"><MenuItem id="move" icon="folder">Move every draft in this folder to the archive</MenuItem></Menu> },
+            { title: 'Long description', when: 'A long consequence under a short label.', frame: 'narrow', render: <Menu label="Folder actions"><MenuItem id="move" icon="folder" description="Also removes the copies kept in the shared drive">Archive folder</MenuItem></Menu> },
+            { title: 'Translated item', when: 'Every text arrives as a prop, so the item takes the app language.', frame: 'narrow', render: <Menu label="Actions du projet"><MenuItem id="supprimer" icon="delete" destructive description="Supprime aussi ses fichiers" shortcut="Suppr">Supprimer le projet</MenuItem></Menu> },
+            { title: 'All parts at phone width', when: 'An item with icon, description and shortcut in the narrowest column.', frame: 'phone', render: <Menu label="File actions"><MenuItem id="download" icon="download" description="Saves a copy as a PDF" shortcut="Ctrl+D">Download file</MenuItem></Menu> },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The menu has a name, and each item feeds the typeahead.',
+          examples: [
+            { title: 'Named menu', when: 'The label names the menu for assistive technology, usually like its trigger.', render: (
+              <Menu label="Project actions" trigger={<Button>Project actions</Button>}>
+                <MenuItem id="rename">Rename project</MenuItem>
+                <MenuItem id="duplicate">Duplicate project</MenuItem>
+              </Menu>
+            ) },
+            { title: 'Disabled with a reason', when: 'Use the description to say why the item is off, so the reason is read with the name.', render: <Menu label="Project actions"><MenuItem id="publish" isDisabled description="Add a title to publish">Publish project</MenuItem></Menu> },
+          ],
+        },
+      ]}
+    />
+  ),
 };

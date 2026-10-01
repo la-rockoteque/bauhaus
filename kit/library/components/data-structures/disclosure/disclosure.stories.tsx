@@ -1,8 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
+import { Stack } from '../../../primitives/stack/stack';
+import { Badge } from '../../feedback/badge/badge';
 import { Text } from '../../../primitives/text/text';
 import { Accordion, AccordionItem } from './accordion';
 import { Disclosure } from './disclosure';
@@ -143,4 +146,256 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Disclosure" layer="Component" family="Data structures" rules={disclosureRules} guide="data-structures-disclosure--docs" guideName="Disclosure" />,
+};
+
+function DisclosureWithStatus() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Stack gap={2}>
+      <Disclosure title="Shipping details" onToggle={(event) => setOpen(event.currentTarget.open)}>
+        <Text>Orders ship within two business days.</Text>
+      </Disclosure>
+      <Text variant="caption" tone="muted" role="status">{open ? 'Shipping details are open.' : 'Shipping details are closed.'}</Text>
+    </Stack>
+  );
+}
+
+function AccordionWithStatus() {
+  const [open, setOpen] = useState<string[]>([]);
+  return (
+    <Stack gap={2}>
+      <Accordion onOpenChange={setOpen}>
+        <AccordionItem value="plan" title="Plan"><Text>Pick a plan on the billing page.</Text></AccordionItem>
+        <AccordionItem value="invoice" title="Invoices"><Text>Invoices arrive by email on the first of the month.</Text></AccordionItem>
+      </Accordion>
+      <Text variant="caption" tone="muted" role="status">{open.length === 0 ? 'No section is open.' : `Open: ${open.join(', ')}.`}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Disclosure"
+      layer="Component"
+      family="Data structures"
+      imports="import { Accordion, AccordionItem, Badge, Disclosure, Stack, Text } from '@acme/design-system';"
+      guide="data-structures-disclosure--docs"
+      guideName="Disclosure"
+      groups={[
+        {
+          title: 'One disclosure',
+          kicker: 'A native details and summary. The browser owns the keys, the state and find-in-page.',
+          examples: [
+            { title: 'Closed', when: 'One block of optional detail that most readers skip.', render: <Disclosure title="Shipping details"><Text>Orders ship within two business days.</Text></Disclosure> },
+            { title: 'Open at first', when: 'The detail matters to this reader right now: render it open.', render: <Disclosure title="Shipping details" open><Text>Orders ship within two business days.</Text></Disclosure> },
+            {
+              title: 'Rich panel',
+              when: 'The panel holds more than a paragraph: a stack of text and a status.',
+              render: (
+                <Disclosure title="Advanced options">
+                  <Stack gap={2} align="start">
+                    <Badge status="info">Beta</Badge>
+                    <Text>Advanced options change how exports are built.</Text>
+                    <Text variant="caption" tone="muted">Most projects keep the defaults.</Text>
+                  </Stack>
+                </Disclosure>
+              ),
+            },
+            {
+              title: 'Track open and closed',
+              when: 'The view reacts when the reader opens or closes the disclosure.',
+              render: <DisclosureWithStatus />,
+              code: `function DisclosureWithStatus() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Stack gap={2}>
+      <Disclosure title="Shipping details" onToggle={(event) => setOpen(event.currentTarget.open)}>
+        <Text>Orders ship within two business days.</Text>
+      </Disclosure>
+      <Text variant="caption" tone="muted" role="status">{open ? 'Shipping details are open.' : 'Shipping details are closed.'}</Text>
+    </Stack>
+  );
+}`,
+            },
+            {
+              title: 'Exclusive group by name',
+              when: 'Separate disclosures where opening one closes the others, with no code: share a name.',
+              render: (
+                <Stack gap={2}>
+                  <Disclosure title="Card" name="payment" open><Text>Pay with a credit or debit card.</Text></Disclosure>
+                  <Disclosure title="Bank transfer" name="payment"><Text>Transfers take one to three days.</Text></Disclosure>
+                </Stack>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accordion',
+          kicker: 'A group of parallel blocks. Each header is a button in a heading.',
+          examples: [
+            {
+              title: 'All closed',
+              when: 'A set of parallel blocks, such as frequently asked questions. Several can be open together.',
+              render: (
+                <Accordion>
+                  <AccordionItem value="refund" title="How do refunds work?"><Text>Refunds go back to the original payment method within five days.</Text></AccordionItem>
+                  <AccordionItem value="ship" title="Where do you ship?"><Text>We ship across Canada.</Text></AccordionItem>
+                  <AccordionItem value="support" title="How do I reach support?"><Text>Write to support and we reply within one business day.</Text></AccordionItem>
+                </Accordion>
+              ),
+            },
+            {
+              title: 'Some items open at first',
+              when: 'The reader should see one or two answers at once: list their values in defaultOpen.',
+              render: (
+                <Accordion defaultOpen={['refund', 'ship']}>
+                  <AccordionItem value="refund" title="How do refunds work?"><Text>Refunds go back to the original payment method within five days.</Text></AccordionItem>
+                  <AccordionItem value="ship" title="Where do you ship?"><Text>We ship across Canada.</Text></AccordionItem>
+                  <AccordionItem value="support" title="How do I reach support?"><Text>Write to support and we reply within one business day.</Text></AccordionItem>
+                </Accordion>
+              ),
+            },
+            {
+              title: 'Single-open',
+              when: 'The panels are long and parallel: opening one closes the others, so the reader keeps one in view.',
+              render: (
+                <Accordion single defaultOpen={['plan']}>
+                  <AccordionItem value="plan" title="Plan"><Text>Pick a plan on the billing page.</Text></AccordionItem>
+                  <AccordionItem value="invoice" title="Invoices"><Text>Invoices arrive by email on the first of the month.</Text></AccordionItem>
+                  <AccordionItem value="cancel" title="Cancellation"><Text>Cancel at any time from the billing page.</Text></AccordionItem>
+                </Accordion>
+              ),
+            },
+            {
+              title: 'Report the open items',
+              when: 'The view needs to know which items are open: onOpenChange receives their values.',
+              render: <AccordionWithStatus />,
+              code: `function AccordionWithStatus() {
+  const [open, setOpen] = useState<string[]>([]);
+  return (
+    <Stack gap={2}>
+      <Accordion onOpenChange={setOpen}>
+        <AccordionItem value="plan" title="Plan"><Text>Pick a plan on the billing page.</Text></AccordionItem>
+        <AccordionItem value="invoice" title="Invoices"><Text>Invoices arrive by email on the first of the month.</Text></AccordionItem>
+      </Accordion>
+      <Text variant="caption" tone="muted" role="status">{open.length === 0 ? 'No section is open.' : \`Open: \${open.join(', ')}.\`}</Text>
+    </Stack>
+  );
+}`,
+            },
+            {
+              title: 'Single item',
+              when: 'One block of detail with the heading and region semantics of an accordion.',
+              render: (
+                <Accordion defaultOpen={['terms']}>
+                  <AccordionItem value="terms" title="Terms of service"><Text>Read the terms before you continue.</Text></AccordionItem>
+                </Accordion>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'Loading and disabled are props of the item. The header always stays.',
+          examples: [
+            { title: 'Disclosure, loading', when: 'The detail is on its way. Two placeholder lines hold the space.', render: <Disclosure title="Order history" open loading /> },
+            { title: 'Disclosure, loading label', when: 'The app is not in English: pass the spoken text for the wait.', render: <Disclosure title="Historique des commandes" open loading loadingLabel="Chargement de l’historique" /> },
+            {
+              title: 'Accordion item, loading',
+              when: 'One panel fetches its content when it opens; the others are ready.',
+              render: (
+                <Accordion defaultOpen={['history']}>
+                  <AccordionItem value="plan" title="Plan"><Text>Pick a plan on the billing page.</Text></AccordionItem>
+                  <AccordionItem value="history" title="Order history" loading />
+                </Accordion>
+              ),
+            },
+            {
+              title: 'Disabled, with the reason',
+              when: 'A header cannot open yet. Say why under the title, and keyboard focus skips it.',
+              render: (
+                <Accordion>
+                  <AccordionItem value="plan" title="Plan"><Text>Pick a plan on the billing page.</Text></AccordionItem>
+                  <AccordionItem value="invoice" title="Invoices" disabled disabledReason="Available after your first payment." />
+                </Accordion>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'Titles wrap beside the chevron. They never truncate.',
+          examples: [
+            {
+              title: 'Long title',
+              when: 'Long or translated titles wrap and the chevron stays in place.',
+              frame: 'narrow',
+              render: (
+                <Accordion defaultOpen={['long']}>
+                  <AccordionItem value="long" title="What happens to my subscription if I change my billing address during the trial period?">
+                    <Text>Nothing changes until the trial ends.</Text>
+                  </AccordionItem>
+                </Accordion>
+              ),
+            },
+            {
+              title: 'Long title, one disclosure',
+              when: 'The same wrapping on a native disclosure.',
+              frame: 'narrow',
+              render: <Disclosure title="What happens to my subscription if I change my billing address during the trial period?" open><Text>Nothing changes until the trial ends.</Text></Disclosure>,
+            },
+            {
+              title: 'On a phone',
+              when: 'A header is as wide as the item, so it stays an easy target at phone width.',
+              frame: 'phone',
+              render: (
+                <Accordion defaultOpen={['refund']}>
+                  <AccordionItem value="refund" title="How do refunds work?"><Text>Refunds go back to the original payment method within five days.</Text></AccordionItem>
+                  <AccordionItem value="ship" title="Where do you ship?"><Text>We ship across Canada.</Text></AccordionItem>
+                </Accordion>
+              ),
+            },
+            {
+              title: 'A badge in the title',
+              when: 'A title carries a short status. The title takes any content.',
+              render: (
+                <Accordion>
+                  <AccordionItem value="export" title={<Stack direction="horizontal" gap={2} align="center" wrap>Exports <Badge status="info">Beta</Badge></Stack>}>
+                    <Text>Exports are in beta.</Text>
+                  </AccordionItem>
+                </Accordion>
+              ),
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'Each header is a button in a heading with aria-expanded and aria-controls.',
+          examples: [
+            {
+              title: 'Heading level from the page outline',
+              when: 'The accordion sits under an h2 section: set headingLevel to 3. The default is 3.',
+              render: (
+                <Accordion headingLevel={4}>
+                  <AccordionItem value="refund" title="How do refunds work?"><Text>Refunds go back to the original payment method within five days.</Text></AccordionItem>
+                </Accordion>
+              ),
+            },
+            {
+              title: 'Name the group',
+              when: 'The group needs a name for assistive technology: pass aria-label; it reaches the wrapper.',
+              render: (
+                <Accordion aria-label="Billing questions" id="billing-faq">
+                  <AccordionItem value="plan" title="Plan"><Text>Pick a plan on the billing page.</Text></AccordionItem>
+                  <AccordionItem value="invoice" title="Invoices"><Text>Invoices arrive by email on the first of the month.</Text></AccordionItem>
+                </Accordion>
+              ),
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Badge } from '../../feedback/badge/badge';
+import { Text } from '../../../primitives/text/text';
+import { Stack } from '../../../primitives/stack/stack';
+import { Icon } from '../../../primitives/icon/icon';
+import { useState } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Tabs, type TabItem, type TabsProps } from './tabs';
 import { tabsRules } from './tabs.rules';
 
@@ -128,4 +134,113 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Tabs" layer="Component" family="Navigation" rules={tabsRules} guide="navigation-tabs--docs" guideName="Tabs" />,
+};
+
+const panel = (text: string) => <Text as="p">{text}</Text>;
+const PROFILE_TABS = [
+  { id: 'overview', label: 'Overview', panel: panel('A summary of the account and its recent activity.') },
+  { id: 'activity', label: 'Activity', panel: panel('Every change to the account, newest first.') },
+  { id: 'settings', label: 'Settings', panel: panel('Name, email address and notification choices.') },
+] as const satisfies readonly TabItem[];
+
+/** The view owns the selected tab, so it can mirror it elsewhere. */
+function ControlledTabs() {
+  const [tab, setTab] = useState('overview');
+  return (
+    <Stack gap={3}>
+      <Tabs label="Account" tabs={PROFILE_TABS} value={tab} onValueChange={setTab} />
+      <Text variant="caption" tone="muted" as="p" role="status">Selected tab: {tab}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Tabs"
+      layer="Component"
+      family="Navigation"
+      imports="import { Badge, Icon, Stack, Tabs, Text } from '@acme/design-system';"
+      guide="navigation-tabs--docs"
+      guideName="Tabs"
+      groups={[
+        {
+          title: 'Orientation',
+          kicker: 'Tabs switch peer views on one URL. When each view has its own URL, use links.',
+          examples: [
+            { title: 'Horizontal', when: 'The default: a few views of one record, above the panel.', render: <Tabs label="Account" tabs={PROFILE_TABS} /> },
+            { title: 'Vertical', when: 'A settings page with a side list of sections. The arrows become Up and Down.', render: <Tabs label="Settings sections" orientation="vertical" tabs={[{ id: 'profile', label: 'Profile', panel: panel('Your name and photo.') }, { id: 'security', label: 'Security', panel: panel('Password and two-step sign-in.') }, { id: 'billing', label: 'Billing', panel: panel('Plan, invoices and payment method.') }]} /> },
+          ],
+        },
+        {
+          title: 'Activation',
+          kicker: 'Automatic selects a tab when it takes focus. Manual waits for Enter or Space.',
+          examples: [
+            { title: 'Automatic', when: 'Panels show at once, so selecting on focus costs nothing.', render: <Tabs label="Account" activation="automatic" tabs={PROFILE_TABS} /> },
+            { title: 'Manual', when: 'A panel loads slowly. A run of arrow presses must not fire a run of requests.', render: <Tabs label="Reports" activation="manual" tabs={[{ id: 'daily', label: 'Daily', panel: panel('Loads the last 24 hours.') }, { id: 'weekly', label: 'Weekly', panel: panel('Loads the last seven days.') }, { id: 'yearly', label: 'Yearly', panel: panel('Loads the last twelve months.') }]} /> },
+          ],
+        },
+        {
+          title: 'Selection',
+          kicker: 'The tabs run on their own, or the view owns the selected tab.',
+          examples: [
+            { title: 'Starting tab', when: 'Open on a tab other than the first. Uncontrolled.', render: <Tabs label="Account" defaultValue="activity" tabs={PROFILE_TABS} /> },
+            {
+              title: 'Controlled',
+              when: 'The view reads or sets the selected tab, for example to save it or open a tab from a link.',
+              render: <ControlledTabs />,
+              code: `function ControlledTabs() {
+  const [tab, setTab] = useState('overview');
+  return (
+    <Stack gap={3}>
+      <Tabs label="Account" tabs={tabs} value={tab} onValueChange={setTab} />
+      <Text variant="caption" tone="muted" as="p" role="status">Selected tab: {tab}</Text>
+    </Stack>
+  );
+}`,
+            },
+            { title: 'Listen to changes', when: 'Track a switch without owning the state.', render: <Tabs label="Account" onValueChange={() => {}} tabs={PROFILE_TABS} />, code: `<Tabs label="Account" tabs={tabs} onValueChange={(id) => track('tab', id)} />` },
+          ],
+        },
+        {
+          title: 'States',
+          kicker: 'A disabled tab leaves the tab order and the arrow cycle. Always say why.',
+          examples: [
+            { title: 'Disabled with a reason', when: 'A view the user cannot open yet. The reason is a tooltip and is read after the label.', render: <Tabs label="Order" tabs={[{ id: 'details', label: 'Details', panel: panel('Items, address and totals.') }, { id: 'tracking', label: 'Tracking', panel: panel('Carrier updates.'), disabled: true, disabledReason: 'Available once the order ships' }, { id: 'invoice', label: 'Invoice', panel: panel('Download the invoice.') }]} /> },
+            { title: 'First tab disabled', when: 'The first view is off. The first enabled tab opens instead.', render: <Tabs label="Order" tabs={[{ id: 'draft', label: 'Draft', panel: panel('The draft is locked.'), disabled: true, disabledReason: 'The order is submitted' }, { id: 'details', label: 'Details', panel: panel('Items, address and totals.') }]} /> },
+            { title: 'Selected tab disabled', when: 'The starting value names a disabled tab. The first enabled tab opens instead.', render: <Tabs label="Order" defaultValue="tracking" tabs={[{ id: 'details', label: 'Details', panel: panel('Items, address and totals.') }, { id: 'tracking', label: 'Tracking', panel: panel('Carrier updates.'), disabled: true, disabledReason: 'Available once the order ships' }]} /> },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'Keep labels short: one or two words. Too many tabs scroll; no label truncates.',
+          examples: [
+            { title: 'Label with an icon', when: 'A symbol helps scanning. The label stays as text.', render: <Tabs label="Mailbox" tabs={[{ id: 'inbox', label: <><Icon glyph="mail" size="sm" /> Inbox</>, panel: panel('Messages waiting for you.') }, { id: 'alerts', label: <><Icon glyph="bell" size="sm" /> Alerts</>, panel: panel('Notices from the system.') }]} /> },
+            { title: 'Label with a count', when: 'Each view has a count worth showing next to its name.', render: <Tabs label="Tickets" tabs={[{ id: 'open', label: <>Open <Badge status="info">12</Badge></>, panel: panel('Tickets waiting for an answer.') }, { id: 'closed', label: 'Closed', panel: panel('Tickets that are resolved.') }]} /> },
+            { title: 'Scrolling list', when: 'More tabs than fit. The list scrolls and a chevron shows the hidden side.', frame: 'narrow', render: <Tabs label="Departments" tabs={['Sales', 'Marketing', 'Engineering', 'Support', 'Finance', 'People'].map((name) => ({ id: name.toLowerCase(), label: name, panel: panel(`${name} team and open roles.`) }))} /> },
+            { title: 'Long labels', when: 'Longer names in a narrow column. They scroll instead of being cut.', frame: 'narrow', render: <Tabs label="Policy" tabs={[{ id: 'privacy', label: 'Privacy and data protection', panel: panel('How the data is kept.') }, { id: 'terms', label: 'Terms of service', panel: panel('The rules of use.') }]} /> },
+            { title: 'Translated labels', when: 'Labels and reasons arrive as props, so the tabs take the app language.', render: <Tabs label="Compte" tabs={[{ id: 'apercu', label: 'Aperçu', panel: panel('Résumé du compte.') }, { id: 'activite', label: 'Activité', panel: panel('Tous les changements.') }, { id: 'factures', label: 'Factures', panel: panel('Vos factures.'), disabled: true, disabledReason: 'Aucune facture pour l’instant' }]} /> },
+            { title: 'Phone width', when: 'Three tabs on a phone.', frame: 'phone', render: <Tabs label="Account" tabs={PROFILE_TABS} /> },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'A panel holds any content, including other library components.',
+          examples: [
+            { title: 'Panel with a stack', when: 'A view that holds several blocks.', render: <Tabs label="Project" tabs={[{ id: 'summary', label: 'Summary', panel: <Stack gap={2}><Text as="h3" variant="heading">Website redesign</Text><Text tone="muted" as="p">Due on 30 June.</Text></Stack> }, { id: 'files', label: 'Files', panel: panel('Twelve files, 48 MB.') }]} /> },
+            { title: 'Panel with a link', when: 'A view that points to a page with its own URL.', render: <Tabs label="Help" tabs={[{ id: 'guide', label: 'Guide', panel: <Text as="p">Read the <a href="#manual">full manual</a>.</Text> }, { id: 'faq', label: 'FAQ', panel: panel('Common questions and short answers.') }]} /> },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'The label names the tab list. The panels stay in the page, so each tab points at a real panel.',
+          examples: [
+            { title: 'Named tab list', when: 'The label says what the tabs switch, for a screen reader.', render: <Tabs label="Account sections" tabs={PROFILE_TABS} /> },
+            { title: 'Reason read with the label', when: 'A disabled tab says why it is off, and the reason is read after its name.', render: <Tabs label="Order" tabs={[{ id: 'details', label: 'Details', panel: panel('Items, address and totals.') }, { id: 'refund', label: 'Refund', panel: panel('Refund options.'), disabled: true, disabledReason: 'Only paid orders can be refunded' }]} /> },
+          ],
+        },
+      ]}
+    />
+  ),
 };
