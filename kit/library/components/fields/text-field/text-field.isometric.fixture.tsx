@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { FaceLabel, IsoCursor, IsoStage, Slab } from '../../../fixtures/isometric/isometric';
 
 /**
@@ -40,7 +41,10 @@ export function TextFieldIsometric({ part = 'border' }: { part?: TextFieldIsomet
   );
 }
 
-/** The colour roles this drawing shows, by custom property. */
-export const TEXT_FIELD_ISOMETRIC_ROLES: Readonly<Record<string, TextFieldIsometricPart>> = Object.fromEntries(
-  (['surface', 'border', 'border-hover', 'border-focus', 'border-invalid', 'text', 'placeholder'] as const).map((part) => [`--ds-field-${part}`, part]),
-);
+const PARTS = new Set<string>(['surface', 'border', 'border-hover', 'border-focus', 'border-invalid', 'text', 'placeholder']);
+
+/** The drawing for a colour role this component paints, by custom property, or null. */
+export function textFieldIsometricFor(name: string): ReactNode | null {
+  const part = name.replace('--ds-field-', '');
+  return name.startsWith('--ds-field-') && PARTS.has(part) ? <TextFieldIsometric part={part as TextFieldIsometricPart} /> : null;
+}

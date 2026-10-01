@@ -20,13 +20,16 @@ export const screen = ([x, y, z]: Vec): [number, number] => [(x - y) * COS, (x +
 /** Maps the component's flat face at height z onto the screen, so a rect or a text drawn flat lies on it. */
 export const faceAt = (z: number): string => `matrix(${COS} ${SIN} ${-COS} ${SIN} 0 ${-z})`;
 
-/** The stage: a view box that holds a slab of width × depth, its lift and a cursor above it. */
-export function IsoStage({ width, depth, children }: { width: number; depth: number; children: ReactNode }) {
+/**
+ * The stage: a view box that holds a footprint of width × depth and a cursor above it. `rise` adds
+ * headroom for what stands or floats higher, such as a dialog over its page.
+ */
+export function IsoStage({ width, depth, rise = 0, children }: { width: number; depth: number; rise?: number; children: ReactNode }) {
   const margin = 28;
   const x0 = -depth * COS - margin;
-  const y0 = -margin - 12;
+  const y0 = -margin - 12 - rise;
   const w = (width + depth) * COS + margin * 2;
-  const h = (width + depth) * SIN + margin + 12 + 8;
+  const h = (width + depth) * SIN + margin + 12 + 8 + rise;
   return (
     <svg className="iso" viewBox={`${x0} ${y0} ${w} ${h}`} aria-hidden="true" focusable="false">
       {children}
@@ -52,6 +55,12 @@ export interface SlabProps {
   pressed?: boolean;
   /** Ghost: the slab fades to a dotted outline so what lies on its face, such as the label, stands out. */
   ghost?: boolean;
+  /** Outline: the body fades and the border stays solid, for a border role. */
+  outline?: boolean;
+  /** Dim: the whole slab and its face recede, as context for the part the scene is about. */
+  dim?: boolean;
+  /** Where the slab's back corner stands, on the stage's axes: on a page, on a card. */
+  at?: Vec;
   /** Drawn on the top face, in its flat coordinates. */
   children?: ReactNode;
 }
@@ -60,12 +69,15 @@ export interface SlabProps {
  * A rounded slab. The sides are the top face repeated down each pixel and darkened, so the corners keep
  * the component's real radius at every height.
  */
-export function Slab({ width, depth, height, lift = 0, radius, fill, stroke, strokeWidth, ring, pressed = false, ghost = false, children }: SlabProps) {
+export function Slab({ width, depth, height, lift = 0, radius, fill, stroke, strokeWidth, ring, pressed = false, ghost = false, outline = false, dim = false, at = [0, 0, 0], children }: SlabProps) {
   const top = lift + height;
   const face = (z: number, extra?: object, className = 'iso-face') => <rect key={z} className={className} width={width} height={depth} transform={faceAt(z)} style={{ rx: radius, ...extra }} />;
   const layers = Array.from({ length: height }, (_, i) => lift + i);
   return (
-    <g className={[pressed && 'iso-thump', ghost && 'iso-ghost'].filter(Boolean).join(' ') || undefined}>
+    <g
+      className={[pressed && 'iso-thump', ghost && 'iso-ghost', outline && 'iso-outline', dim && 'iso-dim'].filter(Boolean).join(' ') || undefined}
+      transform={`translate(${screen(at).join(' ')})`}
+    >
       {pressed && (
         <g transform={faceAt(0)}>
           <rect width={width} height={depth} className="iso-ripple" style={{ rx: radius, stroke: fill }} />
@@ -92,12 +104,74 @@ export function Slab({ width, depth, height, lift = 0, radius, fill, stroke, str
   );
 }
 
+export interface FaceLabelProps {
+  x: number;
+  y: number;
+  color: string;
+  anchor?: 'start' | 'middle';
+  /** `sm` for a label, `xs` for a meta line or a cell. */
+  size?: 'sm' | 'xs';
+  weight?: 'regular' | 'semibold';
+  underline?: boolean;
+  dim?: boolean;
+  children: string;
+}
+
 /** A label lying on a face, in a text style's size and weight. */
-export function FaceLabel({ x, y, color, anchor = 'middle', children }: { x: number; y: number; color: string; anchor?: 'start' | 'middle'; children: string }) {
+export function FaceLabel({ x, y, color, anchor = 'middle', size = 'sm', weight = 'semibold', underline = false, dim = false, children }: FaceLabelProps) {
   return (
-    <text x={x} y={y} className="iso-label" style={{ fill: color, textAnchor: anchor }}>
+    <text
+      x={x}
+      y={y}
+      className={['iso-label', dim && 'iso-dim'].filter(Boolean).join(' ')}
+      style={{
+        fill: color,
+        textAnchor: anchor,
+        fontSize: `var(--ds-font-size-${size})`,
+        fontWeight: `var(--ds-font-weight-${weight})`,
+        textDecoration: underline ? 'underline' : undefined,
+      }}
+    >
       {children}
     </text>
+  );
+}
+
+export interface FaceRectProps {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  fill?: string;
+  stroke?: string;
+  radius?: string;
+  dim?: boolean;
+  className?: string;
+}
+
+/** A flat shape on a face: a row, a bar, a well, a box. */
+export function FaceRect({ x, y, width, height, fill = 'none', stroke, radius = '0', dim = false, className }: FaceRectProps) {
+  return (
+    <rect
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      className={[className, dim && 'iso-dim'].filter(Boolean).join(' ') || undefined}
+      style={{ rx: radius, fill, stroke: stroke ?? 'none', strokeWidth: stroke ? 'var(--ds-size-border-thin)' : undefined }}
+    />
+  );
+}
+
+/** A glyph of the icon set lying on a face, its box `size` wide with its top-left corner at x, y. */
+export function FaceIcon({ glyph, x, y, size = 16, color, dim = false }: { glyph: keyof typeof GLYPHS; x: number; y: number; size?: number; color: string; dim?: boolean }) {
+  return (
+    <path
+      d={GLYPHS[glyph]}
+      transform={`translate(${x} ${y}) scale(${size / 24})`}
+      className={['iso-icon', dim && 'iso-dim'].filter(Boolean).join(' ')}
+      style={{ stroke: color }}
+    />
   );
 }
 

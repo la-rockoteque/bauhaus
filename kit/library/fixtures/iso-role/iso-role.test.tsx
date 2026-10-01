@@ -1,5 +1,6 @@
 import { cleanup, render } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
+import { roleNames } from '../rulebook/tokens';
 import { isometricOf } from './iso-role';
 
 const draw = (role: string) => render(<>{isometricOf(role)}</>).container;
@@ -38,7 +39,14 @@ describe('isometricOf', () => {
     expect(draw('--ds-focus-ring-color').querySelector('.iso-ring')).not.toBeNull();
   });
 
-  it('has no drawing for a role with no object', () => {
-    expect(isometricOf('--ds-text-default')).toBeNull();
+  it('draws every colour role of the theme on a component', () => {
+    // Shadows draw on the elevation page and series.lightness is a number, so neither is a colour to draw.
+    const roles = roleNames('light').filter((name) => !/^--ds-(shadow|series)-/.test(name));
+    expect(roles.length).toBeGreaterThan(60);
+    expect(roles.filter((role) => isometricOf(role) === null)).toEqual([]);
+  });
+
+  it('has no drawing for a token that is not a colour role', () => {
+    expect(isometricOf('--ds-space-4')).toBeNull();
   });
 });

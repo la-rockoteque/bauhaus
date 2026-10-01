@@ -36,12 +36,26 @@
   stroke-linecap: square;
 }
 
+/* Dim: a part the scene is not about recedes, so the role's own part leads. */
+.iso-dim {
+  opacity: 0.28;
+}
+
+.iso-icon {
+  fill: none;
+  stroke-width: var(--ds-icon-stroke);
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
 /* Ghost: the body fades and its top face keeps a dotted edge, so the label on it is what you read. */
-.iso-ghost .iso-face {
+.iso-ghost .iso-face,
+.iso-outline .iso-face {
   fill-opacity: 0.12;
 }
 
-.iso-ghost .iso-side {
+.iso-ghost .iso-side,
+.iso-outline .iso-side {
   opacity: 0.35;
 }
 
@@ -124,9 +138,20 @@
   80%, 100% { opacity: 0; transform: scale(1.4); }
 }
 
+/* Skeleton: the highlight breathes over the base. It animates fill-opacity, so a dimmed bar stays dim. */
+.iso-shimmer {
+  animation: iso-shimmer var(--ds-motion-duration-loop) var(--ds-motion-ease-standard) infinite alternate;
+}
+
+@keyframes iso-shimmer {
+  from { fill-opacity: 0; }
+  to { fill-opacity: 1; }
+}
+
 /* Still under reduced motion: the pointer rests on its target, the hand rests on the pressed slab. */
 @media (prefers-reduced-motion: reduce) {
   .iso-orbit,
+  .iso-shimmer,
   .iso-press-hand,
   .iso-thump,
   .iso-ripple {
