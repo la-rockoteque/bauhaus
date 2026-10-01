@@ -32,9 +32,9 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: (
+        render: (args) => (
           <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}>
-            <Divider />
+            <Divider decorative={args.decorative === true} />
           </div>
         ),
         parts: [
@@ -50,7 +50,7 @@ export const Showcase: StoryObj<typeof meta> = {
       ]}
       api={[
         { label: 'orientation', value: '"horizontal" | "vertical", default "horizontal".' },
-        { label: 'decorative', value: 'Hide the line from assistive technology. Default false: the line marks a change of topic.' },
+        { label: 'decorative', value: 'Hide the line from assistive technology. Default false: the line marks a change of topic.', control: { kind: 'boolean', value: false } },
         { label: '…props', value: 'Every native hr attribute.' },
       ]}
       states={{

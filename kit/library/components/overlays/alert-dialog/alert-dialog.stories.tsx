@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from '../../clickables/button/button';
+import type { ModalSize } from '../modal/modal';
 import { AlertDialog } from './alert-dialog';
 import { alertDialogRules } from './alert-dialog.rules';
 
@@ -12,6 +13,7 @@ const meta = { title: 'Overlays/Alert dialog', parameters: { layout: 'fullscreen
 export default meta;
 
 const noop = () => {};
+const SIZES = ['sm', 'md', 'lg'] as const satisfies readonly ModalSize[];
 
 const expired = { title: 'Session expired', description: 'You were signed out after 30 minutes without activity. Your draft is saved.', actionLabel: 'Sign in again' };
 
@@ -47,7 +49,17 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <AlertDialog inline open onClose={noop} {...expired} />,
+        render: (args) => (
+          <AlertDialog
+            inline
+            open
+            onClose={noop}
+            title={String(args.title)}
+            description={String(args.description)}
+            actionLabel={String(args.actionLabel)}
+            size={args.size as ModalSize}
+          />
+        ),
         parts: [
           { n: 1, label: 'Title', note: 'required, what happened', target: '.ds-modal__title' },
           { n: 2, label: 'Message', note: 'required, what it means', target: '.ds-modal__body' },
@@ -62,9 +74,11 @@ export const Showcase: StoryObj<typeof meta> = {
       ]}
       api={[
         { label: 'open · onClose', value: 'The parent owns whether it is shown. onClose runs on the action and on Escape.' },
-        { label: 'title · description', value: 'Required. What happened, and what it means for the user.' },
-        { label: 'actionLabel', value: 'Required. Says what happens next: "Sign in again".' },
-        { label: 'size · inline', value: 'Passed to Modal.' },
+        { label: 'title', value: 'Required. What happened.', control: { kind: 'text', value: expired.title } },
+        { label: 'description', value: 'Required. What it means for the user.', control: { kind: 'text', value: expired.description } },
+        { label: 'actionLabel', value: 'Required. Says what happens next: "Sign in again".', control: { kind: 'text', value: expired.actionLabel } },
+        { label: 'size', value: 'Passed to Modal.', control: { kind: 'select', options: SIZES, value: 'md' } },
+        { label: 'inline', value: 'Passed to Modal.' },
       ]}
       states={{
         note: 'Each cell shows the dialog inline: open, in the flow, without the scrim. The live dialog is under Try it.',

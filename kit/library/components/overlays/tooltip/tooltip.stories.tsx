@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
+import type { Placement } from 'react-aria-components';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
@@ -16,6 +17,7 @@ const meta = { title: 'Overlays/Tooltip', parameters: { layout: 'fullscreen' } }
 export default meta;
 
 const noop = () => {};
+const PLACEMENTS = ['top', 'bottom', 'start', 'end'] as const satisfies readonly Placement[];
 
 /** A relative box the open tooltip mounts into, so the grid cell holds it. */
 function Stage({ children }: { children: (container: HTMLElement) => ReactNode }) {
@@ -29,10 +31,10 @@ function Stage({ children }: { children: (container: HTMLElement) => ReactNode }
 
 const share = <IconButton label="Share" icon={<Icon glyph="external" />} variant="secondary" />;
 
-const open = (extra: { className?: string; content?: string } = {}) => (
+const open = (extra: { className?: string; content?: string; placement?: Placement } = {}) => (
   <Stage>
     {(container) => (
-      <Tooltip content={extra.content ?? 'Copy the link'} isOpen onOpenChange={noop} portalContainer={container} placement="top">
+      <Tooltip content={extra.content ?? 'Copy the link'} isOpen onOpenChange={noop} portalContainer={container} placement={extra.placement ?? 'top'}>
         <IconButton label="Share" icon={<Icon glyph="external" />} variant="secondary" className={extra.className} />
       </Tooltip>
     )}
@@ -64,7 +66,7 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: open(),
+        render: (args) => open({ content: String(args.content), placement: args.placement as Placement }),
         parts: [
           { n: 1, label: 'Trigger', note: 'a control with its own name, required', target: '.ds-icon-button' },
           { n: 2, label: 'Bubble', note: 'a string, required', target: '.ds-tooltip' },
@@ -79,8 +81,8 @@ export const Showcase: StoryObj<typeof meta> = {
       ]}
       api={[
         { label: 'children', value: 'The control the tooltip describes. It needs its own accessible name.' },
-        { label: 'content', value: 'Required, a string. It cannot hold a link or a button.' },
-        { label: 'placement', value: 'Default "top". Flips at the edge.' },
+        { label: 'content', value: 'Required, a string. It cannot hold a link or a button.', control: { kind: 'text', value: 'Copy the link' } },
+        { label: 'placement', value: 'Default "top". Flips at the edge.', control: { kind: 'select', options: PLACEMENTS, value: 'top' } },
         { label: 'delay', value: 'Milliseconds before hover opens it. Default 500.' },
         { label: 'isOpen · defaultOpen · onOpenChange', value: 'Controlled or uncontrolled open state.' },
         { label: 'portalContainer', value: 'Mount the open tooltip in this element instead of the body.' },

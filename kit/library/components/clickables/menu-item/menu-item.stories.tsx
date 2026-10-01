@@ -5,6 +5,7 @@ import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Menu } from '../../overlays/menu/menu';
 import { MenuItem } from './menu-item';
+import type { IconGlyph } from '../../../primitives/icon/icon';
 import { menuItemRules } from './menu-item.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -32,6 +33,8 @@ function Forced({ attributes, children }: { attributes: readonly string[]; child
 }
 
 const inMenu = (children: ReactNode, props: Partial<Parameters<typeof Menu>[0]> = {}) => <Menu label="Project actions" {...props}>{children}</Menu>;
+
+const ICONS = ['check', 'close', 'search', 'settings'] as const satisfies readonly IconGlyph[];
 
 const HOVER = ['data-focused'] as const;
 const FOCUS = ['data-focused', 'data-focus-visible'] as const;
@@ -64,7 +67,19 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: inMenu(<MenuItem id="save" icon="check" description="Write the file to disk" shortcut="Ctrl+S">Save</MenuItem>),
+        render: (args) =>
+          inMenu(
+            <MenuItem
+              id="save"
+              icon={args.icon as IconGlyph}
+              description={String(args.description) || undefined}
+              shortcut={String(args.shortcut) || undefined}
+              destructive={args.destructive === true}
+              isDisabled={args.isDisabled === true}
+            >
+              {String(args.children)}
+            </MenuItem>,
+          ),
         parts: [
           { n: 1, label: 'Container', note: 'role menuitem, required', target: '.ds-menu-item', at: 'top-start' },
           { n: 2, label: 'Icon', note: 'optional, hidden from assistive technology', target: '.ds-menu-item__lead', at: 'top-start' },
@@ -83,13 +98,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Focus', value: 'ring 2px drawn inside the item, on data-focus-visible' },
       ]}
       api={[
-        { label: 'children', value: 'The label, a string. It names the item and feeds the typeahead.' },
+        { label: 'children', value: 'The label, a string. It names the item and feeds the typeahead.', control: { kind: 'text', value: 'Save' } },
         { label: 'id', value: 'The key. It comes back in onAction and in the selected keys.' },
-        { label: 'icon', value: 'A glyph name, drawn before the label. In a choosing menu the check takes its place.' },
-        { label: 'description', value: 'A second line of detail.' },
-        { label: 'shortcut', value: 'A hint of the key combination, such as "Ctrl+S". A hint only; the app binds the key.' },
-        { label: 'destructive', value: 'The action deletes or discards. Reads in the error colour; the label must say what it deletes.' },
-        { label: 'isDisabled', value: 'Stays in the list, skipped by the arrows.' },
+        { label: 'icon', value: 'A glyph name, drawn before the label. In a choosing menu the check takes its place.', control: { kind: 'select', options: ICONS, value: 'check' } },
+        { label: 'description', value: 'A second line of detail.', control: { kind: 'text', value: 'Write the file to disk' } },
+        { label: 'shortcut', value: 'A hint of the key combination, such as "Ctrl+S". A hint only; the app binds the key.', control: { kind: 'text', value: 'Ctrl+S' } },
+        { label: 'destructive', value: 'The action deletes or discards. Reads in the error colour; the label must say what it deletes.', control: { kind: 'boolean', value: false } },
+        { label: 'isDisabled', value: 'Stays in the list, skipped by the arrows.', control: { kind: 'boolean', value: false } },
         { label: '…props', value: 'onAction, href, textValue and the other React Aria MenuItem props.' },
       ]}
       states={{

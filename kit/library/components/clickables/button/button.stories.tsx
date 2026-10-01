@@ -2,12 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from './button';
+import type { ButtonProps, ButtonSize, ButtonVariant } from './button';
 import { buttonRules } from './button.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Clickables/Button', component: Button, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Button>;
 
 export default meta;
+
+const VARIANTS = ['primary', 'secondary', 'tertiary', 'subtle'] as const satisfies readonly ButtonVariant[];
+const SIZES = ['default', 'narrow'] as const satisfies readonly ButtonSize[];
+const TYPES = ['button', 'submit', 'reset'] as const satisfies readonly NonNullable<ButtonProps['type']>[];
 
 export const Showcase: StoryObj<typeof meta> = {
   name: 'Showcase',
@@ -40,7 +45,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <Button variant="primary" loading>Save changes</Button>,
+        render: (args) => (
+          <Button variant={args.variant as ButtonVariant} size={args.size as ButtonSize} loading={args.loading === true} type={args.type as ButtonProps['type']} disabled={args.disabled === true}>
+            Save changes
+          </Button>
+        ),
         parts: [
           { n: 1, label: 'Container', note: 'native button, required', target: '.ds-button', at: 'top-start' },
           { n: 2, label: 'Label', note: 'children, required', target: '.ds-button__label', at: 'bottom-start' },
@@ -58,11 +67,12 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Icon', value: 'no slot; use icon-button for an icon alone' },
       ]}
       api={[
-        { label: 'variant', value: '"primary" | "secondary" | "tertiary" | "subtle", default "primary". One primary per view region. Subtle is the quietest: neutral text, no fill or outline until hover.' },
-        { label: 'size', value: '"default" | "narrow", default "default". Narrow draws at size.control.narrow (32px) for dense chrome; its hit area stays at size.target.min.' },
-        { label: 'loading', value: 'The action is running. The label and width stay, aria-busy is set, presses are ignored.' },
-        { label: 'type', value: '"button" | "submit" | "reset", default "button". A button in a form does not submit unless you ask.' },
-        { label: '…props', value: 'Every native button attribute, such as disabled and onClick.' },
+        { label: 'variant', value: '"primary" | "secondary" | "tertiary" | "subtle", default "primary". One primary per view region. Subtle is the quietest: neutral text, no fill or outline until hover.', control: { kind: 'select', options: VARIANTS, value: 'primary' } },
+        { label: 'size', value: '"default" | "narrow", default "default". Narrow draws at size.control.narrow (32px) for dense chrome; its hit area stays at size.target.min.', control: { kind: 'select', options: SIZES, value: 'default' } },
+        { label: 'loading', value: 'The action is running. The label and width stay, aria-busy is set, presses are ignored.', control: { kind: 'boolean', value: true } },
+        { label: 'type', value: '"button" | "submit" | "reset", default "button". A button in a form does not submit unless you ask.', control: { kind: 'select', options: TYPES, value: 'button' } },
+        { label: 'disabled', value: 'The native disabled attribute.', control: { kind: 'boolean', value: false } },
+        { label: '…props', value: 'Every other native button attribute, such as onClick.' },
       ]}
       states={{
         cells: [

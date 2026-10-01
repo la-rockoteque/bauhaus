@@ -37,7 +37,7 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: cell(<Switch label="Email alerts" description="Sent once a day." defaultChecked />),
+        render: (args) => cell(<Switch label={String(args.label)} description={String(args.description) || undefined} disabled={args.disabled === true} defaultChecked />),
         parts: [
           { n: 1, label: 'Target', note: '44px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
           { n: 2, label: 'Track', note: 'drawn, decorative', target: '.ds-switch__track' },
@@ -58,9 +58,10 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Focus', value: 'ring 2px, offset 2px, around the track, on :focus-visible' },
       ]}
       api={[
-        { label: 'label', value: 'Required. Names the setting. It does not change with the state.' },
-        { label: 'description', value: 'Help under the label, tied with aria-describedby.' },
-        { label: '…props', value: 'Every native input attribute, such as checked, defaultChecked, disabled, name, onChange and ref.' },
+        { label: 'label', value: 'Required. Names the setting. It does not change with the state.', control: { kind: 'text', value: 'Email alerts' } },
+        { label: 'description', value: 'Help under the label, tied with aria-describedby.', control: { kind: 'text', value: 'Sent once a day.' } },
+        { label: 'disabled', value: 'A native input attribute.', control: { kind: 'boolean', value: false } },
+        { label: '…props', value: 'Every other native input attribute, such as checked, defaultChecked, name, onChange and ref.' },
       ]}
       states={{
         cells: [

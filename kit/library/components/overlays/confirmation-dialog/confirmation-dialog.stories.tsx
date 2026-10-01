@@ -4,6 +4,7 @@ import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Stack } from '../../../primitives/stack/stack';
 import { Button } from '../../clickables/button/button';
+import type { ModalSize } from '../modal/modal';
 import { ConfirmationDialog } from './confirmation-dialog';
 import { confirmationDialogRules } from './confirmation-dialog.rules';
 
@@ -13,6 +14,7 @@ const meta = { title: 'Overlays/Confirmation dialog', parameters: { layout: 'ful
 export default meta;
 
 const noop = () => {};
+const SIZES = ['sm', 'md', 'lg'] as const satisfies readonly ModalSize[];
 
 const del = { title: 'Delete this project?', description: 'This removes 3 files and cannot be undone.', confirmLabel: 'Delete project', cancelLabel: 'Cancel' };
 const publish = { title: 'Publish this page?', description: 'Everyone with the link can read it. You can unpublish it later.', confirmLabel: 'Publish page', cancelLabel: 'Cancel' };
@@ -52,7 +54,20 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <ConfirmationDialog inline open onClose={noop} onConfirm={noop} {...del} destructive />,
+        render: (args) => (
+          <ConfirmationDialog
+            inline
+            open
+            onClose={noop}
+            onConfirm={noop}
+            title={String(args.title)}
+            description={String(args.description)}
+            confirmLabel={String(args.confirmLabel)}
+            cancelLabel={String(args.cancelLabel)}
+            destructive={args.destructive === true}
+            size={args.size as ModalSize}
+          />
+        ),
         parts: [
           { n: 1, label: 'Title', note: 'required, the question', target: '.ds-modal__title' },
           { n: 2, label: 'Message', note: 'required, what it costs', target: '.ds-modal__body' },
@@ -69,10 +84,13 @@ export const Showcase: StoryObj<typeof meta> = {
       api={[
         { label: 'open · onClose', value: 'The parent owns whether it is shown. onClose runs on Cancel and on Escape.' },
         { label: 'onConfirm', value: 'Runs on the confirm action. The parent closes the dialog when the action is done.' },
-        { label: 'title · description', value: 'Required. The question, and what it costs.' },
-        { label: 'confirmLabel · cancelLabel', value: 'Required. The confirm label names the action and its object: "Delete project".' },
-        { label: 'destructive', value: 'The action cannot be undone. Focus starts on Cancel.' },
-        { label: 'size · inline', value: 'Passed to Modal.' },
+        { label: 'title', value: 'Required. The question.', control: { kind: 'text', value: del.title } },
+        { label: 'description', value: 'Required. What it costs.', control: { kind: 'text', value: del.description } },
+        { label: 'confirmLabel', value: 'Required. Names the action and its object: "Delete project".', control: { kind: 'text', value: del.confirmLabel } },
+        { label: 'cancelLabel', value: 'Required. The label of the cancel action.', control: { kind: 'text', value: del.cancelLabel } },
+        { label: 'destructive', value: 'The action cannot be undone. Focus starts on Cancel.', control: { kind: 'boolean', value: true } },
+        { label: 'size', value: 'Passed to Modal.', control: { kind: 'select', options: SIZES, value: 'md' } },
+        { label: 'inline', value: 'Passed to Modal.' },
       ]}
       states={{
         note: 'Each cell shows the dialog inline: open, in the flow, without the scrim. The live dialogs are under Try it.',

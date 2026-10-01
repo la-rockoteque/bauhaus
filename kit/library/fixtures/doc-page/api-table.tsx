@@ -1,10 +1,10 @@
 import { IconButton } from '../../components/clickables/icon-button/icon-button';
-import { Select } from '../../components/fields/select/select';
 import { Switch } from '../../components/fields/switch/switch';
 import { TextField } from '../../components/fields/text-field/text-field';
 import { Tooltip } from '../../components/overlays/tooltip/tooltip';
 import { Icon } from '../../primitives/icon/icon';
 import { Text } from '../../primitives/text/text';
+import { Segmented } from '../segmented/segmented';
 import { VisuallyHidden } from '../../primitives/visually-hidden/visually-hidden';
 import { TableScroll } from './table-scroll';
 import type { ApiArgs, ApiRow } from './types';
@@ -18,7 +18,8 @@ function Control({ row, value, onChange }: { row: ApiRow; value: string | boolea
   const label = <VisuallyHidden>{row.label}</VisuallyHidden>;
   if (!control) return null;
   if (control.kind === 'boolean') return <Switch label={label} checked={value === true} onChange={(event) => onChange(event.target.checked)} />;
-  if (control.kind === 'select') return <Select label={label} value={String(value)} options={control.options.map((option) => ({ value: option, label: option }))} onChange={(event) => onChange(event.target.value)} />;
+  // A choice of a few: segmented buttons, every option in sight. The group takes the prop name as its accessible name.
+  if (control.kind === 'select') return <Segmented label={row.label} value={String(value)} options={control.options.map((option) => ({ value: option, label: option }))} onChange={onChange} />;
   return <TextField label={label} value={String(value)} onChange={(event) => onChange(event.target.value)} />;
 }
 

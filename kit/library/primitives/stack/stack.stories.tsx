@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Box } from '../box/box';
+import type { Space } from '../box/box';
 import { Stack } from './stack';
+import type { StackProps } from './stack';
 import { stackRules } from './stack.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -10,6 +12,10 @@ const meta = { title: 'Primitives/Stack', component: Stack, parameters: { layout
 
 export default meta;
 
+const DIRECTIONS = ['vertical', 'horizontal'] as const satisfies readonly NonNullable<StackProps['direction']>[];
+const STEPS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] as const;
+const ALIGNS = ['start', 'center', 'end', 'stretch', 'baseline'] as const satisfies readonly NonNullable<StackProps['align']>[];
+const JUSTIFIES = ['start', 'center', 'end', 'between'] as const satisfies readonly NonNullable<StackProps['justify']>[];
 const notInteractive = 'A Stack is not interactive.';
 const noData = 'A Stack holds no data of its own.';
 const Chip = ({ children }: { children: string }) => <Box padding={2} surface="raised" style={{ border: 'thin solid var(--ds-border-strong)' }}>{children}</Box>;
@@ -29,8 +35,14 @@ export const Showcase: StoryObj<typeof meta> = {
         rows: [{ name: 'space.0 … space.12', tier: '1', use: 'The gap. The default is space.4' }],
       }}
       stage={{
-        render: (
-          <Stack direction="horizontal" gap={3}>
+        render: (args) => (
+          <Stack
+            direction={args.direction as StackProps['direction']}
+            gap={Number(args.gap) as Space}
+            align={args.align as StackProps['align']}
+            justify={args.justify as StackProps['justify']}
+            wrap={args.wrap === true}
+          >
             <Chip>One</Chip>
             <Chip>Two</Chip>
             <Chip>Three</Chip>
@@ -49,11 +61,11 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Element', value: 'div; ul or ol for a list, with no markers and no padding, and role="list"' },
       ]}
       api={[
-        { label: 'direction', value: '"vertical" | "horizontal", default "vertical".' },
-        { label: 'gap', value: 'A space step from 0 to 12, default 4.' },
-        { label: 'align', value: '"start" | "center" | "end" | "stretch" | "baseline", default "stretch". Cross axis.' },
-        { label: 'justify', value: '"start" | "center" | "end" | "between", default "start". Main axis.' },
-        { label: 'wrap', value: 'Let children flow onto a new line. Use it on rows of variable width.' },
+        { label: 'direction', value: '"vertical" | "horizontal", default "vertical".', control: { kind: 'select', options: DIRECTIONS, value: 'horizontal' } },
+        { label: 'gap', value: 'A space step from 0 to 12, default 4.', control: { kind: 'select', options: STEPS, value: '3' } },
+        { label: 'align', value: '"start" | "center" | "end" | "stretch" | "baseline", default "stretch". Cross axis.', control: { kind: 'select', options: ALIGNS, value: 'stretch' } },
+        { label: 'justify', value: '"start" | "center" | "end" | "between", default "start". Main axis.', control: { kind: 'select', options: JUSTIFIES, value: 'start' } },
+        { label: 'wrap', value: 'Let children flow onto a new line. Use it on rows of variable width.', control: { kind: 'boolean', value: false } },
         { label: 'as', value: 'The element to render. "ul" or "ol" for a list: markers and padding reset, role="list" kept.' },
         { label: '…props', value: 'Every native HTML attribute.' },
       ]}

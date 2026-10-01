@@ -37,7 +37,13 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: skipLink,
+        render: (args) => (
+          <Frame>
+            <VisuallyHidden as="a" href={String(args.href)} focusable className="doc-force-focus">
+              Skip to main content
+            </VisuallyHidden>
+          </Frame>
+        ),
         parts: [
           { n: 1, label: 'Element', note: 'span by default; a for a skip link', target: '.ds-visually-hidden', at: 'top-start' },
           { n: 2, label: 'Text', note: 'children, required', target: '.ds-visually-hidden', at: 'end' },
@@ -51,7 +57,7 @@ export const Showcase: StoryObj<typeof meta> = {
       api={[
         { label: 'as', value: 'The element to render. "a" with href for a skip link.' },
         { label: 'focusable', value: 'Show the element while it holds keyboard focus.' },
-        { label: 'href', value: 'The target when as is "a".' },
+        { label: 'href', value: 'The target when as is "a".', control: { kind: 'text', value: '#main' } },
         { label: '…props', value: 'Every native HTML attribute.' },
       ]}
       states={{

@@ -205,6 +205,11 @@
   gap: var(--ds-space-1);
 }
 
+/* A long list of options wraps inside its cell. */
+.doc-table-api .doc-segmented {
+  flex-wrap: wrap;
+}
+
 /* The info glyph upside down: an "!" in a circle. */
 .doc-api-mark {
   rotate: 180deg;

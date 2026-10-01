@@ -4,6 +4,7 @@ import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from '../../clickables/button/button';
 import { Banner } from './banner';
+import type { BannerStatus } from './banner';
 import { bannerRules } from './banner.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -11,6 +12,7 @@ const meta = { title: 'Feedback/Banner', component: Banner, parameters: { layout
 
 export default meta;
 
+const STATUSES = ['info', 'success', 'warning', 'error'] as const satisfies readonly BannerStatus[];
 const column = { display: 'grid', gap: 'var(--ds-space-3)', inlineSize: '100%' } as const;
 
 function DismissDemo() {
@@ -46,9 +48,17 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: (
-          <Banner status="warning" title="Payment method expires soon" actions={<Button variant="secondary">Update card</Button>} onDismiss={() => {}} dismissLabel="Dismiss message">
-            Your card ends in 4242 and expires on 31 October.
+        render: (args) => (
+          <Banner
+            status={args.status as BannerStatus}
+            title={String(args.title) || undefined}
+            actions={<Button variant="secondary">Update card</Button>}
+            onDismiss={() => {}}
+            dismissLabel={String(args.dismissLabel)}
+            urgent={args.urgent === true}
+            statusLabel={String(args.statusLabel) || undefined}
+          >
+            {String(args.children)}
           </Banner>
         ),
         parts: [
@@ -71,13 +81,14 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Width', value: 'Fills its container; text wraps, never truncates' },
       ]}
       api={[
-        { label: 'status', value: '"info" | "success" | "warning" | "error", default "info". Each has its own icon glyph and word.' },
-        { label: 'title', value: 'Optional lead line, in label weight.' },
-        { label: 'children', value: 'The message.' },
+        { label: 'status', value: '"info" | "success" | "warning" | "error", default "info". Each has its own icon glyph and word.', control: { kind: 'select', options: STATUSES, value: 'warning' } },
+        { label: 'title', value: 'Optional lead line, in label weight.', control: { kind: 'text', value: 'Payment method expires soon' } },
+        { label: 'children', value: 'The message.', control: { kind: 'text', value: 'Your card ends in 4242 and expires on 31 October.' } },
         { label: 'actions', value: 'Buttons or links under the message.' },
-        { label: 'onDismiss · dismissLabel', value: 'Both required to show the close button. The parent removes the banner.' },
-        { label: 'urgent', value: 'Sets role="alert" on an error. Ignored for other statuses.' },
-        { label: 'statusLabel', value: 'Spoken name of the icon. Defaults to the status word.' },
+        { label: 'dismissLabel', value: 'The name of the close button. The button shows only with onDismiss too.', control: { kind: 'text', value: 'Dismiss message' } },
+        { label: 'onDismiss', value: 'Called by the close button. The button shows only with dismissLabel too. The parent removes the banner.' },
+        { label: 'urgent', value: 'Sets role="alert" on an error. Ignored for other statuses.', control: { kind: 'boolean', value: false } },
+        { label: 'statusLabel', value: 'Spoken name of the icon. Defaults to the status word.', control: { kind: 'text', value: '' } },
       ]}
       states={{
         note: 'A banner is a message, not a control. Interaction states belong to its buttons.',

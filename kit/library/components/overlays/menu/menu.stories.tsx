@@ -8,7 +8,7 @@ import { Stack } from '../../../primitives/stack/stack';
 import { Button } from '../../clickables/button/button';
 import { IconButton } from '../../clickables/icon-button/icon-button';
 import { MenuItem } from '../../clickables/menu-item/menu-item';
-import { Menu, MenuSection, MenuSeparator } from './menu';
+import { Menu, MenuSection, MenuSeparator, type MenuProps } from './menu';
 import { menuRules } from './menu.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -65,6 +65,9 @@ const views = (mode: 'single' | 'multiple') => (
 
 const cities = ['Montréal', 'Québec', 'Gatineau', 'Laval', 'Sherbrooke', 'Saguenay', 'Lévis', 'Trois-Rivières', 'Terrebonne', 'Longueuil'];
 
+type SelectionMode = NonNullable<MenuProps<object>['selectionMode']>;
+const SELECTION_MODES = ['none', 'single', 'multiple'] as const satisfies readonly SelectionMode[];
+
 const actionsTrigger = <Button variant="secondary">Actions</Button>;
 
 export const Showcase: StoryObj<typeof meta> = {
@@ -92,7 +95,7 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <Menu label="Project actions">{projectItems}</Menu>,
+        render: (args) => <Menu label={String(args.label)} selectionMode={args.selectionMode as SelectionMode}>{projectItems}</Menu>,
         parts: [
           { n: 1, label: 'Trigger', note: 'a button, the only tab stop, not drawn here', target: '.ds-menu__popover', at: 'top-start' },
           { n: 2, label: 'Container', note: 'role menu, required', target: '.ds-menu', at: 'top-end' },
@@ -111,10 +114,11 @@ export const Showcase: StoryObj<typeof meta> = {
       ]}
       api={[
         { label: 'trigger', value: 'The button that opens the menu. Without it the open list is drawn in the flow.' },
-        { label: 'label', value: 'Required. The accessible name of the menu.' },
+        { label: 'label', value: 'Required. The accessible name of the menu.', control: { kind: 'text', value: 'Project actions' } },
         { label: 'children', value: 'MenuItem, MenuSection and MenuSeparator.' },
         { label: 'onAction', value: 'Called with the item id when an action item is pressed. The menu closes.' },
-        { label: 'selectionMode · selectedKeys · defaultSelectedKeys · onSelectionChange', value: '"none" (default) | "single" | "multiple". A choosing menu stays open in multiple mode.' },
+        { label: 'selectionMode', value: '"none" (default) | "single" | "multiple". A choosing menu stays open in multiple mode.', control: { kind: 'select', options: SELECTION_MODES, value: 'none' } },
+        { label: 'selectedKeys · defaultSelectedKeys · onSelectionChange', value: 'The chosen ids, controlled or not.' },
         { label: 'placement', value: 'Default "bottom start". Flips at the edge.' },
         { label: 'isOpen · defaultOpen · onOpenChange', value: 'Controlled or uncontrolled open state.' },
         { label: 'portalContainer', value: 'Mount the open menu in this element instead of the body.' },

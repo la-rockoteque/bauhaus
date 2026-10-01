@@ -38,7 +38,18 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: cell(<Checkbox label="Send me the newsletter" description="One email a month." defaultChecked />),
+        render: (args) =>
+          cell(
+            <Checkbox
+              label={String(args.label)}
+              description={String(args.description) || undefined}
+              error={String(args.error) || undefined}
+              indeterminate={args.indeterminate === true}
+              required={args.required === true}
+              disabled={args.disabled === true}
+              defaultChecked
+            />,
+          ),
         parts: [
           { n: 1, label: 'Target', note: '44px, holds the native input', target: '.ds-field__choice-target', at: 'top-start' },
           { n: 2, label: 'Box and check', note: 'drawn, decorative', target: '.ds-checkbox__box' },
@@ -57,11 +68,14 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Focus', value: 'ring 2px, offset 2px, around the box, on :focus-visible' },
       ]}
       api={[
-        { label: 'label', value: 'Required. Visible, bound to the input, and part of the target.' },
-        { label: 'description · error', value: 'Help and error text under the label, tied with aria-describedby. The error sets aria-invalid.' },
-        { label: 'indeterminate', value: 'Shows the mixed state. The user clears it by toggling.' },
-        { label: 'required · requiredText · errorPrefix', value: 'As the text field.' },
-        { label: '…props', value: 'Every native input attribute, such as checked, defaultChecked, disabled, name, value, onChange, onBlur and ref. onBlur fires when focus leaves the box: validate there.' },
+        { label: 'label', value: 'Required. Visible, bound to the input, and part of the target.', control: { kind: 'text', value: 'Send me the newsletter' } },
+        { label: 'description', value: 'Help text under the label, tied with aria-describedby.', control: { kind: 'text', value: 'One email a month.' } },
+        { label: 'error', value: 'Error text under the label, tied with aria-describedby. It sets aria-invalid.', control: { kind: 'text', value: '' } },
+        { label: 'indeterminate', value: 'Shows the mixed state. The user clears it by toggling.', control: { kind: 'boolean', value: false } },
+        { label: 'required', value: 'As the text field.', control: { kind: 'boolean', value: false } },
+        { label: 'requiredText · errorPrefix', value: 'As the text field.' },
+        { label: 'disabled', value: 'A native input attribute.', control: { kind: 'boolean', value: false } },
+        { label: '…props', value: 'Every other native input attribute, such as checked, defaultChecked, name, value, onChange, onBlur and ref. onBlur fires when focus leaves the box: validate there.' },
       ]}
       states={{
         cells: [

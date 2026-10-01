@@ -45,7 +45,18 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: show({ pageSize: SIZE }),
+        render: (args) =>
+          show({
+            pageSize: SIZE,
+            label: String(args.label),
+            page: Number(args.page) || 1,
+            pageCount: Number(args.pageCount) || 1,
+            total: String(args.total),
+            previousLabel: String(args.previousLabel),
+            nextLabel: String(args.nextLabel),
+            status: String(args.status),
+            siblings: Number(args.siblings),
+          }),
         parts: [
           { n: 1, label: 'Landmark', note: 'nav with aria-label, required', target: '.ds-pagination', at: 'top-start' },
           { n: 2, label: 'Total', note: 'text from a prop', target: '.ds-pagination__total' },
@@ -64,15 +75,18 @@ export const Showcase: StoryObj = {
         { label: 'Wrap', value: 'summary and list wrap onto new lines' },
       ]}
       api={[
-        { label: 'label', value: 'The accessible name of the landmark, required.' },
-        { label: 'page · pageCount', value: 'Current page from 1, and the number of pages. The page is clamped to the range.' },
+        { label: 'label', value: 'The accessible name of the landmark, required.', control: { kind: 'text', value: 'Pagination' } },
+        { label: 'page', value: 'Current page from 1. It is clamped to the range.', control: { kind: 'text', value: '3' } },
+        { label: 'pageCount', value: 'The number of pages.', control: { kind: 'text', value: '12' } },
         { label: 'onPageChange', value: 'Called with the new page.' },
         { label: 'getHref · linkAs', value: 'Link mode: each page is a link to this URL, rendered with `linkAs` when given. Without getHref, pages are buttons.' },
-        { label: 'total', value: 'The range and count as text, formatted by the caller: "1–25 of 1,342".' },
+        { label: 'total', value: 'The range and count as text, formatted by the caller: "1–25 of 1,342".', control: { kind: 'text', value: '51–75 of 1,342' } },
         { label: 'pageSize', value: '{ label, value, options, onChange }: a native select with a visible label.' },
-        { label: 'previousLabel · nextLabel · pageLabel', value: 'Text of the controls. Defaults "Previous", "Next" and "Page n".' },
-        { label: 'status', value: 'Text announced through a polite live region when the page changes: "Page 3 of 12".' },
-        { label: 'siblings', value: 'Pages shown each side of the current one, default 1.' },
+        { label: 'previousLabel', value: 'Text of the previous control. Default "Previous".', control: { kind: 'text', value: 'Previous' } },
+        { label: 'nextLabel', value: 'Text of the next control. Default "Next".', control: { kind: 'text', value: 'Next' } },
+        { label: 'pageLabel', value: 'Accessible name of a page item. Default "Page n".' },
+        { label: 'status', value: 'Text announced through a polite live region when the page changes: "Page 3 of 12".', control: { kind: 'text', value: 'Page 3 of 12' } },
+        { label: 'siblings', value: 'Pages shown each side of the current one, default 1.', control: { kind: 'select', options: ['0', '1', '2', '3'], value: '1' } },
       ]}
       states={{
         cells: [

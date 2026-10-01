@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Spinner } from './spinner';
+import type { SpinnerSize } from './spinner';
 import { spinnerRules } from './spinner.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -9,6 +10,7 @@ const meta = { title: 'Feedback/Spinner', parameters: { layout: 'fullscreen' } }
 
 export default meta;
 
+const SIZES = ['sm', 'md', 'lg'] as const satisfies readonly SpinnerSize[];
 const notInteractive = 'A spinner is not interactive.';
 
 export const Showcase: StoryObj = {
@@ -35,7 +37,7 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: <Spinner label="Loading orders" showLabel />,
+        render: (args) => <Spinner label={String(args.label)} size={args.size as SpinnerSize} showLabel={args.showLabel === true} />,
         parts: [
           { n: 1, label: 'Status region', note: 'role status, required', target: '.ds-spinner', at: 'top-start' },
           { n: 2, label: 'Ring', note: 'aria-hidden', target: '.ds-spinner__ring' },
@@ -49,9 +51,9 @@ export const Showcase: StoryObj = {
         { label: 'Delay', value: 'None built in. The caller waits about 300 ms before it mounts the spinner.' },
       ]}
       api={[
-        { label: 'label', value: 'Required. The accessible name, such as "Loading orders". Say what loads.' },
-        { label: 'size', value: '"sm" | "md" | "lg", default "md".' },
-        { label: 'showLabel', value: 'Show the label beside the ring instead of hiding it from sight.' },
+        { label: 'label', value: 'Required. The accessible name, such as "Loading orders". Say what loads.', control: { kind: 'text', value: 'Loading orders' } },
+        { label: 'size', value: '"sm" | "md" | "lg", default "md".', control: { kind: 'select', options: SIZES, value: 'md' } },
+        { label: 'showLabel', value: 'Show the label beside the ring instead of hiding it from sight.', control: { kind: 'boolean', value: true } },
         { label: '…props', value: 'Every native span attribute.' },
       ]}
       states={{

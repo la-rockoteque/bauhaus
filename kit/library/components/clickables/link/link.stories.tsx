@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Link } from './link';
+import type { LinkProps } from './link';
 import { linkRules } from './link.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -10,6 +11,9 @@ const meta = { title: 'Clickables/Link', component: Link, parameters: { layout: 
 export default meta;
 
 const HREF = '#link-demo';
+const CURRENT = ['false', 'true', 'page', 'step', 'location'] as const;
+/** The current control's option as the prop: "true" and "false" become booleans. */
+const toCurrent = (value: string | boolean): LinkProps['current'] => (value === 'true' ? true : value === 'false' ? false : (value as LinkProps['current']));
 const row = { display: 'flex', gap: 'var(--ds-space-4)', flexWrap: 'wrap', justifyContent: 'center' } as const;
 
 export const Showcase: StoryObj = {
@@ -37,7 +41,11 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: <Link href={HREF} external>Read the WCAG guide</Link>,
+        render: (args) => (
+          <Link href={String(args.href)} external={args.external === true} externalLabel={String(args.externalLabel)} current={toCurrent(args.current)} standalone={args.standalone === true}>
+            Read the WCAG guide
+          </Link>
+        ),
         parts: [
           { n: 1, label: 'Text', note: 'children, required; underlined', target: '.ds-link', at: 'top-start' },
           { n: 2, label: 'External icon', note: 'shown when external', target: '.ds-link .ds-icon', at: 'bottom-end' },
@@ -52,12 +60,12 @@ export const Showcase: StoryObj = {
         { label: 'Element', value: 'native a; `as` swaps in a router link' },
       ]}
       api={[
-        { label: 'href', value: 'The destination. Every native anchor attribute is passed through.' },
+        { label: 'href', value: 'The destination. Every native anchor attribute is passed through.', control: { kind: 'text', value: HREF } },
         { label: 'as', value: 'A component to render instead of a, such as an app router link. It gets every prop. The library imports no router.' },
-        { label: 'external', value: 'Opens in a new tab with rel noopener, draws the external icon and adds the spoken warning.' },
-        { label: 'externalLabel', value: 'The spoken warning, default "opens in a new tab". Pass it in the app language.' },
-        { label: 'current', value: 'true | "page" | "step" | "location". Sets aria-current and a cue beyond colour.' },
-        { label: 'standalone', value: 'Takes the 44px target. Use it for nav items, crumbs and footer links, not inside a sentence.' },
+        { label: 'external', value: 'Opens in a new tab with rel noopener, draws the external icon and adds the spoken warning.', control: { kind: 'boolean', value: true } },
+        { label: 'externalLabel', value: 'The spoken warning, default "opens in a new tab". Pass it in the app language.', control: { kind: 'text', value: 'opens in a new tab' } },
+        { label: 'current', value: 'true | "page" | "step" | "location". Sets aria-current and a cue beyond colour.', control: { kind: 'select', options: CURRENT, value: 'false' } },
+        { label: 'standalone', value: 'Takes the 44px target. Use it for nav items, crumbs and footer links, not inside a sentence.', control: { kind: 'boolean', value: false } },
       ]}
       states={{
         cells: [

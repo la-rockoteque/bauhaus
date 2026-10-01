@@ -65,7 +65,19 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: cell(<Combobox label="Country" required description="Start typing." options={COUNTRIES} />),
+        render: (args) =>
+          cell(
+            <Combobox
+              label={String(args.label)}
+              description={String(args.description) || undefined}
+              error={String(args.error) || undefined}
+              placeholder={String(args.placeholder) || undefined}
+              required={args.required === true}
+              disabled={args.disabled === true}
+              readOnly={args.readOnly === true}
+              options={COUNTRIES}
+            />,
+          ),
         parts: [
           { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
           { n: 2, label: 'Description', note: 'optional', target: '.ds-field__description' },
@@ -84,13 +96,18 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Focus', value: 'stays in the input; the active option is set with aria-activedescendant' },
       ]}
       api={[
-        { label: 'label · description · error', value: 'As the text field. The error sets aria-invalid.' },
+        { label: 'label', value: 'As the text field.', control: { kind: 'text', value: 'Country' } },
+        { label: 'description', value: 'As the text field.', control: { kind: 'text', value: 'Start typing.' } },
+        { label: 'error', value: 'As the text field. It sets aria-invalid.', control: { kind: 'text', value: '' } },
         { label: 'options', value: 'Required. A list of { id, label, disabled? }.' },
         { label: 'selectedKey · defaultSelectedKey · onSelectionChange', value: 'The chosen option id.' },
         { label: 'inputValue · defaultInputValue · onInputChange', value: 'The typed text.' },
         { label: 'emptyText · loading · loadingText', value: 'Text in the list when nothing matches, or while options load.' },
-        { label: 'placeholder', value: 'A hint inside the input. Never the label.' },
-        { label: 'required · disabled · readOnly · name', value: 'As native fields.' },
+        { label: 'placeholder', value: 'A hint inside the input. Never the label.', control: { kind: 'text', value: '' } },
+        { label: 'required', value: 'As native fields.', control: { kind: 'boolean', value: true } },
+        { label: 'disabled', value: 'As native fields.', control: { kind: 'boolean', value: false } },
+        { label: 'readOnly', value: 'As native fields.', control: { kind: 'boolean', value: false } },
+        { label: 'name', value: 'As native fields.' },
       ]}
       states={{
         cells: [

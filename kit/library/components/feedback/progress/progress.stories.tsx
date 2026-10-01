@@ -36,7 +36,15 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: <Progress label="Uploading report.pdf" value={40} valueText="40% · 4.2 of 10.5 MB" />,
+        render: (args) => (
+          <Progress
+            label={String(args.label)}
+            value={args.value === '' ? undefined : Number(args.value) || 0}
+            max={Number(args.max) || 100}
+            valueText={String(args.valueText) || undefined}
+            error={String(args.error) || undefined}
+          />
+        ),
         parts: [
           { n: 1, label: 'Label', note: 'visible, required', target: '.ds-progress__label', at: 'top-start' },
           { n: 2, label: 'Value text', note: 'the number in words', target: '.ds-progress__value', at: 'bottom-end' },
@@ -52,10 +60,11 @@ export const Showcase: StoryObj = {
         { label: 'Value text', value: 'Percent by default, or your own words' },
       ]}
       api={[
-        { label: 'label', value: 'Required. Visible text: what is in progress.' },
-        { label: 'value · max', value: 'How much is done and what done means, default max 100. Leave value out for an indeterminate bar.' },
-        { label: 'valueText', value: 'The value in words, such as "3 of 12 rows". Shown, and used as aria-valuetext.' },
-        { label: 'error', value: 'A message. The bar takes the error colour and the message shows with an icon.' },
+        { label: 'label', value: 'Required. Visible text: what is in progress.', control: { kind: 'text', value: 'Uploading report.pdf' } },
+        { label: 'value', value: 'How much is done. Leave it out for an indeterminate bar.', control: { kind: 'text', value: '40' } },
+        { label: 'max', value: 'What done means. Default 100.', control: { kind: 'text', value: '100' } },
+        { label: 'valueText', value: 'The value in words, such as "3 of 12 rows". Shown, and used as aria-valuetext.', control: { kind: 'text', value: '40% · 4.2 of 10.5 MB' } },
+        { label: 'error', value: 'A message. The bar takes the error colour and the message shows with an icon.', control: { kind: 'text', value: '' } },
         { label: '…props', value: 'Every native progress attribute, such as id.' },
       ]}
       states={{

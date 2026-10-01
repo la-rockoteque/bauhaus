@@ -75,7 +75,17 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}><List aria-label="Files">{file(...FILES[0], { href: '#anatomy' })}</List></div>,
+        render: (args) => (
+          <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}>
+            <List aria-label="Files" ordered={args['List: ordered'] === true} divided={args['List: divided'] === true}>
+              {file(String(args['ListItem: title']), String(args['ListItem: description']), String(args['ListItem: trailing']), {
+                href: String(args['ListItem: href']),
+                selected: args['ListItem: selected'] === true,
+                disabled: args['ListItem: disabled'] === true,
+              })}
+            </List>
+          </div>
+        ),
         parts: [
           { n: 1, label: 'Row', note: 'li, required', target: '.ds-list__item', at: 'top-start' },
           { n: 2, label: 'Leading', note: 'optional, not interactive', target: '.ds-list__leading' },
@@ -94,13 +104,18 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Long text', value: 'wraps inside the row, never widens it' },
       ]}
       api={[
-        { label: 'List: ordered · divided', value: 'ol instead of ul when order matters. divided draws a rule between rows.' },
+        { label: 'List: ordered', value: 'ol instead of ul when order matters.', control: { kind: 'boolean', value: false } },
+        { label: 'List: divided', value: 'Draws a rule between rows.', control: { kind: 'boolean', value: false } },
         { label: 'List: loading · skeletonRows · loadingLabel', value: 'Skeleton rows shaped like the slots; aria-busy.' },
         { label: 'List: empty · error · partial', value: 'Slots for no rows, a failed load, and a load that returned some rows. The list imports no pattern.' },
-        { label: 'ListItem: title · description', value: 'title is required and becomes the link or button text.' },
-        { label: 'ListItem: leading · trailing', value: 'Static content only. The row has one control.' },
-        { label: 'ListItem: href · onPress', value: 'href makes the row a link; onPress makes it a button. Neither: a static row.' },
-        { label: 'ListItem: selected · disabled', value: 'selected sets aria-current on a link, aria-pressed on a button. disabled makes a native disabled button.' },
+        { label: 'ListItem: title', value: 'Required. Becomes the link or button text.', control: { kind: 'text', value: FILES[0][0] } },
+        { label: 'ListItem: description', value: 'An optional second line.', control: { kind: 'text', value: FILES[0][1] } },
+        { label: 'ListItem: leading', value: 'Static content only, such as an icon. The row has one control.' },
+        { label: 'ListItem: trailing', value: 'Static content only. The row has one control.', control: { kind: 'text', value: FILES[0][2] } },
+        { label: 'ListItem: href', value: 'Makes the row a link. Without href or onPress, the row is static.', control: { kind: 'text', value: '#anatomy' } },
+        { label: 'ListItem: onPress', value: 'Makes the row a button when there is no href.' },
+        { label: 'ListItem: selected', value: 'Sets aria-current on a link, aria-pressed on a button.', control: { kind: 'boolean', value: false } },
+        { label: 'ListItem: disabled', value: 'Makes a native disabled button.', control: { kind: 'boolean', value: false } },
       ]}
       states={{
         cells: [

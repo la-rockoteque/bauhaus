@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Box } from './box';
+import type { BoxProps, Space } from './box';
 import { boxRules } from './box.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -9,6 +10,9 @@ const meta = { title: 'Primitives/Box', component: Box, parameters: { layout: 'f
 
 export default meta;
 
+const STEPS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] as const;
+const DISPLAYS = ['block', 'flex', 'grid'] as const satisfies readonly NonNullable<BoxProps['display']>[];
+const SURFACES = ['default', 'raised', 'sunken'] as const satisfies readonly NonNullable<BoxProps['surface']>[];
 const notInteractive = 'A Box is not interactive.';
 const noData = 'A Box holds no data of its own.';
 const Tile = ({ children }: { children: string }) => <Box padding={2} surface="default" style={{ border: 'thin solid var(--ds-border-strong)' }}>{children}</Box>;
@@ -31,7 +35,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <Box padding={4} surface="raised" style={{ border: 'thin solid var(--ds-border-strong)' }}>Content</Box>,
+        render: (args) => (
+          <Box padding={Number(args.padding) as Space} display={args.display as BoxProps['display']} surface={args.surface as BoxProps['surface']} style={{ border: 'thin solid var(--ds-border-strong)' }}>
+            Content
+          </Box>
+        ),
         parts: [
           { n: 1, label: 'Element', note: 'chosen by as, div by default', target: '.ds-box', at: 'top-start' },
           { n: 2, label: 'Padding', note: 'padding, paddingInline, paddingBlock', target: '.ds-box', at: 'bottom-start' },
@@ -47,10 +55,11 @@ export const Showcase: StoryObj<typeof meta> = {
       ]}
       api={[
         { label: 'as', value: 'The element to render. Pick it for document structure.' },
-        { label: 'padding · paddingInline · paddingBlock', value: 'A step from 0 to 12. The axis props win over padding.' },
+        { label: 'padding', value: 'A step from 0 to 12, on both axes.', control: { kind: 'select', options: STEPS, value: '4' } },
+        { label: 'paddingInline · paddingBlock', value: 'A step from 0 to 12. The axis props win over padding.' },
         { label: 'gap', value: 'A step from 0 to 12, for display "flex" or "grid".' },
-        { label: 'display', value: '"block" | "flex" | "grid", default "block".' },
-        { label: 'surface', value: '"default" | "raised" | "sunken". No background when omitted.' },
+        { label: 'display', value: '"block" | "flex" | "grid", default "block".', control: { kind: 'select', options: DISPLAYS, value: 'block' } },
+        { label: 'surface', value: '"default" | "raised" | "sunken". No background when omitted.', control: { kind: 'select', options: SURFACES, value: 'raised' } },
         { label: '…props', value: 'Every native HTML attribute.' },
       ]}
       states={{
