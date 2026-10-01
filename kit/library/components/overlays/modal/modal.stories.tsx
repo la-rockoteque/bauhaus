@@ -8,7 +8,7 @@ import { Stack } from '../../../primitives/stack/stack';
 import { Text } from '../../../primitives/text/text';
 import { Button } from '../../clickables/button/button';
 import { IconButton } from '../../clickables/icon-button/icon-button';
-import { Modal } from './modal';
+import { Modal, type ModalProps, type ModalSize } from './modal';
 import { modalRules } from './modal.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -17,6 +17,9 @@ const meta = { title: 'Overlays/Modal', parameters: { layout: 'fullscreen' } } s
 export default meta;
 
 const noop = () => {};
+const SIZES = ['sm', 'md', 'lg'] as const satisfies readonly ModalSize[];
+type ModalRole = NonNullable<ModalProps['role']>;
+const ROLES = ['dialog', 'alertdialog'] as const satisfies readonly ModalRole[];
 
 const Address = () => (
   <Stack gap={3}>
@@ -88,9 +91,19 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: (
+        render: (args) => (
           <Frame>
-            <Modal inline open onClose={noop} title="Edit address" closeLabel="Close" footer={cancelSave}>
+            <Modal
+              inline
+              open
+              onClose={noop}
+              title={String(args.title)}
+              closeLabel={String(args.closeLabel)}
+              size={args.size as ModalSize}
+              role={args.role as ModalRole}
+              busy={args.busy === true}
+              footer={cancelSave}
+            >
               <Address />
             </Modal>
           </Frame>
@@ -115,13 +128,13 @@ export const Showcase: StoryObj<typeof meta> = {
       ]}
       api={[
         { label: 'open · onClose', value: 'The parent owns whether the dialog is shown. onClose runs on Escape, the close button and an allowed scrim click.' },
-        { label: 'title', value: 'Required. Names the dialog and is the fallback focus target.' },
+        { label: 'title', value: 'Required. Names the dialog and is the fallback focus target.', control: { kind: 'text', value: 'Edit address' } },
         { label: 'footer', value: 'The actions row. Stays in view while the body scrolls.' },
-        { label: 'size', value: '"sm" | "md" | "lg", default "md".' },
-        { label: 'role', value: '"dialog" | "alertdialog", default "dialog". AlertDialog and ConfirmationDialog set alertdialog.' },
+        { label: 'size', value: '"sm" | "md" | "lg", default "md".', control: { kind: 'select', options: SIZES, value: 'md' } },
+        { label: 'role', value: '"dialog" | "alertdialog", default "dialog". AlertDialog and ConfirmationDialog set alertdialog.', control: { kind: 'select', options: ROLES, value: 'dialog' } },
         { label: 'dismissOnScrim', value: 'Close on a scrim click. Default false.' },
-        { label: 'closeLabel', value: 'The name of the close button. No label, no button.' },
-        { label: 'busy', value: 'The content is loading; the body sets aria-busy.' },
+        { label: 'closeLabel', value: 'The name of the close button. No label, no button.', control: { kind: 'text', value: 'Close' } },
+        { label: 'busy', value: 'The content is loading; the body sets aria-busy.', control: { kind: 'boolean', value: false } },
         { label: 'inline', value: 'Render open in the flow with no scrim and no focus trap, for previews.' },
       ]}
       states={{

@@ -42,7 +42,7 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: show(THREE),
+        render: (args) => show(THREE, { label: String(args.label), maxItems: Number(args.maxItems), expandLabel: String(args.expandLabel) }),
         parts: [
           { n: 1, label: 'Landmark', note: 'nav with aria-label, required', target: '.ds-breadcrumb', at: 'top-start' },
           { n: 2, label: 'Link', note: 'every crumb but the last', target: '.ds-breadcrumb__item:first-child .ds-link', at: 'bottom-start' },
@@ -59,10 +59,10 @@ export const Showcase: StoryObj = {
         { label: 'Wrap', value: 'the list wraps onto the next line; no crumb is cut' },
       ]}
       api={[
-        { label: 'label', value: 'The accessible name of the landmark, required.' },
+        { label: 'label', value: 'The accessible name of the landmark, required.', control: { kind: 'text', value: 'Breadcrumb' } },
         { label: 'items', value: '{ label, href? }[] from the root to the current page. The last is the current page.' },
-        { label: 'maxItems', value: 'Default 4. A longer path collapses behind a "…" button.' },
-        { label: 'expandLabel', value: 'Accessible name of the "…" button, default "Show all levels". Pass it in the app language.' },
+        { label: 'maxItems', value: 'Default 4. A longer path collapses behind a "…" button.', control: { kind: 'select', options: ['2', '3', '4', '5'], value: '4' } },
+        { label: 'expandLabel', value: 'Accessible name of the "…" button, default "Show all levels". Pass it in the app language.', control: { kind: 'text', value: 'Show all levels' } },
         { label: 'linkAs', value: 'A router link component, passed to every crumb as Link `as`.' },
       ]}
       states={{

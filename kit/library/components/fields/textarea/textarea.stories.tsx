@@ -39,7 +39,23 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: cell(<Textarea label="Message" required description="Tell us what happened." maxLength={200} count={42} defaultValue="The lid arrived cracked." />),
+        render: (args) =>
+          cell(
+            <Textarea
+              label={String(args.label)}
+              required={args.required === true}
+              requiredText={String(args.requiredText)}
+              description={String(args.description)}
+              error={String(args.error)}
+              errorPrefix={String(args.errorPrefix)}
+              maxLength={Number(args.maxLength)}
+              count={Number(args.count) || 0}
+              rows={Number(args.rows)}
+              disabled={args.disabled === true}
+              readOnly={args.readOnly === true}
+              defaultValue="The lid arrived cracked."
+            />,
+          ),
         parts: [
           { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
           { n: 2, label: 'Description', note: 'optional', target: '.ds-field__description' },
@@ -56,11 +72,18 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Counter', value: 'text.caption.*, muted, at the end of the line' },
       ]}
       api={[
-        { label: 'label · description · error', value: 'As the text field. The error sets aria-invalid.' },
-        { label: 'required · requiredText · errorPrefix', value: 'As the text field.' },
-        { label: 'maxLength · count', value: 'Pass both to show "count / maxLength". The counter joins aria-describedby.' },
-        { label: 'rows', value: 'Starting height in lines, default 4.' },
-        { label: '…props', value: 'Every native textarea attribute, such as disabled, readOnly, value, onChange and ref.' },
+        { label: 'label', value: 'Required. The visible label, as the text field.', control: { kind: 'text', value: 'Message' } },
+        { label: 'description', value: 'Help under the label, as the text field.', control: { kind: 'text', value: 'Tell us what happened.' } },
+        { label: 'error', value: 'The error text, as the text field. It sets aria-invalid.', control: { kind: 'text', value: '' } },
+        { label: 'required', value: 'As the text field.', control: { kind: 'boolean', value: true } },
+        { label: 'requiredText', value: 'As the text field.', control: { kind: 'text', value: 'required' } },
+        { label: 'errorPrefix', value: 'As the text field.', control: { kind: 'text', value: 'Error' } },
+        { label: 'maxLength', value: 'Pass it with count to show "count / maxLength".', control: { kind: 'select', options: ['100', '200', '500'], value: '200' } },
+        { label: 'count', value: 'The current length. The counter joins aria-describedby.', control: { kind: 'text', value: '42' } },
+        { label: 'rows', value: 'Starting height in lines, default 4.', control: { kind: 'select', options: ['2', '4', '6', '8'], value: '4' } },
+        { label: 'disabled', value: 'A native textarea attribute.', control: { kind: 'boolean', value: false } },
+        { label: 'readOnly', value: 'A native textarea attribute.', control: { kind: 'boolean', value: false } },
+        { label: '…props', value: 'Every other native textarea attribute, such as value, onChange and ref.' },
       ]}
       states={{
         cells: [

@@ -53,7 +53,7 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <Popover label="Filters"><Filters /></Popover>,
+        render: (args) => <Popover label={String(args.label)}><Filters /></Popover>,
         parts: [
           { n: 1, label: 'Container', note: 'the anchored surface, required', target: '.ds-popover', at: 'top-start' },
           { n: 2, label: 'Content', note: 'children, required', target: '.ds-popover__content' },
@@ -70,7 +70,7 @@ export const Showcase: StoryObj<typeof meta> = {
       ]}
       api={[
         { label: 'trigger', value: 'The button that opens it. Any component that spreads its props on a native element.' },
-        { label: 'label', value: 'Required. The accessible name of the panel.' },
+        { label: 'label', value: 'Required. The accessible name of the panel.', control: { kind: 'text', value: 'Filters' } },
         { label: 'children', value: 'The content, or a function receiving { close }.' },
         { label: 'modal', value: 'Default false. True makes the page behind inert and closes on an outside press.' },
         { label: 'placement', value: 'Default "bottom start". Flips at the edge.' },

@@ -5,7 +5,7 @@ import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from '../../clickables/button/button';
 import { ToastRegion } from './toast';
-import type { ToastData } from './toast';
+import type { ToastData, ToastStatus } from './toast';
 import { toastRules } from './toast.rules';
 import { useToast } from './use-toast';
 
@@ -46,6 +46,7 @@ function TryIt() {
   );
 }
 
+const STATUSES = ['info', 'success', 'warning', 'error'] as const satisfies readonly ToastStatus[];
 const persistent = { duration: null } as const;
 const sample = (status: ToastData['status'], message: ReactNode, extra: Partial<ToastData> = {}): ToastData => ({ id: `${status}-${String(message).length}`, status, message, ...persistent, ...extra });
 
@@ -85,7 +86,13 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: <Specimen initial={[sample('success', 'Conversation archived.', { id: 'an', title: 'Archived', action: { label: 'Undo', onAction: () => {} } })]} />,
+        // The key remounts the specimen, so a new control value replaces the toast it holds.
+        render: (args) => (
+          <Specimen
+            key={`${String(args['ToastData status'])}|${String(args['ToastData title'])}|${String(args['ToastData message'])}`}
+            initial={[sample(args['ToastData status'] as ToastStatus, String(args['ToastData message']), { id: 'an', title: String(args['ToastData title']) || undefined, action: { label: 'Undo', onAction: () => {} } })]}
+          />
+        ),
         parts: [
           { n: 1, label: 'Live region', note: 'role status or alert, always in the page', target: '.ds-toast-region__live', at: 'top-start' },
           { n: 2, label: 'Icon', note: 'status glyph with a spoken name', target: '.ds-toast__icon', at: 'top-start' },
@@ -109,7 +116,10 @@ export const Showcase: StoryObj = {
       api={[
         { label: 'ToastRegion toasts · onDismiss', value: 'The list to show and the callback that removes an id.' },
         { label: 'ToastRegion duration · max · dismissLabel · moreLabel · position', value: 'Default time in ms, most toasts at once, text of the close button, text for waiting toasts, "fixed" or "static".' },
-        { label: 'ToastData', value: 'id, status ("info" | "success" | "warning" | "error"), title, message, action { label, onAction }, duration (ms or null), statusLabel.' },
+        { label: 'ToastData status', value: '"info" | "success" | "warning" | "error".', control: { kind: 'select', options: STATUSES, value: 'success' } },
+        { label: 'ToastData title', value: 'An optional title above the message.', control: { kind: 'text', value: 'Archived' } },
+        { label: 'ToastData message', value: 'The message.', control: { kind: 'text', value: 'Conversation archived.' } },
+        { label: 'ToastData', value: 'The other fields: id, action { label, onAction }, duration (ms or null), statusLabel.' },
         { label: 'useToast()', value: 'Returns { toasts, show, dismiss }. show(toast) returns the id.' },
       ]}
       states={{

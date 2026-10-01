@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Badge } from './badge';
+import type { BadgeStatus } from './badge';
 import { badgeRules } from './badge.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -9,6 +10,8 @@ const meta = { title: 'Feedback/Badge', component: Badge, parameters: { layout: 
 
 export default meta;
 
+const STATUSES = ['neutral', 'info', 'success', 'warning', 'error'] as const satisfies readonly BadgeStatus[];
+const MAXES = ['9', '99', '999'] as const;
 const notInteractive = 'A badge is not interactive. Something to press is a button, and something to remove is a chip.';
 const inline = { display: 'flex', gap: 'var(--ds-space-3)', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' } as const;
 
@@ -34,7 +37,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <Badge status="warning" count={142} label="open alerts" />,
+        render: (args) => (
+          <Badge status={args.status as BadgeStatus} count={Number(args.count) || 0} max={Number(args.max)} label={String(args.label) || undefined} decorative={args.decorative === true}>
+            {String(args.children) || undefined}
+          </Badge>
+        ),
         parts: [
           { n: 1, label: 'Pill', note: 'the fill, status', target: '.ds-badge', at: 'top-start' },
           { n: 2, label: 'Visible text', note: 'a word, or a number capped at 99+', target: '.ds-badge > span:first-child' },
@@ -50,11 +57,12 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Target', value: 'Not a control, so no target floor applies' },
       ]}
       api={[
-        { label: 'status', value: '"neutral" | "info" | "success" | "warning" | "error", default "neutral".' },
-        { label: 'count · max', value: 'A number to show, capped at max (default 99) as "99+".' },
-        { label: 'label', value: 'What the count counts, such as "unread messages". Read out after the full number.' },
-        { label: 'children', value: 'A status word, such as "Overdue".' },
-        { label: 'decorative', value: 'Hide the badge from assistive technology because the text beside it says the same.' },
+        { label: 'status', value: '"neutral" | "info" | "success" | "warning" | "error", default "neutral".', control: { kind: 'select', options: STATUSES, value: 'warning' } },
+        { label: 'count', value: 'A number to show, capped at max as "99+".', control: { kind: 'text', value: '142' } },
+        { label: 'max', value: 'The largest number shown in full. Default 99.', control: { kind: 'select', options: MAXES, value: '99' } },
+        { label: 'label', value: 'What the count counts, such as "unread messages". Read out after the full number.', control: { kind: 'text', value: 'open alerts' } },
+        { label: 'children', value: 'A status word, such as "Overdue".', control: { kind: 'text', value: '' } },
+        { label: 'decorative', value: 'Hide the badge from assistive technology because the text beside it says the same.', control: { kind: 'boolean', value: false } },
       ]}
       states={{
         cells: [

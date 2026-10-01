@@ -12,18 +12,20 @@ const meta = { title: 'Feedback/Skeleton', component: Skeleton, parameters: { la
 export default meta;
 
 // Cells centre and shrink their content, so a placeholder needs a width of its own.
+// One line drops the lines wrapper the anatomy points at, so the choice starts at two.
+const LINES = ['2', '3', '4'] as const;
 const frame = { inlineSize: 'calc(var(--ds-space-12) * 4)' } as const;
 const row = { display: 'flex', gap: 'var(--ds-space-4)', alignItems: 'flex-start', inlineSize: '100%' } as const;
 const col = { display: 'grid', gap: 'var(--ds-space-2)', flex: 1 } as const;
 
 /** The card the placeholders mirror: an avatar, a name, two lines of text. */
-const ProfileSkeleton = () => (
-  <SkeletonRegion loading label="Loading profile" style={frame}>
+const ProfileSkeleton = ({ lines = 2, label = 'Loading profile' }: { lines?: number; label?: string }) => (
+  <SkeletonRegion loading label={label} style={frame}>
     <div style={row}>
       <Skeleton shape="circle" />
       <div style={col}>
         <Skeleton width="40%" />
-        <Skeleton lines={2} />
+        <Skeleton lines={lines} />
       </div>
     </div>
   </SkeletonRegion>
@@ -66,7 +68,7 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <ProfileSkeleton />,
+        render: (args) => <ProfileSkeleton lines={Number(args['Skeleton lines'])} label={String(args['SkeletonRegion label'])} />,
         parts: [
           { n: 1, label: 'Region', note: 'aria-busy, plus one polite status line', target: '[role=status]', at: 'top-start' },
           { n: 2, label: 'Circle', note: 'mirrors an avatar', target: '.ds-skeleton--circle' },
@@ -85,9 +87,10 @@ export const Showcase: StoryObj<typeof meta> = {
       ]}
       api={[
         { label: 'Skeleton shape', value: '"text" | "block" | "circle", default "text".' },
-        { label: 'Skeleton lines', value: 'Lines of text; the last one is 60% wide. Only for shape "text".' },
+        { label: 'Skeleton lines', value: 'Lines of text; the last one is 60% wide. Only for shape "text".', control: { kind: 'select', options: LINES, value: '2' } },
         { label: 'Skeleton width · height', value: 'A token expression, such as "var(--ds-space-12)".' },
-        { label: 'SkeletonRegion loading · label', value: 'loading sets aria-busy and adds a hidden polite status with label. When false, the region shows its real children.' },
+        { label: 'SkeletonRegion label', value: 'The text of the hidden polite status, such as "Loading profile".', control: { kind: 'text', value: 'Loading profile' } },
+        { label: 'SkeletonRegion loading', value: 'Sets aria-busy and adds the hidden status with label. When false, the region shows its real children.' },
       ]}
       states={{
         cells: [

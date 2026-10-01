@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Text } from '../../primitives/text/text';
 import { TokenName } from '../dictionary/dictionary';
 import { Stage } from '../stage/stage';
 import { ThemeSwitch } from '../theme-switch/theme-switch';
 import { PanelTheme, usePageTheme } from '../theme-switch/theme-store';
+import { ApiTable, initialArgs } from './api-table';
 import { TableScroll } from './table-scroll';
 import type { DocPageProps, Guidance, Row, TokensSpec } from './types';
 
@@ -99,7 +100,7 @@ export function Tokens({ tokens }: { tokens: TokensSpec }) {
   );
 }
 
-function RowTable({ title, rows, api = false }: { title: string; rows?: readonly Row[]; api?: boolean }) {
+function RowTable({ title, rows }: { title: string; rows?: readonly Row[] }) {
   if (!rows?.length) return null;
   return (
     <>
@@ -107,11 +108,11 @@ function RowTable({ title, rows, api = false }: { title: string; rows?: readonly
         {title}
       </Text>
       <TableScroll label={title}>
-      <table className={`doc-table doc-table-rows${api ? ' doc-table-api' : ''}`}>
+      <table className="doc-table doc-table-rows">
         <tbody>
           {rows.map((row) => (
             <tr key={row.label}>
-              <th scope="row">{api ? <code>{row.label}</code> : row.label}</th>
+              <th scope="row">{row.label}</th>
               <td>{row.value}</td>
             </tr>
           ))}
@@ -123,6 +124,9 @@ function RowTable({ title, rows, api = false }: { title: string; rows?: readonly
 }
 
 export function StageSection({ stage, specimens, specs, api, tokens }: Pick<DocPageProps, 'stage' | 'specimens' | 'specs' | 'api' | 'tokens'>) {
+  const [args, setArgs] = useState(() => initialArgs(api));
+  const render = stage?.render;
+  const node = useMemo(() => (typeof render === 'function' ? render(args) : render), [render, args]);
   if (!stage && !specimens && !specs?.length && !api?.length) return null;
   // Without a stage there is nothing to measure: the specs are text only.
   const textSpecs = specs?.flatMap((spec) => {
@@ -132,8 +136,8 @@ export function StageSection({ stage, specimens, specs, api, tokens }: Pick<DocP
   return (
     <Section num={2} title="Stage" kicker={stage ? 'The component with its numbered parts, its measured specs, or taken apart into the layers its tokens paint.' : undefined}>
       {specimens}
-      {stage ? <Stage stage={stage} specs={specs} tokens={tokens.mode === 'consumed' ? tokens.rows : undefined} /> : <RowTable title="Specs" rows={textSpecs} />}
-      <RowTable title="API" rows={api} api />
+      {stage ? <Stage stage={{ ...stage, render: node }} specs={specs} tokens={tokens.mode === 'consumed' ? tokens.rows : undefined} /> : <RowTable title="Specs" rows={textSpecs} />}
+      <ApiTable rows={api} args={args} onChange={setArgs} />
     </Section>
   );
 }

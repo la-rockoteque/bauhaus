@@ -37,7 +37,11 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: <Heading level={2}>Delivery address</Heading>,
+        render: (args) => (
+          <Heading level={Number(args.level) as HeadingLevel} size={args.size as HeadingSize}>
+            Delivery address
+          </Heading>
+        ),
         parts: [
           { n: 1, label: 'Element', note: 'h1 to h6, from level, required', target: '.ds-heading', at: 'top-start' },
           { n: 2, label: 'Look', note: 'from size; defaults by level', target: '.ds-heading', at: 'bottom-end' },
@@ -49,8 +53,8 @@ export const Showcase: StoryObj = {
         { label: 'Wrapping', value: 'Wraps with balanced lines; never truncates' },
       ]}
       api={[
-        { label: 'level', value: 'Required. 1 to 6. Sets the element and the outline.' },
-        { label: 'size', value: '"display" | "heading" | "subheading" | "label". Sets the look only; defaults from the level.' },
+        { label: 'level', value: 'Required. 1 to 6. Sets the element and the outline.', control: { kind: 'select', options: LEVELS.map(String), value: '2' } },
+        { label: 'size', value: '"display" | "heading" | "subheading" | "label". Sets the look only; defaults from the level.', control: { kind: 'select', options: SIZES, value: 'heading' } },
         { label: '…props', value: 'Every native heading attribute, such as id.' },
       ]}
       states={{

@@ -2,13 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
-import { TextField } from './text-field';
+import { TextField, type TextFieldProps } from './text-field';
 import { textFieldRules } from './text-field.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Fields/Text field', component: TextField, parameters: { layout: 'fullscreen' }, args: { label: 'Label' } } satisfies Meta<typeof TextField>;
 
 export default meta;
+
+type FieldType = NonNullable<TextFieldProps['type']>;
+// number is left out: it would drop the typed value "ada@", and the clear button with it.
+const TYPES = ['text', 'email', 'tel', 'url', 'password', 'search'] as const satisfies readonly FieldType[];
 
 const cell = (node: ReactNode) => <div style={{ inlineSize: '100%', maxInlineSize: 'calc(var(--ds-space-12) * 6)' }}>{node}</div>;
 
@@ -42,7 +46,22 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: cell(<TextField label="Email address" required clearable description="We send the receipt here." error="Enter an email address, like name@example.com" defaultValue="ada@" />),
+        render: (args) =>
+          cell(
+            <TextField
+              label={String(args.label)}
+              required
+              requiredText={String(args.requiredText)}
+              clearable
+              description={String(args.description)}
+              error={String(args.error)}
+              errorPrefix={String(args.errorPrefix)}
+              type={args.type as FieldType}
+              disabled={args.disabled === true}
+              readOnly={args.readOnly === true}
+              defaultValue="ada@"
+            />,
+          ),
         parts: [
           { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
           { n: 2, label: 'Required marker', note: 'optional, in words', target: '.ds-field__marker', at: 'top-end' },
@@ -62,16 +81,19 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Focus', value: 'border.focus plus a ring, 2px, offset 2px, on :focus-visible' },
       ]}
       api={[
-        { label: 'label', value: 'Required. The visible label, bound with for/id.' },
-        { label: 'description', value: 'Help under the label, tied with aria-describedby.' },
-        { label: 'error', value: 'The error text. Setting it sets aria-invalid and the error look. Clear it when the value is valid.' },
-        { label: 'required · requiredText', value: 'Native required plus the visible word "(required)". requiredText changes the word.' },
+        { label: 'label', value: 'Required. The visible label, bound with for/id.', control: { kind: 'text', value: 'Email address' } },
+        { label: 'description', value: 'Help under the label, tied with aria-describedby.', control: { kind: 'text', value: 'We send the receipt here.' } },
+        { label: 'error', value: 'The error text. Setting it sets aria-invalid and the error look. Clear it when the value is valid.', control: { kind: 'text', value: 'Enter an email address, like name@example.com' } },
+        { label: 'required', value: 'Native required plus the visible word "(required)".' },
+        { label: 'requiredText', value: 'Changes the word of the required marker. Default "required".', control: { kind: 'text', value: 'required' } },
         { label: 'success · successPrefix', value: 'A quiet confirmation in a polite live region (role="status"), styled as success and never as an error. Hidden while error is set. successPrefix is the hidden word before it, default "Correct".' },
         { label: 'clearable · clearLabel · onClear', value: 'A clear icon button while the field holds text, on by default for type "search". It empties the field, returns focus to the input and calls onClear. clearLabel default "Clear search".' },
         { label: 'trailing', value: 'Content inside the box at its end: a unit, an icon, a small button. The text stops before it.' },
-        { label: 'errorPrefix', value: 'The hidden word read before the error, default "Error".' },
-        { label: 'type', value: '"text" | "email" | "tel" | "url" | "password" | "search" | "number", default "text".' },
-        { label: '…props', value: 'Every native input attribute, such as disabled, readOnly, autoComplete, value, onChange and ref.' },
+        { label: 'errorPrefix', value: 'The hidden word read before the error, default "Error".', control: { kind: 'text', value: 'Error' } },
+        { label: 'type', value: '"text" | "email" | "tel" | "url" | "password" | "search" | "number", default "text".', control: { kind: 'select', options: TYPES, value: 'text' } },
+        { label: 'disabled', value: 'A native input attribute.', control: { kind: 'boolean', value: false } },
+        { label: 'readOnly', value: 'A native input attribute.', control: { kind: 'boolean', value: false } },
+        { label: '…props', value: 'Every other native input attribute, such as autoComplete, value, onChange and ref.' },
       ]}
       states={{
         cells: [

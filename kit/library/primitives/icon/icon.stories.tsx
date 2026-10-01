@@ -4,13 +4,18 @@ import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Text } from '../text/text';
 import { GLYPH_NAMES } from '../../foundations/iconography/glyphs';
 import { Icon } from './icon';
+import type { IconGlyph, IconSize } from './icon';
 import { iconRules } from './icon.rules';
+
+// One or two glyphs from each group: the segmented control shows them all at once. The catalog has the rest.
+const SAMPLE_GLYPHS = ['search', 'close', 'menu', 'info', 'warning', 'user', 'calendar'] as const satisfies readonly IconGlyph[];
 
 // The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Primitives/Icon', component: Icon, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Icon>;
 
 export default meta;
 
+const SIZES = ['sm', 'md', 'lg'] as const satisfies readonly IconSize[];
 const notInteractive = 'An Icon is not interactive. The control that holds it owns the states.';
 const noData = 'An Icon draws one glyph and holds no data.';
 
@@ -70,7 +75,7 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: <Icon glyph="search" size="lg" />,
+        render: (args) => <Icon glyph={args.glyph as IconGlyph} size={args.size as IconSize} label={String(args.label) || undefined} />,
         parts: [
           { n: 1, label: 'SVG box', note: 'square, from size', target: '.ds-icon', at: 'top-start' },
           { n: 2, label: 'Glyph', note: 'stroke path, from glyph', target: '.ds-icon path' },
@@ -86,9 +91,9 @@ export const Showcase: StoryObj = {
         { label: 'Sprite', value: 'None. The path data lives in foundations/iconography/glyphs.ts' },
       ]}
       api={[
-        { label: 'glyph', value: 'Required. One of the 42 names in GLYPH_NAMES, in four groups: navigation, actions, status, objects. See Foundations/Iconography.' },
-        { label: 'size', value: '"sm" | "md" | "lg", default "md".' },
-        { label: 'label', value: 'The accessible name. Without it, the icon is hidden from assistive technology.' },
+        { label: 'glyph', value: 'Required. One of the 42 names in GLYPH_NAMES, in four groups: navigation, actions, status, objects. See Foundations/Iconography.', control: { kind: 'select', options: SAMPLE_GLYPHS, value: 'search' } },
+        { label: 'size', value: '"sm" | "md" | "lg", default "md".', control: { kind: 'select', options: SIZES, value: 'lg' } },
+        { label: 'label', value: 'The accessible name. Without it, the icon is hidden from assistive technology.', control: { kind: 'text', value: '' } },
         { label: '…props', value: 'Every SVG attribute except children.' },
       ]}
       states={{

@@ -52,7 +52,18 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: cell(<RadioGroup legend="Delivery" required description="Prices show at checkout." options={DELIVERY} defaultValue="standard" />),
+        render: (args) =>
+          cell(
+            <RadioGroup
+              legend={String(args.legend)}
+              description={String(args.description) || undefined}
+              error={String(args.error) || undefined}
+              required={args.required === true}
+              disabled={args.disabled === true}
+              options={DELIVERY}
+              defaultValue="standard"
+            />,
+          ),
         parts: [
           { n: 1, label: 'Legend', note: 'required, names the group', target: '.ds-field__label' },
           { n: 2, label: 'Description', note: 'optional', target: '.ds-field__description' },
@@ -71,13 +82,16 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Focus', value: 'ring 2px, offset 2px, around the circle, on :focus-visible' },
       ]}
       api={[
-        { label: 'legend', value: 'Required. The question. It names the group for assistive technology.' },
+        { label: 'legend', value: 'Required. The question. It names the group for assistive technology.', control: { kind: 'text', value: 'Delivery' } },
         { label: 'options', value: 'Required. A list of { value, label, disabled? }.' },
         { label: 'value · defaultValue · onValueChange', value: 'Controlled or uncontrolled selection. Preselect only with a reason.' },
         { label: 'onBlur', value: 'Group blur: called when focus leaves the group, not when arrow keys move it from one radio to the next. Validate there.' },
         { label: 'name', value: 'Shared by the radios. A generated name is used when omitted.' },
-        { label: 'description · error', value: 'Help and error under the legend and under the list, tied to the group with aria-describedby. The error sets aria-invalid.' },
-        { label: 'required · requiredText · errorPrefix · disabled', value: 'As the text field. disabled applies to the whole group.' },
+        { label: 'description', value: 'Help under the legend, tied to the group with aria-describedby.', control: { kind: 'text', value: 'Prices show at checkout.' } },
+        { label: 'error', value: 'Error under the list, tied to the group with aria-describedby. It sets aria-invalid.', control: { kind: 'text', value: '' } },
+        { label: 'required', value: 'As the text field.', control: { kind: 'boolean', value: true } },
+        { label: 'disabled', value: 'As the text field. It applies to the whole group.', control: { kind: 'boolean', value: false } },
+        { label: 'requiredText · errorPrefix', value: 'As the text field.' },
       ]}
       states={{
         cells: [

@@ -6,6 +6,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Button } from '../../clickables/button/button';
 import { Text } from '../../../primitives/text/text';
 import { Card } from './card';
+import type { HeadingLevel } from '../../../primitives/heading/heading';
 import { cardRules } from './card.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -26,6 +27,8 @@ function Force({ cls, target, children }: { cls: string; target: string; childre
     </div>
   );
 }
+
+const LEVELS = ['1', '2', '3', '4', '5', '6'] as const;
 
 const cell = { inlineSize: '100%', minInlineSize: 0 } as const;
 const Slot = ({ children }: { children: ReactNode }) => <Text variant="body" as="p">{children}</Text>;
@@ -64,7 +67,19 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}>{project({ href: '#anatomy' })}</div>,
+        render: (args) => (
+          <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}>
+            {project({
+              title: String(args.title),
+              headingLevel: Number(args.headingLevel) as HeadingLevel,
+              meta: String(args.meta),
+              footer: String(args.footer),
+              href: String(args.href),
+              loading: args.loading === true,
+              loadingLabel: String(args.loadingLabel),
+            })}
+          </div>
+        ),
         parts: [
           { n: 1, label: 'Container', note: 'article with a border, required', target: '.ds-card', at: 'top-start' },
           { n: 2, label: 'Title', note: 'a heading; the link when there is an href', target: '.ds-card__title' },
@@ -84,11 +99,14 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Selectable', value: 'n/a. A choice among cards is a checkbox or radio group whose items look like cards.' },
       ]}
       api={[
-        { label: 'title', value: 'string, required. The heading, and the link text when the card has an href.' },
-        { label: 'headingLevel', value: '1 to 6, default 3. Set it from the page outline.' },
-        { label: 'meta · children · footer', value: 'Header aside, body, footer. With an href the footer holds text only.' },
-        { label: 'href', value: 'Makes the whole card one link named by the title. Without it the card is static.' },
-        { label: 'loading · loadingLabel', value: 'Placeholder lines in the body. The header stays. aria-busy.' },
+        { label: 'title', value: 'string, required. The heading, and the link text when the card has an href.', control: { kind: 'text', value: 'Kitchen renovation' } },
+        { label: 'headingLevel', value: '1 to 6, default 3. Set it from the page outline.', control: { kind: 'select', options: LEVELS, value: '3' } },
+        { label: 'meta', value: 'Header aside. Not interactive.', control: { kind: 'text', value: 'On track' } },
+        { label: 'footer', value: 'Footer. With an href the footer holds text only.', control: { kind: 'text', value: 'Updated Monday by Marie' } },
+        { label: 'children', value: 'The body.' },
+        { label: 'href', value: 'Makes the whole card one link named by the title. Without it the card is static.', control: { kind: 'text', value: '#anatomy' } },
+        { label: 'loading', value: 'Placeholder lines in the body. The header stays. aria-busy.', control: { kind: 'boolean', value: false } },
+        { label: 'loadingLabel', value: 'Text for assistive technology while loading, default "Loading".', control: { kind: 'text', value: 'Loading' } },
         { label: 'empty · error', value: 'Body content when there are no children, and when the load failed (announced as an alert).' },
       ]}
       states={{

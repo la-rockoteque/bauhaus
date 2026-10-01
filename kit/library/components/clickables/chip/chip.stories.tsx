@@ -4,12 +4,15 @@ import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Stack } from '../../../primitives/stack/stack';
 import { Chip } from './chip';
+import type { ChipVariant } from './chip';
 import { chipRules } from './chip.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
 const meta = { title: 'Clickables/Chip', component: Chip, parameters: { layout: 'fullscreen' } } satisfies Meta<typeof Chip>;
 
 export default meta;
+
+const VARIANTS = ['static', 'removable', 'selectable'] as const satisfies readonly ChipVariant[];
 
 const LONG = 'Customer: Maria del Carmen Guadalupe de los Santos Fernandez-Villalobos';
 const row = (children: ReactNode) => <Stack direction="horizontal" gap={3} align="center" wrap>{children}</Stack>;
@@ -44,7 +47,11 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: <Chip variant="removable" removeLabel="Remove filter">Status: Shipped</Chip>,
+        render: (args) => (
+          <Chip variant={args.variant as ChipVariant} removeLabel={String(args.removeLabel)} selected={args.selected === true} disabled={args.disabled === true}>
+            {String(args.children)}
+          </Chip>
+        ),
         parts: [
           { n: 1, label: 'Container', note: 'one outlined pill, required', target: '.ds-chip', at: 'top-start' },
           { n: 2, label: 'Label', note: 'children, required; truncates with a tooltip', target: '.ds-chip__label' },
@@ -60,11 +67,13 @@ export const Showcase: StoryObj = {
         { label: 'Wrap', value: 'a row of chips wraps: put them in a Stack with wrap' },
       ]}
       api={[
-        { label: 'variant', value: '"static" | "removable" | "selectable", default "static".' },
-        { label: 'children', value: 'The visible text, a string. It stays whole in the accessible name.' },
-        { label: 'onRemove · removeLabel', value: 'Removable. removeLabel is the words before the label in the button name, default "Remove"; pass "Remove filter" for "Remove filter Status: Shipped".' },
-        { label: 'selected · defaultSelected · onSelectedChange', value: 'Selectable. aria-pressed follows selected; the chip keeps its own state when selected is not set.' },
-        { label: 'disabled', value: 'Native disabled on the button. Say why, near the chip.' },
+        { label: 'variant', value: '"static" | "removable" | "selectable", default "static".', control: { kind: 'select', options: VARIANTS, value: 'removable' } },
+        { label: 'children', value: 'The visible text, a string. It stays whole in the accessible name.', control: { kind: 'text', value: 'Status: Shipped' } },
+        { label: 'removeLabel', value: 'Removable. The words before the label in the button name, default "Remove"; pass "Remove filter" for "Remove filter Status: Shipped".', control: { kind: 'text', value: 'Remove filter' } },
+        { label: 'onRemove', value: 'Removable. Called when the remove button is pressed.' },
+        { label: 'selected', value: 'Selectable. aria-pressed follows selected.', control: { kind: 'boolean', value: false } },
+        { label: 'defaultSelected · onSelectedChange', value: 'Selectable. The chip keeps its own state when selected is not set. onSelectedChange gets the new state on a press.' },
+        { label: 'disabled', value: 'Native disabled on the button. Say why, near the chip.', control: { kind: 'boolean', value: false } },
       ]}
       states={{
         cells: [

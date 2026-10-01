@@ -194,6 +194,27 @@
   font-family: inherit;
 }
 
+.doc-table-api th,
+.doc-table-api td {
+  vertical-align: middle;
+}
+
+.doc-api-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+}
+
+/* A long list of options wraps inside its cell. */
+.doc-table-api .doc-segmented {
+  flex-wrap: wrap;
+}
+
+/* The info glyph upside down: an "!" in a circle. */
+.doc-api-mark {
+  rotate: 180deg;
+}
+
 .doc-token {
   display: inline-flex;
   align-items: center;

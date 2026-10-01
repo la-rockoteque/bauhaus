@@ -14,6 +14,10 @@ const THREE = [item('overview', 'Details'), item('activity', 'Log'), item('setti
 const MANY = ['Overview', 'Activity', 'Shipments', 'Requisitions', 'Invoices', 'Suppliers', 'Contracts', 'Audit log', 'Settings', 'Billing'].map((label) => item(label.toLowerCase().replace(/ /g, '-'), label));
 
 const demo = (props: Partial<TabsProps> & { tabs?: readonly TabItem[] } = {}) => <Tabs label="Account sections" tabs={THREE} {...props} />;
+type Orientation = NonNullable<TabsProps['orientation']>;
+type Activation = NonNullable<TabsProps['activation']>;
+const ORIENTATIONS = ['horizontal', 'vertical'] as const satisfies readonly Orientation[];
+const ACTIVATIONS = ['automatic', 'manual'] as const satisfies readonly Activation[];
 const narrow = { maxInlineSize: 'calc(var(--ds-space-12) * 6)' } as const;
 
 export const Showcase: StoryObj = {
@@ -44,7 +48,7 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: demo({ tabs: THREE.slice(0, 2) }),
+        render: (args) => demo({ tabs: THREE.slice(0, 2), label: String(args.label), orientation: args.orientation as Orientation, activation: args.activation as Activation }),
         parts: [
           { n: 1, label: 'Tab list', note: 'role tablist, required', target: '[role=tablist]', at: 'bottom-start' },
           { n: 2, label: 'Tab', note: 'role tab, aria-selected', target: '[role=tab]:last-of-type', at: 'top-end' },
@@ -61,11 +65,11 @@ export const Showcase: StoryObj = {
         { label: 'Overflow', value: 'the list scrolls along its axis; a chevron and fade show the hidden side; labels never truncate' },
       ]}
       api={[
-        { label: 'label', value: 'The accessible name of the tab list, required.' },
+        { label: 'label', value: 'The accessible name of the tab list, required.', control: { kind: 'text', value: 'Account sections' } },
         { label: 'tabs', value: 'TabItem[]: id, label, panel, disabled, disabledReason.' },
         { label: 'value · defaultValue · onValueChange', value: 'The selected id, controlled or not. The first enabled tab is selected by default.' },
-        { label: 'orientation', value: '"horizontal" | "vertical", default "horizontal". Sets aria-orientation and the arrow keys.' },
-        { label: 'activation', value: '"automatic" | "manual", default "automatic". Use manual when a panel is slow to load.' },
+        { label: 'orientation', value: '"horizontal" | "vertical", default "horizontal". Sets aria-orientation and the arrow keys.', control: { kind: 'select', options: ORIENTATIONS, value: 'horizontal' } },
+        { label: 'activation', value: '"automatic" | "manual", default "automatic". Use manual when a panel is slow to load.', control: { kind: 'select', options: ACTIVATIONS, value: 'automatic' } },
       ]}
       states={{
         cells: [

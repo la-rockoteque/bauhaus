@@ -7,7 +7,7 @@ import { Button } from '../../clickables/button/button';
 import { Text } from '../../../primitives/text/text';
 import { VisuallyHidden } from '../../../primitives/visually-hidden/visually-hidden';
 import { Table } from './table';
-import type { TableColumn, TableSort } from './table';
+import type { TableColumn, TableProps, TableSort } from './table';
 import { tableRules } from './table.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -55,6 +55,8 @@ const COLUMNS: TableColumn<Requisition>[] = [
 
 /** Two columns, so a table fits a state cell. */
 const SMALL: TableColumn<Requisition>[] = COLUMNS.filter((column) => ['id', 'status'].includes(column.key));
+
+const DENSITIES = ['comfortable', 'compact'] as const satisfies readonly NonNullable<TableProps<Requisition>['density']>[];
 
 const rowId = (row: Requisition) => row.id;
 
@@ -156,7 +158,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}><Live rows={DATA.slice(0, 2)} columns={SMALL} /></div>,
+        render: (args) => (
+          <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}>
+            <Live rows={DATA.slice(0, 2)} columns={SMALL} caption={String(args.caption)} density={args.density as TableProps<Requisition>['density']} sticky={args.sticky === true} />
+          </div>
+        ),
         parts: [
           { n: 1, label: 'Caption', note: 'names the table, required', target: '.ds-table__caption' },
           { n: 2, label: 'Column header', note: 'th scope="col", required', target: 'thead .ds-table__head--sortable', at: 'bottom-start' },
@@ -176,12 +182,13 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Overflow', value: 'the region scrolls sideways, min-inline-size 0, focusable' },
       ]}
       api={[
-        { label: 'caption', value: 'string, required. Names the table and its scroll region. hideCaption keeps it for assistive technology only.' },
+        { label: 'caption', value: 'string, required. Names the table and its scroll region. hideCaption keeps it for assistive technology only.', control: { kind: 'text', value: 'Open requisitions' } },
         { label: 'columns', value: 'key, header, align ("start" | "end" | "number"), sortable, rowHeader, actions, cell(row).' },
         { label: 'rows · getRowId', value: 'The page of rows and a stable id per row. The caller sorts and pages.' },
         { label: 'sort · onSortChange', value: '{ key, direction }. The table asks for the next direction; the caller sorts. The change is announced.' },
         { label: 'selectedIds · onSelectionChange', value: 'Ids of selected rows. Giving the handler adds the checkbox column. Select all covers this page only.' },
-        { label: 'density · sticky', value: '"comfortable" | "compact". sticky keeps the header in view; give the root a max-block-size.' },
+        { label: 'density', value: '"comfortable" | "compact".', control: { kind: 'select', options: DENSITIES, value: 'comfortable' } },
+        { label: 'sticky', value: 'Keeps the header in view. Give the root a max-block-size.', control: { kind: 'boolean', value: false } },
         { label: 'loading · skeletonRows', value: 'Skeleton rows that mirror the columns; aria-busy on the table.' },
         { label: 'empty · error · partial', value: 'Slots for no rows, a failed load, and a load that returned some rows. The table imports no pattern.' },
         { label: 'labels', value: 'The text the table speaks: select all, select row, sort message, selection summary, loading.' },

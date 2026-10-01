@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { Text } from './text';
+import type { TextProps, TextVariant } from './text';
 import { textRules } from './text.rules';
 
 // The showcase: one page story. The state matrix replaces one story per state.
@@ -9,6 +10,8 @@ const meta = { title: 'Primitives/Text', component: Text, parameters: { layout: 
 
 export default meta;
 
+const VARIANTS = ['body', 'caption', 'heading'] as const satisfies readonly TextVariant[];
+const TONES = ['default', 'muted'] as const satisfies readonly NonNullable<TextProps['tone']>[];
 const notInteractive = 'Text is not interactive.';
 
 export const Showcase: StoryObj<typeof meta> = {
@@ -28,7 +31,11 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <Text variant="heading" as="h3">Order summary</Text>,
+        render: (args) => (
+          <Text variant={args.variant as TextVariant} tone={args.tone as TextProps['tone']} as="h3">
+            Order summary
+          </Text>
+        ),
         parts: [
           { n: 1, label: 'Element', note: 'chosen by as; p, span or h2 by default', target: '.ds-text', at: 'top-start' },
           { n: 2, label: 'Look', note: 'chosen by variant and tone', target: '.ds-text', at: 'bottom-end' },
@@ -40,8 +47,8 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Margin', value: '0; spacing belongs to the parent' },
       ]}
       api={[
-        { label: 'variant', value: '"body" | "caption" | "heading", default "body". Sets the look only.' },
-        { label: 'tone', value: '"default" | "muted", default "default". Muted is for secondary content.' },
+        { label: 'variant', value: '"body" | "caption" | "heading", default "body". Sets the look only.', control: { kind: 'select', options: VARIANTS, value: 'heading' } },
+        { label: 'tone', value: '"default" | "muted", default "default". Muted is for secondary content.', control: { kind: 'select', options: TONES, value: 'default' } },
         { label: 'as', value: 'The element to render. Pick it for document structure.' },
         { label: '…props', value: 'Every native HTML attribute.' },
       ]}

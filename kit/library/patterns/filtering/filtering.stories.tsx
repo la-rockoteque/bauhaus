@@ -31,6 +31,7 @@ export default meta;
 
 const STATUSES = ['Pending', 'Shipped', 'Delivered', 'Cancelled'] as const;
 const REGIONS = ['Europe', 'Asia', 'Americas'] as const;
+const DELAYS = ['0', '300', '1000'] as const;
 const CUSTOMERS = ['Ada Lovelace', 'Grace Hopper', 'Alan Turing', 'Katherine Johnson', 'Edsger Dijkstra', 'Margaret Hamilton', 'Linus Torvalds', 'Barbara Liskov'];
 const STATUS_BADGE: Record<string, BadgeStatus> = { Pending: 'warning', Shipped: 'info', Delivered: 'success', Cancelled: 'error' };
 
@@ -283,7 +284,7 @@ export const Showcase: StoryObj = {
       usedFor="A table or list too long to scan, where the user narrows it by text and a few facets."
       tokens={{ mode: 'consumed', note: 'None of its own. Layout comes from Stack. Colour, type and spacing come from the components it composes.', rows: [] }}
       stage={{
-        render: <OrderFilters orders={ORDERS_30} initialFilters={{ ...NO_FILTERS, status: 'Shipped', region: 'Asia' }} pageSize={2} delayMs={0} />,
+        render: (args) => <OrderFilters orders={ORDERS_30} initialFilters={{ ...NO_FILTERS, status: 'Shipped', region: 'Asia' }} pageSize={2} delayMs={Number(args.delayMs) || 0} />,
         parts: [
           { n: 1, label: 'Filter bar', note: 'search field and facets in a search landmark · a top bar for few facets', target: '[role=search]', at: 'top-start' },
           { n: 2, label: 'Chips', note: 'Chip per active filter, remove button named "Remove filter …" · one Clear all', target: '[aria-label="Active filters"]', at: 'top-start' },
@@ -295,7 +296,7 @@ export const Showcase: StoryObj = {
       api={[
         { label: 'initialFilters · initialPage', value: 'Read the address on load with fromSearchParams and pass the result here.' },
         { label: 'onStateChange(filters, page)', value: 'Called once results settle. Write toSearchParams(filters, page) to the URL here, with your router.' },
-        { label: 'delayMs', value: 'The wait before results settle. Typing restarts it, which debounces the search field.' },
+        { label: 'delayMs', value: 'The wait before results settle. Typing restarts it, which debounces the search field.', control: { kind: 'select', options: DELAYS, value: '0' } },
       ]}
       states={{
         expect: LIFECYCLE,

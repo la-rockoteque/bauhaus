@@ -62,7 +62,7 @@ export function Exploded({ render, rows }: { render: ReactNode; rows: readonly T
     const grow = (side: keyof Layout['room']) => layout.room[side] + (spill[side] >= 1 ? Math.ceil(spill[side]) : 0);
     const next = { anchors, rows: rowsAt, room: { top: grow('top'), right: grow('right'), bottom: grow('bottom'), left: grow('left') } };
     setLayout((prev) => (same(prev, next) ? prev : next));
-  }, [groups.length, tick, layout.room]);
+  }, [groups.length, tick, layout.room, render]);
 
   // Measure again when the layout moves: size, theme, fonts.
   useEffect(() => {

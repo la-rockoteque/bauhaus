@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { Icon } from '../../../primitives/icon/icon';
+import type { HeadingLevel } from '../../../primitives/heading/heading';
 import { Button } from '../../clickables/button/button';
 import { EmptyState } from './empty-state';
 import { emptyStateRules } from './empty-state.rules';
@@ -11,6 +12,7 @@ const meta = { title: 'Feedback/Empty state', parameters: { layout: 'fullscreen'
 
 export default meta;
 
+const HEADING_LEVELS = ['1', '2', '3', '4', '5', '6'] as const;
 const inherited = 'The buttons inside carry their own hover, pressed and disabled states.';
 
 export const Showcase: StoryObj = {
@@ -35,9 +37,9 @@ export const Showcase: StoryObj = {
         ],
       }}
       stage={{
-        render: (
-          <EmptyState title="No projects yet" media={<Icon glyph="plus" size="lg" />} actions={<Button>Create a project</Button>}>
-            Projects you create appear here. Start with one to invite your team.
+        render: (args) => (
+          <EmptyState title={String(args.title)} headingLevel={Number(args.headingLevel) as HeadingLevel} media={<Icon glyph="plus" size="lg" />} actions={<Button>Create a project</Button>}>
+            {String(args.children)}
           </EmptyState>
         ),
         parts: [
@@ -57,11 +59,11 @@ export const Showcase: StoryObj = {
         { label: 'Text', value: 'None of its own; every string comes from props' },
       ]}
       api={[
-        { label: 'title', value: 'Required. The fact, in a few words.' },
-        { label: 'children', value: 'The body: the reason, and what to do.' },
+        { label: 'title', value: 'Required. The fact, in a few words.', control: { kind: 'text', value: 'No projects yet' } },
+        { label: 'children', value: 'The body: the reason, and what to do.', control: { kind: 'text', value: 'Projects you create appear here. Start with one to invite your team.' } },
         { label: 'media', value: 'An illustration or an Icon. Hidden from assistive technology.' },
         { label: 'actions', value: 'Buttons or links. One primary, at most one more.' },
-        { label: 'headingLevel', value: '1 to 6, default 2. Sets the outline level; the look stays.' },
+        { label: 'headingLevel', value: '1 to 6, default 2. Sets the outline level; the look stays.', control: { kind: 'select', options: HEADING_LEVELS, value: '2' } },
       ]}
       states={{
         note: 'The three none cases (first use, filtered, cleared) each have their own copy and action. A load that failed is the Incorrect cell.',

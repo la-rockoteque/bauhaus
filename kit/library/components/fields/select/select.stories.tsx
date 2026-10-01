@@ -44,7 +44,19 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: cell(<Select label="Country" required description="Where you live." options={COUNTRIES.slice(0, 3)} emptyLabel="Choose a country" />),
+        render: (args) =>
+          cell(
+            <Select
+              label={String(args.label)}
+              description={String(args.description) || undefined}
+              error={String(args.error) || undefined}
+              required={args.required === true}
+              readOnly={args.readOnly === true}
+              disabled={args.disabled === true}
+              options={COUNTRIES.slice(0, 3)}
+              emptyLabel={String(args.emptyLabel) || undefined}
+            />,
+          ),
         parts: [
           { n: 1, label: 'Label', note: 'required, always visible', target: '.ds-field__label' },
           { n: 2, label: 'Description', note: 'optional', target: '.ds-field__description' },
@@ -61,12 +73,16 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Options', value: 'the browser list; the page does not style it' },
       ]}
       api={[
-        { label: 'label · description · error', value: 'As the text field. The error sets aria-invalid.' },
+        { label: 'label', value: 'As the text field.', control: { kind: 'text', value: 'Country' } },
+        { label: 'description', value: 'As the text field.', control: { kind: 'text', value: 'Where you live.' } },
+        { label: 'error', value: 'As the text field. It sets aria-invalid.', control: { kind: 'text', value: '' } },
         { label: 'options', value: 'Required. A list of { value, label, disabled? }.' },
-        { label: 'emptyLabel', value: 'Text of an empty first choice, such as "Choose a country". Leave it out when a value is always preselected.' },
-        { label: 'readOnly', value: 'Keeps the value, sets aria-readonly and blocks the keys and clicks that change it.' },
-        { label: 'required · requiredText · errorPrefix', value: 'As the text field.' },
-        { label: '…props', value: 'Every native select attribute, such as disabled, value, defaultValue, onChange and ref.' },
+        { label: 'emptyLabel', value: 'Text of an empty first choice, such as "Choose a country". Leave it out when a value is always preselected.', control: { kind: 'text', value: 'Choose a country' } },
+        { label: 'readOnly', value: 'Keeps the value, sets aria-readonly and blocks the keys and clicks that change it.', control: { kind: 'boolean', value: false } },
+        { label: 'required', value: 'As the text field.', control: { kind: 'boolean', value: true } },
+        { label: 'requiredText · errorPrefix', value: 'As the text field.' },
+        { label: 'disabled', value: 'A native select attribute.', control: { kind: 'boolean', value: false } },
+        { label: '…props', value: 'Every other native select attribute, such as value, defaultValue, onChange and ref.' },
       ]}
       states={{
         cells: [

@@ -65,7 +65,13 @@ export const Showcase: StoryObj<typeof meta> = {
         ],
       }}
       stage={{
-        render: <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}><Disclosure title="Shipping" open onToggle={() => undefined}><Body>Orders leave within two business days.</Body></Disclosure></div>,
+        render: (args) => (
+          <div style={{ inlineSize: 'calc(var(--ds-space-12) * 5)' }}>
+            <Disclosure title={String(args['Disclosure: title'])} loading={args['Disclosure: loading'] === true} loadingLabel={String(args['Disclosure: loadingLabel'])} open onToggle={() => undefined}>
+              <Body>Orders leave within two business days.</Body>
+            </Disclosure>
+          </div>
+        ),
         parts: [
           { n: 1, label: 'Header', note: 'summary, or a button in a heading; required', target: '.ds-disclosure__trigger', at: 'top-start' },
           { n: 2, label: 'Title', note: 'wraps, never truncates', target: '.ds-disclosure__title' },
@@ -84,8 +90,10 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Panels', value: 'role region named by the header; keep to about six, or drop the role' },
       ]}
       api={[
-        { label: 'Disclosure: title · children', value: 'The summary text and the panel. Every native details attribute works: open, onToggle, name.' },
-        { label: 'Disclosure: loading · loadingLabel', value: 'Placeholder lines in the panel; aria-busy.' },
+        { label: 'Disclosure: title', value: 'The summary text.', control: { kind: 'text', value: 'Shipping' } },
+        { label: 'Disclosure: children', value: 'The panel. Every native details attribute works: open, onToggle, name.' },
+        { label: 'Disclosure: loading', value: 'Placeholder lines in the panel; aria-busy.', control: { kind: 'boolean', value: false } },
+        { label: 'Disclosure: loadingLabel', value: 'Text for assistive technology while loading, default "Loading".', control: { kind: 'text', value: 'Loading' } },
         { label: 'Accordion: single', value: 'Single-open mode: opening one item closes the others. The open one can still close.' },
         { label: 'Accordion: defaultOpen · onOpenChange', value: 'Values of the items open at first; a callback with the open values.' },
         { label: 'Accordion: headingLevel', value: '1 to 6, default 3. Set it from the page outline.' },
