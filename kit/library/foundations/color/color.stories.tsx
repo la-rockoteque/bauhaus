@@ -91,5 +91,5 @@ export const Showcase: StoryObj = {
 
 export const Advisories: StoryObj = {
   name: 'Advisories',
-  render: () => <AdvisoriesPage name="Color" layer="Foundation" rules={colorRules} guide="foundations-color--docs" guideName="Color" />,
+  render: () => <AdvisoriesPage name="Color" layer="Foundation" scope={['contrast-text', 'contrast-ui', 'color-not-alone']} rules={colorRules} guide="foundations-color--docs" guideName="Color" />,
 };

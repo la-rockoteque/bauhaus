@@ -57,6 +57,14 @@ describe('coverage', () => {
     expect(rows.find((row) => row.item.id === 'target-size')?.verdict).toBe('review');
     expect(rows.some((row) => row.verdict === 'to verify')).toBe(true);
   });
+
+  it('sends an unclaimed item outside a foundation scope to the component pages, and keeps a claimed one', () => {
+    const rows = coverage([rule({ id: 'spacing.target-min', covers: ['target-size'] })], ['reflow']);
+    const verdict = (id: string) => rows.find((row) => row.item.id === id)?.verdict;
+    expect(verdict('target-size')).toBe('pass');
+    expect(verdict('reflow')).toBe('to verify');
+    expect(verdict('keyboard')).toBe('elsewhere');
+  });
 });
 
 describe('tokens', () => {

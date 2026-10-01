@@ -51,5 +51,5 @@ export const Showcase: StoryObj = {
 
 export const Advisories: StoryObj = {
   name: 'Advisories',
-  render: () => <AdvisoriesPage name="Shape" layer="Foundation" rules={shapeRules} guide="foundations-shape--docs" guideName="Shape" />,
+  render: () => <AdvisoriesPage name="Shape" layer="Foundation" scope={['contrast-ui']} rules={shapeRules} guide="foundations-shape--docs" guideName="Shape" />,
 };

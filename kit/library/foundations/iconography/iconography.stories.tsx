@@ -83,5 +83,5 @@ export const Showcase: StoryObj = {
 
 export const Advisories: StoryObj = {
   name: 'Advisories',
-  render: () => <AdvisoriesPage name="Iconography" layer="Foundation" rules={iconographyRules} guide="foundations-iconography--docs" guideName="Iconography" />,
+  render: () => <AdvisoriesPage name="Iconography" layer="Foundation" scope={['name-role-value', 'contrast-ui', 'color-not-alone']} rules={iconographyRules} guide="foundations-iconography--docs" guideName="Iconography" />,
 };

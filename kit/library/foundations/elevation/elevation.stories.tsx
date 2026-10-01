@@ -76,5 +76,5 @@ export const Showcase: StoryObj = {
 
 export const Advisories: StoryObj = {
   name: 'Advisories',
-  render: () => <AdvisoriesPage name="Elevation" layer="Foundation" rules={elevationRules} guide="foundations-elevation--docs" guideName="Elevation" />,
+  render: () => <AdvisoriesPage name="Elevation" layer="Foundation" scope={['focus-not-obscured']} rules={elevationRules} guide="foundations-elevation--docs" guideName="Elevation" />,
 };

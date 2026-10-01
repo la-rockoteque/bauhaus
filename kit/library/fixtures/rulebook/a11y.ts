@@ -8,6 +8,9 @@ import type { Rule } from '../doc-page/types';
  *
  * A rule claims an item through its `covers` list. An item no rule claims reads "to verify",
  * never "pass": a page must not look like it passes what nobody has checked.
+ *
+ * A foundation page passes a scope: the items it can affect. An unclaimed item outside the scope
+ * reads "elsewhere", because a component page settles it (a colour cannot be keyboard operable).
  */
 export interface ChecklistItem {
   id: string;
@@ -39,17 +42,19 @@ export interface Coverage {
   item: ChecklistItem;
   /** The rules that claim the item. */
   rules: readonly Rule[];
-  verdict: Verdict | 'to verify';
+  verdict: CoverageVerdict;
   reason?: string;
 }
 
+export type CoverageVerdict = Verdict | 'to verify' | 'elsewhere';
+
 const ORDER: Record<Verdict, number> = { fail: 0, review: 1, pass: 2 };
 
-/** The worst verdict among the claiming rules, or "to verify" when none claims the item. */
-export function coverage(rules: readonly Rule[]): Coverage[] {
+/** The worst verdict among the claiming rules; when none claims the item, "to verify", or "elsewhere" outside the scope. */
+export function coverage(rules: readonly Rule[], scope?: readonly string[]): Coverage[] {
   return CHECKLIST.map((item) => {
     const claiming = rules.filter((rule) => rule.covers?.includes(item.id));
-    if (claiming.length === 0) return { item, rules: claiming, verdict: 'to verify' as const };
+    if (claiming.length === 0) return { item, rules: claiming, verdict: scope && !scope.includes(item.id) ? ('elsewhere' as const) : ('to verify' as const) };
     const graded = claiming.map((rule) => ({ rule, ...grade(rule) })).sort((a, b) => ORDER[a.verdict] - ORDER[b.verdict])[0];
     return { item, rules: claiming, verdict: graded.verdict, reason: graded.reason };
   });
