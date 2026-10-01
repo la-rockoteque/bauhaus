@@ -21,6 +21,14 @@ export const screen = ([x, y, z]: Vec): [number, number] => [(x - y) * COS, (x +
 export const faceAt = (z: number): string => `matrix(${COS} ${SIN} ${-COS} ${SIN} 0 ${-z})`;
 
 /**
+ * A corner radius capped at a quarter of the shape's shorter side. A pill token (radius.full) reads as a
+ * lens in isometric; a quarter keeps the corners round and the sides straight. space.1 is 4px, so n px is
+ * space.1 × n / 4.
+ */
+export const cornerOf = (radius: string, width: number, height: number): string =>
+  `min(${radius}, calc(var(--ds-space-1) * ${Math.min(width, height) / 16}))`;
+
+/**
  * The stage: a view box that holds a footprint of width × depth and a cursor above it. `rise` adds
  * headroom for what stands or floats higher, such as a dialog over its page.
  */
@@ -71,7 +79,8 @@ export interface SlabProps {
  */
 export function Slab({ width, depth, height, lift = 0, radius, fill, stroke, strokeWidth, ring, pressed = false, ghost = false, outline = false, dim = false, at = [0, 0, 0], children }: SlabProps) {
   const top = lift + height;
-  const face = (z: number, extra?: object, className = 'iso-face') => <rect key={z} className={className} width={width} height={depth} transform={faceAt(z)} style={{ rx: radius, ...extra }} />;
+  const corner = cornerOf(radius, width, depth);
+  const face = (z: number, extra?: object, className = 'iso-face') => <rect key={z} className={className} width={width} height={depth} transform={faceAt(z)} style={{ rx: corner, ...extra }} />;
   const layers = Array.from({ length: height }, (_, i) => lift + i);
   return (
     <g
@@ -80,7 +89,7 @@ export function Slab({ width, depth, height, lift = 0, radius, fill, stroke, str
     >
       {pressed && (
         <g transform={faceAt(0)}>
-          <rect width={width} height={depth} className="iso-ripple" style={{ rx: radius, stroke: fill }} />
+          <rect width={width} height={depth} className="iso-ripple" style={{ rx: corner, stroke: fill }} />
         </g>
       )}
       {lift > 0 && <g className="iso-shadow">{face(0)}</g>}
@@ -96,7 +105,7 @@ export function Slab({ width, depth, height, lift = 0, radius, fill, stroke, str
           height={depth + 8}
           transform={faceAt(top)}
           className="iso-ring"
-          style={{ rx: `calc(${radius} + var(--ds-space-1))`, stroke: ring }}
+          style={{ rx: `calc(${corner} + var(--ds-space-1))`, stroke: ring }}
         />
       )}
       <g transform={faceAt(top)}>{children}</g>
@@ -158,7 +167,7 @@ export function FaceRect({ x, y, width, height, fill = 'none', stroke, radius = 
       width={width}
       height={height}
       className={[className, dim && 'iso-dim'].filter(Boolean).join(' ') || undefined}
-      style={{ rx: radius, fill, stroke: stroke ?? 'none', strokeWidth: stroke ? 'var(--ds-size-border-thin)' : undefined }}
+      style={{ rx: cornerOf(radius, width, height), fill, stroke: stroke ?? 'none', strokeWidth: stroke ? 'var(--ds-size-border-thin)' : undefined }}
     />
   );
 }
