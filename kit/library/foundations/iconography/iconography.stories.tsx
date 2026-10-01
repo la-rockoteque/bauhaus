@@ -21,7 +21,7 @@ export const Showcase: StoryObj = {
       name="Iconography"
       layer="Foundation"
       plain="Icons are small pictures for actions and things. They work when they look like one family: the same grid, the same line weight, the same corners. The library draws its own 42, built from circles, squares, triangles and straight lines."
-      precise="Foundation · the drawing system and the glyph set, 42 glyphs in four groups · one 24 by 24 grid, one stroke token, square caps and mitre joins, currentColor · the Icon primitive draws them."
+      precise="Foundation · the drawing system and the glyph set, 44 glyphs in five groups · one 24 by 24 grid, one stroke token, square caps and mitre joins, currentColor · the Icon primitive draws them."
       usedFor="Inside buttons, fields, menus, banners and beside status text."
       tokens={{
         mode: 'defined',

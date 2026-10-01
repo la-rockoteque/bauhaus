@@ -26,6 +26,12 @@
   border-block-end: thin solid var(--ds-border-default);
 }
 
+.spec-role-chip-iso {
+  block-size: calc(var(--ds-space-12) * 2.5);
+  padding: var(--ds-space-2);
+  background: var(--ds-surface-sunken);
+}
+
 .spec-role-meta {
   display: grid;
   gap: var(--ds-space-1);

@@ -5,11 +5,11 @@ import tsParser from '@typescript-eslint/parser';
 const APP_CONCERNS = ['i18next', 'react-i18next', 'react-intl', 'react-router', 'react-router-dom', 'next/router', 'next/navigation', '@tanstack/react-query', 'axios', 'swr', '@apollo/client'];
 const restrict = (patterns) => ({ 'no-restricted-imports': ['error', { patterns }] });
 const appRule = { group: [...APP_CONCERNS, '@/*', '~/*'], message: 'The library never uses an app concern. Take text, links and data as props.' };
-const fixtureRule = { group: ['**/fixtures/**'], message: 'Fixtures are Storybook-only. Only stories, tests, .storybook and other fixtures may import them.' };
-// A test may import a fixture; a layer file that ships may not.
+const fixtureRule = { group: ['**/fixtures/**', '**/*.fixture'], message: 'Fixtures are Storybook-only. Only stories, tests, .storybook and other fixtures may import them.' };
+// A test may import a fixture; a layer file that ships may not. A `<name>.<view>.fixture.tsx` beside a component is a fixture.
 const ownRule = (group, message) => (group.length ? [{ group, message }] : []);
 const layer = (dir, group, message, own = ownRule(group, message)) => [
-  { files: [`${dir}/**/*.{ts,tsx}`], ignores: ['**/*.stories.tsx', '**/*.test.{ts,tsx}'], rules: restrict([appRule, fixtureRule, ...own]) },
+  { files: [`${dir}/**/*.{ts,tsx}`], ignores: ['**/*.stories.tsx', '**/*.test.{ts,tsx}', '**/*.fixture.tsx'], rules: restrict([appRule, fixtureRule, ...own]) },
   { files: [`${dir}/**/*.test.{ts,tsx}`], rules: restrict([appRule, ...own]) },
 ];
 

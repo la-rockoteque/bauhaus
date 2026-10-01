@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { Button } from '../../components/clickables/button/button';
 import { Text } from '../../primitives/text/text';
+import { isometricOf } from '../iso-role/iso-role';
 import { useTheme } from '../theme-switch/theme-store';
 import { alias, contrastOf, ratioText, resolve, roleNames } from '../rulebook/tokens';
 import './specimens.css';
@@ -38,9 +39,14 @@ const roleGroups = (theme: string): [string, string[]][] => {
 };
 
 function RoleCard({ theme, name }: { theme: string; name: string }) {
+  const drawing = isometricOf(name);
   return (
     <div className="spec-role">
-      <div className="spec-role-chip" style={{ background: `var(${name})` }} />
+      {drawing ? (
+        <div className="spec-role-chip spec-role-chip-iso">{drawing}</div>
+      ) : (
+        <div className="spec-role-chip" style={{ background: `var(${name})` }} />
+      )}
       <div className="spec-role-meta">
         <code>{dotted(name)}</code>
         <code className="doc-muted">{resolve(theme, name)}</code>

@@ -296,6 +296,14 @@ test('check: fixtures is a root; a fixture slice needs a story, not a guide or a
   assert.deepEqual(ids(tmpLibrary({ 'fixtures/anatomy/anatomy.tsx': '' })), ['slice.story fixtures/anatomy']);
 });
 
+test('check: a *.fixture.tsx beside a component may import fixtures; shipped code may not import it', () => {
+  const exposed = (files) => checkStructure(tmpLibrary(files)).filter((f) => f.id === 'fixture.exposed').map((f) => f.path);
+  const view = { 'components/button/button.isometric.fixture.tsx': "import { IsoStage } from '../../fixtures/isometric/isometric';" };
+  assert.deepEqual(exposed({ ...FX('isometric'), ...view }), []);
+  const shipped = { 'components/button/button.tsx': "import { ButtonIsometric } from './button.isometric.fixture';" };
+  assert.deepEqual(exposed({ ...FX('isometric'), ...view, ...shipped }), ['components/button/button.tsx']);
+});
+
 test('check: a fixture with logic needs a test', () => {
   const logic = tmpLibrary(FX('series', { 'series.tsx': 'export function seriesColor(n) { return n; }' }));
   assert.deepEqual(checkStructure(logic).map((f) => `${f.id} ${f.path}`), ['slice.test fixtures/series']);
