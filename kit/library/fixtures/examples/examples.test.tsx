@@ -64,6 +64,11 @@ describe('toJsx', () => {
   });
 });
 
+/** The code of a block, line by line, without the line numbers. */
+const codeOf = (label: string) => [...screen.getByLabelText(`Code: ${label}`).querySelectorAll('.doc-code-text')].map((line) => line.textContent).join('\n');
+/** The status message beside a copy button. */
+const statusOf = (button: HTMLElement) => button.parentElement?.querySelector('[role="status"]') as HTMLElement;
+
 describe('ExamplesPage', () => {
   afterEach(cleanup);
 
@@ -87,8 +92,9 @@ describe('ExamplesPage', () => {
     page();
     expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual(['Variants', 'Wiring']);
     expect(screen.getByRole('heading', { level: 3, name: 'Primary' })).toBeTruthy();
-    expect(screen.getByLabelText('Code: Primary').textContent).toBe('<Button>Save</Button>');
-    expect(screen.getByLabelText('Code: Submit').textContent).toBe('const custom = true;');
+    expect(codeOf('Primary')).toBe('<Button>Save</Button>');
+    expect(codeOf('Submit')).toBe('const custom = true;');
+    expect(codeOf('Import')).toBe("import { Button } from '@acme/design-system';");
     expect(screen.getByRole('button', { name: 'Save' })).toBeTruthy();
   });
 
@@ -96,8 +102,9 @@ describe('ExamplesPage', () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.assign(navigator, { clipboard: { writeText } });
     page();
-    fireEvent.click(screen.getByRole('button', { name: 'Copy code: Primary' }));
-    const status = screen.getAllByRole('status')[0];
+    const copy = screen.getByRole('button', { name: 'Copy code: Primary' });
+    fireEvent.click(copy);
+    const status = statusOf(copy);
     await vi.waitFor(() => expect(status.textContent).toBe('Copied'));
     expect(writeText).toHaveBeenCalledWith('<Button>Save</Button>');
     expect(screen.getByRole('button', { name: 'Copy code: Primary' })).toBeTruthy();
@@ -106,8 +113,9 @@ describe('ExamplesPage', () => {
   it('says when the copy fails', async () => {
     Object.assign(navigator, { clipboard: { writeText: vi.fn().mockRejectedValue(new Error('denied')) } });
     page();
-    fireEvent.click(screen.getByRole('button', { name: 'Copy code: Primary' }));
-    const status = screen.getAllByRole('status')[0];
+    const copy = screen.getByRole('button', { name: 'Copy code: Primary' });
+    fireEvent.click(copy);
+    const status = statusOf(copy);
     await vi.waitFor(() => expect(status.textContent).toBe('Copy failed'));
   });
 
@@ -116,14 +124,33 @@ describe('ExamplesPage', () => {
     try {
       Object.assign(navigator, { clipboard: { writeText: vi.fn().mockResolvedValue(undefined) } });
       page();
-      fireEvent.click(screen.getByRole('button', { name: 'Copy code: Primary' }));
-      const status = screen.getAllByRole('status')[0];
+      const copy = screen.getByRole('button', { name: 'Copy code: Primary' });
+      fireEvent.click(copy);
+      const status = statusOf(copy);
       await vi.waitFor(() => expect(status.textContent).toBe('Copied'));
       await act(() => vi.advanceTimersByTimeAsync(2000));
       expect(status.textContent).toBe('');
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it('explains each point with code spans, and shows a code-only example with no result', () => {
+    render(
+      <ExamplesPage
+        name="Spacing"
+        layer="Foundation"
+        imports="import '@acme/design-system/tokens.css';"
+        guide="foundations-spacing--docs"
+        guideName="Spacing"
+        intro={['Steps run from `space.0` to `space.12`.']}
+        groups={[{ title: 'In CSS', examples: [{ title: 'Padding', when: 'A custom block.', explain: ['Read `--ds-space-4`.'], code: '.card { padding: var(--ds-space-4); }', lang: 'css' }] }]}
+      />,
+    );
+    expect(screen.getByText('--ds-space-4', { selector: 'li code' })).toBeTruthy();
+    expect(screen.getByText('space.0').tagName).toBe('CODE');
+    expect(screen.queryByText('Result')).toBeNull();
+    expect(screen.getByText('CSS')).toBeTruthy();
   });
 
   it('has no axe violations', async () => {

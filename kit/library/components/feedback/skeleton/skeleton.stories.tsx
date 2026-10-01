@@ -6,6 +6,7 @@ import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
 import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Stack } from '../../../primitives/stack/stack';
 import { Button } from '../../clickables/button/button';
+import { Banner } from '../banner/banner';
 import { Text } from '../../../primitives/text/text';
 import { Skeleton, SkeletonRegion } from './skeleton';
 import { skeletonRules } from './skeleton.rules';
@@ -167,9 +168,45 @@ export const Advisories: StoryObj<typeof meta> = {
 };
 
 const REQUISITIONS = ['Requisition 204', 'Requisition 205', 'Requisition 209'];
+const LINE = 'calc(var(--ds-space-12) * 3)';
 
-/** Three rows load for two seconds. The placeholders mirror the rows, so nothing moves when they arrive. */
-function RequisitionList() {
+type LoadResult = 'rows' | 'empty' | 'error';
+
+/** Loads for two seconds, then shows the result you pick. Press Reload to watch it again. */
+function RequisitionList({ result = 'rows' }: { result?: LoadResult }) {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (!loading) return;
+    const timer = window.setTimeout(() => setLoading(false), 2000);
+    return () => window.clearTimeout(timer);
+  }, [loading]);
+  const rows = result === 'rows' ? REQUISITIONS : [];
+  return (
+    <Stack gap={3} align="start">
+      <SkeletonRegion loading={loading} label="Loading 3 requisitions">
+        {loading ? (
+          <Stack gap={2}>
+            <Skeleton width={LINE} />
+            <Skeleton width={LINE} />
+            <Skeleton width={LINE} />
+          </Stack>
+        ) : result === 'error' ? (
+          <Banner status="error" title="Requisitions did not load">The server did not answer. Try again.</Banner>
+        ) : rows.length === 0 ? (
+          <Text as="p" tone="muted">No requisitions yet.</Text>
+        ) : (
+          <Stack as="ul" gap={2}>
+            {rows.map((name) => <Text as="li" key={name}>{name}</Text>)}
+          </Stack>
+        )}
+      </SkeletonRegion>
+      <Button variant="secondary" onClick={() => setLoading(true)} disabled={loading}>Reload</Button>
+    </Stack>
+  );
+}
+
+/** A profile card: placeholders for two seconds, then the real person in the same layout. */
+function ProfileCard() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!loading) return;
@@ -178,18 +215,14 @@ function RequisitionList() {
   }, [loading]);
   return (
     <Stack gap={3} align="start">
-      <SkeletonRegion loading={loading} label="Loading 3 requisitions">
-        {loading ? (
+      <SkeletonRegion loading={loading} label="Loading profile">
+        <Stack direction="horizontal" gap={4} align="start">
+          {loading ? <Skeleton shape="circle" /> : <Text as="strong">AK</Text>}
           <Stack gap={2}>
-            <Skeleton width="calc(var(--ds-space-12) * 3)" />
-            <Skeleton width="calc(var(--ds-space-12) * 3)" />
-            <Skeleton width="calc(var(--ds-space-12) * 3)" />
+            {loading ? <Skeleton width="calc(var(--ds-space-12) * 2)" /> : <Text as="strong">Amara Kone</Text>}
+            {loading ? <Skeleton lines={2} width={LINE} /> : <Text tone="muted">Product designer in Montreal.</Text>}
           </Stack>
-        ) : (
-          <Stack as="ul" gap={2}>
-            {REQUISITIONS.map((name) => <Text as="li" key={name}>{name}</Text>)}
-          </Stack>
-        )}
+        </Stack>
       </SkeletonRegion>
       <Button variant="secondary" onClick={() => setLoading(true)} disabled={loading}>Reload</Button>
     </Stack>
@@ -203,51 +236,256 @@ export const Examples: StoryObj<typeof meta> = {
       name="Skeleton"
       layer="Component"
       family="Feedback"
-      imports="import { Button, Skeleton, SkeletonRegion, Stack, Text } from '@acme/design-system';"
+      imports="import { Banner, Button, Skeleton, SkeletonRegion, Stack, Text } from '@acme/design-system';"
+      intro={[
+        'A skeleton is a grey placeholder shaped like the content that is about to appear. It holds the space, so the page does not jump when the content arrives (a "layout shift").',
+        'Two parts work together. `Skeleton` draws one placeholder. `SkeletonRegion` wraps the placeholders and tells assistive technology (screen readers and similar tools) that the area is loading.',
+        'The placeholders are hidden from screen readers on purpose: grey boxes carry no meaning. The region speaks one short sentence instead, such as "Loading 3 requisitions".',
+        '`width` and `height` take a token expression. A token is a named design value; `var(--ds-space-12)` is one step of the spacing scale. The component holds no pixel values of its own.',
+        'Use a skeleton for a wait of about one to two seconds. For a shorter wait, show nothing. For a longer wait, use a progress bar.',
+      ]}
       guide="feedback-skeleton--docs"
       guideName="Skeleton"
       groups={[
         {
-          title: 'Shapes',
-          kicker: 'Draw the shape of the content that will arrive: a line, a block or a circle.',
+          title: 'The three shapes',
+          kicker: 'Pick the shape of the content that will arrive: a line of text, a block or a circle. Start with the text line, the most common one.',
           examples: [
-            { title: 'Text line', when: 'One line of text, such as a name or a title.', render: <Skeleton width="calc(var(--ds-space-12) * 3)" /> },
-            { title: 'Several lines of text', when: 'A paragraph. The last line is shorter.', render: <Skeleton lines={3} width="calc(var(--ds-space-12) * 4)" /> },
-            { title: 'Block', when: 'An image or a chart. Give it the size of the real one.', render: <Skeleton shape="block" width="calc(var(--ds-space-12) * 3)" /> },
-            { title: 'Circle', when: 'An avatar.', render: <Skeleton shape="circle" /> },
+            {
+              title: 'Text line',
+              when: 'One line of text, such as a name or a title.',
+              explain: [
+                '`shape` defaults to `"text"`, so the prop can be left out.',
+                'A text line is one row of text high. Give it a `width` close to the real text, or the page will shift when the text arrives.',
+                'The `Skeleton` alone is hidden from screen readers (`aria-hidden`). Put it inside a `SkeletonRegion` so users of assistive technology still learn that something loads (WCAG 4.1.3, AA).',
+              ],
+              render: <Skeleton width={LINE} />,
+              code: `// "text" is the default shape: no prop needed.
+// Width is a token expression. Choose one near the real text width.
+<Skeleton width="calc(var(--ds-space-12) * 3)" />`,
+            },
+            {
+              title: 'Several lines of text',
+              when: 'A paragraph or a description.',
+              explain: [
+                '`lines` draws that many lines. It only works with `shape="text"`.',
+                'The last line is shorter on purpose, like the end of a real paragraph.',
+                'Pick the line count the real text usually has. The wrong count makes the layout jump on arrival (WCAG 1.3.1 is about the final structure; the guide asks for the same shape).',
+              ],
+              render: <Skeleton lines={3} width="calc(var(--ds-space-12) * 4)" />,
+              code: `// Three lines. The last one is drawn shorter.
+// "width" sets the width of the whole group of lines.
+<Skeleton lines={3} width="calc(var(--ds-space-12) * 4)" />`,
+            },
+            {
+              title: 'Block',
+              when: 'An image, a chart or a card body.',
+              explain: [
+                '`shape="block"` draws a rectangle with the corners of a control.',
+                'Give it the width and height of the real image. Without a height it uses a default, and a taller image would push the content down when it loads.',
+              ],
+              render: <Skeleton shape="block" width="calc(var(--ds-space-12) * 3)" />,
+              code: `// A rectangle. Set "width" and "height" to match the image that will load.
+<Skeleton shape="block" width="calc(var(--ds-space-12) * 3)" />`,
+            },
+            {
+              title: 'Circle',
+              when: 'An avatar or a round icon.',
+              explain: [
+                '`shape="circle"` draws a round placeholder with the default avatar size.',
+                'A circle has equal width and height. If you change one, change the other, or it becomes an oval.',
+              ],
+              render: <Skeleton shape="circle" />,
+              code: `// A round avatar. Default size; no other prop needed.
+<Skeleton shape="circle" />`,
+            },
           ],
         },
         {
           title: 'Sizes',
-          kicker: 'Width and height take a token expression. The component holds no pixel value.',
+          kicker: 'Width and height take a token expression such as `var(--ds-space-12)`. Never write a pixel value.',
           examples: [
-            { title: 'Narrow line', when: 'A short value, such as a date or a count.', render: <Skeleton width="var(--ds-space-12)" /> },
-            { title: 'Tall block', when: 'A hero image that is taller than the default.', render: <Skeleton shape="block" width="calc(var(--ds-space-12) * 3)" height="calc(var(--ds-space-12) * 2)" /> },
-            { title: 'Large circle', when: 'A profile photo that is larger than the default avatar.', render: <Skeleton shape="circle" width="var(--ds-space-12)" height="var(--ds-space-12)" /> },
+            {
+              title: 'Narrow line',
+              when: 'A short value, such as a date, a count or a status.',
+              explain: [
+                'A smaller token gives a shorter line. Match the width of the real value.',
+                'Tokens keep every placeholder on the same spacing scale as the rest of the page and follow user settings such as text size.',
+              ],
+              render: <Skeleton width="var(--ds-space-12)" />,
+              code: `// One spacing step wide: right for a date or a count.
+<Skeleton width="var(--ds-space-12)" />`,
+            },
+            {
+              title: 'Percent width',
+              when: 'A line that fills part of its column, whatever the column width.',
+              explain: [
+                'A percentage is a valid value too: `width` accepts any CSS size. It follows the container.',
+                'Use a percentage for text in a flexible layout. Use a token for a fixed-size thing such as an image.',
+              ],
+              render: <Skeleton width="60%" />,
+              code: `// 60% of the container. It shrinks and grows with the column.
+<Skeleton width="60%" />`,
+            },
+            {
+              title: 'Tall block',
+              when: 'A hero image that is taller than the default block.',
+              explain: [
+                '`height` sets the block size. Here it is twice one spacing step.',
+                'Measure the real image and copy its proportions. A placeholder of the wrong height is the main cause of layout shift.',
+              ],
+              render: <Skeleton shape="block" width="calc(var(--ds-space-12) * 3)" height="calc(var(--ds-space-12) * 2)" />,
+              code: `// Width and height both match the hero image that will load.
+<Skeleton
+  shape="block"
+  width="calc(var(--ds-space-12) * 3)"
+  height="calc(var(--ds-space-12) * 2)"
+/>`,
+            },
+            {
+              title: 'Large circle',
+              when: 'A profile photo that is larger than the default avatar.',
+              explain: [
+                'Set `width` and `height` to the same token so the shape stays a circle.',
+              ],
+              render: <Skeleton shape="circle" width="var(--ds-space-12)" height="var(--ds-space-12)" />,
+              code: `// Same value for both sides keeps it round.
+<Skeleton shape="circle" width="var(--ds-space-12)" height="var(--ds-space-12)" />`,
+            },
+            {
+              title: 'Small circle',
+              when: 'A small avatar in a dense list row.',
+              explain: [
+                'A smaller token gives a smaller circle. Use the size of the real avatar in that row.',
+              ],
+              render: <Skeleton shape="circle" width="var(--ds-space-6)" height="var(--ds-space-6)" />,
+              code: `<Skeleton shape="circle" width="var(--ds-space-6)" height="var(--ds-space-6)" />`,
+            },
           ],
         },
         {
-          title: 'Composition',
-          kicker: 'Mirror the real layout. The same box holds the placeholders, then the content.',
+          title: 'The region',
+          kicker: '`SkeletonRegion` is what makes a skeleton accessible. Always wrap your placeholders in one.',
+          examples: [
+            {
+              title: 'A region that loads',
+              when: 'The simplest complete use: placeholders inside a region, with a label.',
+              explain: [
+                '`loading` turns the placeholders on. The region sets `aria-busy` (a flag that tells screen readers the area is still changing), so they wait for it to settle (WCAG 4.1.3, AA).',
+                '`label` is read once, politely, by screen readers. Without it, a blind user would meet an area that is silent and empty.',
+                'Say what loads: "Loading 3 requisitions" tells more than "Loading…" (Nielsen heuristic 1, visibility of system status).',
+              ],
+              render: (
+                <SkeletonRegion loading label="Loading 3 requisitions">
+                  <Skeleton lines={3} width={LINE} />
+                </SkeletonRegion>
+              ),
+              code: `// "loading" is true while the data is on its way.
+// "label" is spoken once by screen readers. Say what loads.
+<SkeletonRegion loading label="Loading 3 requisitions">
+  <Skeleton lines={3} width="calc(var(--ds-space-12) * 3)" />
+</SkeletonRegion>`,
+            },
+            {
+              title: 'A region that has loaded',
+              when: 'The data arrived. The same region now shows the real content.',
+              explain: [
+                'With `loading={false}` the region is no longer busy and the hidden status line is gone. Pass the real content as `children`.',
+                'Keep the region mounted. A region that stays in the page behaves better with screen readers than one that appears and disappears.',
+                '`label` is still required by the type, but it is not used when `loading` is false.',
+              ],
+              render: (
+                <SkeletonRegion loading={false} label="Loading profile">
+                  <Stack gap={1}>
+                    <Text as="strong">Amara Kone</Text>
+                    <Text tone="muted">Product designer in Montreal.</Text>
+                  </Stack>
+                </SkeletonRegion>
+              ),
+              code: `// Same region, same place. Only "loading" changed.
+<SkeletonRegion loading={false} label="Loading profile">
+  <Stack gap={1}>
+    <Text as="strong">Amara Kone</Text>
+    <Text tone="muted">Product designer in Montreal.</Text>
+  </Stack>
+</SkeletonRegion>`,
+            },
+            {
+              title: 'A label in the app language',
+              when: 'The app is not in English. The label comes from your translations.',
+              explain: [
+                'The label is plain text you pass in, so it can be any language. The component adds no words of its own.',
+                'Set the language of the page (`lang` on the `html` element) so the screen reader uses the right voice (WCAG 3.1.1, A).',
+              ],
+              render: (
+                <SkeletonRegion loading label="Chargement de 3 demandes">
+                  <Skeleton lines={3} width={LINE} />
+                </SkeletonRegion>
+              ),
+              code: `// "t" stands for your translation function.
+<SkeletonRegion loading label={t('requisitions.loading', { count: 3 })}>
+  <Skeleton lines={3} width="calc(var(--ds-space-12) * 3)" />
+</SkeletonRegion>`,
+            },
+            {
+              title: 'Extra attributes on the region',
+              when: 'The region needs an id, a test hook or a class.',
+              explain: [
+                'The region is a `div`. Every standard `div` attribute passes through, so `data-testid` or `id` work as usual.',
+                'Do not set `aria-busy` yourself. The region already sets it from `loading`.',
+              ],
+              render: (
+                <SkeletonRegion loading label="Loading comments" id="comments-region" data-testid="comments">
+                  <Skeleton lines={2} width={LINE} />
+                </SkeletonRegion>
+              ),
+              code: `// "id" and "data-testid" pass straight to the div.
+<SkeletonRegion loading label="Loading comments" id="comments-region" data-testid="comments">
+  <Skeleton lines={2} width="calc(var(--ds-space-12) * 3)" />
+</SkeletonRegion>`,
+            },
+          ],
+        },
+        {
+          title: 'Mirroring a layout',
+          kicker: 'Draw the same shapes, in the same places, as the content that arrives. Then nothing moves.',
           examples: [
             {
               title: 'Profile',
               when: 'An avatar, a name and two lines of text.',
+              explain: [
+                'A circle stands for the avatar, one short line for the name, two lines for the bio. Each shape matches one real element.',
+                'The `Stack` wrappers are the same ones you use for the real profile, so the spacing is identical (Nielsen heuristic 4, consistency).',
+              ],
               render: (
                 <SkeletonRegion loading label="Loading profile">
                   <Stack direction="horizontal" gap={4} align="start">
                     <Skeleton shape="circle" />
                     <Stack gap={2}>
                       <Skeleton width="calc(var(--ds-space-12) * 2)" />
-                      <Skeleton lines={2} width="calc(var(--ds-space-12) * 3)" />
+                      <Skeleton lines={2} width={LINE} />
                     </Stack>
                   </Stack>
                 </SkeletonRegion>
               ),
+              code: `<SkeletonRegion loading label="Loading profile">
+  {/* Same layout as the real profile: avatar on the left, text on the right. */}
+  <Stack direction="horizontal" gap={4} align="start">
+    <Skeleton shape="circle" />
+    <Stack gap={2}>
+      <Skeleton width="calc(var(--ds-space-12) * 2)" /> {/* the name */}
+      <Skeleton lines={2} width="calc(var(--ds-space-12) * 3)" /> {/* the bio */}
+    </Stack>
+  </Stack>
+</SkeletonRegion>`,
             },
             {
               title: 'Card with an image',
-              when: 'An image on top, then a title and a line of text.',
+              when: 'An image on top, then a title and a short text.',
+              explain: [
+                'The block takes the place of the image. Give it the real image width.',
+                'The title is one line, the text two lines. If your real card has three lines, draw three.',
+              ],
               render: (
                 <SkeletonRegion loading label="Loading article">
                   <Stack gap={3}>
@@ -257,67 +495,148 @@ export const Examples: StoryObj<typeof meta> = {
                   </Stack>
                 </SkeletonRegion>
               ),
+              code: `<SkeletonRegion loading label="Loading article">
+  <Stack gap={3}>
+    <Skeleton shape="block" width="calc(var(--ds-space-12) * 4)" /> {/* the image */}
+    <Skeleton width="calc(var(--ds-space-12) * 2)" />               {/* the title */}
+    <Skeleton lines={2} width="calc(var(--ds-space-12) * 4)" />     {/* the summary */}
+  </Stack>
+</SkeletonRegion>`,
             },
             {
               title: 'List rows',
-              when: 'A list. Show as many rows as fit the screen, not the full count.',
+              when: 'A list that loads. Draw as many rows as fit the screen, not the full count.',
+              explain: [
+                'Repeat one row with `map`. Three to five rows is enough: the user cannot see more than the screen holds.',
+                'Give each row a `key`. React needs it to tell the rows apart.',
+                'One region wraps all rows. One label is read, not one per row.',
+              ],
               render: (
                 <SkeletonRegion loading label="Loading 3 requisitions">
                   <Stack gap={3}>
                     {[0, 1, 2].map((row) => (
                       <Stack key={row} direction="horizontal" gap={3} align="center">
                         <Skeleton shape="circle" width="var(--ds-space-6)" height="var(--ds-space-6)" />
-                        <Skeleton width="calc(var(--ds-space-12) * 3)" />
+                        <Skeleton width={LINE} />
                       </Stack>
                     ))}
                   </Stack>
                 </SkeletonRegion>
               ),
+              code: `<SkeletonRegion loading label="Loading 3 requisitions">
+  <Stack gap={3}>
+    {/* Three rows is enough to fill the view. */}
+    {[0, 1, 2].map((row) => (
+      <Stack key={row} direction="horizontal" gap={3} align="center">
+        <Skeleton shape="circle" width="var(--ds-space-6)" height="var(--ds-space-6)" />
+        <Skeleton width="calc(var(--ds-space-12) * 3)" />
+      </Stack>
+    ))}
+  </Stack>
+</SkeletonRegion>`,
             },
-          ],
-        },
-        {
-          title: 'Content',
-          examples: [
-            { title: 'Narrow column', when: 'A side panel. Text placeholders fill the width.', frame: 'narrow', render: (
-              <SkeletonRegion loading label="Loading comments">
-                <Stack gap={2}>
-                  <Skeleton width="60%" />
-                  <Skeleton lines={3} />
-                </Stack>
-              </SkeletonRegion>
-            ) },
-            { title: 'Phone width', when: 'A phone. The block takes the full width and keeps its height.', frame: 'phone', render: (
-              <SkeletonRegion loading label="Loading photo">
-                <Stack gap={2}>
-                  <Skeleton shape="block" />
-                  <Skeleton width="50%" />
-                </Stack>
-              </SkeletonRegion>
-            ) },
-          ],
-        },
-        {
-          title: 'Loading and loaded',
-          kicker: 'The region sets aria-busy while loading. When loading is false it shows the real content.',
-          examples: [
             {
-              title: 'Loaded region',
-              when: 'The data arrived. The region renders the real content in the same box and stops being busy.',
+              title: 'Table-like rows',
+              when: 'A table or a grid with several columns.',
+              explain: [
+                'Each row is a horizontal `Stack`. Each cell is a text line with a width near the real column.',
+                'Vary the widths slightly. A column of equal bars looks like a barcode; the real data never lines up so neatly.',
+              ],
               render: (
-                <SkeletonRegion loading={false} label="Loading profile">
-                  <Stack gap={1}>
-                    <Text as="strong">Amara Kone</Text>
-                    <Text tone="muted">Product designer in Montreal.</Text>
+                <SkeletonRegion loading label="Loading orders">
+                  <Stack gap={3}>
+                    {['60%', '45%', '70%'].map((first) => (
+                      <Stack key={first} direction="horizontal" gap={4} align="center">
+                        <Skeleton width={first} />
+                        <Skeleton width="var(--ds-space-12)" />
+                        <Skeleton width="var(--ds-space-12)" />
+                      </Stack>
+                    ))}
                   </Stack>
                 </SkeletonRegion>
               ),
+              code: `<SkeletonRegion loading label="Loading orders">
+  <Stack gap={3}>
+    {/* Each row has a different first-column width, like real names. */}
+    {['60%', '45%', '70%'].map((first) => (
+      <Stack key={first} direction="horizontal" gap={4} align="center">
+        <Skeleton width={first} />
+        <Skeleton width="var(--ds-space-12)" />
+        <Skeleton width="var(--ds-space-12)" />
+      </Stack>
+    ))}
+  </Stack>
+</SkeletonRegion>`,
+            },
+          ],
+        },
+        {
+          title: 'Content cases',
+          examples: [
+            {
+              title: 'Narrow column',
+              when: 'A side panel. Percent widths follow the column.',
+              frame: 'narrow',
+              explain: [
+                'Without a `width`, a text placeholder fills its container. It never overflows.',
+                'Test your skeleton in the narrowest place it can appear (WCAG 1.4.10, reflow, AA).',
+              ],
+              render: (
+                <SkeletonRegion loading label="Loading comments">
+                  <Stack gap={2}>
+                    <Skeleton width="60%" />
+                    <Skeleton lines={3} />
+                  </Stack>
+                </SkeletonRegion>
+              ),
+              code: `// No fixed widths: the placeholders fill the column they are in.
+<SkeletonRegion loading label="Loading comments">
+  <Stack gap={2}>
+    <Skeleton width="60%" />
+    <Skeleton lines={3} />
+  </Stack>
+</SkeletonRegion>`,
             },
             {
+              title: 'Phone width',
+              when: 'A phone screen. The block takes the full width and keeps its height.',
+              frame: 'phone',
+              explain: [
+                'A block without a `width` fills the available width. On a phone that is the whole screen.',
+                'Pair it with a percent-width line for the caption below the photo.',
+              ],
+              render: (
+                <SkeletonRegion loading label="Loading photo">
+                  <Stack gap={2}>
+                    <Skeleton shape="block" />
+                    <Skeleton width="50%" />
+                  </Stack>
+                </SkeletonRegion>
+              ),
+              code: `<SkeletonRegion loading label="Loading photo">
+  <Stack gap={2}>
+    <Skeleton shape="block" />   {/* full width of the screen */}
+    <Skeleton width="50%" />     {/* the caption */}
+  </Stack>
+</SkeletonRegion>`,
+            },
+          ],
+        },
+        {
+          title: 'From loading to loaded',
+          kicker: 'The region stays; its children change. These demos load for two seconds. Press Reload to see them again.',
+          examples: [
+            {
               title: 'Placeholders, then rows',
-              when: 'A list that loads for about two seconds. Press Reload to see it again.',
+              when: 'A list loaded from a server.',
+              explain: [
+                '`isLoading` comes from your data code. Pass it to `loading`, and swap the children with it.',
+                'The label names the count the user expects ("3 requisitions"), so a screen reader user knows what is coming.',
+                'The list uses `Stack as="ul"` and `Text as="li"`, so the loaded content is a real list (WCAG 1.3.1, A).',
+              ],
               render: <RequisitionList />,
               code: `function RequisitionList() {
+  // "useRequisitions" stands for your own data hook.
   const { data, isLoading } = useRequisitions();
   return (
     <SkeletonRegion loading={isLoading} label="Loading 3 requisitions">
@@ -336,21 +655,86 @@ export const Examples: StoryObj<typeof meta> = {
   );
 }`,
             },
-          ],
-        },
-        {
-          title: 'Accessibility wiring',
-          examples: [
-            { title: 'A label about the content', when: 'The region speaks its label once. Say what loads, not just "Loading".', render: (
-              <SkeletonRegion loading label="Loading 3 requisitions">
-                <Skeleton lines={3} width="calc(var(--ds-space-12) * 3)" />
-              </SkeletonRegion>
-            ) },
-            { title: 'A label in the app language', when: 'The app is not in English. The label comes from props.', render: (
-              <SkeletonRegion loading label="Chargement de 3 demandes">
-                <Skeleton lines={3} width="calc(var(--ds-space-12) * 3)" />
-              </SkeletonRegion>
-            ) },
+            {
+              title: 'Placeholders, then an empty state',
+              when: 'The load worked but returned nothing.',
+              explain: [
+                'An empty result is not a loading state. Replace the placeholders with a clear message, so the user does not wait for content that will not come.',
+                'Say what to do next when you can: "No requisitions yet." plus a button that creates one.',
+              ],
+              render: <RequisitionList result="empty" />,
+              code: `function RequisitionList() {
+  const { data, isLoading } = useRequisitions();
+  return (
+    <SkeletonRegion loading={isLoading} label="Loading requisitions">
+      {isLoading ? (
+        <Skeleton lines={3} width="calc(var(--ds-space-12) * 3)" />
+      ) : data.length === 0 ? (
+        // Nothing came back: say so, in words.
+        <Text as="p" tone="muted">No requisitions yet.</Text>
+      ) : (
+        <Stack as="ul" gap={2}>
+          {data.map((name) => <Text as="li" key={name}>{name}</Text>)}
+        </Stack>
+      )}
+    </SkeletonRegion>
+  );
+}`,
+            },
+            {
+              title: 'Placeholders, then an error',
+              when: 'The load failed.',
+              explain: [
+                'Never leave the placeholders on screen after a failure. The user would wait for ever.',
+                'Show the error where the content would be, and say what to do (WCAG 3.3.1, A; Nielsen heuristic 9, help users recover from errors).',
+              ],
+              render: <RequisitionList result="error" />,
+              code: `function RequisitionList() {
+  const { data, isLoading, error } = useRequisitions();
+  return (
+    <SkeletonRegion loading={isLoading} label="Loading requisitions">
+      {isLoading ? (
+        <Skeleton lines={3} width="calc(var(--ds-space-12) * 3)" />
+      ) : error ? (
+        // The error takes the place of the content, in the same box.
+        <Banner status="error" title="Requisitions did not load">
+          The server did not answer. Try again.
+        </Banner>
+      ) : (
+        <Stack as="ul" gap={2}>
+          {data.map((name) => <Text as="li" key={name}>{name}</Text>)}
+        </Stack>
+      )}
+    </SkeletonRegion>
+  );
+}`,
+            },
+            {
+              title: 'A profile card',
+              when: 'Each placeholder turns into its real counterpart in the same place.',
+              explain: [
+                'The circle becomes the initials, the first line the name, the two lines the bio. The layout never changes.',
+                'The `Stack` and its gaps stay the same in both states. That is what stops the page from jumping.',
+              ],
+              render: <ProfileCard />,
+              code: `function ProfileCard({ user, isLoading }) {
+  return (
+    <SkeletonRegion loading={isLoading} label="Loading profile">
+      <Stack direction="horizontal" gap={4} align="start">
+        {isLoading ? <Skeleton shape="circle" /> : <Avatar user={user} />}
+        <Stack gap={2}>
+          {isLoading
+            ? <Skeleton width="calc(var(--ds-space-12) * 2)" />
+            : <Text as="strong">{user.name}</Text>}
+          {isLoading
+            ? <Skeleton lines={2} width="calc(var(--ds-space-12) * 3)" />
+            : <Text tone="muted">{user.bio}</Text>}
+        </Stack>
+      </Stack>
+    </SkeletonRegion>
+  );
+}`,
+            },
           ],
         },
       ]}

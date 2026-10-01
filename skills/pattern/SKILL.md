@@ -32,6 +32,7 @@ A pattern composes existing components to answer a recurring need. It introduces
 9. **Land the artifacts to the page contract.** Each has six sections in order: Introduction, Anatomy, Tokens (consumed), States, Usage, Pitfalls and don'ts.
    - **Guide.** `patterns/<name>/<name>.mdx`.
    - **Showcase.** `Patterns/<Name>`: one `<DocPage/>` story, one state-matrix cell per lifecycle state.
+   - **Examples.** A third story renders `<ExamplesPage …/>` from `fixtures/examples/examples`: every lifecycle state as a working recipe, the full composition as commented code, and the wiring (state, announcements, focus) explained for a junior.
    - **Rulebook.** Review rules (`<pattern>.<rule>`), plus `<pattern>.state.<state>` per designed state. Most pattern rules are `review`. Make one `auto` rule: "uses only listed components and no raw value".
    - **Tokens.** None new. The Tokens section lists consumed tokens.
 10. **Slop check.** For each line in Usage and each Pitfall ask: "What is the basis?" and "Would this line be true of any pattern?" No basis or generic: rewrite with a basis (WCAG number and level, APG, Nielsen heuristic by name, published system, research result) or cut it.

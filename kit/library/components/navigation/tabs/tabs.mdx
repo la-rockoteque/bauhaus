@@ -53,7 +53,7 @@ The list scrolls along its axis. A chevron over a fade shows the side that hides
 ### Content
 
 - Keep labels short: one or two words.
-- Pass `disabledReason` whenever you set `disabled`. The reason shows as a tooltip and is read after the label.
+- Pass `disabledReason` whenever you set `disabled`. A screen reader reads the reason after the label. Sighted mouse users get it only as a browser `title` hint, and keyboard and touch users never see it, so show the reason on the page when it matters.
 - i18n: labels and reasons arrive as props. The component holds no text.
 
 ## 3. Why the states look as they do

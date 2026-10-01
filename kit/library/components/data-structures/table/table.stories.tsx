@@ -292,17 +292,45 @@ function PagedRequisitions() {
   return (
     <Stack gap={3}>
       <Table caption="Requisitions" columns={PLAIN} rows={rows} getRowId={(row) => row.id} />
-      <Pagination label="Requisitions pages" page={page} pageCount={2} onPageChange={setPage} total={`${(page - 1) * 4 + 1}–${Math.min(page * 4, DATA.length)} of ${DATA.length}`} />
+      <Pagination label="Requisitions pages" page={page} pageCount={2} onPageChange={setPage} status={`Page ${page} of 2`} total={`${(page - 1) * 4 + 1}–${Math.min(page * 4, DATA.length)} of ${DATA.length}`} />
     </Stack>
   );
 }
 
-const COLUMNS_CODE = `const columns: TableColumn<Requisition>[] = [
-  { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
-  { key: 'supplier', header: 'Supplier', cell: (row) => row.supplier },
-  { key: 'status', header: 'Status', cell: (row) => row.status },
-  { key: 'total', header: 'Total (CAD)', align: 'number', cell: (row) => money.format(row.total) },
-];`;
+type TableState = 'loading' | 'empty' | 'none' | 'error' | 'partial' | 'ready';
+
+/** Switches one table through its data states, so the reader sees each one replace the rows. */
+function TableLifecycle() {
+  const [state, setState] = useState<TableState>('loading');
+  const states: TableState[] = ['loading', 'empty', 'none', 'error', 'partial', 'ready'];
+  const rows = state === 'ready' ? FIRST_ROWS : state === 'partial' ? FIRST_ROWS.slice(0, 2) : [];
+  return (
+    <Stack gap={3}>
+      <Stack direction="horizontal" gap={2} wrap role="group" aria-label="Table state">
+        {states.map((name) => (
+          <Button key={name} variant="secondary" aria-pressed={state === name} onClick={() => setState(name)}>{name}</Button>
+        ))}
+      </Stack>
+      <Table
+        caption="Requisitions"
+        columns={PLAIN}
+        rows={rows}
+        getRowId={(row) => row.id}
+        loading={state === 'loading'}
+        empty={state === 'none' ? <Text>No requisition matches “copper”.</Text> : <Text>No requisitions yet. Create your first one.</Text>}
+        error={
+          state === 'error' && (
+            <Stack gap={2} align="start">
+              <Text>The requisitions did not load.</Text>
+              <Button variant="secondary" onClick={() => setState('loading')}>Try again</Button>
+            </Stack>
+          )
+        }
+        partial={state === 'partial' && <Text>6 requisitions did not load.</Text>}
+      />
+    </Stack>
+  );
+}
 
 export const Examples: StoryObj<typeof meta> = {
   name: 'Examples',
@@ -311,7 +339,16 @@ export const Examples: StoryObj<typeof meta> = {
       name="Table"
       layer="Component"
       family="Data structures"
-      imports="import { Badge, Button, Pagination, Stack, Table, VisuallyHidden } from '@acme/design-system';"
+      imports="import { Badge, Button, Pagination, Stack, Table, Text, VisuallyHidden } from '@acme/design-system';"
+      intro={[
+        'A table lays out records in rows and columns, so people can scan down a column and compare. Use it for exact values: amounts, dates, statuses.',
+        'It is a real HTML `table`. Screen readers announce the column header with each cell ("Total, 12,040.50"). A grid of `div`s loses that.',
+        'You give the table three things: `columns` (how to show each field), `rows` (the data) and `getRowId` (a function that returns a unique id for a row).',
+        'A column is an object: `key` (its unique name), `header` (the text on top), `cell` (a function that draws one cell from a row). Other options are `align`, `sortable`, `rowHeader` and `actions`.',
+        'The table draws the rows it is given and reports what the user asked for. You sort, page, filter and fetch. It does not do these itself.',
+        'The `caption` is required. It names the table for screen readers and labels its scroll box.',
+        'Snippets use `columns` and `rows` for your own definitions. The first example shows them in full. `money` is an `Intl.NumberFormat` that formats amounts.',
+      ]}
       guide="data-structures-table--docs"
       guideName="Table"
       groups={[
@@ -322,23 +359,61 @@ export const Examples: StoryObj<typeof meta> = {
             {
               title: 'Basic table',
               when: 'Records with three or more attributes that people compare down a column.',
+              explain: [
+                '`columns` says what to show. `key` is a unique name, `header` is the text on top, `cell` returns what to draw for one row.',
+                '`getRowId` returns a unique, stable id for each row. React and the selection feature use it to tell rows apart.',
+                '`rowHeader: true` marks the first column as the row\'s name. A screen reader then says "REQ-1042" before each cell of that row (WCAG 1.3.1, A).',
+                '`align: \'number\'` right-aligns figures in a mono font, so digits line up by place. Never centre data.',
+                '`caption` is required. It names the table for assistive technology.',
+              ],
               render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
-              code: `${COLUMNS_CODE}
+              code: `// Format amounts the same way everywhere. 'en-CA' gives 12,040.50.
+const money = new Intl.NumberFormat('en-CA', { minimumFractionDigits: 2 });
 
+// One object per column.
+const columns = [
+  // rowHeader: this cell names the row for screen readers.
+  { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
+  { key: 'supplier', header: 'Supplier', cell: (row) => row.supplier },
+  { key: 'status', header: 'Status', cell: (row) => row.status },
+  // 'number': right-aligned, mono, tabular digits.
+  { key: 'total', header: 'Total (CAD)', align: 'number', cell: (row) => money.format(row.total) },
+];
+
+// getRowId: a unique, stable id per row.
 <Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
             },
             {
               title: 'Hidden caption',
-              when: 'A heading above the table already names it. Keep the caption for assistive technology only.',
-              render: <Table caption="Requisitions" hideCaption columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
-              code: '<Table caption="Requisitions" hideCaption columns={columns} rows={rows} getRowId={(row) => row.id} />',
+              when: 'A heading above the table already names it.',
+              explain: [
+                '`hideCaption` hides the caption from the eye and keeps it for assistive technology.',
+                'Do not leave the caption out. Without it, the table has no name, and the scroll box has none either (WCAG 1.3.1, A).',
+              ],
+              render: (
+                <Stack gap={2}>
+                  <Text as="h2">Requisitions</Text>
+                  <Table caption="Requisitions" hideCaption columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />
+                </Stack>
+              ),
+              code: `<>
+  <Text as="h2">Requisitions</Text>
+  {/* The heading shows the name. The caption keeps it for screen readers. */}
+  <Table caption="Requisitions" hideCaption columns={columns} rows={rows} getRowId={(row) => row.id} />
+</>`,
             },
             {
               title: 'Figures aligned',
-              when: 'A column of amounts: align: \'number\' right-aligns them in the mono style so digits line up.',
+              when: 'A column of amounts.',
+              explain: [
+                '`align: \'number\'` right-aligns the cell in the mono style, with equal-width digits.',
+                'When digits line up by place (units under units), the eye can compare 640.00 and 12,040.50 at a glance.',
+                'The header takes the same alignment as its cells, so the two stay together.',
+              ],
               render: <Table caption="Totals" columns={PLAIN.filter((column) => ['id', 'total'].includes(column.key))} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
-              code: `const columns: TableColumn<Requisition>[] = [
+              code: `const columns = [
   { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
+  // Always format figures with the same number of decimals.
   { key: 'total', header: 'Total (CAD)', align: 'number', cell: (row) => money.format(row.total) },
 ];
 
@@ -346,7 +421,11 @@ export const Examples: StoryObj<typeof meta> = {
             },
             {
               title: 'A value pushed to the end',
-              when: 'A value that is not a figure and belongs at the right edge, such as a status.',
+              when: 'A value that is not a figure but belongs at the right edge.',
+              explain: [
+                '`align: \'end\'` right-aligns a value without the figure style. It is for text such as a status.',
+                'Use `\'start\'` (the default) for text. In a right-to-left language the two sides swap by themselves.',
+              ],
               render: (
                 <Table
                   caption="Statuses"
@@ -358,37 +437,47 @@ export const Examples: StoryObj<typeof meta> = {
                   getRowId={(row) => row.id}
                 />
               ),
-              code: `const columns: TableColumn<Requisition>[] = [
+              code: `const columns = [
   { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
+  // end: pushed to the trailing edge, in the normal text style.
   { key: 'status', header: 'Status', align: 'end', cell: (row) => row.status },
-];
-
-<Table caption="Statuses" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+];`,
             },
             {
               title: 'Badges in cells',
-              when: 'A status the reader scans for: a badge carries a word and a colour.',
+              when: 'A status the reader scans for.',
+              explain: [
+                '`cell` can return any content. A `Badge` carries a word and a colour, so the status is not told by colour alone (WCAG 1.4.1, A).',
+                'Map each status to a badge tone with a small lookup. Keep the mapping in one place.',
+              ],
               render: <Table caption="Requisitions" columns={BADGE_COLUMNS.filter((column) => column.key !== 'actions')} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
-              code: `const columns: TableColumn<Requisition>[] = [
-  { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
-  { key: 'status', header: 'Status', cell: (row) => <Badge status={toneOf(row.status)}>{row.status}</Badge> },
-];
+              code: `// One lookup from status to badge tone.
+const TONE = { Approved: 'success', Draft: 'neutral', Rejected: 'error', Pending: 'warning' };
 
-<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+const columns = [
+  { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
+  { key: 'status', header: 'Status', cell: (row) => <Badge status={TONE[row.status]}>{row.status}</Badge> },
+];`,
             },
             {
               title: 'Row actions',
-              when: 'A visible button per row, in an actions column. The header stays for assistive technology.',
+              when: 'A visible button on each row.',
+              explain: [
+                '`actions: true` marks the column as holding buttons. Its header stays for screen readers and is hidden from the eye.',
+                '`VisuallyHidden` adds the row id to each "Open" button\'s name. A screen reader then lists "Open REQ-1042", not four times "Open" (WCAG 2.4.4, A).',
+                'Keep actions visible. Do not show them on hover only: keyboard and touch users never hover (WCAG 2.1.1, A).',
+              ],
               render: <Table caption="Requisitions" columns={COLUMNS.filter((column) => ['id', 'total', 'actions'].includes(column.key)).map((column) => ({ ...column, sortable: false }))} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
-              code: `const columns: TableColumn<Requisition>[] = [
+              code: `const columns = [
   { key: 'id', header: 'Requisition', rowHeader: true, cell: (row) => row.id },
   { key: 'total', header: 'Total (CAD)', align: 'number', cell: (row) => money.format(row.total) },
   {
     key: 'actions',
-    header: 'Actions',
+    header: 'Actions',   // hidden from the eye, kept for screen readers
     actions: true,
     cell: (row) => (
-      <Button variant="tertiary">
+      <Button variant="tertiary" onClick={() => open(row.id)}>
+        {/* The hidden text adds the object to the name: "Open REQ-1042". */}
         Open<VisuallyHidden> {row.id}</VisuallyHidden>
       </Button>
     ),
@@ -399,18 +488,26 @@ export const Examples: StoryObj<typeof meta> = {
         },
         {
           title: 'Sorting',
-          kicker: 'The table asks for a sort. The caller sorts the rows and passes the sort back.',
+          kicker: 'The table asks for a sort. You sort the rows and pass the sort back.',
           examples: [
             {
               title: 'Sortable columns',
-              when: 'People look up exact values. Press a header to sort; press again to reverse. Each change is announced.',
+              when: 'People look up exact values.',
+              explain: [
+                '`sortable: true` on a column turns its header into a button. Pressing it asks for ascending order; pressing again asks for descending.',
+                'The table does not sort. It calls `onSortChange` with `{ key, direction }`; you sort the rows and pass `sort` back.',
+                'Each change is announced ("Sorted by Total (CAD), descending"), because a screen reader user cannot see rows move (WCAG 4.1.3, AA).',
+                '`aria-sort` marks the sorted header, and a chevron shows the direction to sighted users (WCAG 4.1.2, A).',
+              ],
               render: <SortableRequisitions />,
               code: `function SortableRequisitions() {
-  const [sort, setSort] = useState<TableSort | null>({ key: 'total', direction: 'descending' });
+  // sort: null = the order of your data.
+  const [sort, setSort] = useState({ key: 'total', direction: 'descending' });
   return (
     <Table
       caption="Requisitions"
       columns={columns}
+      // You sort. The table only shows the order you give it.
       rows={sortRows(rows, sort)}
       getRowId={(row) => row.id}
       sort={sort}
@@ -420,10 +517,21 @@ export const Examples: StoryObj<typeof meta> = {
 }`,
             },
             {
-              title: 'Sort set by the caller',
-              when: 'The view opens already sorted, for example by a saved preference. Pass sort without a handler to only show it.',
-              render: <Table caption="Requisitions" columns={PLAIN.map((column) => ({ ...column, sortable: column.key === 'total' }))} rows={sorted(FIRST_ROWS, { key: 'total', direction: 'descending' })} getRowId={(row) => row.id} sort={{ key: 'total', direction: 'descending' }} />,
-              code: '<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} sort={{ key: \'total\', direction: \'descending\' }} />',
+              title: 'Columns that do not sort',
+              when: 'Some columns have no useful order, such as a status or an action.',
+              explain: [
+                'A column sorts only when it has `sortable: true`. With `sortable: false`, or no `sortable`, the header is plain text: no button and no `aria-sort`.',
+                'Make a column sortable only when people look values up by it. Every sortable header is one more tab stop.',
+                'A `sort` prop always goes with `onSortChange`. The table has no read-only sort: a sortable header is always a button.',
+              ],
+              render: <Live selectable={false} rows={FIRST_ROWS} columns={PLAIN.map((column) => ({ ...column, sortable: column.key === 'id' || column.key === 'total' }))} />,
+              code: `const columns = [
+  { key: 'id', header: 'Requisition', rowHeader: true, sortable: true, cell: (row) => row.id },
+  // Not sortable: plain header text, no button.
+  { key: 'supplier', header: 'Supplier', sortable: false, cell: (row) => row.supplier },
+  { key: 'status', header: 'Status', sortable: false, cell: (row) => row.status },
+  { key: 'total', header: 'Total (CAD)', align: 'number', sortable: true, cell: (row) => money.format(row.total) },
+];`,
             },
           ],
         },
@@ -433,31 +541,64 @@ export const Examples: StoryObj<typeof meta> = {
           examples: [
             {
               title: 'Select rows',
-              when: 'People pick some rows to act on. A line under the table counts the selection.',
+              when: 'People pick some rows to act on.',
+              explain: [
+                'Giving `onSelectionChange` adds a column of native checkboxes. You hold the ids in state and pass them as `selectedIds`.',
+                'The header box selects all rows of this page and shows a mixed state when only some are selected.',
+                'A line under the table counts the selection: "1 of 4 rows on this page selected" (Nielsen heuristic 5, error prevention).',
+              ],
               render: <SelectableRequisitions />,
               code: `function SelectableRequisitions() {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  return <Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} selectedIds={selectedIds} onSelectionChange={setSelectedIds} />;
+  const [selectedIds, setSelectedIds] = useState([]);
+  return (
+    <Table
+      caption="Requisitions"
+      columns={columns}
+      rows={rows}
+      getRowId={(row) => row.id}
+      selectedIds={selectedIds}            // the ids that are checked
+      onSelectionChange={setSelectedIds}   // adds the checkbox column
+    />
+  );
 }`,
             },
             {
               title: 'Some rows selected at first',
-              when: 'The view restores a selection. The header box shows the mixed state.',
+              when: 'The view restores a selection.',
+              explain: [
+                'Start the state with ids. The matching rows show checked, and the header box shows the mixed state.',
+                'Selected rows have a fill and a checked box, so the state does not rest on colour alone (WCAG 1.4.1, A).',
+              ],
               render: <SelectableRequisitions initial={['REQ-1042', 'REQ-1043']} />,
               code: `function RestoredSelection() {
+  // Start with two ids already selected.
   const [selectedIds, setSelectedIds] = useState(['REQ-1042', 'REQ-1043']);
-  return <Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} selectedIds={selectedIds} onSelectionChange={setSelectedIds} />;
+  return (
+    <Table
+      caption="Requisitions"
+      columns={columns}
+      rows={rows}
+      getRowId={(row) => row.id}
+      selectedIds={selectedIds}
+      onSelectionChange={setSelectedIds}
+    />
+  );
 }`,
             },
             {
               title: 'Name each row by its supplier',
-              when: 'The row id is a poor name for a checkbox. getRowLabel gives a clearer one.',
-              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} getRowLabel={(row) => `${row.id}, ${row.supplier}`} selectedIds={[]} onSelectionChange={() => {}} />,
+              when: 'The row id is a poor name for a checkbox.',
+              explain: [
+                'Each checkbox has an invisible name, such as "Select REQ-1042". `getRowLabel` sets that text.',
+                'Pick text that tells a screen reader user which row it is: here the id and the supplier (WCAG 4.1.2, A).',
+              ],
+              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} getRowLabel={(row) => `${row.id}, ${row.supplier}`} selectedIds={[]} onSelectionChange={() => undefined} />,
               code: `<Table
   caption="Requisitions"
   columns={columns}
   rows={rows}
   getRowId={(row) => row.id}
+  // The checkbox name: "Select REQ-1042, Aciers Laurentides".
   getRowLabel={(row) => \`\${row.id}, \${row.supplier}\`}
   selectedIds={selectedIds}
   onSelectionChange={setSelectedIds}
@@ -465,14 +606,29 @@ export const Examples: StoryObj<typeof meta> = {
             },
             {
               title: 'A bulk action',
-              when: 'Selecting rows enables the action that works on them. The button says how many.',
+              when: 'Selecting rows enables the action that works on them.',
+              explain: [
+                'The button is disabled until a row is selected, and its label counts the selection ("Approve 2").',
+                'The count in the label tells the user what will happen before they press (Nielsen heuristic 1, visibility of system status).',
+                'Select all keeps ids from other pages. Say so in your UI if a bulk action reaches beyond this page (Nielsen heuristic 5, error prevention).',
+              ],
               render: <BulkApprove />,
               code: `function BulkApprove() {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selectedIds, setSelectedIds] = useState([]);
   return (
     <Stack gap={3} align="start">
-      <Button disabled={selectedIds.length === 0}>{selectedIds.length === 0 ? 'Approve' : \`Approve \${selectedIds.length}\`}</Button>
-      <Table caption="Requisitions to review" columns={columns} rows={rows} getRowId={(row) => row.id} selectedIds={selectedIds} onSelectionChange={setSelectedIds} />
+      {/* Disabled with nothing selected; the label counts what it will act on. */}
+      <Button disabled={selectedIds.length === 0} onClick={() => approve(selectedIds)}>
+        {selectedIds.length === 0 ? 'Approve' : \`Approve \${selectedIds.length}\`}
+      </Button>
+      <Table
+        caption="Requisitions to review"
+        columns={columns}
+        rows={rows}
+        getRowId={(row) => row.id}
+        selectedIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+      />
     </Stack>
   );
 }`,
@@ -480,63 +636,152 @@ export const Examples: StoryObj<typeof meta> = {
           ],
         },
         {
-          title: 'Density and size',
-          kicker: 'Comfortable rows are 32px. Compact rows keep every control at 24px or more.',
+          title: 'The data lifecycle',
+          kicker: 'Data goes through stages. The table keeps its header in each one, and each stage needs its own message so the reader never faces a blank area.',
           examples: [
             {
-              title: 'Compact',
-              when: 'A dense view with many rows, such as a back-office list.',
-              render: <Table caption="Requisitions" density="compact" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
-              code: '<Table caption="Requisitions" density="compact" columns={columns} rows={rows} getRowId={(row) => row.id} />',
+              title: 'Nothing: first use',
+              when: 'No record exists yet. Invite the reader to create one.',
+              explain: [
+                '`empty` shows one spanning row in place of the rows. You write the words and the button, because only you know the next step.',
+                'Say what the table is for and how to start. Do not say "no results": no search has run.',
+                'Why it matters: an empty grid with only headers looks broken. A new user does not know whether to wait or act.',
+              ],
+              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} empty={<Stack gap={2} align="start"><Text>No requisitions yet. Create your first one.</Text><Button variant="secondary">New requisition</Button></Stack>} />,
+              code: `<Table
+  caption="Requisitions"
+  columns={columns}
+  rows={[]}   // no rows: the empty slot shows
+  getRowId={(row) => row.id}
+  empty={
+    <Stack gap={2} align="start">
+      <Text>No requisitions yet. Create your first one.</Text>
+      <Button variant="secondary" onClick={createRequisition}>New requisition</Button>
+    </Stack>
+  }
+/>`,
             },
             {
-              title: 'Comfortable',
-              when: 'The default: a table people read more than scan.',
-              render: <Table caption="Requisitions" density="comfortable" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
-              code: '<Table caption="Requisitions" density="comfortable" columns={columns} rows={rows} getRowId={(row) => row.id} />',
+              title: 'None: no match',
+              when: 'A search or filter returned nothing.',
+              explain: [
+                'The same `empty` slot, with different words. First use says "start here"; no match says "your filter found nothing".',
+                'Repeat the term the reader typed. Offer a way back, such as "Clear the filter".',
+                'Why it matters: "No requisitions yet" after a search makes the reader fear their data is gone.',
+              ],
+              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} empty={<Text>No requisition matches “copper”.</Text>} />,
+              code: `<Table
+  caption="Requisitions"
+  columns={columns}
+  rows={matches}   // [] after a filter found nothing
+  getRowId={(row) => row.id}
+  empty={<Text>No requisition matches “{query}”.</Text>}
+/>`,
             },
             {
-              title: 'Wide table in a narrow space',
-              when: 'More columns than the width: the region scrolls sideways inside its own box, and keyboard users can scroll it.',
-              frame: 'narrow',
-              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
-              code: '<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />',
+              title: 'Loading',
+              when: 'The rows are on their way.',
+              explain: [
+                '`loading` draws grey placeholder rows in each column\'s own alignment. The page does not jump when the data arrives (Nielsen heuristic 1, visibility of system status).',
+                'The table sets `aria-busy="true"` and puts a visually hidden "Loading rows" phrase in the first placeholder cell. It is plain text, not a live region: a screen reader finds it when it reads the table, and may not announce it on its own.',
+                'Pass `rows={[]}` while you wait. The headers stay, so the reader sees the shape of the data.',
+              ],
+              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} loading />,
+              code: `<Table
+  caption="Requisitions"
+  columns={columns}
+  rows={rows ?? []}   // nothing yet while loading
+  getRowId={(row) => row.id}
+  loading={isLoading}
+/>`,
             },
-          ],
-        },
-        {
-          title: 'States',
-          kicker: 'The caller owns the words. The table keeps its header in every state.',
-          examples: [
-            { title: 'Loading', when: 'Rows are on their way. Skeleton rows keep the columns\' alignment.', render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} loading />, code: '<Table caption="Requisitions" columns={columns} rows={[]} getRowId={(row) => row.id} loading />' },
-            { title: 'Loading, three rows', when: 'You know about how many rows will arrive: match skeletonRows.', render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} />, code: '<Table caption="Requisitions" columns={columns} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} />' },
+            {
+              title: 'Loading, with a known count',
+              when: 'You know about how many rows will arrive.',
+              explain: [
+                '`skeletonRows` sets the number of placeholder rows. The default is 5.',
+                'A close match to the real count keeps the page still when the rows arrive.',
+              ],
+              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} />,
+              code: `<Table caption="Requisitions" columns={columns} rows={[]} getRowId={(row) => row.id} loading={isLoading} skeletonRows={3} />`,
+            },
             {
               title: 'Loading with selection',
-              when: 'The selection column draws a skeleton box per row. The selection count is hidden while loading.',
-              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} selectedIds={[]} onSelectionChange={() => {}} />,
-              code: '<Table caption="Requisitions" columns={columns} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} selectedIds={[]} onSelectionChange={setSelectedIds} />',
-            },
-            {
-              title: 'Empty, first use',
-              when: 'No record exists yet. Invite the reader to create one.',
-              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} empty={<Stack gap={2} align="start"><Text>No requisitions yet. Create your first one.</Text><Button variant="secondary">New requisition</Button></Stack>} />,
+              when: 'The table has a checkbox column.',
+              explain: [
+                'The checkbox column draws a placeholder box per row.',
+                'The selection count line is hidden while loading, because there is nothing to count yet.',
+              ],
+              render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} loading skeletonRows={3} selectedIds={[]} onSelectionChange={() => undefined} />,
               code: `<Table
   caption="Requisitions"
   columns={columns}
   rows={[]}
   getRowId={(row) => row.id}
-  empty={
-    <Stack gap={2} align="start">
-      <Text>No requisitions yet. Create your first one.</Text>
-      <Button variant="secondary">New requisition</Button>
-    </Stack>
-  }
+  loading={isLoading}
+  skeletonRows={3}
+  selectedIds={selectedIds}
+  onSelectionChange={setSelectedIds}
 />`,
             },
-            { title: 'Empty, no match', when: 'A filter returned nothing. Say what happened.', render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} empty={<Text>No requisition matches “copper”.</Text>} />, code: '<Table caption="Requisitions" columns={columns} rows={[]} getRowId={(row) => row.id} empty={<Text>No requisition matches “copper”.</Text>} />' },
+            {
+              title: 'One row',
+              when: 'The result holds a single record.',
+              explain: [
+                'It is still a table. Do not switch layout for one row: the page would change shape when a second row arrives.',
+                'A screen reader still announces the header with each cell.',
+              ],
+              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS.slice(0, 1)} getRowId={(row) => row.id} />,
+              code: `<Table caption="Requisitions" columns={columns} rows={rows.slice(0, 1)} getRowId={(row) => row.id} />`,
+            },
+            {
+              title: 'Some rows',
+              when: 'The normal case: a handful of records.',
+              explain: [
+                'This is the table as designed. See "Columns and rows" for the cells and "Sorting" and "Selection" for the tools.',
+                'Hover fills the row on devices that hover. Selected rows keep their fill and a checked box.',
+              ],
+              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: `<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+            },
+            {
+              title: 'Many rows: page them',
+              when: 'More rows than one screen holds.',
+              explain: [
+                'The table draws every row it gets and does not page. You slice the rows and pass one page at a time.',
+                'Add `Pagination` under the table. It shows where the reader is ("1–4 of 8") and moves between pages. Pass `status` so a screen reader hears each page change (WCAG 4.1.3, AA).',
+                'Why it matters: a table of hundreds of rows is slow and hard to scan. Pages keep it light.',
+              ],
+              render: <PagedRequisitions />,
+              code: `function PagedRequisitions() {
+  const [page, setPage] = useState(1);
+  // Take one page of four rows from the full data.
+  const pageRows = rows.slice((page - 1) * 4, page * 4);
+  return (
+    <Stack gap={3}>
+      <Table caption="Requisitions" columns={columns} rows={pageRows} getRowId={(row) => row.id} />
+      <Pagination
+        label="Requisitions pages"
+        page={page}
+        pageCount={Math.ceil(rows.length / 4)}
+        onPageChange={setPage}
+        // A hidden status line announces each page change.
+        status={\`Page \${page} of \${Math.ceil(rows.length / 4)}\`}
+        total={\`\${(page - 1) * 4 + 1}–\${Math.min(page * 4, rows.length)} of \${rows.length}\`}
+      />
+    </Stack>
+  );
+}`,
+            },
             {
               title: 'Error with a retry',
-              when: 'The rows failed to load. One spanning row holds the alert and a retry.',
+              when: 'The rows failed to load.',
+              explain: [
+                '`error` replaces the rows with one spanning row. It has `role="alert"`, so a screen reader may read it at once. The alert mounts together with its message, and such a region is not always read (WCAG 4.1.3, AA).',
+                'The message is text. Colour only reinforces it (WCAG 1.4.1, A).',
+                'Add a retry button. Without one, the reader is stuck (Nielsen heuristic 9, help users recover from errors).',
+                'Why it matters: a table that stays empty after a failure looks like it is still loading.',
+              ],
               render: <Table caption="Requisitions" columns={PLAIN} rows={[]} getRowId={(row) => row.id} error={<Stack gap={2} align="start"><Text>The requisitions did not load.</Text><Button variant="secondary">Try again</Button></Stack>} />,
               code: `<Table
   caption="Requisitions"
@@ -546,37 +791,159 @@ export const Examples: StoryObj<typeof meta> = {
   error={
     <Stack gap={2} align="start">
       <Text>The requisitions did not load.</Text>
-      <Button variant="secondary">Try again</Button>
+      {/* retry runs your request again. */}
+      <Button variant="secondary" onClick={retry}>Try again</Button>
     </Stack>
   }
 />`,
             },
             {
-              title: 'Partial',
-              when: 'Some rows loaded and some did not. Keep the rows and say what is missing.',
+              title: 'Partial: some rows missing',
+              when: 'Some rows loaded and some did not.',
+              explain: [
+                'Keep the rows you have. `partial` adds a status row under them that says what is missing.',
+                'It has `role="status"`, which a screen reader may read politely. It mounts with its text, so it is not always read. The reader keeps what they have and learns what they lack.',
+                'Why it matters: hiding every row for one failure throws away data the reader could use.',
+              ],
               render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS.slice(0, 2)} getRowId={(row) => row.id} partial={<Text>6 requisitions did not load.</Text>} />,
-              code: '<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} partial={<Text>6 requisitions did not load.</Text>} />',
+              code: `<Table
+  caption="Requisitions"
+  columns={columns}
+  rows={rows}
+  getRowId={(row) => row.id}
+  partial={<Text>6 requisitions did not load.</Text>}
+/>`,
+            },
+            {
+              title: 'All states in one component',
+              when: 'Your real table loads data. Press each state to see what changes.',
+              explain: [
+                'Map your request status to the props. The table does not fetch: you do.',
+                'Pass `loading`, `empty`, `error` and `partial` together. Only the one that applies shows.',
+                'The `empty` words depend on the cause: first use or no match. Press "empty" and "none" to see both.',
+              ],
+              render: <TableLifecycle />,
+              code: `function RequisitionTable({ status, rows, query, retry }) {
+  // status: 'loading' | 'error' | 'partial' | 'ready', from your data hook.
+  return (
+    <Table
+      caption="Requisitions"
+      columns={columns}
+      rows={rows}            // [] while loading or failed
+      getRowId={(row) => row.id}
+      loading={status === 'loading'}
+      // Different words for first use and for no match.
+      empty={query ? <Text>No requisition matches “{query}”.</Text> : <Text>No requisitions yet. Create your first one.</Text>}
+      error={
+        status === 'error' && (
+          <Stack gap={2} align="start">
+            <Text>The requisitions did not load.</Text>
+            <Button variant="secondary" onClick={retry}>Try again</Button>
+          </Stack>
+        )
+      }
+      partial={status === 'partial' && <Text>6 requisitions did not load.</Text>}
+    />
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Density and size',
+          kicker: 'Comfortable rows are 32px high. Compact rows keep every control at 24px or more.',
+          examples: [
+            {
+              title: 'Comfortable',
+              when: 'The default: a table people read more than scan.',
+              explain: [
+                '`density` defaults to `"comfortable"`, so the prop can be left out.',
+                'Rows are at least 32px high, which gives checkboxes and buttons room.',
+              ],
+              render: <Table caption="Requisitions" density="comfortable" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: `<Table caption="Requisitions" density="comfortable" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+            },
+            {
+              title: 'Compact',
+              when: 'A dense view with many rows, such as a back-office list.',
+              explain: [
+                '`compact` trims the vertical padding to fit more rows on screen.',
+                'Controls stay at 24px or more, the minimum target size (WCAG 2.5.8, AA).',
+                'Use it for expert users who scan a lot of rows. Beginners read better in comfortable.',
+              ],
+              render: <Table caption="Requisitions" density="compact" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: `<Table caption="Requisitions" density="compact" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+            },
+            {
+              title: 'Wide table in a narrow space',
+              when: 'More columns than the width allows.',
+              explain: [
+                'The table scrolls sideways inside its own box. The page itself does not stretch.',
+                'The scroll box can take focus, so keyboard users can scroll it with the arrow keys.',
+                'On screens 768px wide or less, the table re-lays itself as a stack of cards. Each value gets its column name beside it.',
+              ],
+              frame: 'narrow',
+              render: <Table caption="Requisitions" columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />,
+              code: `// Nothing to set: the scroll box and the card stack are built in.
+<Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />`,
+            },
+            {
+              title: 'Sticky header',
+              when: 'A long table where the headers should stay in view while scrolling.',
+              explain: [
+                '`sticky` keeps the header row at the top of the scroll box.',
+                'Sticky needs a box that scrolls. Give the table a `max-block-size` in your own CSS (see next example).',
+                'A focused row is never hidden under the header: the box keeps room for it (WCAG 2.4.11, AA).',
+              ],
+              code: `// sticky: the header stays visible while the rows scroll.
+// className: lets your CSS cap the height (see the next example).
+<Table
+  caption="Requisitions"
+  columns={columns}
+  rows={rows}
+  getRowId={(row) => row.id}
+  sticky
+  className="requisitions-table"
+/>`,
+            },
+            {
+              title: 'Sticky header: the height cap',
+              when: 'The CSS that goes with sticky.',
+              explain: [
+                '`max-block-size` is the maximum height. Past it, the rows scroll inside the box and the header stays.',
+                'Use a design token for the size, not a pixel value: `calc(var(--ds-space-12) * 6)`.',
+              ],
+              lang: 'css',
+              code: `/* A height cap makes the box scroll, so the sticky header has something to stick to. */
+.requisitions-table {
+  max-block-size: calc(var(--ds-space-12) * 6);
+}`,
             },
           ],
         },
         {
           title: 'Composition',
-          kicker: 'Paging, filtering and fetching belong to the caller.',
+          kicker: 'Paging, filtering and fetching belong to you. The table only draws.',
           examples: [
             {
-              title: 'With pagination',
-              when: 'More rows than one page. The caller slices the rows; the pagination component moves between pages.',
-              render: <PagedRequisitions />,
-              code: `function PagedRequisitions() {
-  const [page, setPage] = useState(1);
-  const rows = allRows.slice((page - 1) * 4, page * 4);
-  return (
-    <Stack gap={3}>
-      <Table caption="Requisitions" columns={columns} rows={rows} getRowId={(row) => row.id} />
-      <Pagination label="Requisitions pages" page={page} pageCount={2} onPageChange={setPage} total={\`\${(page - 1) * 4 + 1}–\${Math.min(page * 4, allRows.length)} of \${allRows.length}\`} />
-    </Stack>
-  );
-}`,
+              title: 'Table in a section',
+              when: 'A table under a heading, with a short note.',
+              explain: [
+                'A visible heading names the section. `hideCaption` keeps the caption for assistive technology and avoids saying the name twice.',
+                '`Stack` spaces the parts. `gap={2}` is the `space.2` token (8px): the heading and the table read as one block.',
+              ],
+              render: (
+                <Stack gap={2}>
+                  <Text as="h2">Open requisitions</Text>
+                  <Text variant="caption" tone="muted" as="p">Approved requisitions are ordered each Monday.</Text>
+                  <Table caption="Open requisitions" hideCaption columns={PLAIN} rows={FIRST_ROWS} getRowId={(row) => row.id} />
+                </Stack>
+              ),
+              code: `<Stack gap={2}>
+  <Text as="h2">Open requisitions</Text>
+  <Text variant="caption" tone="muted" as="p">Approved requisitions are ordered each Monday.</Text>
+  <Table caption="Open requisitions" hideCaption columns={columns} rows={rows} getRowId={(row) => row.id} />
+</Stack>`,
             },
           ],
         },
@@ -586,8 +953,13 @@ export const Examples: StoryObj<typeof meta> = {
           examples: [
             {
               title: 'Another language',
-              when: 'The app is not in English: pass labels for the select boxes, the sort announcement, the count and the wait.',
-              render: <Table caption="Réquisitions" columns={PLAIN.map((column) => ({ ...column, sortable: column.key === 'total' }))} rows={FIRST_ROWS} getRowId={(row) => row.id} selectedIds={['REQ-1042']} onSelectionChange={() => {}} labels={FRENCH_LABELS} />,
+              when: 'The app is not in English.',
+              explain: [
+                '`labels` replaces the phrases the table speaks or prints: the select boxes, the sort announcement, the count and the wait.',
+                'Each label is a function or a string. You can pass only the ones you change; the others keep their English default.',
+                'Why it matters: a French page that speaks English labels is confusing for screen reader users. Translate every label you use.',
+              ],
+              render: <Table caption="Réquisitions" columns={PLAIN.map((column) => ({ ...column, sortable: column.key === 'total' }))} rows={FIRST_ROWS} getRowId={(row) => row.id} selectedIds={['REQ-1042']} onSelectionChange={() => undefined} labels={FRENCH_LABELS} />,
               code: `<Table
   caption="Réquisitions"
   columns={columns}
@@ -612,9 +984,15 @@ export const Examples: StoryObj<typeof meta> = {
           examples: [
             {
               title: 'Row header',
-              when: 'Mark the human-readable identifier column with rowHeader, so a screen reader announces it with each cell.',
-              render: <Table caption="Requisitions" columns={PLAIN.filter((column) => column.key !== 'status')} rows={FIRST_ROWS.slice(0, 3)} getRowId={(row) => row.id} />,
-              code: `const columns: TableColumn<Requisition>[] = [
+              when: 'Mark the human-readable name of the row.',
+              explain: [
+                '`rowHeader: true` makes the cell a row header (`th scope="row"`). A screen reader says its text before each other cell of the row.',
+                'Pick the column people use to name the row. Here it is the supplier name, which people say aloud; in the first example it is the requisition number, which people quote. Avoid a database id nobody reads (Nielsen heuristic 2, match between the system and the real world).',
+                'Mark one column only.',
+              ],
+              render: <Table caption="Requisitions" columns={PLAIN.filter((column) => ['supplier', 'total'].includes(column.key)).map((column) => ({ ...column, rowHeader: column.key === 'supplier' }))} rows={FIRST_ROWS.slice(0, 3)} getRowId={(row) => row.id} />,
+              code: `const columns = [
+  // The supplier names the row, so it is the row header.
   { key: 'supplier', header: 'Supplier', rowHeader: true, cell: (row) => row.supplier },
   { key: 'total', header: 'Total (CAD)', align: 'number', cell: (row) => money.format(row.total) },
 ];`,

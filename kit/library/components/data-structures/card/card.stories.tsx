@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
@@ -156,6 +156,39 @@ export const Advisories: StoryObj<typeof meta> = {
   render: () => <AdvisoriesPage name="Card" layer="Component" family="Data structures" rules={cardRules} guide="data-structures-card--docs" guideName="Card" />,
 };
 
+type CardState = 'loading' | 'empty' | 'error' | 'ready';
+
+/** Switches one card through its data states, so the reader sees each one replace the body. */
+function CardLifecycle() {
+  const [state, setState] = useState<CardState>('loading');
+  const states: CardState[] = ['loading', 'empty', 'error', 'ready'];
+  return (
+    <Stack gap={3}>
+      <Stack direction="horizontal" gap={2} wrap role="group" aria-label="Card state">
+        {states.map((name) => (
+          <Button key={name} variant="secondary" aria-pressed={state === name} onClick={() => setState(name)}>{name}</Button>
+        ))}
+      </Stack>
+      <Card
+        title="Kitchen renovation"
+        meta="On track"
+        loading={state === 'loading'}
+        empty={<Text>No notes on this project yet.</Text>}
+        error={
+          state === 'error' && (
+            <Stack gap={2} align="start">
+              <Text>The project did not load.</Text>
+              <Button variant="secondary" onClick={() => setState('loading')}>Try again</Button>
+            </Stack>
+          )
+        }
+      >
+        {state === 'ready' && <Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text>}
+      </Card>
+    </Stack>
+  );
+}
+
 export const Examples: StoryObj<typeof meta> = {
   name: 'Examples',
   render: () => (
@@ -163,7 +196,15 @@ export const Examples: StoryObj<typeof meta> = {
       name="Card"
       layer="Component"
       family="Data structures"
-      imports="import { Badge, Button, Card, Stack, Text } from '@acme/design-system';"
+      imports="import { Badge, Button, Card, List, Stack, Text } from '@acme/design-system';"
+      intro={[
+        'A card is a bordered box that sums up one thing: a project, a person, a product. Think of the cover of a folder.',
+        'Only `title` is required. `meta`, the body (`children`) and `footer` are optional parts that you add as needed.',
+        'The title is a heading (a line that titles a section, which screen readers can jump to). Set `headingLevel` from the page outline, never for looks.',
+        'Add `href` and the whole card becomes one link, named by its title. Without `href` the card is static: it does nothing when pressed.',
+        'A card has four data states: loading, empty, error and ready. You pass the words for each one. The card keeps its header and its size in all of them.',
+        'Names such as `project` or `save` stand for your own data and functions.',
+      ]}
       guide="data-structures-card--docs"
       guideName="Card"
       groups={[
@@ -171,22 +212,112 @@ export const Examples: StoryObj<typeof meta> = {
           title: 'Basics',
           kicker: 'A card summarises one entity. The title is required; every other part is optional.',
           examples: [
-            { title: 'Title and body', when: 'The smallest card: a name and a few lines of detail.', render: <Card title="Kitchen renovation"><Text>Cabinets arrive on 14 October.</Text></Card> },
-            { title: 'With meta', when: 'A short status word or date beside the title. It is text, never a control.', render: <Card title="Kitchen renovation" meta="On track"><Text>Cabinets arrive on 14 October.</Text></Card> },
-            { title: 'With a footer', when: 'A note at the bottom: who changed the entity, and when.', render: <Card title="Kitchen renovation" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October.</Text></Card> },
-            { title: 'Every part', when: 'A full summary: title, meta, body and footer.', render: <Card title="Kitchen renovation" meta="On track" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text></Card> },
-            { title: 'Title only', when: 'The entity has no detail yet. The card still shows its name.', render: <Card title="Garden shed" /> },
+            {
+              title: 'Title and body',
+              when: 'The smallest useful card: a name and a few lines of detail.',
+              explain: [
+                '`title` is required. It renders as a heading, so screen reader users can jump from card to card by heading (WCAG 1.3.1, A).',
+                'Everything between the tags is the body. It can be any content: text, a badge, a stack of both.',
+                'The card has a border and no shadow. A shadow means "this floats above the page", and a card does not float (elevation foundation).',
+              ],
+              render: <Card title="Kitchen renovation"><Text>Cabinets arrive on 14 October.</Text></Card>,
+              code: `// One entity per card. The title names it; the body gives the detail.
+<Card title="Kitchen renovation">
+  <Text>Cabinets arrive on 14 October.</Text>
+</Card>`,
+            },
+            {
+              title: 'With meta',
+              when: 'A short status word or a date beside the title.',
+              explain: [
+                '`meta` sits at the end of the header, on the same line as the title when there is room.',
+                'It is text for reading, never a control. A button here would break the rule that a card holds at most one action.',
+                'Keep it to a word or two. Long text belongs in the body.',
+              ],
+              render: <Card title="Kitchen renovation" meta="On track"><Text>Cabinets arrive on 14 October.</Text></Card>,
+              code: `// meta: a status word or date. Short, and never interactive.
+<Card title="Kitchen renovation" meta="On track">
+  <Text>Cabinets arrive on 14 October.</Text>
+</Card>`,
+            },
+            {
+              title: 'With a footer',
+              when: 'A note at the bottom: who changed the entity, and when.',
+              explain: [
+                '`footer` renders in a separate row under the body, in smaller muted text.',
+                'Use it for facts about the card ("Updated Monday"), not for its main content.',
+                'It takes any content. On a card with `href`, keep it to text (see "As a link").',
+              ],
+              render: <Card title="Kitchen renovation" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October.</Text></Card>,
+              code: `// footer: facts about the card, such as who changed it.
+<Card title="Kitchen renovation" footer="Updated Monday by Marie">
+  <Text>Cabinets arrive on 14 October.</Text>
+</Card>`,
+            },
+            {
+              title: 'Every part',
+              when: 'A full summary: title, meta, body and footer.',
+              explain: [
+                'The parts always appear in the same order: header (title and meta), body, footer. The order is fixed on purpose, so cards in a grid line up.',
+                'People scan a set of cards by the same spot in each. A fixed order makes the scan fast (Nielsen heuristic 4, consistency).',
+              ],
+              render: <Card title="Kitchen renovation" meta="On track" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text></Card>,
+              code: `<Card title="Kitchen renovation" meta="On track" footer="Updated Monday by Marie">
+  <Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text>
+</Card>`,
+            },
+            {
+              title: 'Title only',
+              when: 'The entity has no detail yet, but it still exists and has a name.',
+              explain: [
+                'With no body, no `empty` and no `loading`, the card shows just its header.',
+                'If the card should say why it is empty, pass `empty` instead (see "The data lifecycle").',
+              ],
+              render: <Card title="Garden shed" />,
+              code: `// No children: only the header shows.
+<Card title="Garden shed" />`,
+            },
           ],
         },
         {
           title: 'As a link',
-          kicker: 'With href, the title is the one link and its target covers the card.',
+          kicker: 'With href, the title is the one link, and its target covers the whole card.',
           examples: [
-            { title: 'Linked card', when: 'The card opens the entity it summarises. Click anywhere on it.', render: <Card title="Kitchen renovation" meta="On track" href="#kitchen"><Text>Cabinets arrive on 14 October.</Text></Card> },
-            { title: 'Linked card with a text footer', when: 'A linked card needs a note at the bottom. The footer holds text only.', render: <Card title="Kitchen renovation" href="#kitchen" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October.</Text></Card> },
+            {
+              title: 'Linked card',
+              when: 'The card opens the entity it sums up. Anywhere on the card works as a click.',
+              explain: [
+                '`href` turns the title into a link and stretches the link over the whole card. A wide target is easy to hit (WCAG 2.5.8, AA).',
+                'Keyboard users get one tab stop per card, not one per part. The focus ring goes around the whole card (WCAG 2.4.7, AA).',
+                'The link text is the title, so a list of links reads "Kitchen renovation", not "Open" (WCAG 2.4.4, A).',
+              ],
+              render: <Card title="Kitchen renovation" meta="On track" href="#kitchen"><Text>Cabinets arrive on 14 October.</Text></Card>,
+              code: `// href: the whole card is one link, named by the title.
+<Card title="Kitchen renovation" meta="On track" href="/projects/kitchen">
+  <Text>Cabinets arrive on 14 October.</Text>
+</Card>`,
+            },
+            {
+              title: 'Linked card with a text footer',
+              when: 'A linked card needs a note at the bottom.',
+              explain: [
+                'The footer of a linked card holds text only. The card is already one link, and a link inside a link does not work.',
+                'If you put a button here, the stretched link covers it and nobody can press it (WCAG 4.1.2, A).',
+              ],
+              render: <Card title="Kitchen renovation" href="#kitchen" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October.</Text></Card>,
+              code: `// A string in the footer is safe. A button or a link there is not.
+<Card title="Kitchen renovation" href="/projects/kitchen" footer="Updated Monday by Marie">
+  <Text>Cabinets arrive on 14 October.</Text>
+</Card>`,
+            },
             {
               title: 'Static card with two actions',
-              when: 'The card needs more than one action: leave the title unlinked and put the buttons in the footer.',
+              when: 'The card needs more than one action. Leave the title unlinked and put buttons in the footer.',
+              explain: [
+                'No `href`, so the title is plain text and the card has no hover or focus of its own.',
+                'Each button is a separate tab stop, with its own name. That is the right shape when there is more than one action.',
+                '`Stack direction="horizontal"` with `wrap` lays the buttons in a row and lets them drop to a second line on a narrow screen (WCAG 1.4.10, AA).',
+              ],
               render: (
                 <Card
                   title="Kitchen renovation"
@@ -200,20 +331,97 @@ export const Examples: StoryObj<typeof meta> = {
                   <Text>Cabinets arrive on 14 October.</Text>
                 </Card>
               ),
+              code: `<Card
+  title="Kitchen renovation"
+  footer={
+    <Stack direction="horizontal" gap={3} wrap>
+      {/* The quiet action first, the main one last. */}
+      <Button variant="secondary" onClick={archive}>Archive</Button>
+      <Button onClick={openProject}>Open project</Button>
+    </Stack>
+  }
+>
+  <Text>Cabinets arrive on 14 October.</Text>
+</Card>`,
             },
           ],
         },
         {
-          title: 'States',
-          kicker: 'The caller owns the words of every state. The card keeps its header and its size.',
+          title: 'The data lifecycle',
+          kicker: 'Data is not always there. Each state tells the reader what is going on, so they never face a blank box. You write the words; the card keeps its header and its size.',
           examples: [
-            { title: 'Loading', when: 'The body is on its way. Two placeholder lines hold its space.', render: <Card title="Kitchen renovation" meta="On track" loading /> },
-            { title: 'Loading, with its own label', when: 'The app is not in English: pass the spoken text for the wait.', render: <Card title="Rénovation de cuisine" loading loadingLabel="Chargement du projet" /> },
-            { title: 'Linked card, loading', when: 'The title is known and links already. Only the body waits.', render: <Card title="Kitchen renovation" href="#kitchen" loading /> },
-            { title: 'Empty', when: 'The entity exists but has no content. Say why, and what to do.', render: <Card title="Kitchen renovation" empty={<Text>No notes on this project yet.</Text>} /> },
+            {
+              title: 'Nothing: no card yet',
+              when: 'The entity does not exist yet, or you have not asked for it.',
+              explain: [
+                'A card always shows one entity. With no entity, render no card. An empty frame with no title is confusing.',
+                'Show the next step instead: a message and a button that creates the first one. See the empty-results pattern.',
+                'Why it matters: a blank screen looks broken. People cannot tell "still waiting" from "nothing here" from "failed".',
+              ],
+              code: `// No project yet: skip the card and invite the user to start.
+{project ? (
+  <Card title={project.name}>
+    <Text>{project.summary}</Text>
+  </Card>
+) : (
+  <Text>No project yet. Create your first one.</Text>
+)}`,
+            },
+            {
+              title: 'Loading',
+              when: 'The body is on its way. The title is already known.',
+              explain: [
+                '`loading` replaces the body with two grey placeholder lines. They hold the space, so the grid does not jump when the data arrives (Nielsen heuristic 1, visibility of system status).',
+                'The card sets `aria-busy="true"` and a hidden "Loading" phrase, so screen reader users know it is not ready.',
+                'Why it matters: without it, the card looks empty for a moment, and people think nothing exists.',
+              ],
+              render: <Card title="Kitchen renovation" meta="On track" loading />,
+              code: `// loading: placeholder lines hold the space of the body.
+<Card title="Kitchen renovation" meta="On track" loading={isLoading} />`,
+            },
+            {
+              title: 'Loading, in another language',
+              when: 'The app is not in English: pass the text that assistive technology speaks during the wait.',
+              explain: [
+                '`loadingLabel` is read aloud but never shown. Its default is "Loading".',
+                'Pass your own text in your own language, or screen reader users hear English in a French page.',
+              ],
+              render: <Card title="Rénovation de cuisine" loading loadingLabel="Chargement du projet" />,
+              code: `<Card title="Rénovation de cuisine" loading={isLoading} loadingLabel="Chargement du projet" />`,
+            },
+            {
+              title: 'Loading a linked card',
+              when: 'The title is known and links already. Only the body waits.',
+              explain: [
+                'The link works during loading, because the title and `href` are known. The reader can open the entity without waiting for the summary.',
+                'Only the body is a placeholder. Do not block what you can already show.',
+              ],
+              render: <Card title="Kitchen renovation" href="#kitchen" loading />,
+              code: `<Card title="Kitchen renovation" href="/projects/kitchen" loading={isLoading} />`,
+            },
+            {
+              title: 'Empty',
+              when: 'The entity exists but has no content yet.',
+              explain: [
+                '`empty` shows only when there are no children. You supply the words, because only you know what is missing.',
+                'Say what is missing and, if you can, what to do. "No notes yet" is clearer than a blank body (Nielsen heuristic 1, visibility of system status).',
+                'Why it matters: an empty body looks like a bug. A sentence turns it into a known state.',
+              ],
+              render: <Card title="Kitchen renovation" empty={<Text>No notes on this project yet.</Text>} />,
+              code: `// empty shows when there are no children.
+<Card title="Kitchen renovation" empty={<Text>No notes on this project yet.</Text>}>
+  {project.notes}
+</Card>`,
+            },
             {
               title: 'Error with a retry',
-              when: 'The body failed to load. The alert replaces the body; a retry sits inside it.',
+              when: 'The body failed to load.',
+              explain: [
+                '`error` replaces the body and has `role="alert"`, so a screen reader may read it at once (WCAG 4.1.3, AA). The alert mounts together with its message, and such a region is not always read: keep a visible retry next to it.',
+                'Put a retry button inside it. Without one, the reader is stuck (Nielsen heuristic 9, help users recover from errors).',
+                'Say what failed in plain words. Do not show a code such as "Error 500".',
+                'Why it matters: silence after a failure reads as "still loading". People wait forever.',
+              ],
               render: (
                 <Card
                   title="Kitchen renovation"
@@ -225,6 +433,119 @@ export const Examples: StoryObj<typeof meta> = {
                   }
                 />
               ),
+              code: `<Card
+  title="Kitchen renovation"
+  error={
+    <Stack gap={2} align="start">
+      <Text>The project did not load.</Text>
+      {/* A way out: retry runs your request again. */}
+      <Button variant="secondary" onClick={retry}>Try again</Button>
+    </Stack>
+  }
+/>`,
+            },
+            {
+              title: 'Ready',
+              when: 'The data arrived. This is the normal card, for one entity.',
+              explain: [
+                'When there are children and no `loading` or `error`, the card shows its body. There is no `ready` prop: ready is the absence of the others.',
+                'The slot order decides what wins: `loading`, then `error`, then children, then `empty`.',
+              ],
+              render: <Card title="Kitchen renovation" meta="On track" footer="Updated Monday by Marie"><Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text></Card>,
+              code: `<Card title="Kitchen renovation" meta="On track" footer="Updated Monday by Marie">
+  <Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text>
+</Card>`,
+            },
+            {
+              title: 'All four states in one component',
+              when: 'Your real card loads data. Press each state to see what replaces the body.',
+              explain: [
+                'One component maps your request status to the props. The card does not fetch: you do.',
+                'Pass `loading`, `error` and `empty` every time, and let the status pick which one shows. Props that do not apply stay out of the way.',
+                'Press "error", then "Try again": the retry puts the card back into loading, as your own retry would.',
+              ],
+              render: <CardLifecycle />,
+              code: `function ProjectCard({ status, project, retry }) {
+  // status: 'loading' | 'error' | 'ready', from your data hook.
+  return (
+    <Card
+      title="Kitchen renovation"
+      meta="On track"
+      loading={status === 'loading'}
+      empty={<Text>No notes on this project yet.</Text>}
+      error={
+        status === 'error' && (
+          <Stack gap={2} align="start">
+            <Text>The project did not load.</Text>
+            <Button variant="secondary" onClick={retry}>Try again</Button>
+          </Stack>
+        )
+      }
+    >
+      {/* No children while loading or failed: the matching slot shows. */}
+      {status === 'ready' && <Text>{project.summary}</Text>}
+    </Card>
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'One, some and many',
+          kicker: 'A card is one entity. Several cards sit side by side. Past about a dozen, switch shape.',
+          examples: [
+            {
+              title: 'One card',
+              when: 'A page about a single entity, such as a project overview.',
+              explain: [
+                'A single card is fine. It does not need a grid.',
+                'Use `headingLevel={2}` when the card is the first thing under the page title.',
+              ],
+              render: <Card title="Kitchen renovation" headingLevel={2} meta="On track"><Text>Cabinets arrive on 14 October.</Text></Card>,
+              code: `<Card title="Kitchen renovation" headingLevel={2} meta="On track">
+  <Text>Cabinets arrive on 14 October.</Text>
+</Card>`,
+            },
+            {
+              title: 'Some cards',
+              when: 'A few entities of one kind. Each is a link to its own page.',
+              explain: [
+                '`Stack` spaces the cards. `gap={4}` is the `space.4` token (16px): enough air to show where one card ends.',
+                'Give each card its own `href`. Never put the same link on two cards.',
+                'Six cards read well. People scan them in two directions, so each extra card costs more than an extra list row (Nielsen heuristic 8, aesthetic and minimalist design).',
+              ],
+              render: (
+                <Stack gap={4}>
+                  <Card title="Kitchen renovation" meta="On track" href="#kitchen"><Text>Cabinets arrive on 14 October.</Text></Card>
+                  <Card title="Garden shed" meta="Late" href="#shed"><Text>The permit is still pending.</Text></Card>
+                  <Card title="Roof repair" meta="Done" href="#roof"><Text>The final inspection passed.</Text></Card>
+                </Stack>
+              ),
+              code: `<Stack gap={4}>
+  {projects.map((project) => (
+    // key: React needs a stable id for each item in a list.
+    <Card key={project.id} title={project.name} meta={project.status} href={project.url}>
+      <Text>{project.summary}</Text>
+    </Card>
+  ))}
+</Stack>`,
+            },
+            {
+              title: 'Many: switch to a list or a table',
+              when: 'More than about a dozen like items.',
+              explain: [
+                'A wall of cards makes people read every title. A list is faster to scan, and a table is better when they compare values (Nielsen heuristic 8, aesthetic and minimalist design).',
+                'The card is a summary for a few items, not a way to show a large set.',
+                'Page or filter the data first, then pick the shape that fits what the reader does.',
+              ],
+              code: `// More than about a dozen: stop mapping cards.
+// - one main value per row  -> List
+// - values to compare       -> Table
+{projects.length > 12 ? (
+  <List aria-label="Projects">{/* one ListItem per project */}</List>
+) : (
+  projects.map((project) => <Card key={project.id} title={project.name} />)
+)}`,
             },
           ],
         },
@@ -234,27 +555,51 @@ export const Examples: StoryObj<typeof meta> = {
           examples: [
             {
               title: 'Long title and body',
-              when: 'Long titles, unbroken references and translated text: everything wraps.',
+              when: 'Long titles, unbroken references and translated text.',
+              explain: [
+                'Words break and wrap inside the card, even a single word with no spaces. The card never gets wider than its column.',
+                'Why it matters: a long file name that pushes the page sideways forces people to scroll in two directions (WCAG 1.4.10, AA).',
+                'Never truncate a title with "…". The reader would lose the part that tells two cards apart.',
+              ],
               frame: 'narrow',
               render: (
                 <Card title="Quarterly-inspection-report-final-revised-signed-2026-Q3-north-tower" meta="Signed" footer="Updated Monday by Marie-Ève Tremblay-Gagnon">
                   <Text>INSPECTION-2026-Q3-NORTH-TOWER-LEVEL-14-SECTION-C wraps inside the card.</Text>
                 </Card>
               ),
+              code: `// No truncation prop, by design: long text wraps.
+<Card
+  title="Quarterly-inspection-report-final-revised-signed-2026-Q3-north-tower"
+  meta="Signed"
+  footer="Updated Monday by Marie-Ève Tremblay-Gagnon"
+>
+  <Text>INSPECTION-2026-Q3-NORTH-TOWER-LEVEL-14-SECTION-C wraps inside the card.</Text>
+</Card>`,
             },
             {
               title: 'On a phone',
-              when: 'A card takes the width of its container. At phone width it stays one column.',
+              when: 'The card takes the width of its container, so it stays one column on a small screen.',
+              explain: [
+                'The card has no width prop. The layout around it sizes it.',
+                'On a linked card, the whole card is the tap target, so a thumb has plenty of room.',
+              ],
               frame: 'phone',
               render: (
                 <Card title="Kitchen renovation" meta="On track" footer="Updated Monday by Marie" href="#kitchen">
                   <Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text>
                 </Card>
               ),
+              code: `<Card title="Kitchen renovation" meta="On track" footer="Updated Monday by Marie" href="/projects/kitchen">
+  <Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text>
+</Card>`,
             },
             {
               title: 'Rich body',
-              when: 'The body holds mixed content: a status badge and a line of text.',
+              when: 'The body mixes content: a status badge and a line of text.',
+              explain: [
+                'The body takes any content. `Stack` with `align="start"` keeps the badge at its own width, instead of stretching it across the card.',
+                'A badge carries a word and a colour, so the status is not told by colour alone (WCAG 1.4.1, A).',
+              ],
               render: (
                 <Card title="Kitchen renovation" footer="Updated Monday by Marie">
                   <Stack gap={2} align="start">
@@ -263,28 +608,25 @@ export const Examples: StoryObj<typeof meta> = {
                   </Stack>
                 </Card>
               ),
-            },
-          ],
-        },
-        {
-          title: 'Composition',
-          kicker: 'A few cards read well side by side. Past about a dozen, use a list or a table.',
-          examples: [
-            {
-              title: 'A set of project cards',
-              when: 'Several entities of one kind, each a link, stacked in one column.',
-              render: (
-                <Stack gap={4}>
-                  <Card title="Kitchen renovation" meta="On track" href="#kitchen"><Text>Cabinets arrive on 14 October.</Text></Card>
-                  <Card title="Garden shed" meta="Late" href="#shed"><Text>The permit is still pending.</Text></Card>
-                  <Card title="Roof repair" meta="Done" href="#roof"><Text>The final inspection passed.</Text></Card>
-                </Stack>
-              ),
+              code: `<Card title="Kitchen renovation" footer="Updated Monday by Marie">
+  {/* align="start": the badge keeps its own width. */}
+  <Stack gap={2} align="start">
+    <Badge status="success">On track</Badge>
+    <Text>Cabinets arrive on 14 October. The budget is 62% spent.</Text>
+  </Stack>
+</Card>`,
             },
             {
-              title: 'Status badge as meta',
-              when: 'The status is a word with a colour: a badge carries both.',
+              title: 'A badge as meta',
+              when: 'The status is a word with a colour, shown in the header.',
+              explain: [
+                '`meta` takes any content, so a `Badge` fits. The badge is text, so it is not a control.',
+                'Pick the badge status from the meaning ("warning" for late), not for its colour.',
+              ],
               render: <Card title="Garden shed" meta={<Badge status="warning">Late</Badge>} href="#shed"><Text>The permit is still pending.</Text></Card>,
+              code: `<Card title="Garden shed" meta={<Badge status="warning">Late</Badge>} href="/projects/shed">
+  <Text>The permit is still pending.</Text>
+</Card>`,
             },
           ],
         },
@@ -292,9 +634,34 @@ export const Examples: StoryObj<typeof meta> = {
           title: 'Accessibility wiring',
           kicker: 'The title is a heading and, with href, the link name.',
           examples: [
-            { title: 'Heading level from the page outline', when: 'The cards sit under an h2 section. Set headingLevel to 3, or 4 under an h3.', render: <Card title="Kitchen renovation" headingLevel={4}><Text>Cabinets arrive on 14 October.</Text></Card> },
-            { title: 'Level 2 on its own', when: 'The card is the first thing under the page title.', render: <Card title="Kitchen renovation" headingLevel={2}><Text>Cabinets arrive on 14 October.</Text></Card> },
-            { title: 'Describe the card', when: 'Tie the body to the card with aria-describedby. Any article attribute reaches the element.', render: <Card id="card-kitchen" title="Kitchen renovation" aria-describedby="card-kitchen-note"><Text id="card-kitchen-note">Cabinets arrive on 14 October.</Text></Card> },
+            {
+              title: 'Heading level from the page outline',
+              when: 'The cards sit under a section heading. Match the level to the page.',
+              explain: [
+                'Headings form an outline, like a book. Cards under an `h2` section are `h3`. Cards under an `h3` are `h4`.',
+                '`headingLevel` defaults to 3. Set another level only to fit the outline, never to make the title look smaller (WCAG 1.3.1, A).',
+                'Skipping a level confuses screen reader users who move by heading.',
+              ],
+              render: <Card title="Kitchen renovation" headingLevel={4}><Text>Cabinets arrive on 14 October.</Text></Card>,
+              code: `// The page has: h2 "Projects" > h3 "Active" > these cards, so use level 4.
+<Card title="Kitchen renovation" headingLevel={4}>
+  <Text>Cabinets arrive on 14 October.</Text>
+</Card>`,
+            },
+            {
+              title: 'Describe the card',
+              when: 'Tie the body to the card, so a screen reader reads it after the name.',
+              explain: [
+                'Any `<article>` attribute reaches the card: `id`, `aria-describedby`, `data-*`.',
+                '`aria-describedby` points at the id of another element. Its text is read after the card name (WCAG 4.1.2, A).',
+                'Use it when the body holds the one sentence that explains the card.',
+              ],
+              render: <Card id="card-kitchen" title="Kitchen renovation" aria-describedby="card-kitchen-note"><Text id="card-kitchen-note">Cabinets arrive on 14 October.</Text></Card>,
+              code: `// aria-describedby: the id of the text that describes this card.
+<Card id="card-kitchen" title="Kitchen renovation" aria-describedby="card-kitchen-note">
+  <Text id="card-kitchen-note">Cabinets arrive on 14 October.</Text>
+</Card>`,
+            },
           ],
         },
       ]}

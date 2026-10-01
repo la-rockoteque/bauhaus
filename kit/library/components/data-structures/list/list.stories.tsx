@@ -7,6 +7,7 @@ import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Stack } from '../../../primitives/stack/stack';
 import { Badge } from '../../feedback/badge/badge';
 import { Button } from '../../clickables/button/button';
+import { Pagination } from '../../navigation/pagination/pagination';
 import { Icon } from '../../../primitives/icon/icon';
 import { Text } from '../../../primitives/text/text';
 import { List, ListItem } from './list';
@@ -176,6 +177,65 @@ function PickOneFile() {
   );
 }
 
+const SAMPLE_FILES = [
+  { id: 'budget', name: 'Budget 2026', detail: 'Spreadsheet · 2 MB' },
+  { id: 'plan', name: 'Site plan', detail: 'PDF · 8 MB' },
+  { id: 'permit', name: 'Permit', detail: 'PDF · 1 MB' },
+  { id: 'photos', name: 'Site photos', detail: 'Folder · 48 files' },
+  { id: 'quote', name: 'Roofing quote', detail: 'PDF · 340 KB' },
+  { id: 'contract', name: 'Contract', detail: 'PDF · 2 MB' },
+  { id: 'invoice', name: 'Invoice 1042', detail: 'PDF · 120 KB' },
+  { id: 'notes', name: 'Meeting notes', detail: 'Text · 12 KB' },
+];
+
+type ListState = 'loading' | 'empty' | 'error' | 'partial' | 'ready';
+
+/** Switches one list through its data states, so the reader sees each one replace the rows. */
+function ListLifecycle() {
+  const [state, setState] = useState<ListState>('loading');
+  const states: ListState[] = ['loading', 'empty', 'error', 'partial', 'ready'];
+  const rows = state === 'ready' || state === 'partial' ? SAMPLE_FILES.slice(0, 3) : [];
+  return (
+    <Stack gap={3}>
+      <Stack direction="horizontal" gap={2} wrap role="group" aria-label="List state">
+        {states.map((name) => (
+          <Button key={name} variant="secondary" aria-pressed={state === name} onClick={() => setState(name)}>{name}</Button>
+        ))}
+      </Stack>
+      <List
+        aria-label="Files"
+        divided
+        loading={state === 'loading'}
+        empty={<Text>No files yet. Upload your first file.</Text>}
+        error={
+          state === 'error' && (
+            <Stack gap={2} align="start">
+              <Text>The files did not load.</Text>
+              <Button variant="secondary" onClick={() => setState('loading')}>Try again</Button>
+            </Stack>
+          )
+        }
+        partial={state === 'partial' && <Text>5 files did not load.</Text>}
+      >
+        {rows.map((file) => <ListItem key={file.id} title={file.name} description={file.detail} />)}
+      </List>
+    </Stack>
+  );
+}
+
+function PagedFiles() {
+  const [page, setPage] = useState(1);
+  const rows = SAMPLE_FILES.slice((page - 1) * 4, page * 4);
+  return (
+    <Stack gap={3}>
+      <List aria-label="Files" divided>
+        {rows.map((file) => <ListItem key={file.id} title={file.name} description={file.detail} href={`#${file.id}`} />)}
+      </List>
+      <Pagination label="Files pages" page={page} pageCount={2} onPageChange={setPage} total={`${(page - 1) * 4 + 1}–${Math.min(page * 4, SAMPLE_FILES.length)} of ${SAMPLE_FILES.length}`} />
+    </Stack>
+  );
+}
+
 export const Examples: StoryObj<typeof meta> = {
   name: 'Examples',
   render: () => (
@@ -183,7 +243,16 @@ export const Examples: StoryObj<typeof meta> = {
       name="List"
       layer="Component"
       family="Data structures"
-      imports="import { Badge, Button, Icon, List, ListItem, Stack, Text } from '@acme/design-system';"
+      imports="import { Badge, Button, Icon, List, ListItem, Pagination, Stack, Text } from '@acme/design-system';"
+      intro={[
+        'A list is a stack of rows. Each row stands for one thing: a file, a message, a setting.',
+        '`List` is the real HTML `ul` (bullet list) or `ol` (numbered list), and each `ListItem` is an `li`. Screen readers then announce "list, 3 items" and each position.',
+        'A row has four slots: `leading` (an icon), `title` (the name), `description` (a line of detail) and `trailing` (a value or a badge). Only `title` is required.',
+        'A row holds at most one control. Pass `href` and the row is a link; pass `onPress` and it is a button. The title is the control, and its click area covers the whole row.',
+        '`leading` and `trailing` are for display only. Never put a button or a link in them.',
+        'A list has data states: nothing, loading, none, one, some, many, error and partial. You pass the words. The list renders no `ul` when it has no rows.',
+        'Names such as `files` or `openFile` stand for your own data and functions.',
+      ]}
       guide="data-structures-list--docs"
       guideName="List"
       groups={[
@@ -194,6 +263,11 @@ export const Examples: StoryObj<typeof meta> = {
             {
               title: 'Titles only',
               when: 'A plain set of like items that people read, not open.',
+              explain: [
+                'Each `ListItem` needs a `title`. It is the text people scan for.',
+                '`aria-label` gives the list a name that screen readers read first: "Rooms, list, 3 items" (WCAG 1.3.1, A). Without it, the reader hears only "list".',
+                'A row without `href` or `onPress` is static: no hover, no focus stop.',
+              ],
               render: (
                 <List aria-label="Rooms">
                   <ListItem title="Kitchen" />
@@ -201,19 +275,21 @@ export const Examples: StoryObj<typeof meta> = {
                   <ListItem title="Attic" />
                 </List>
               ),
-            },
-            {
-              title: 'One row',
-              when: 'The set has a single item. It is still a list.',
-              render: (
-                <List aria-label="Rooms">
-                  <ListItem title="Kitchen" />
-                </List>
-              ),
+              code: `// aria-label: the name of the list, read aloud by screen readers.
+<List aria-label="Rooms">
+  <ListItem title="Kitchen" />
+  <ListItem title="Garage" />
+  <ListItem title="Attic" />
+</List>`,
             },
             {
               title: 'Title and description',
               when: 'A second line of detail helps people pick: a size, a date, an owner.',
+              explain: [
+                '`description` sits under the title in smaller, muted text.',
+                'Put in it what helps people choose between rows. Do not repeat the title.',
+                'Keep the title as the name. People scan titles; they read descriptions only when they need to.',
+              ],
               render: (
                 <List aria-label="Files">
                   <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" />
@@ -221,20 +297,40 @@ export const Examples: StoryObj<typeof meta> = {
                   <ListItem title="Permit" description="PDF · 1 MB" />
                 </List>
               ),
+              code: `<List aria-label="Files">
+  {/* description: one short line that helps people choose. */}
+  <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" />
+  <ListItem title="Site plan" description="PDF · 8 MB" />
+  <ListItem title="Permit" description="PDF · 1 MB" />
+</List>`,
             },
             {
               title: 'Leading and trailing',
-              when: 'An icon before the title and a value after it. Both are static.',
+              when: 'An icon before the title and a value after it.',
+              explain: [
+                '`leading` is for a picture: an icon, an avatar. `trailing` is for a value, a badge or a chevron.',
+                'Both are static. They are not clickable, because a row has one control.',
+                '`Icon` without a `label` is decoration: assistive technology skips it. The title carries the meaning.',
+              ],
               render: (
                 <List aria-label="Files">
                   <ListItem leading={<Icon glyph="file" />} title="Budget 2026" description="Updated Monday" trailing="2 MB" />
                   <ListItem leading={<Icon glyph="folder" />} title="Site photos" description="Updated Friday" trailing="48 files" />
                 </List>
               ),
+              code: `<List aria-label="Files">
+  {/* leading: decoration. The title still names the row. */}
+  <ListItem leading={<Icon glyph="file" />} title="Budget 2026" description="Updated Monday" trailing="2 MB" />
+  <ListItem leading={<Icon glyph="folder" />} title="Site photos" description="Updated Friday" trailing="48 files" />
+</List>`,
             },
             {
               title: 'Badge as trailing',
-              when: 'A status the reader scans for: a badge carries a word and a colour.',
+              when: 'A status the reader scans for.',
+              explain: [
+                'A `Badge` carries a word and a colour, so the status is not told by colour alone (WCAG 1.4.1, A).',
+                'Put the status at the end of the row. Readers scan down the right edge for it.',
+              ],
               render: (
                 <List aria-label="Orders">
                   <ListItem title="Order 1042" description="Aciers Laurentides" trailing={<Badge status="success">Shipped</Badge>} />
@@ -242,6 +338,32 @@ export const Examples: StoryObj<typeof meta> = {
                   <ListItem title="Order 1044" description="Cuivre du Nord" trailing={<Badge status="neutral">Draft</Badge>} />
                 </List>
               ),
+              code: `<List aria-label="Orders">
+  <ListItem title="Order 1042" description="Aciers Laurentides" trailing={<Badge status="success">Shipped</Badge>} />
+  <ListItem title="Order 1043" description="Boulons Beauce" trailing={<Badge status="warning">Late</Badge>} />
+  <ListItem title="Order 1044" description="Cuivre du Nord" trailing={<Badge status="neutral">Draft</Badge>} />
+</List>`,
+            },
+            {
+              title: 'Rows from your data',
+              when: 'The usual case: one row per item of an array.',
+              explain: [
+                '`map` turns each item into a `ListItem`. React needs a `key`: a stable id for each row, so it can update the right one.',
+                'Use an id from your data, not the array position. Positions change when the data is sorted or filtered.',
+              ],
+              render: (
+                <List aria-label="Files" divided>
+                  {SAMPLE_FILES.slice(0, 3).map((file) => (
+                    <ListItem key={file.id} title={file.name} description={file.detail} />
+                  ))}
+                </List>
+              ),
+              code: `<List aria-label="Files" divided>
+  {files.map((file) => (
+    // key: a stable id from the data, not the array index.
+    <ListItem key={file.id} title={file.name} description={file.detail} />
+  ))}
+</List>`,
             },
           ],
         },
@@ -252,6 +374,10 @@ export const Examples: StoryObj<typeof meta> = {
             {
               title: 'Divided',
               when: 'Rows with descriptions run together without a rule between them.',
+              explain: [
+                '`divided` draws a thin line between rows.',
+                'It is off by default, because empty space alone often separates rows well enough. Turn it on when each row has two lines.',
+              ],
               render: (
                 <List aria-label="Files" divided>
                   <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" />
@@ -259,10 +385,19 @@ export const Examples: StoryObj<typeof meta> = {
                   <ListItem title="Permit" description="PDF · 1 MB" />
                 </List>
               ),
+              code: `<List aria-label="Files" divided>
+  <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" />
+  <ListItem title="Site plan" description="PDF · 8 MB" />
+  <ListItem title="Permit" description="PDF · 1 MB" />
+</List>`,
             },
             {
               title: 'Ordered',
               when: 'The order carries meaning: steps or a ranking.',
+              explain: [
+                '`ordered` renders an `ol` (numbered list) instead of a `ul`. Screen readers then announce "item 2 of 3".',
+                'Use it only when changing the order would change the meaning. A list of files is not ordered.',
+              ],
               render: (
                 <List ordered aria-label="Steps" divided>
                   <ListItem title="Pour the foundation" />
@@ -270,10 +405,20 @@ export const Examples: StoryObj<typeof meta> = {
                   <ListItem title="Close the roof" />
                 </List>
               ),
+              code: `// ordered: the sequence matters, so use an ol.
+<List ordered aria-label="Steps" divided>
+  <ListItem title="Pour the foundation" />
+  <ListItem title="Frame the walls" />
+  <ListItem title="Close the roof" />
+</List>`,
             },
             {
               title: 'Named by nearby text',
-              when: 'A heading already names the list: tie them with aria-labelledby.',
+              when: 'A heading above the list already names it.',
+              explain: [
+                '`aria-labelledby` points at the `id` of the heading. The heading text becomes the list name.',
+                'This avoids writing the name twice. If the heading changes, the list name changes too (WCAG 1.3.1, A).',
+              ],
               render: (
                 <Stack gap={2}>
                   <Text as="h3" id="rooms-heading">Rooms</Text>
@@ -283,16 +428,29 @@ export const Examples: StoryObj<typeof meta> = {
                   </List>
                 </Stack>
               ),
+              code: `<Stack gap={2}>
+  <Text as="h3" id="rooms-heading">Rooms</Text>
+  {/* The list takes its name from the heading with that id. */}
+  <List aria-labelledby="rooms-heading">
+    <ListItem title="Kitchen" />
+    <ListItem title="Garage" />
+  </List>
+</Stack>`,
             },
           ],
         },
         {
           title: 'Interactive rows',
-          kicker: 'A row holds one control. The title is its text and its target covers the row.',
+          kicker: 'A row holds one control. The title is its text and its click area covers the row.',
           examples: [
             {
               title: 'Link rows',
               when: 'Each row opens a page: files, messages, search results.',
+              explain: [
+                '`href` makes the title a link and stretches the link over the whole row. A big target is easy to hit (WCAG 2.5.8, AA).',
+                'The row has one tab stop, so keyboard users move row by row. The focus ring goes around the whole row (WCAG 2.4.7, AA).',
+                'The title is the link text. A list of links reads "Welcome to the project", not "Open" (WCAG 2.4.4, A).',
+              ],
               render: (
                 <List aria-label="Messages" divided>
                   <ListItem title="Welcome to the project" description="Marie · 9:41" href="#welcome" />
@@ -300,20 +458,39 @@ export const Examples: StoryObj<typeof meta> = {
                   <ListItem title="Cabinet delivery" description="Aciers Laurentides · Monday" href="#delivery" />
                 </List>
               ),
+              code: `<List aria-label="Messages" divided>
+  {/* href: the row is a link named by its title. */}
+  <ListItem title="Welcome to the project" description="Marie · 9:41" href="/messages/welcome" />
+  <ListItem title="Permit approved" description="Jean · Yesterday" href="/messages/permit" />
+  <ListItem title="Cabinet delivery" description="Aciers Laurentides · Monday" href="/messages/delivery" />
+</List>`,
             },
             {
               title: 'Link rows with a chevron',
-              when: 'A trailing chevron hints that the row opens something. It is decoration.',
+              when: 'A trailing arrow hints that the row opens something.',
+              explain: [
+                'The chevron is decoration. It sits in `trailing`, so it is not a second control.',
+                'It points toward the end of the line and flips in a right-to-left language by itself.',
+              ],
               render: (
                 <List aria-label="Settings" divided>
                   <ListItem title="Account" href="#account" trailing={<Icon glyph="chevron-right" />} />
                   <ListItem title="Notifications" href="#notifications" trailing={<Icon glyph="chevron-right" />} />
                 </List>
               ),
+              code: `<List aria-label="Settings" divided>
+  <ListItem title="Account" href="/settings/account" trailing={<Icon glyph="chevron-right" />} />
+  <ListItem title="Notifications" href="/settings/notifications" trailing={<Icon glyph="chevron-right" />} />
+</List>`,
             },
             {
               title: 'Current page',
-              when: 'The row is the page the reader is on. A selected link row sets aria-current.',
+              when: 'The row is the page the reader is on.',
+              explain: [
+                '`selected` on a link row sets `aria-current="true"`. Screen readers say "current".',
+                'The row also shows a fill and a bar at its start edge, so the state does not rest on colour alone (WCAG 1.4.1, A).',
+                'For site navigation, use a nav landmark. A list of links is not a navigation menu.',
+              ],
               render: (
                 <List aria-label="Settings" divided>
                   <ListItem title="Account" href="#account" selected />
@@ -321,29 +498,46 @@ export const Examples: StoryObj<typeof meta> = {
                   <ListItem title="Privacy" href="#privacy" />
                 </List>
               ),
+              code: `<List aria-label="Settings" divided>
+  {/* selected + href: marked as the current page. */}
+  <ListItem title="Account" href="/settings/account" selected />
+  <ListItem title="Notifications" href="/settings/notifications" />
+  <ListItem title="Privacy" href="/settings/privacy" />
+</List>`,
             },
             {
               title: 'Button rows',
               when: 'A row runs an action in the view, such as picking an item.',
+              explain: [
+                '`onPress` makes the title a button. Space and Enter run it.',
+                'Use `href` to go to a page and `onPress` to do something here. If you pass both, `href` wins.',
+              ],
               render: (
                 <List aria-label="Templates" divided>
-                  <ListItem title="Blank project" description="Start from nothing" onPress={() => {}} />
-                  <ListItem title="Renovation" description="Rooms, budget and permits" onPress={() => {}} />
+                  <ListItem title="Blank project" description="Start from nothing" onPress={() => undefined} />
+                  <ListItem title="Renovation" description="Rooms, budget and permits" onPress={() => undefined} />
                 </List>
               ),
               code: `<List aria-label="Templates" divided>
+  {/* onPress: the row is a button. It runs here, no page change. */}
   <ListItem title="Blank project" description="Start from nothing" onPress={() => createProject('blank')} />
   <ListItem title="Renovation" description="Rooms, budget and permits" onPress={() => createProject('renovation')} />
 </List>`,
             },
             {
               title: 'Pick one row',
-              when: 'The reader picks one item. The selected row shows a fill and a bar and sets aria-pressed.',
+              when: 'The reader picks one item from the set.',
+              explain: [
+                'You hold the choice in state. `selected` marks the chosen row, and `onPress` updates the state.',
+                'On a button row, `selected` sets `aria-pressed="true"`, so a screen reader says "pressed".',
+                'The chosen row has a fill and a bar, not only a colour (WCAG 1.4.1, A).',
+              ],
               render: <PickOneFile />,
               code: `function PickOneFile() {
   const [current, setCurrent] = useState('budget');
   return (
     <List aria-label="Files" divided>
+      {/* selected is true for one row at a time. */}
       <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" selected={current === 'budget'} onPress={() => setCurrent('budget')} />
       <ListItem title="Site plan" description="PDF · 8 MB" selected={current === 'plan'} onPress={() => setCurrent('plan')} />
       <ListItem title="Permit" description="PDF · 1 MB" selected={current === 'permit'} onPress={() => setCurrent('permit')} />
@@ -353,47 +547,242 @@ export const Examples: StoryObj<typeof meta> = {
             },
             {
               title: 'Disabled, with the reason',
-              when: 'A row cannot be opened. The description says why.',
+              when: 'A row cannot be opened yet.',
+              explain: [
+                '`disabled` makes the row a native disabled button. It leaves the tab order and cannot be pressed.',
+                'Put the reason in `description`, in words. A greyed row with no reason is a dead end (Nielsen heuristic 1, visibility of system status).',
+                'Disabled text is exempt from the contrast rule (WCAG 1.4.3), so the reason must still be readable.',
+              ],
               render: (
                 <List aria-label="Reports" divided>
                   <ListItem title="Monthly report" description="Ready" href="#monthly" />
-                  <ListItem title="Annual report" description="Available in January" onPress={() => {}} disabled />
+                  <ListItem title="Annual report" description="Available in January" onPress={() => undefined} disabled />
                 </List>
               ),
               code: `<List aria-label="Reports" divided>
   <ListItem title="Monthly report" description="Ready" href="/reports/monthly" />
+  {/* The description says why, and when it will work. */}
   <ListItem title="Annual report" description="Available in January" onPress={openAnnual} disabled />
 </List>`,
             },
           ],
         },
         {
-          title: 'States',
-          kicker: 'The caller owns the words. The list renders no ul when it has no rows.',
+          title: 'The data lifecycle',
+          kicker: 'Data goes through stages. Each stage needs its own message, or the reader sees a blank space and cannot tell why.',
           examples: [
-            { title: 'Loading', when: 'Rows are on their way. Skeleton rows keep the shape of the slots.', render: <List aria-label="Files" loading /> },
-            { title: 'Loading, five rows', when: 'You know about how many rows will arrive: match skeletonRows.', render: <List aria-label="Files" loading skeletonRows={5} /> },
-            { title: 'Loading, with its own label', when: 'The app is not in English: pass the spoken text for the wait.', render: <List aria-label="Fichiers" loading loadingLabel="Chargement des fichiers" /> },
             {
-              title: 'Empty, first use',
-              when: 'Nothing exists yet. Invite the reader to start.',
+              title: 'Nothing: first use',
+              when: 'No row exists yet. Invite the reader to start.',
+              explain: [
+                'With no rows, `List` renders no `ul`. An empty list would be announced as "list, 0 items", which helps nobody (WCAG 1.3.1, A).',
+                '`empty` shows in its place. You write the words, because only you know the next step.',
+                'Give a clear first step and a button. Why it matters: a blank screen looks broken, and new users do not know what to do.',
+              ],
               render: <List aria-label="Files" empty={<Stack gap={2} align="start"><Text>No files yet. Upload your first file.</Text><Button variant="secondary">Upload a file</Button></Stack>} />,
+              code: `// No rows: the list shows empty and draws no <ul>.
+<List
+  aria-label="Files"
+  empty={
+    <Stack gap={2} align="start">
+      <Text>No files yet. Upload your first file.</Text>
+      <Button variant="secondary" onClick={upload}>Upload a file</Button>
+    </Stack>
+  }
+>
+  {files.map((file) => <ListItem key={file.id} title={file.name} />)}
+</List>`,
             },
-            { title: 'Empty, no match', when: 'A filter returned nothing. Say what happened, not what to do first.', render: <List aria-label="Files" empty={<Text>No files match “permit”.</Text>} /> },
+            {
+              title: 'None: no match',
+              when: 'A search or filter returned nothing.',
+              explain: [
+                'The same `empty` slot, with different words. First use says "start here"; no match says "your filter found nothing".',
+                'Repeat the term the reader typed, so they see what was searched. Suggest a way out: clear the filter.',
+                'Why it matters: "No files yet" after a search is wrong. The reader thinks their data is gone.',
+              ],
+              render: <List aria-label="Files" empty={<Text>No files match “permit”.</Text>} />,
+              code: `// Pick the words from the cause: first use, or no match.
+<List aria-label="Files" empty={<Text>No files match “{query}”.</Text>}>
+  {matches.map((file) => <ListItem key={file.id} title={file.name} />)}
+</List>`,
+            },
+            {
+              title: 'Loading',
+              when: 'The rows are on their way.',
+              explain: [
+                '`loading` draws grey placeholder rows with the shape of the slots. The page does not jump when the data arrives (Nielsen heuristic 1, visibility of system status).',
+                'The list sets `aria-busy="true"` and a hidden "Loading items" phrase for screen readers.',
+                'The shimmer stops for people who ask for less motion (`prefers-reduced-motion`, WCAG 2.3.3, AAA).',
+              ],
+              render: <List aria-label="Files" loading />,
+              code: `// loading: three placeholder rows by default.
+<List aria-label="Files" loading={isLoading}>
+  {files.map((file) => <ListItem key={file.id} title={file.name} />)}
+</List>`,
+            },
+            {
+              title: 'Loading, with a known count',
+              when: 'You know about how many rows will arrive.',
+              explain: [
+                '`skeletonRows` sets how many placeholder rows to draw. The default is 3.',
+                'A close match makes the page change less when the real rows arrive.',
+              ],
+              render: <List aria-label="Files" loading skeletonRows={5} />,
+              code: `<List aria-label="Files" loading={isLoading} skeletonRows={5}>
+  {files.map((file) => <ListItem key={file.id} title={file.name} />)}
+</List>`,
+            },
+            {
+              title: 'Loading, in another language',
+              when: 'The app is not in English.',
+              explain: [
+                '`loadingLabel` is read aloud, never shown. Its default is "Loading items".',
+                'Pass your own language, or a screen reader speaks English on a French page.',
+              ],
+              render: <List aria-label="Fichiers" loading loadingLabel="Chargement des fichiers" />,
+              code: `<List aria-label="Fichiers" loading={isLoading} loadingLabel="Chargement des fichiers">
+  {files.map((file) => <ListItem key={file.id} title={file.name} />)}
+</List>`,
+            },
+            {
+              title: 'One row',
+              when: 'The set has a single item.',
+              explain: [
+                'It is still a list. Do not switch to a different layout for one item: the page would change shape when a second item arrives.',
+                'Screen readers announce "list, 1 item", so the reader knows there is only one.',
+              ],
+              render: (
+                <List aria-label="Rooms">
+                  <ListItem title="Kitchen" />
+                </List>
+              ),
+              code: `<List aria-label="Rooms">
+  <ListItem title="Kitchen" />
+</List>`,
+            },
+            {
+              title: 'Some rows',
+              when: 'The normal case: a handful of rows.',
+              explain: [
+                'This is the list as designed. People scan the titles down one column and open one.',
+                'See "Rows" above for the slots and "Interactive rows" for links and buttons.',
+              ],
+              render: (
+                <List aria-label="Files" divided>
+                  {SAMPLE_FILES.slice(0, 3).map((file) => (
+                    <ListItem key={file.id} title={file.name} description={file.detail} href={`#${file.id}`} />
+                  ))}
+                </List>
+              ),
+              code: `<List aria-label="Files" divided>
+  {files.map((file) => (
+    <ListItem key={file.id} title={file.name} description={file.detail} href={file.url} />
+  ))}
+</List>`,
+            },
+            {
+              title: 'Many rows: page them',
+              when: 'More rows than fit on one screen.',
+              explain: [
+                'The list draws every row it gets. It does not page. You slice the rows and pass one page at a time.',
+                'Add `Pagination` under the list. It tells the reader where they are ("1–4 of 8") and moves between pages.',
+                'Why it matters: a very long list is slow to scroll and hard to scan. Pages keep the focus on a few rows.',
+              ],
+              render: <PagedFiles />,
+              code: `function PagedFiles() {
+  const [page, setPage] = useState(1);
+  // Take one page of four rows from the full data.
+  const rows = files.slice((page - 1) * 4, page * 4);
+  return (
+    <Stack gap={3}>
+      <List aria-label="Files" divided>
+        {rows.map((file) => (
+          <ListItem key={file.id} title={file.name} description={file.detail} href={file.url} />
+        ))}
+      </List>
+      <Pagination
+        label="Files pages"
+        page={page}
+        pageCount={Math.ceil(files.length / 4)}
+        onPageChange={setPage}
+        total={\`\${(page - 1) * 4 + 1}–\${Math.min(page * 4, files.length)} of \${files.length}\`}
+      />
+    </Stack>
+  );
+}`,
+            },
             {
               title: 'Error with a retry',
-              when: 'The rows failed to load. The alert replaces them; a retry sits inside it.',
+              when: 'The rows failed to load.',
+              explain: [
+                '`error` replaces the rows. It has `role="alert"`, so a screen reader may read it at once. The alert mounts together with its message, and such a region is not always read (WCAG 4.1.3, AA).',
+                'Say what failed in plain words, and add a retry button. Without one, the reader is stuck (Nielsen heuristic 9, help users recover from errors).',
+                'Why it matters: a list that stays blank after a failure looks like it is still loading.',
+              ],
               render: <List aria-label="Files" error={<Stack gap={2} align="start"><Text>The files did not load.</Text><Button variant="secondary">Try again</Button></Stack>} />,
+              code: `<List
+  aria-label="Files"
+  error={
+    <Stack gap={2} align="start">
+      <Text>The files did not load.</Text>
+      {/* retry runs your request again. */}
+      <Button variant="secondary" onClick={retry}>Try again</Button>
+    </Stack>
+  }
+/>`,
             },
             {
-              title: 'Partial',
-              when: 'Some rows loaded and some did not. Keep the rows and say what is missing.',
+              title: 'Partial: some rows missing',
+              when: 'Some rows loaded and some did not.',
+              explain: [
+                'Keep the rows you have. `partial` adds a status line under them that says what is missing.',
+                'It has `role="status"`, which a screen reader may read politely. It mounts with its text, so it is not always read. The reader keeps their work and learns what they lack.',
+                'Why it matters: hiding all rows for one failure throws away data the reader could use.',
+              ],
               render: (
                 <List aria-label="Files" divided partial={<Text>3 files did not load.</Text>}>
                   <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" />
                   <ListItem title="Site plan" description="PDF · 8 MB" />
                 </List>
               ),
+              code: `<List aria-label="Files" divided partial={<Text>3 files did not load.</Text>}>
+  <ListItem title="Budget 2026" description="Spreadsheet · 2 MB" />
+  <ListItem title="Site plan" description="PDF · 8 MB" />
+</List>`,
+            },
+            {
+              title: 'All states in one component',
+              when: 'Your real list loads data. Press each state to see what changes.',
+              explain: [
+                'Map your request status to the props. The list does not fetch: you do.',
+                'Pass `loading`, `empty`, `error` and `partial` together. Only the one that applies shows.',
+                'Press "error", then "Try again": the retry returns to loading, as your own retry would.',
+              ],
+              render: <ListLifecycle />,
+              code: `function FileList({ status, files, retry }) {
+  // status: 'loading' | 'error' | 'partial' | 'ready', from your data hook.
+  return (
+    <List
+      aria-label="Files"
+      divided
+      loading={status === 'loading'}
+      empty={<Text>No files yet. Upload your first file.</Text>}
+      error={
+        status === 'error' && (
+          <Stack gap={2} align="start">
+            <Text>The files did not load.</Text>
+            <Button variant="secondary" onClick={retry}>Try again</Button>
+          </Stack>
+        )
+      }
+      partial={status === 'partial' && <Text>5 files did not load.</Text>}
+    >
+      {/* An empty array shows the empty slot. */}
+      {files.map((file) => <ListItem key={file.id} title={file.name} description={file.detail} />)}
+    </List>
+  );
+}`,
             },
           ],
         },
@@ -403,17 +792,35 @@ export const Examples: StoryObj<typeof meta> = {
           examples: [
             {
               title: 'Long title and description',
-              when: 'Long file names, unbroken references and translated text all wrap.',
+              when: 'Long file names, unbroken references and translated text.',
+              explain: [
+                'Text wraps onto more lines, even a long word with no spaces. The row never gets wider than its column (WCAG 1.4.10, AA).',
+                'Never truncate with "…". The end of a file name is often the part that tells two files apart.',
+              ],
               frame: 'narrow',
               render: (
                 <List aria-label="Files" divided>
                   <ListItem leading={<Icon glyph="file" />} title="Quarterly-inspection-report-final-revised-signed-2026-Q3-north-tower" description="INSPECTION-2026-Q3-NORTH-TOWER-LEVEL-14-SECTION-C" trailing="2 MB" href="#report" />
                 </List>
               ),
+              code: `// No truncation prop, by design: long text wraps.
+<List aria-label="Files" divided>
+  <ListItem
+    leading={<Icon glyph="file" />}
+    title="Quarterly-inspection-report-final-revised-signed-2026-Q3-north-tower"
+    description="INSPECTION-2026-Q3-NORTH-TOWER-LEVEL-14-SECTION-C"
+    trailing="2 MB"
+    href="/files/report"
+  />
+</List>`,
             },
             {
               title: 'On a phone',
-              when: 'A row spans the container. The control stays one easy target.',
+              when: 'A row at phone width.',
+              explain: [
+                'A row spans its container, so the whole row stays one wide target for a thumb.',
+                'The slots stay in the same order. Nothing is hidden on a small screen.',
+              ],
               frame: 'phone',
               render: (
                 <List aria-label="Messages" divided>
@@ -421,6 +828,16 @@ export const Examples: StoryObj<typeof meta> = {
                   <ListItem leading={<Icon glyph="mail" />} title="Permit approved" description="Jean · Yesterday" href="#permit" />
                 </List>
               ),
+              code: `<List aria-label="Messages" divided>
+  <ListItem
+    leading={<Icon glyph="mail" />}
+    title="Welcome to the project"
+    description="Marie · 9:41"
+    trailing={<Badge status="info">New</Badge>}
+    href="/messages/welcome"
+  />
+  <ListItem leading={<Icon glyph="mail" />} title="Permit approved" description="Jean · Yesterday" href="/messages/permit" />
+</List>`,
             },
           ],
         },
@@ -430,13 +847,22 @@ export const Examples: StoryObj<typeof meta> = {
           examples: [
             {
               title: 'Name for the whole list',
-              when: 'Nearby text does not name the list: give it an aria-label.',
+              when: 'Nearby text does not name the list.',
+              explain: [
+                '`aria-label` names the list for screen readers: "Recent messages, list, 2 items".',
+                'Give every list a name. Without one, a page with three lists reads "list, list, list".',
+              ],
               render: (
                 <List aria-label="Recent messages">
                   <ListItem title="Welcome to the project" href="#welcome" />
                   <ListItem title="Permit approved" href="#permit" />
                 </List>
               ),
+              code: `<List aria-label="Recent messages">
+  {/* The title is the link text: say what it opens. */}
+  <ListItem title="Welcome to the project" href="/messages/welcome" />
+  <ListItem title="Permit approved" href="/messages/permit" />
+</List>`,
             },
           ],
         },

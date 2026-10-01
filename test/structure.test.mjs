@@ -74,13 +74,23 @@ test('check: slice.showcase needs a DocPage import from fixtures/doc-page/doc-pa
   assert.deepEqual(at(DOC_STORY), []);
 });
 
-test('check: slice.examples needs an ExamplesPage in a component story, and only there', () => {
+test('check: slice.examples needs an ExamplesPage in a component, primitive, foundation or pattern story', () => {
   const at = (dir, name, story) => checkStructure(tmpLibrary(SLICE(dir, name, { [`${name}.stories.tsx`]: story }))).filter((f) => f.id === 'slice.examples').map((f) => f.path);
   const EXAMPLES = "import { ExamplesPage } from '../../../fixtures/examples/examples';\nexport const Examples = { render: () => <ExamplesPage /> };\n";
   assert.deepEqual(at('components/clickables/button', 'button', DOC_STORY), ['components/clickables/button/button.stories.tsx']);
   assert.deepEqual(at('components/clickables/button', 'button', "import { ExamplesPage } from '../../../fixtures/examples/examples';\n"), ['components/clickables/button/button.stories.tsx'], 'imported but never rendered');
   assert.deepEqual(at('components/clickables/button', 'button', DOC_STORY + EXAMPLES), []);
-  assert.deepEqual(at('primitives/box', 'box', DOC_STORY), [], 'a primitive needs no Examples page');
+  assert.deepEqual(at('primitives/box', 'box', DOC_STORY), ['primitives/box/box.stories.tsx'], 'a primitive needs one too');
+  assert.deepEqual(at('foundations/spacing', 'spacing', DOC_STORY + EXAMPLES), []);
+});
+
+test('check: a story may import any slice, but not the public entry; its layer file may not', () => {
+  const dir = tmpLibrary({
+    ...SLICE('foundations/spacing', 'spacing', { 'spacing.tokens.json': '{}', 'spacing.stories.tsx': DOC_STORY + "import { Stack } from '../../primitives/stack/stack';\nimport { Button } from '../../components/clickables/button/button';\n" }),
+    ...SLICE('foundations/shape', 'shape', { 'shape.tokens.json': '{}', 'shape.tsx': "import { Stack } from '../../primitives/stack/stack';", 'shape.stories.tsx': DOC_STORY + "import { Box } from '../../index';\n" }),
+  });
+  const direction = checkStructure(dir).filter((f) => f.id === 'structure.direction').map((f) => f.path).sort();
+  assert.deepEqual(direction, ['foundations/shape/shape.stories.tsx', 'foundations/shape/shape.tsx']);
 });
 
 test('check: a story may import the page builder from fixtures', () => {
