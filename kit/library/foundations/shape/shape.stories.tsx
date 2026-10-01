@@ -31,8 +31,9 @@ export const Showcase: StoryObj = {
         { label: 'Steps', value: 'five, and three roles' },
         { label: 'Control', value: 'radius.control, one shape for everything the user presses or types into' },
       ]}
-      states={{
-        cells: [{ id: 'interaction', status: 'n/a', label: 'Interaction', reason: 'Radius does not change with interaction. The focus ring follows the corner because the outline is drawn on the same box.' }],
+      conditions={{
+        cells: [],
+        reason: 'No user setting changes a radius. The focus ring follows the corner because the outline is drawn on the same box.',
       }}
       dos={[
         { text: 'Read radius.control for anything the user presses or types into.', basis: 'Project decision' },

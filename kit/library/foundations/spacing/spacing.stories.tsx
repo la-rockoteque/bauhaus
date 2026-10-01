@@ -53,10 +53,9 @@ export const Showcase: StoryObj = {
         { label: 'Steps', value: 'space.0 to space.12; closed, no step between space.4 and space.5' },
         { label: 'Tier 2', value: 'Names the job: inset, stack, inline. A component reads tier 2.' },
       ]}
-      states={{
+      conditions={{
         cells: [
-          { id: 'density', status: 'n/a', reason: 'A compact theme would remap tier 2 tokens one step down; controls keep size.target.min.' },
-          { id: 'text-spacing', status: 'designed', label: 'Text spacing raised by the user', render: <Groups />, trigger: 'gaps in tokens', note: 'No container around text has a fixed height, so nothing clips.' },
+          { label: 'Text spacing raised by the user', render: <Groups />, trigger: 'gaps in tokens', note: 'No container around text has a fixed height, so nothing clips.' },
         ],
       }}
       dos={[

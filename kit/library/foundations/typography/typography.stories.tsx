@@ -52,10 +52,9 @@ export const Showcase: StoryObj = {
         { label: 'Heading', value: '24px, weight 600, line height 1.25' },
         { label: 'Loading', value: "opt in with the package's fonts.css; latin and latin-ext, font-display swap" },
       ]}
-      states={{
+      conditions={{
         cells: [
-          { id: 'text-resize', status: 'designed', label: 'Text raised to 200%', render: <p style={{ margin: 0, fontSize: 'calc(var(--ds-text-body-size) * 2)', lineHeight: 'var(--ds-text-body-line-height)' }}>Ships Friday.</p>, trigger: 'browser text size', note: 'Layouts must not clip (WCAG 1.4.4, 1.4.12).' },
-          { id: 'interaction', status: 'n/a', label: 'Interaction', reason: 'Type has no interaction state.' },
+          { label: 'Text raised to 200%', render: <p style={{ margin: 0, fontSize: 'calc(var(--ds-text-body-size) * 2)', lineHeight: 'var(--ds-text-body-line-height)' }}>Ships Friday.</p>, trigger: 'browser text size', note: 'Layouts must not clip (WCAG 1.4.4, 1.4.12).' },
         ],
       }}
       dos={[

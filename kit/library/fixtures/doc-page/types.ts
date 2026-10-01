@@ -145,16 +145,34 @@ export interface Rule {
   basis: string;
 }
 
+/**
+ * A user condition a foundation answers: a preference or a setting outside the page, such as
+ * reduced motion, text at 200% or forced colors. Not an interaction state: those belong to components.
+ */
+export interface Condition {
+  label: string;
+  /** The live render. */
+  render: ReactNode;
+  /** What sets the condition: the media query or the browser setting. */
+  trigger: string;
+  note?: string;
+}
+
+export interface ConditionsSpec {
+  cells: readonly Condition[];
+  /** Why the foundation has no condition to answer. Required when `cells` is empty. */
+  reason?: string;
+}
+
 export interface ExtraSection {
   title: string;
   kicker?: string;
   content: ReactNode;
 }
 
-export interface DocPageProps {
+interface DocPageBase {
   /** The page title: `Button`, `Color`. */
   name: string;
-  layer: Layer;
   /** The component family, for a Component: `Clickables`. */
   family?: string;
   /** Plain words first: one to three short sentences and an everyday picture. */
@@ -170,8 +188,7 @@ export interface DocPageProps {
   specs?: readonly Spec[];
   /** Public API, name to description. */
   api?: readonly Row[];
-  states: StatesSpec;
-  /** Extra sections between States and Do and don't. */
+  /** Extra sections between section 4 and Do and don't. */
   extra?: readonly ExtraSection[];
   dos: readonly Guidance[];
   donts: readonly Guidance[];
@@ -180,3 +197,8 @@ export interface DocPageProps {
   /** The guide's title in the sidebar, for the pointer line. */
   guideName: string;
 }
+
+/** A foundation answers user conditions in section 4. Every other layer answers the state matrix there. */
+export type DocPageProps =
+  | (DocPageBase & { layer: 'Foundation'; conditions: ConditionsSpec })
+  | (DocPageBase & { layer: Exclude<Layer, 'Foundation'>; states: StatesSpec });

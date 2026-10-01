@@ -14,8 +14,6 @@ const anatomyStage = (
   </div>
 );
 
-const notInteractive = 'A glyph has no interaction states. It takes its colour from the control that holds it through currentColor, and that control owns hover, focus, disabled and selected.';
-
 export const Showcase: StoryObj = {
   name: 'Showcase',
   render: () => (
@@ -53,8 +51,9 @@ export const Showcase: StoryObj = {
         { label: 'Fill', value: 'None. No filled variant is defined yet' },
         { label: 'Colour', value: 'currentColor' },
       ]}
-      states={{
-        cells: [{ id: 'interaction', status: 'n/a', label: 'Interaction', reason: notInteractive }],
+      conditions={{
+        cells: [],
+        reason: 'A glyph answers no user condition of its own. It strokes with currentColor, so it follows the theme, and CanvasText under forced colors.',
       }}
       extra={[
         { title: 'Catalogue', kicker: 'Every glyph by group, at sm, md and lg, in light and dark. Search by name or group.', content: <IconCatalog /> },

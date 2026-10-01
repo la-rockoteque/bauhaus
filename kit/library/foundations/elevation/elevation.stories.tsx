@@ -46,12 +46,9 @@ export const Showcase: StoryObj = {
         { label: 'Stacking', value: 'z.* in steps of 10; local contexts use isolation: isolate' },
         { label: 'Forced colors', value: 'Shadows are not drawn; a floating surface keeps overlay.border' },
       ]}
-      states={{
-        note: 'Elevation is a visual height, not an interaction. It gives components the tokens for resting, lifted and open.',
+      conditions={{
         cells: [
-          { id: 'resting', group: 'interaction', status: 'designed', label: 'Resting', render: <RoleChips roles={['surface.default', 'overlay.surface']} />, trigger: 'level 0 or shadow.1', note: 'A card sits flat with a border. A menu rests on shadow.1.' },
-          { id: 'open', group: 'interaction', status: 'designed', label: 'Open', render: <RoleChips roles={['overlay.surface', 'scrim']} />, trigger: 'shadow.1 or shadow.2 with z.*', note: 'A menu or a dialog opens onto its rung. A dialog adds the scrim.' },
-          { id: 'forced-colors', group: 'interaction', status: 'designed', label: 'forced-colors: active', render: <RoleChips roles={['overlay.border']} />, trigger: '@media (forced-colors: active)', note: 'The user agent removes box-shadow, so the border marks the edge.' },
+          { label: 'forced-colors: active', render: <RoleChips roles={['overlay.border']} />, trigger: '@media (forced-colors: active)', note: 'The user agent removes box-shadow, so the border marks the edge.' },
         ],
       }}
       dos={[

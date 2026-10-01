@@ -36,6 +36,28 @@ describe('DocPage', () => {
     expect(headings).toEqual(['1Introduction', '2Stage', '3Tokens (consumed)', '4States', "5Do and don't"]);
   });
 
+  it('gives a foundation Conditions in section 4, with no state matrix', () => {
+    render(
+      <DocPage
+        name="Motion"
+        layer="Foundation"
+        plain="Plain words."
+        precise="Precise words."
+        tokens={{ mode: 'defined', rows: [{ name: 'motion.duration.fast', tier: '1', use: 'Hover' }] }}
+        conditions={{ cells: [{ label: 'prefers-reduced-motion: reduce', render: <span>Still</span>, trigger: '@media (prefers-reduced-motion: reduce)' }] }}
+        dos={[]}
+        donts={[]}
+        guide="foundations-motion--docs"
+        guideName="Motion"
+      />,
+    );
+    const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent);
+    expect(headings).toContain('4Conditions');
+    expect(headings).not.toContain('4States');
+    expect(screen.queryByText('Interaction')).toBeNull();
+    expect(screen.getByText('@media (prefers-reduced-motion: reduce)')).toBeTruthy();
+  });
+
   it('themes one section panel at a time, and follows the page again when set back', () => {
     page();
     const group = screen.getByRole('radiogroup', { name: 'Theme of Tokens (consumed)' });

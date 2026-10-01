@@ -37,9 +37,9 @@ export const Showcase: StoryObj = {
         { label: 'Ceiling', value: '400ms, house.maxDurationMs' },
         { label: 'Reduced motion', value: 'Looping animation stops; transitions shorten to none' },
       ]}
-      states={{
+      conditions={{
         cells: [
-          { id: 'reduced-motion', group: 'interaction', status: 'designed', label: 'prefers-reduced-motion: reduce', render: <span className="doc-muted">Toggle "Simulate reduced motion" above.</span>, trigger: '@media (prefers-reduced-motion: reduce)', note: 'The spinner stops. The button rule is checked live in the rulebook.' },
+          { label: 'prefers-reduced-motion: reduce', render: <span className="doc-muted">Toggle "Simulate reduced motion" above.</span>, trigger: '@media (prefers-reduced-motion: reduce)', note: 'The spinner stops. The button rule is checked live in the rulebook.' },
         ],
       }}
       dos={[
