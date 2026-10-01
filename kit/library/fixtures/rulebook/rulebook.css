@@ -35,3 +35,9 @@
 .doc-table-grid [data-verdict='to verify'] .doc-verdict {
   color: var(--ds-text-muted);
 }
+
+/* Settled on the component pages: present for the full checklist, quieter than an open item. */
+.doc-table-grid [data-verdict='elsewhere'] .doc-verdict {
+  color: var(--ds-text-muted);
+  font-weight: var(--ds-font-weight-regular);
+}

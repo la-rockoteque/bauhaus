@@ -60,5 +60,5 @@ export const Showcase: StoryObj = {
 
 export const Advisories: StoryObj = {
   name: 'Advisories',
-  render: () => <AdvisoriesPage name="Motion" layer="Foundation" rules={motionRules} guide="foundations-motion--docs" guideName="Motion" />,
+  render: () => <AdvisoriesPage name="Motion" layer="Foundation" scope={['reduced-motion']} rules={motionRules} guide="foundations-motion--docs" guideName="Motion" />,
 };

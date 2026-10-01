@@ -54,5 +54,5 @@ export const Showcase: StoryObj = {
 
 export const Advisories: StoryObj = {
   name: 'Advisories',
-  render: () => <AdvisoriesPage name="Focus" layer="Foundation" rules={focusRules} guide="foundations-focus--docs" guideName="Focus" />,
+  render: () => <AdvisoriesPage name="Focus" layer="Foundation" scope={['focus-visible', 'focus-not-obscured', 'contrast-ui']} rules={focusRules} guide="foundations-focus--docs" guideName="Focus" />,
 };

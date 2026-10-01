@@ -55,7 +55,7 @@ export const bannerRules = [
     rubric: 'usage',
     severity: 'MEDIUM',
     expectation: 'A banner sits in the flow and does not cover content. It wraps at 320 px.',
-    verify: 'review',
+    verify: 'auto',
     covers: ['reflow'],
     basis: 'WCAG 1.4.10 Reflow (AA)',
   },

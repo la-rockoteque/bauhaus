@@ -37,4 +37,11 @@ describe('Box', () => {
     const { container } = render(<Box as="section" aria-label="Summary" padding={4}><p>Content</p></Box>);
     await expectNoAxeViolations(container);
   });
+
+  it('takes no click or key handler, so a pressable Box cannot be written', () => {
+    // @ts-expect-error A Box that must be pressed is a button or a link.
+    render(<Box onClick={() => undefined} />);
+    // @ts-expect-error The same holds for key handlers.
+    render(<Box onKeyDown={() => undefined} />);
+  });
 });

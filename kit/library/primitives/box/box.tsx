@@ -4,7 +4,8 @@ import './box.css';
 /** A step of the space scale: `space.0` to `space.12`. The only values a Box accepts. */
 export type Space = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
-export interface BoxProps extends HTMLAttributes<HTMLElement> {
+/** A Box that must be pressed is a button or a link, so it takes no click or key handler. */
+export interface BoxProps extends Omit<HTMLAttributes<HTMLElement>, 'onClick' | 'onKeyDown' | 'onKeyUp'> {
   /** The element to render. Pick it for document structure; a Box adds no role. */
   as?: ElementType;
   /** Padding on all sides, as a space step. */

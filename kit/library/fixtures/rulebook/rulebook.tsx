@@ -1,12 +1,12 @@
-import { coverage } from './a11y';
+import { coverage, type CoverageVerdict } from './a11y';
 import { Section, TableScroll } from '../doc-page/sections';
 import { grade, type Verdict } from './grade';
 import type { Rule } from '../doc-page/types';
 import './rulebook.css';
 
-const LABEL: Record<Verdict | 'to verify', string> = { pass: 'pass', fail: 'fail', review: 'review', 'to verify': 'to verify' };
+const LABEL: Record<CoverageVerdict, string> = { pass: 'pass', fail: 'fail', review: 'review', 'to verify': 'to verify', elsewhere: 'component pages' };
 
-function Verdict({ verdict, reason }: { verdict: Verdict | 'to verify'; reason?: string }) {
+function Verdict({ verdict, reason }: { verdict: CoverageVerdict; reason?: string }) {
   return (
     <td data-verdict={verdict}>
       <span className="doc-verdict">{LABEL[verdict]}</span>
@@ -53,11 +53,17 @@ export function Rulebook({ rules }: { rules: readonly Rule[] }) {
   );
 }
 
-export function Accessibility({ rules }: { rules: readonly Rule[] }) {
-  const rows = coverage(rules);
-  const claimed = rows.filter((row) => row.rules.length > 0).length;
+/** `scope`: on a foundation page, the checklist items the foundation can affect. */
+export function Accessibility({ rules, scope }: { rules: readonly Rule[]; scope?: readonly string[] }) {
+  const all = coverage(rules, scope);
+  const inScope = all.filter((row) => row.verdict !== 'elsewhere');
+  const rows = [...inScope, ...all.filter((row) => row.verdict === 'elsewhere')];
+  const claimed = inScope.filter((row) => row.rules.length > 0).length;
+  const kicker = scope
+    ? 'The items of the A11Y Project checklist this foundation can affect. An item no rule claims says to verify, which is not a pass. The other items are settled on the component pages.'
+    : 'The items of the A11Y Project checklist that a component can settle. An item no rule claims says to verify, which is not a pass.';
   return (
-    <Section title={`Accessibility · ${claimed} of ${rows.length} items claimed by a rule`} kicker="The items of the A11Y Project checklist that a component can settle. An item no rule claims says to verify, which is not a pass.">
+    <Section title={`Accessibility · ${claimed} of ${inScope.length} items claimed by a rule`} kicker={kicker}>
       <TableScroll label="Accessibility coverage">
 <table className="doc-table doc-table-grid">
         <thead>

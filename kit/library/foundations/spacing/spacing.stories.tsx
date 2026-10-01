@@ -79,5 +79,5 @@ export const Showcase: StoryObj = {
 
 export const Advisories: StoryObj = {
   name: 'Advisories',
-  render: () => <AdvisoriesPage name="Spacing" layer="Foundation" rules={spacingRules} guide="foundations-spacing--docs" guideName="Spacing" />,
+  render: () => <AdvisoriesPage name="Spacing" layer="Foundation" scope={['target-size', 'reflow', 'text-spacing']} rules={spacingRules} guide="foundations-spacing--docs" guideName="Spacing" />,
 };

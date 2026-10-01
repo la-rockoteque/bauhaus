@@ -82,5 +82,5 @@ export const Showcase: StoryObj = {
 
 export const Advisories: StoryObj = {
   name: 'Advisories',
-  render: () => <AdvisoriesPage name="Typography" layer="Foundation" rules={typographyRules} guide="foundations-typography--docs" guideName="Typography" />,
+  render: () => <AdvisoriesPage name="Typography" layer="Foundation" scope={['resize-text', 'text-spacing', 'headings']} rules={typographyRules} guide="foundations-typography--docs" guideName="Typography" />,
 };

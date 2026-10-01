@@ -134,10 +134,36 @@ const noPaletteAtCallSite: Check = () => {
   return hit ? `${hit[0]} reads a palette or colors variable` : null;
 };
 
+// Roles only: :root also holds the colors scales, and those alias the palette by design.
 const rolesAliasColors = eachTheme((theme) => {
-  const literal = Object.entries(themeTokens(theme)).find(([, value]) => value.includes('--ds-palette-'));
-  return literal ? `${literal[0]} aliases the palette` : null;
+  const tokens = themeTokens(theme);
+  const role = roleNames(theme).find((name) => tokens[name]?.includes('--ds-palette-'));
+  return role ? `${role} aliases the palette` : null;
 });
+
+/**
+ * WCAG 1.4.12: a fixed height that clips cuts text once a user raises line height and spacing.
+ * Spared: screen-reader-only text (it sets clip or clip-path), a cap in viewport units (the
+ * content scrolls inside it), and any overflow that scrolls.
+ */
+export function clipsText(declarations: Readonly<Record<string, string>>): boolean {
+  const entries = Object.entries(declarations);
+  if ('clip' in declarations || 'clip-path' in declarations) return false;
+  const fixed = entries.some(([property, value]) => /^(?:max-)?(?:height|block-size)$/.test(property) && !/v[hb]\b|%|auto|none|fit-content|max-content|min-content/.test(value));
+  return fixed && entries.some(([property, value]) => /^overflow/.test(property) && /hidden|clip/.test(value));
+}
+
+// ponytail: an allowlist of shapes that never hold text; a rule that grows past three names wants a data attribute instead.
+const NO_TEXT = ['.ds-progress__bar'];
+
+const textSpacingSafe: Check = () => {
+  const bad = CSS_PATHS.filter((p) => CALL_SITE.test(p)).flatMap((path) =>
+    rulesOf(path)
+      .filter((rule) => !NO_TEXT.includes(rule.selector) && clipsText(rule.declarations))
+      .map((rule) => `${path} ${rule.selector}`),
+  );
+  return bad.length ? `fixed height clips: ${bad.join(' · ')}` : null;
+};
 
 const themeParity: Check = () => {
   const [first, ...rest] = THEMES;
@@ -295,6 +321,7 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'spacing.scale-closed': spaceScaleClosed,
   'spacing.target-min': pxAtLeast('--ds-size-target-min', 24),
   'spacing.breakpoints-match': breakpointsMatch,
+  'spacing.text-spacing-safe': textSpacingSafe,
 
   'typography.body-min-size': bodyMinSize,
   'typography.line-height-min': lineHeightMin,
@@ -311,6 +338,7 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'motion.reduced-motion': reducedMotion,
 
   'box.no-literal': all(noLiteral(`${BOX}.css`), ...[0, 4, 12].map((n) => uses(`${BOX}.css`, `.ds-box--p-${n}`, 'padding', `--ds-space-${n}`)), uses(`${BOX}.css`, '.ds-box--gap-3', 'gap', '--ds-space-3')),
+  'box.not-interactive': sourceMatches(`${BOX}.tsx`, /extends Omit<HTMLAttributes<HTMLElement>, 'onClick' \| 'onKeyDown' \| 'onKeyUp'>/, 'BoxProps still accepts onClick, onKeyDown or onKeyUp'),
   'box.space-closed': sourceMatches(`${BOX}.tsx`, /export type Space = 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 \| 9 \| 10 \| 11 \| 12;/, 'Space is not the closed union 0 to 12'),
 
   'stack.gap-from-space': all(noLiteral(`${STACK}.css`), sourceMatches(`${STACK}.tsx`, /gap=\{gap\}/, 'the gap is not passed to Box as a space step')),

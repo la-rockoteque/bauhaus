@@ -64,17 +64,19 @@ export function Tests({ slug, report = REPORT }: { slug?: string; report?: TestR
 export interface AdvisoriesPageProps extends Pick<DocPageProps, 'name' | 'layer' | 'family' | 'guide' | 'guideName'> {
   /** The slice's `<name>.rules.ts` export. */
   rules: readonly Rule[];
+  /** A foundation page only: the accessibility checklist items it can affect. The others read "component pages". */
+  scope?: readonly string[];
 }
 
 /** The Advisories page of a slice: the live Rulebook, the Accessibility coverage and the last test run, beside the Showcase. */
-export function AdvisoriesPage({ name, layer, family, rules, guide, guideName }: AdvisoriesPageProps) {
+export function AdvisoriesPage({ name, layer, family, rules, scope, guide, guideName }: AdvisoriesPageProps) {
   return (
     <article className="doc">
       <Header name={name} layer={layer} family={family} />
       {rules.length > 0 ? (
         <>
           <Rulebook rules={rules} />
-          <Accessibility rules={rules} />
+          <Accessibility rules={rules} scope={scope} />
         </>
       ) : (
         <p className="doc-muted">{`${name} has no rules yet.`}</p>
