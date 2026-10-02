@@ -38,7 +38,7 @@ export const Showcase: StoryObj = {
           { name: 'text.*', tier: 'role', use: 'default, muted, inverse, link', swatch: '--ds-text-default' },
           { name: 'surface.*', tier: 'role', use: 'default, raised, sunken', swatch: '--ds-surface-sunken' },
           { name: 'border.*', tier: 'role', use: 'default (decorative divider), strong (control boundary)', swatch: '--ds-border-strong' },
-          { name: 'action.*', tier: 'role', use: 'primary and secondary fills, with hover, pressed and text', swatch: '--ds-action-primary' },
+          { name: 'action.*', tier: 'role', use: 'primary, secondary and danger fills, with hover, pressed and text', swatch: '--ds-action-primary' },
           { name: 'colors.ink  .a06 … a64', tier: '1', use: 'Translucent ink (alpha 6 to 64%). Read by shadow and scrim roles only', swatch: '--ds-colors-ink-a32' },
           { name: 'surface.inverse', tier: 'role', use: 'Fill of a tooltip or toast; text.inverse sits on it', swatch: '--ds-surface-inverse' },
           { name: 'status.*', tier: 'role', use: 'error, success, warning, info, each with -surface, -text and -border', swatch: '--ds-status-error' },

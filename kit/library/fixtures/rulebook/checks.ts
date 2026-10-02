@@ -322,6 +322,14 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
     sourceMatches(`${BUTTON}.tsx`, /onClick=\{loading \? undefined/, 'button.tsx still passes onClick while loading'),
     uses(`${BUTTON}.css`, ".ds-button[aria-busy='true'] .ds-button__label", 'opacity', '0'),
   ),
+  'button.danger-roles': all(
+    uses(`${BUTTON}.css`, '.ds-button--danger', 'background', '--ds-action-danger'),
+    uses(`${BUTTON}.css`, '.ds-button--danger', 'color', '--ds-action-danger-text'),
+    uses(`${BUTTON}.css`, '.ds-button--danger:active', 'background', '--ds-action-danger-pressed'),
+    () => rulesOf(`${BUTTON}.css`).some((rule) => /hover:\s*hover/.test(rule.media ?? '') && rule.selector === '.ds-button--danger:hover' && (rule.declarations.background ?? '').includes('--ds-action-danger-hover'))
+      ? null
+      : 'button.css has no .ds-button--danger:hover inside a hover: hover query',
+  ),
   'button.states.not-variant': () => {
     const variants = /export type ButtonVariant = ([^;]+);/.exec(sourceOf(`${BUTTON}.tsx`) ?? '')?.[1];
     if (!variants) return 'ButtonVariant type not found';

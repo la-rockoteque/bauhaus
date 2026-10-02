@@ -9,6 +9,7 @@ import { rulesOf } from './sources';
 const MODAL = 'components/overlays/modal/modal';
 const ALERT = 'components/overlays/alert-dialog/alert-dialog';
 const CONFIRM = 'components/overlays/confirmation-dialog/confirmation-dialog';
+const CRITICAL = 'components/overlays/critical-confirmation-dialog/critical-confirmation-dialog';
 const POPOVER = 'components/overlays/popover/popover';
 const TOOLTIP = 'components/overlays/tooltip/tooltip';
 const MENU = 'components/overlays/menu/menu';
@@ -70,7 +71,21 @@ export const CHECKS: Readonly<Record<string, Check>> = {
     sourceMatches(`${CONFIRM}.tsx`, /aria-describedby=\{descriptionId\}/, 'the message does not describe the confirmation dialog'),
   ),
   'confirmation-dialog.destructive-focus': sourceMatches(`${CONFIRM}.tsx`, /onClick=\{onClose\} data-autofocus=\{destructive \|\| undefined\}/, 'Cancel does not take focus when the action is destructive'),
+  'confirmation-dialog.destructive-danger': sourceMatches(`${CONFIRM}.tsx`, /variant=\{destructive \? 'danger' : 'primary'\}/, 'the confirm action is not a danger button when destructive'),
+  'confirmation-dialog.destructive-order': sourceMatches(`${CONFIRM}.tsx`, /footer=\{destructive \? <>\{confirm\}\{cancel\}<\/> : <>\{cancel\}\{confirm\}<\/>\}/, 'the destructive footer does not put the confirm action before Cancel'),
   'confirmation-dialog.built-on-modal': sourceMatches(`${CONFIRM}.tsx`, /<Modal\b/, 'confirmation-dialog.tsx does not render through Modal'),
+  'critical-confirmation-dialog.alert-role': all(
+    sourceMatches(`${CRITICAL}.tsx`, /role="alertdialog"/, 'critical-confirmation-dialog.tsx does not set role alertdialog'),
+    sourceMatches(`${CRITICAL}.tsx`, /aria-describedby=\{descriptionId\}/, 'the cost does not describe the critical confirmation dialog'),
+  ),
+  'critical-confirmation-dialog.type-to-confirm': all(
+    sourceMatches(`${CRITICAL}.tsx`, /const matches = typed === confirmText;/, 'the match is not an exact comparison with confirmText'),
+    sourceMatches(`${CRITICAL}.tsx`, /<Button variant="danger" disabled=\{!matches\}/, 'the confirm is not a danger button disabled until the value matches'),
+  ),
+  'critical-confirmation-dialog.enter-guarded': sourceMatches(`${CRITICAL}.tsx`, /event\.preventDefault\(\);\s*if \(matches && !loading\) onConfirm\(\);/, 'Enter does not check the match before it confirms'),
+  'critical-confirmation-dialog.initial-focus': sourceMatches(`${CRITICAL}.tsx`, /<TextField[\s\S]*data-autofocus[\s\S]*\/>/, 'the text field does not take focus'),
+  'critical-confirmation-dialog.confirm-first': sourceMatches(`${CRITICAL}.tsx`, /variant="danger"[^\n]*<\/Button>\s*<Button variant="secondary"/, 'the footer does not put the danger confirm before Cancel'),
+  'critical-confirmation-dialog.built-on-modal': sourceMatches(`${CRITICAL}.tsx`, /<Modal\b/, 'critical-confirmation-dialog.tsx does not render through Modal'),
   'alert-dialog.alert-role': all(
     sourceMatches(`${ALERT}.tsx`, /role="alertdialog"/, 'alert-dialog.tsx does not set role alertdialog'),
     sourceMatches(`${ALERT}.tsx`, /aria-describedby=\{descriptionId\}/, 'the message does not describe the alert dialog'),

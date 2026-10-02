@@ -388,7 +388,7 @@ import { useState } from 'react';`}
               when: 'The user is about to do something that cannot be undone or that costs something.',
               explain: [
                 'A confirmation adds friction on purpose. Use it for delete, not for save (Pajamas lists Destructive actions: appropriate friction).',
-                '`destructive` starts keyboard focus on Cancel, the safe choice, so an Enter key press does not delete.',
+                '`destructive` draws the confirm as a red danger button before Cancel, and starts keyboard focus on Cancel, the safe choice, so an Enter key press does not delete.',
                 '`confirmLabel` names the action and its object: "Delete project", never "OK".',
                 'The dialog is `role="alertdialog"`, named by `title` and described by `description`. Focus moves inside when it opens and returns to the Delete button when it closes (APG Alert and Message Dialogs; APG Dialog (Modal); WCAG 2.4.3, A).',
                 'After the user confirms, the result is visible in the page, so no second message is needed. The example writes a short status line. Its `role="status"` element is always in the page, and only the text is added.',

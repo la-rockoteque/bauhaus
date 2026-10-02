@@ -11,7 +11,7 @@ The Showcase story holds the stage, the state matrix and the recipe. The Advisor
 
 **In plain words:** A destructive action removes something. The more it costs, the more the screen should slow you down. A cheap, reversible action should not slow you down at all.
 
-**Precisely:** Pattern. Friction scaled to cost: an Undo toast for a reversible action, a ConfirmationDialog for a permanent one, and a Modal with a typed name for a permanent one that removes other resources. It composes ConfirmationDialog, Modal, TextField, Toast, Banner, Button and Stack. It has no style and no token of its own.
+**Precisely:** Pattern. Friction scaled to cost: an Undo toast for a reversible action, a ConfirmationDialog for a permanent one, and a CriticalConfirmationDialog with a typed name for a permanent one that removes other resources. It composes ConfirmationDialog, CriticalConfirmationDialog, Toast, Banner, Button and Stack. It has no style and no token of its own.
 
 **The user need.** The user needs to be stopped before a loss they cannot undo, and left alone when nothing can be lost. A confirmation on everything trains the user to click through, and then it protects nothing.
 
@@ -25,7 +25,7 @@ The Showcase story holds the stage, the state matrix and the recipe. The Advisor
 |---|---|---|
 | Reversible | None before, Undo after | Toast with an action |
 | Irreversible, one item, little data | One question | ConfirmationDialog, `destructive` |
-| Irreversible, removes other resources | One question and the typed name | Modal with a TextField |
+| Irreversible, removes other resources | One question and the typed name | CriticalConfirmationDialog |
 | Bulk | One question that states the count | ConfirmationDialog, count in the confirm label |
 
 GitLab Pajamas draws the same line with three severities: high (a modal, with type-to-confirm when other resources go too), medium (an intermediate step, such as an action inside a dropdown), and low (no friction when no data is lost).
@@ -46,13 +46,13 @@ GitLab Pajamas draws the same line with three severities: high (a modal, with ty
 
 - **Undo.** Remove the item at once, and move focus to the next row's control, or to the list or its empty message when none remains (WCAG 2.4.3, A). Show a Toast with `action={{ label: 'Undo', onAction }}`. A toast with an action does not time out (WCAG 2.2.1, A), so the user is never rushed. Commit the delete when the toast closes, or soft-delete on the server and purge later.
 - **The question.** The title asks it: "Delete project?". The description states the cost: what goes, how much, and whether it comes back (NN/g: be specific; Nielsen heuristic 5).
-- **The confirm label.** It names the action and the object: "Delete project". Never "OK", "Yes" or "Confirm" (NN/g, Pajamas).
+- **The confirm label.** It names the action and the object: "Delete project". Never "OK", "Yes" or "Confirm" (NN/g, Pajamas). The dialog draws it as a danger button and puts it first, before Cancel. Red is not the only cue, because the label names the action (WCAG 1.4.1, A).
 - **The cancel label.** It names the safe outcome: "Cancel", or "Keep project".
-- **Focus.** Focus starts on Cancel when the action is destructive. A stray Enter keeps the data. This is a project decision: the APG Alert and Message Dialogs page does not set initial focus. Some systems focus the confirm button for speed, so the point is contested. Bauhaus takes the safe default.
+- **Focus.** Focus starts on Cancel when the action is destructive. In CriticalConfirmationDialog it starts on the text field, because the user must type before any action works. A stray Enter keeps the data. This is a project decision: the APG Alert and Message Dialogs page does not set initial focus. Some systems focus the confirm button for speed, so the point is contested. Bauhaus takes the safe default.
 - **Role.** `role="alertdialog"`, labelled by its title and described by its message (APG Alert and Message Dialogs). ConfirmationDialog sets it.
-- **Type to confirm.** Only when the deletion removes other resources. The field says what to type. The confirm button stays disabled until the text matches exactly, and the field description gives the reason (Pajamas, type-to-confirm).
-- **Loading.** Set `loading` on the confirm button. Keep the dialog open until the server answers (Nielsen heuristic 1).
-- **Failure.** Keep the dialog open. A Banner with `status="error"` and `urgent` says nothing was deleted and how to retry. The typed name stays.
+- **Type to confirm.** Use CriticalConfirmationDialog, only when the deletion removes other resources. `confirmText` is what to type. The danger confirm button stays disabled until the text matches exactly, and `fieldDescription` gives the reason (Pajamas, type-to-confirm). Enter confirms only on a match.
+- **Loading.** Set `loading` on CriticalConfirmationDialog. Keep the dialog open until the server answers (Nielsen heuristic 1).
+- **Failure.** Keep the dialog open. Pass `error`: an urgent alert says nothing was deleted and how to retry. The typed name stays.
 - **Done.** A permanent delete ends with a status message and focus on an element that exists, because the trigger is gone (WCAG 4.1.3, AA; 2.4.3, A).
 - **Reaching Undo.** The toast region is last in the page order. A keyboard user tabs to Undo after the other controls. The Toast component has no shortcut or jump key. After Undo, focus goes to the restored row.
 - **Known limit.** A region shows 3 toasts at a time and counts the rest as "+N more". The Undo of a waiting toast cannot be reached until another toast closes.
@@ -81,5 +81,4 @@ GitLab Pajamas draws the same line with three severities: high (a modal, with ty
 
 ## 5. Component gaps
 
-- Button has no `danger` variant. ConfirmationDialog confirms with a `primary` button. The pattern adds no style, so the words carry the risk, which also meets WCAG 1.4.1 (A). If three apps need a red confirm, propose `danger` on Button with its tokens, then use it here.
-- ConfirmationDialog has no slot for a field or a loading state. The type-to-confirm recipe composes Modal with its own footer.
+None known.

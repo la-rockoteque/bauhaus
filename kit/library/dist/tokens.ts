@@ -406,7 +406,11 @@ export const tokens = {
     "secondary": "#0e726d",
     "secondary-hover": "#095955",
     "secondary-pressed": "#00413f",
-    "secondary-text": "#ffffff"
+    "secondary-text": "#ffffff",
+    "danger": "#cb0d23",
+    "danger-hover": "#a1091a",
+    "danger-pressed": "#780411",
+    "danger-text": "#ffffff"
   },
   "status": {
     "error": "#cb0d23",
@@ -524,7 +528,11 @@ export const themes = {
       "secondary": "#0e726d",
       "secondary-hover": "#095955",
       "secondary-pressed": "#00413f",
-      "secondary-text": "#ffffff"
+      "secondary-text": "#ffffff",
+      "danger": "#cb0d23",
+      "danger-hover": "#a1091a",
+      "danger-pressed": "#780411",
+      "danger-text": "#ffffff"
     },
     "status": {
       "error": "#cb0d23",
@@ -638,7 +646,11 @@ export const themes = {
       "secondary": "#53afaa",
       "secondary-hover": "#97d2cd",
       "secondary-pressed": "#cdedea",
-      "secondary-text": "#121416"
+      "secondary-text": "#121416",
+      "danger": "#fc7971",
+      "danger-hover": "#feb4ad",
+      "danger-pressed": "#ffdfdb",
+      "danger-text": "#121416"
     },
     "status": {
       "error": "#feb4ad",

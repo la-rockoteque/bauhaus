@@ -16,6 +16,13 @@ describe('Button', () => {
     expect(screen.getByRole('button').className).toContain('ds-button--secondary');
   });
 
+  it('applies the danger variant, which stays a native button of type button', () => {
+    render(<Button variant="danger">Delete project</Button>);
+    const button = screen.getByRole('button', { name: 'Delete project' });
+    expect(button.className).toContain('ds-button--danger');
+    expect(button.getAttribute('type')).toBe('button');
+  });
+
   it('calls onClick', () => {
     const onClick = vi.fn();
     render(<Button onClick={onClick}>Save changes</Button>);
@@ -44,8 +51,8 @@ describe('Button', () => {
     expect(screen.getByRole('button').hasAttribute('disabled')).toBe(false);
   });
 
-  it('has no axe violations in its default, disabled and loading states', async () => {
-    const { container } = render(<><Button>Save changes</Button><Button disabled>Save</Button><Button loading>Send</Button></>);
+  it('has no axe violations in its default, danger, disabled and loading states', async () => {
+    const { container } = render(<><Button>Save changes</Button><Button variant="danger">Delete project</Button><Button disabled>Save</Button><Button loading>Send</Button></>);
     await expectNoAxeViolations(container);
   });
 

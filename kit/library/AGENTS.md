@@ -14,12 +14,13 @@ Import from `@bauhaus/design-system`. Never import from a slice folder.
 | `Banner` | component | A banner is a note that stays on the page until the problem is gone or you close it. | - |
 | `Box` | primitive | A box is an empty container. | - |
 | `Breadcrumb` | component | A breadcrumb shows the path from the top of the site down to the page you are on, like the trail of crumbs in… | - |
-| `Button` | component | A button is the thing you press to make something happen. | primary, secondary, tertiary, subtle |
+| `Button` | component | A button is the thing you press to make something happen. | primary, secondary, tertiary, subtle, danger |
 | `Card` | component | A card is a bordered box that groups what you know about one thing: a title, some detail, a note at the botto… | - |
 | `Checkbox` | component | A checkbox is a small box you tick to say yes. | - |
 | `Chip` | component | A chip is a small pill that holds one value the user chose, such as a filter. | static, removable, selectable |
 | `Combobox` | component | A combobox is a text box with a list of suggestions. | - |
 | `ConfirmationDialog` | component | A confirmation dialog asks one yes-or-no question before an action goes ahead. | - |
+| `CriticalConfirmationDialog` | component | A critical confirmation dialog stops the user before an action that cannot be undone and that also removes ot… | - |
 | `Disclosure` | component | A disclosure is a heading you can press to show or hide a block of text under it. | - |
 | `Divider` | primitive | A divider is a thin line that separates two groups of content. | - |
 | `EmptyState` | component | An empty state is what a list or a page shows when there is nothing to show. | - |

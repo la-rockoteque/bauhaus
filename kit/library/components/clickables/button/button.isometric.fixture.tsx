@@ -10,7 +10,7 @@ import { FaceLabel, FaceRect, IsoCursor, IsoStage, Slab } from '../../../fixture
 export type ButtonIsometricState = 'rest' | 'hover' | 'pressed' | 'text' | 'focus' | 'disabled';
 
 export interface ButtonIsometricProps {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'danger';
   state?: ButtonIsometricState;
   /** For a disabled button: the part the scene is about. */
   part?: 'surface' | 'border' | 'text';
@@ -66,7 +66,7 @@ export function ButtonIsometric(props: ButtonIsometricProps) {
 
 const ROLES: Readonly<Record<string, ButtonIsometricProps>> = {
   ...Object.fromEntries(
-    (['primary', 'secondary'] as const).flatMap((variant) => [
+    (['primary', 'secondary', 'danger'] as const).flatMap((variant) => [
       [`--ds-action-${variant}`, { variant, state: 'rest' }],
       [`--ds-action-${variant}-hover`, { variant, state: 'hover' }],
       [`--ds-action-${variant}-pressed`, { variant, state: 'pressed' }],

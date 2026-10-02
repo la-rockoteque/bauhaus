@@ -62,12 +62,29 @@ describe('Destructive actions pattern', () => {
     expect(screen.queryByRole('button', { name: /^(OK|Yes|Confirm)$/, ...hidden })).toBeNull();
   });
 
-  it('starts focus on Cancel in both destructive dialogs', () => {
+  it('starts focus on Cancel in the destructive dialog and on the text field in the critical one', () => {
     const { unmount } = render(<ConfirmDelete initialOpen />);
     expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Cancel', ...hidden }));
     unmount();
     render(<DeleteProject initialOpen />);
-    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Cancel', ...hidden }));
+    expect(document.activeElement).toBe(screen.getByLabelText(/Type Apollo to confirm/));
+  });
+
+  it('shows a danger confirm first and Cancel last in both destructive dialogs', () => {
+    const { unmount } = render(<ConfirmDelete inline initialOpen />);
+    let [first, last] = screen.getAllByRole('button').slice(-2);
+    expect([first.textContent, first.className.includes('ds-button--danger'), last.textContent]).toEqual(['Delete filter', true, 'Cancel']);
+    unmount();
+    render(<DeleteProject inline initialOpen />);
+    [first, last] = screen.getAllByRole('button').slice(-2);
+    expect([first.textContent, first.className.includes('ds-button--danger'), last.textContent]).toEqual(['Delete project', true, 'Cancel']);
+  });
+
+  it('does not confirm a wrong name with Enter', async () => {
+    const onDelete = vi.fn().mockResolvedValue(undefined);
+    render(<DeleteProject initialOpen onDelete={onDelete} />);
+    await userEvent.type(screen.getByLabelText(/Type Apollo to confirm/), 'Apollo2{Enter}');
+    expect(onDelete).not.toHaveBeenCalled();
   });
 
   it('closes the confirmation on Cancel without deleting', async () => {

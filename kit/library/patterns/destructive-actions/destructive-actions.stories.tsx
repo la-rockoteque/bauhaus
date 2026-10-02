@@ -4,12 +4,11 @@ import { DocPage, LIFECYCLE } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
 import { ExamplesPage } from '../../fixtures/examples/examples';
 import { Button } from '../../components/clickables/button/button';
-import { TextField } from '../../components/fields/text-field/text-field';
 import { Banner } from '../../components/feedback/banner/banner';
 import { ToastRegion } from '../../components/feedback/toast/toast';
 import type { ToastData } from '../../components/feedback/toast/toast';
 import { ConfirmationDialog } from '../../components/overlays/confirmation-dialog/confirmation-dialog';
-import { Modal } from '../../components/overlays/modal/modal';
+import { CriticalConfirmationDialog } from '../../components/overlays/critical-confirmation-dialog/critical-confirmation-dialog';
 import { List, ListItem } from '../../components/data-structures/list/list';
 import { Stack } from '../../primitives/stack/stack';
 import { Text } from '../../primitives/text/text';
@@ -137,7 +136,6 @@ export interface DeleteProjectProps {
 export function DeleteProject({ name = 'Apollo', initialOpen = false, initialTyped = '', initialPhase = 'idle', inline = false, onDelete = () => wait(600) }: DeleteProjectProps) {
   const uid = useId();
   const [open, setOpen] = useState(initialOpen);
-  const [typed, setTyped] = useState(initialTyped);
   const [phase, setPhase] = useState<'idle' | 'deleting' | 'failed' | 'done'>(initialPhase);
   useEffect(() => {
     if (phase === 'done') document.getElementById(`${uid}-done`)?.focus();
@@ -154,40 +152,25 @@ export function DeleteProject({ name = 'Apollo', initialOpen = false, initialTyp
     }
   };
   if (phase === 'done') return <Banner id={`${uid}-done`} tabIndex={-1} status="success" title="Project deleted">{name} and its files were deleted.</Banner>;
-  const deleting = phase === 'deleting';
   return (
     <Stack gap={3}>
       <Button variant="secondary" onClick={() => setOpen(true)}>Delete project</Button>
-      <Modal
+      <CriticalConfirmationDialog
         open={open}
         inline={inline}
-        role="alertdialog"
-        aria-describedby={`${uid}-cost`}
         title="Delete project?"
-        onClose={() => { if (!deleting) setOpen(false); }}
-        footer={
-          <>
-            <Button variant="secondary" data-autofocus disabled={deleting} onClick={() => setOpen(false)}>Cancel</Button>
-            <Button variant="primary" disabled={typed !== name} loading={deleting} onClick={confirm}>Delete project</Button>
-          </>
-        }
-      >
-        <Stack gap={4}>
-          {phase === 'failed' && (
-            <Banner status="error" urgent title="We could not delete the project">
-              Nothing was deleted. Your project and its files are still here. Press Delete project to try again.
-            </Banner>
-          )}
-          <Text id={`${uid}-cost`}>This permanently deletes {name}, its 3 repositories and 128 files. It cannot be recovered.</Text>
-          <TextField
-            label={`Type ${name} to confirm`}
-            description="The Delete project button stays disabled until the name matches exactly."
-            autoComplete="off"
-            value={typed}
-            onChange={(event) => setTyped(event.target.value)}
-          />
-        </Stack>
-      </Modal>
+        description={`This permanently deletes ${name}, its 3 repositories and 128 files. It cannot be recovered.`}
+        confirmLabel="Delete project"
+        cancelLabel="Cancel"
+        confirmText={name}
+        fieldLabel={`Type ${name} to confirm`}
+        fieldDescription="The Delete project button stays disabled until the name matches exactly."
+        defaultValue={initialTyped}
+        loading={phase === 'deleting'}
+        error={phase === 'failed' ? 'We could not delete the project. Nothing was deleted. Your project and its files are still here. Press Delete project to try again.' : undefined}
+        onClose={() => setOpen(false)}
+        onConfirm={confirm}
+      />
     </Stack>
   );
 }
@@ -199,7 +182,7 @@ export const Showcase: StoryObj = {
       name="Destructive actions"
       layer="Pattern"
       plain="A destructive action removes something. The more it costs, the more the screen should slow you down. A cheap, reversible action should not slow you down at all."
-      precise="Pattern · friction scaled to cost: an Undo toast, a confirmation dialog, or a dialog with a typed name · composes ConfirmationDialog, Modal, TextField, Toast, Banner, Button and Stack; has no style of its own."
+      precise="Pattern · friction scaled to cost: an Undo toast, a confirmation dialog, or a critical confirmation dialog with a typed name · composes ConfirmationDialog, CriticalConfirmationDialog, Toast, Banner, Button and Stack; has no style of its own."
       usedFor="Any delete, remove, reset or revoke: a file, a saved filter, a project, an account."
       tokens={{ mode: 'consumed', note: 'None of its own. Layout comes from Stack. Colour, type and spacing come from the components it composes.', rows: [] }}
       stage={{
@@ -207,20 +190,20 @@ export const Showcase: StoryObj = {
         parts: [
           { n: 1, label: 'Question', note: 'the dialog title; role alertdialog, labelled by it', target: '.ds-modal__title', at: 'top-start' },
           { n: 2, label: 'Cost', note: 'what goes, how much, and that it cannot come back', target: '.ds-modal__body p', at: 'top-start' },
-          { n: 3, label: 'Typed name', note: 'only when other resources go with it', target: '.ds-field__label', at: 'top-start' },
-          { n: 4, label: 'Cancel', note: 'focus starts here', target: '.ds-modal__footer button:first-child', at: 'top-start' },
-          { n: 5, label: 'Confirm', note: 'names the action and the object; disabled until the name matches', target: '.ds-modal__footer button:last-child', at: 'top-end' },
+          { n: 3, label: 'Typed name', note: 'only when other resources go with it; focus starts here', target: '.ds-field__label', at: 'top-start' },
+          { n: 4, label: 'Confirm', note: 'danger button, first; names the action and the object; disabled until the name matches', target: '.ds-modal__footer button:first-child', at: 'top-end' },
+          { n: 5, label: 'Cancel', note: 'last', target: '.ds-modal__footer button:last-child', at: 'top-start' },
         ],
       }}
       api={[
         { label: 'Reversible', value: 'Remove at once, then show a Toast with an Undo action. The delete is final when the toast closes.' },
         { label: 'Irreversible', value: 'ConfirmationDialog with `destructive`. The confirm label names the action: “Delete filter”.' },
-        { label: 'Cascade', value: 'Modal with a TextField. The confirm button is disabled until the typed text equals the name.' },
+        { label: 'Cascade', value: 'CriticalConfirmationDialog. The danger confirm button is disabled until the typed text equals the name.' },
         { label: 'onDelete()', value: 'Your delete call. The confirm button is loading until it settles. A rejection shows the failure and keeps the dialog.' },
       ]}
       states={{
         expect: LIFECYCLE,
-        note: 'Interaction states are inherited from the components the pattern composes. The pattern has no button or dialog styling of its own, so it has no danger colour: the words carry the risk.',
+        note: 'Interaction states are inherited from the components the pattern composes. The pattern has no button or dialog styling of its own. The danger button comes from Button, and the label still names the action.',
         cells: [
           { id: 'nothing', status: 'designed', label: 'Nothing (the trigger)', render: <DeleteProject />, trigger: 'no dialog open', note: 'Only the trigger. No warning before the user acts.' },
           { id: 'loading', status: 'designed', label: 'Loading (deleting)', render: <DeleteProject initialOpen inline initialTyped="Apollo" initialPhase="deleting" />, trigger: 'confirm pressed, request running', note: 'The confirm button is loading and keeps its size. Cancel is disabled. The dialog stays open.' },
@@ -240,10 +223,10 @@ export const Showcase: StoryObj = {
           content: (
             <List ordered divided>
               <ListItem title="Reversible: act, then offer Undo" description="Remove the item and show a Toast with an Undo action. No question before. The Toast stays until the user closes it." />
-              <ListItem title="Irreversible, one item: ask once" description="ConfirmationDialog with `destructive`. The title asks, the description states the cost, the confirm button names the action, and focus starts on Cancel." />
-              <ListItem title="Irreversible with a cascade: ask for the name" description="Modal with a TextField. The confirm button is disabled until the typed text matches exactly, and the field says why." />
+              <ListItem title="Irreversible, one item: ask once" description="ConfirmationDialog with `destructive`. The title asks, the description states the cost, the confirm button is a danger button that names the action and comes first, and focus starts on Cancel." />
+              <ListItem title="Irreversible with a cascade: ask for the name" description="CriticalConfirmationDialog. The danger confirm button is disabled until the typed text matches exactly, and the field says why." />
               <ListItem title="Bulk: state the count" description="One question. The confirm label carries the number: “Delete 12 files”." />
-              <ListItem title="While it runs, keep the dialog" description="Set `loading` on the confirm button. On a failure keep the dialog, say nothing was deleted, and offer retry." />
+              <ListItem title="While it runs, keep the dialog" description="Set `loading` on the dialog. On a failure keep the dialog, say nothing was deleted, and offer retry." />
             </List>
           ),
         },
@@ -261,7 +244,7 @@ export const Showcase: StoryObj = {
       dos={[
         { text: 'Offer Undo instead of a question when the action can be reversed.', basis: 'NN/g, Nielsen 3; WCAG 3.3.4 (AA)' },
         { text: 'Name the action and the object on the confirm button.', basis: 'NN/g; GitLab Pajamas' },
-        { text: 'Start focus on Cancel in a destructive confirmation.', basis: 'Project decision' },
+        { text: 'Start focus on Cancel in a destructive confirmation, and show the danger confirm first.', basis: 'Project decision' },
         { text: 'State what is deleted and whether it comes back.', basis: 'NN/g; Nielsen 5' },
         { text: 'Ask for the typed name when other resources go too.', basis: 'GitLab Pajamas' },
       ]}
@@ -289,15 +272,15 @@ export const Examples: StoryObj = {
     <ExamplesPage
       name="Destructive actions"
       layer="Pattern"
-      imports={`import { Banner, Button, ConfirmationDialog, Modal, Stack, Text, TextField, ToastRegion } from '@bauhaus/design-system';
+      imports={`import { Banner, Button, ConfirmationDialog, CriticalConfirmationDialog, Stack, Text, ToastRegion } from '@bauhaus/design-system';
 import { useState } from 'react';`}
       intro={[
         'A destructive action removes something. The pattern scales the friction to the cost: the cheaper the loss, the less the screen gets in the way.',
-        'The pattern has no component of its own. You write the small component that holds the state and compose `ConfirmationDialog`, `Modal`, `TextField`, `ToastRegion`, `Banner` and `Button`.',
-        'Ask one question first: can the user reverse it? If yes, use the first example (Undo). If no, use the second. If the deletion also removes other things, use the third.',
+        'The pattern has no component of its own. You write the small component that holds the state and compose `ConfirmationDialog`, `CriticalConfirmationDialog`, `ToastRegion`, `Banner` and `Button`.',
+        'Ask one question first: can the user reverse it? If yes, use the first example (Undo). If no, use the second. If the deletion also removes other things, use `CriticalConfirmationDialog`, the third.',
         'A "toast" is a short message that appears at the edge of the screen. A toast with an action stays until the user closes it, so nobody is rushed.',
         'A "dialog" is a box over the page that stops everything else until the user answers. `alertdialog` is its role for a message that needs a response: a screen reader reads the title and the description when it opens.',
-        'The `Button` has no red "danger" look today. The words on the buttons carry the risk. Names such as `deleteProject` stand for your own code.',
+        'The confirm button is red: it uses the `danger` variant of `Button`. Red is not the only cue, because the label names the action. Names such as `deleteProject` stand for your own code.',
       ]}
       guide="patterns-destructive-actions--docs"
       guideName="Destructive actions"
@@ -364,7 +347,7 @@ import { useState } from 'react';`}
               title: 'Irreversible, one item: a confirmation dialog',
               when: 'The delete is permanent and little else is lost: a saved filter, a draft.',
               explain: [
-                'Use `ConfirmationDialog` with `destructive`. It sets `role="alertdialog"` and starts focus on Cancel, so a stray Enter keeps the data.',
+                'Use `ConfirmationDialog` with `destructive`. It sets `role="alertdialog"`, draws the confirm as a red danger button before Cancel, and starts focus on Cancel, so a stray Enter keeps the data.',
                 '`title` asks the question: "Delete filter?". `description` states the cost: what goes and that it cannot be recovered (NN/g: be specific, never only "Are you sure?").',
                 '`confirmLabel` names the action and the object: "Delete filter". Never "OK" or "Yes" (NN/g, GitLab Pajamas).',
                 'Focus on Cancel is a project decision. The APG Alert and Message Dialogs page does not set initial focus. Some systems focus the confirm button instead, so this point is contested.',
@@ -378,7 +361,7 @@ import { useState } from 'react';`}
 
 <ConfirmationDialog
   open={open}
-  destructive                       // focus starts on Cancel
+  destructive                       // danger confirm first; focus starts on Cancel
   title="Delete filter?"            // the question
   description="This deletes the saved filter Overdue invoices. It cannot be recovered."  // the cost
   confirmLabel="Delete filter"      // the action and its object, never 'OK'
@@ -397,65 +380,48 @@ import { useState } from 'react';`}
               title: 'Type the name to confirm',
               when: 'The delete is permanent and removes other things with it: a project with its files.',
               explain: [
-                '`ConfirmationDialog` has no slot for a field, so compose `Modal` with `role="alertdialog"` and your own footer.',
-                '`aria-describedby` points to the cost text, so a screen reader reads it when the dialog opens (APG Alert and Message Dialogs).',
-                'The `TextField` asks for the exact name. `typed !== name` keeps the confirm button disabled until it matches. The field description tells the user why the button is off.',
+                'Use `CriticalConfirmationDialog`. It is `ConfirmationDialog` for the top tier: it asks the user to type the name, and it keeps the confirm button disabled until the text matches.',
+                '`description` is the cost. The dialog links it with `aria-describedby`, so a screen reader reads it when the dialog opens (APG Alert and Message Dialogs).',
+                '`confirmText` is the exact name. `fieldLabel` asks for it, and `fieldDescription` tells the user why the button is off.',
                 'The disabled button is the guard here, not a hint about invalid data. That is why it is allowed, where the form-validation pattern keeps submit enabled.',
-                'Cancel carries `data-autofocus`, so the dialog opens with focus on Cancel.',
+                'Focus starts on the text field, not on Cancel: the user must type before any button works. Enter in the field confirms only on a match.',
+                'The confirm is a red danger button and comes first. Cancel comes last. The label still names the action, so red is not the only cue (WCAG 1.4.1, A).',
                 'Ask for the name only when other resources go too (GitLab Pajamas). On a single item it is friction with nothing to protect.',
                 'Try it: type Apollo and watch the button turn on.',
               ],
               render: <DeleteProject />,
-              code: `const name = 'Apollo';
-const [typed, setTyped] = useState('');
-const costId = useId();
-
-<Modal
+              code: `<CriticalConfirmationDialog
   open={open}
-  role="alertdialog"                  // a message that needs an answer
-  aria-describedby={costId}           // read out with the title on open
   title="Delete project?"
-  onClose={() => setOpen(false)}
-  footer={
-    <>
-      {/* data-autofocus: the dialog opens with focus on the safe choice */}
-      <Button variant="secondary" data-autofocus onClick={() => setOpen(false)}>Cancel</Button>
-      {/* Disabled until the name matches exactly. The label names the action. */}
-      <Button disabled={typed !== name} onClick={confirm}>Delete project</Button>
-    </>
-  }
->
-  <Text id={costId}>This permanently deletes {name}, its 3 repositories and 128 files. It cannot be recovered.</Text>
-  <TextField
-    label={'Type ' + name + ' to confirm'}
-    description="The Delete project button stays disabled until the name matches exactly."
-    autoComplete="off"
-    value={typed}
-    onChange={(e) => setTyped(e.target.value)}
-  />
-</Modal>`,
+  description="This permanently deletes Apollo, its 3 repositories and 128 files. It cannot be recovered."  // the cost
+  confirmLabel="Delete project"       // the action and its object
+  cancelLabel="Cancel"
+  confirmText="Apollo"                // the exact text to type
+  fieldLabel="Type Apollo to confirm"
+  fieldDescription="The Delete project button stays disabled until the name matches exactly."  // why it is off
+  onClose={() => setOpen(false)}      // Cancel, Escape
+  onConfirm={confirm}                 // the button, or Enter on a match
+/>`,
             },
             {
               title: 'Deleting: show the work',
               when: 'The request takes time.',
               explain: [
-                '`loading` on the confirm button keeps its label and width, shows the work, and ignores more presses (Nielsen heuristic 1, visibility of system status).',
-                'Cancel is disabled while the request runs, and `onClose` ignores Escape, so the user cannot walk away from a request in flight.',
+                '`loading` on the dialog keeps the label and width of the confirm button, shows the work, and ignores more presses (Nielsen heuristic 1, visibility of system status).',
+                'The dialog disables Cancel while the request runs and ignores Escape, so the user cannot walk away from a request in flight.',
                 'The dialog stays open until the server answers. Closing it early would claim a result that is not known yet.',
               ],
               render: <DeleteProject initialOpen inline initialTyped="Apollo" initialPhase="deleting" />,
               code: `const [phase, setPhase] = useState('idle'); // 'idle' | 'deleting' | 'failed' | 'done'
-const deleting = phase === 'deleting';
 
-<Button variant="secondary" disabled={deleting} onClick={() => setOpen(false)}>Cancel</Button>
-{/* loading: label and width stay, presses are ignored */}
-<Button disabled={typed !== name} loading={deleting} onClick={confirm}>Delete project</Button>`,
+{/* loading: the confirm keeps its label and width, Cancel and Escape are off */}
+<CriticalConfirmationDialog loading={phase === 'deleting'} /* ...the other props */ />`,
             },
             {
               title: 'Failure: keep the dialog, say nothing was lost',
               when: 'The delete request failed.',
               explain: [
-                'A `Banner` with `status="error"` and `urgent` sits in the dialog. `urgent` makes it an alert, so a screen reader reads it at once (WCAG 4.1.3, AA).',
+                '`error` shows an urgent alert in the dialog, so a screen reader reads it at once (WCAG 4.1.3, AA).',
                 'The message says the first thing the user fears: nothing was deleted. Then it says how to retry (Nielsen heuristic 9).',
                 'The typed name stays, so retry is one press. The dialog does not close.',
                 'On success the dialog closes and a status `Banner` takes focus, because the trigger is gone (WCAG 2.4.3, A).',
@@ -474,12 +440,11 @@ const deleting = phase === 'deleting';
   }
 };
 
-{phase === 'failed' && (
-  // urgent = role="alert": read out at once
-  <Banner status="error" urgent title="We could not delete the project">
-    Nothing was deleted. Your project and its files are still here. Press Delete project to try again.
-  </Banner>
-)}`,
+<CriticalConfirmationDialog
+  // An urgent alert in the dialog, read out at once.
+  error={phase === 'failed' ? 'We could not delete the project. Nothing was deleted. Press Delete project to try again.' : undefined}
+  /* ...the other props */
+/>`,
             },
           ],
         },

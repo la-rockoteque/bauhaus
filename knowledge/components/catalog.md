@@ -33,8 +33,9 @@ Each entry lists: job, anatomy (`?` = optional), required states, APG pattern, k
 - **Required states:** interaction: default, hover, focus-visible, active, disabled, loading. Lifecycle: done (confirm elsewhere).
 - **APG:** Button, native `<button>`.
 - **WCAG:** 4.1.2 (A), 2.5.8 (AA), 2.4.7 (AA), 1.4.3 (AA).
-- **Defects:** a `div` with `onClick`; disabled with no reason; two primaries in one region.
-- **Seeds:** `button.native-element`, `button.focus-ring`, `button.target-size`, `button.state.disabled`, `button.state.loading`.
+- **Variants:** primary, secondary, tertiary, subtle, danger. Danger is only the confirm of a destructive action.
+- **Defects:** a `div` with `onClick`; disabled with no reason; two primaries in one region; a danger button that is a page action or that names no action.
+- **Seeds:** `button.native-element`, `button.focus-ring`, `button.target-size`, `button.state.disabled`, `button.state.loading`, `button.danger-roles`, `button.danger-names-action`.
 
 ### Icon button
 - **Job:** a compact action shown as an icon only.
@@ -179,9 +180,19 @@ Each entry lists: job, anatomy (`?` = optional), required states, APG pattern, k
 - **Job:** a yes-or-no question before an action with a cost. Cancel and confirm.
 - **Anatomy:** title (the question), message (the cost), cancel, confirm. Built on Modal.
 - **APG:** Alert and Message Dialogs. Focus starts on Cancel when the action is destructive.
+- **Order:** Cancel then confirm. When `destructive`, the confirm is a danger button and comes first, then Cancel.
 - **WCAG:** 1.4.1 (A), 2.4.6 (AA), 4.1.2 (A).
-- **Defects:** "OK" on a destructive action; focus on the destructive action; a confirmation where undo would do.
-- **Seeds:** `confirmation-dialog.destructive-named`, `confirmation-dialog.destructive-focus`.
+- **Defects:** "OK" on a destructive action; focus on the destructive action; a confirmation where undo would do; a primary confirm on a destructive action.
+- **Seeds:** `confirmation-dialog.destructive-named`, `confirmation-dialog.destructive-focus`, `confirmation-dialog.destructive-danger`, `confirmation-dialog.destructive-order`.
+
+### Critical confirmation dialog
+- **Job:** confirm a critical destructive action: one that cannot be undone and also removes other resources. The user types the exact name first.
+- **Anatomy:** title, message (the cost, naming what else goes), text field (type the name), confirm (danger), cancel. Built on Modal.
+- **Required states:** lifecycle: loading, incorrect. Interaction: focus-visible, disabled (confirm, until the name matches).
+- **APG:** Alert and Message Dialogs. Focus starts on the text field, because the user must type.
+- **WCAG:** 1.4.1 (A), 3.3.2 (A), 3.3.4 (AA), 2.4.6 (AA), 4.1.2 (A).
+- **Defects:** used for an action that is not critical; confirm enabled before the name matches; Enter submits a wrong name; the disabled confirm gives no reason.
+- **Seeds:** `critical-confirmation-dialog.alert-role`, `critical-confirmation-dialog.type-to-confirm`, `critical-confirmation-dialog.enter-guarded`, `critical-confirmation-dialog.initial-focus`, `critical-confirmation-dialog.confirm-first`, `critical-confirmation-dialog.cost-named`, `critical-confirmation-dialog.built-on-modal`.
 
 ### Tooltip
 - **Job:** add a short hint to a control that already has a name.

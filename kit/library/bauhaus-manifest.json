@@ -539,12 +539,13 @@
           "name": "variant",
           "type": "ButtonVariant",
           "optional": true,
-          "doc": "One primary per view region. `subtle` is the quietest: neutral text, no fill or outline until hover.",
+          "doc": "One primary per view region. `subtle` is the quietest: neutral text, no fill or outline until hover. `danger` is only the confirm of a destructive action.",
           "values": [
             "primary",
             "secondary",
             "tertiary",
-            "subtle"
+            "subtle",
+            "danger"
           ],
           "default": "'primary'"
         },
@@ -572,9 +573,14 @@
         "primary",
         "secondary",
         "tertiary",
-        "subtle"
+        "subtle",
+        "danger"
       ],
       "tokens": [
+        "--ds-action-danger",
+        "--ds-action-danger-hover",
+        "--ds-action-danger-pressed",
+        "--ds-action-danger-text",
         "--ds-action-primary",
         "--ds-action-primary-hover",
         "--ds-action-primary-pressed",
@@ -649,6 +655,16 @@
         {
           "id": "button.one-primary",
           "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "button.danger-roles",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "button.danger-names-action",
+          "severity": "HIGH",
           "verify": "review"
         },
         {
@@ -1439,7 +1455,7 @@
           "name": "destructive",
           "type": "boolean",
           "optional": true,
-          "doc": "The action cannot be undone. Focus starts on Cancel, the least destructive choice.",
+          "doc": "The action cannot be undone. The confirm is a danger button and comes first. Focus starts on Cancel, the least destructive choice.",
           "default": "false"
         }
       ],
@@ -1462,12 +1478,152 @@
           "verify": "auto"
         },
         {
+          "id": "confirmation-dialog.destructive-danger",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "confirmation-dialog.destructive-order",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
           "id": "confirmation-dialog.destructive-named",
           "severity": "HIGH",
           "verify": "review"
         },
         {
           "id": "confirmation-dialog.built-on-modal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "critical-confirmation-dialog",
+      "export": "CriticalConfirmationDialog",
+      "layer": "component",
+      "family": "overlays",
+      "path": "components/overlays/critical-confirmation-dialog",
+      "summary": "A critical confirmation dialog stops the user before an action that cannot be undone and that also removes other things. To go on, the user types the name of the thing they are about to delete.",
+      "props": [
+        {
+          "name": "onClose",
+          "type": "() => void",
+          "optional": false,
+          "doc": "Called on Cancel, Escape and the scrim. Ignored while `loading`."
+        },
+        {
+          "name": "onConfirm",
+          "type": "() => void",
+          "optional": false,
+          "doc": "Called by the confirm button and by Enter, only when the typed value equals `confirmText`."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "The cost: what goes, how much, and what else goes with it. Read out when the dialog opens."
+        },
+        {
+          "name": "confirmLabel",
+          "type": "string",
+          "optional": false,
+          "doc": "Names the action and its object: \"Delete project\", never \"OK\"."
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "confirmText",
+          "type": "string",
+          "optional": false,
+          "doc": "The exact text the user must type. The comparison is exact: case and spaces count."
+        },
+        {
+          "name": "fieldLabel",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "The label of the text field: \"Type Apollo to confirm\"."
+        },
+        {
+          "name": "fieldDescription",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "Says why the confirm is disabled: \"The Delete project button stays disabled until the name matches exactly.\""
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The action is running. The confirm keeps its label and width, Cancel and Escape are off.",
+          "default": "false"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The action failed. Shown as an alert above the cost. The dialog stays open and the typed value stays."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "optional": true,
+          "doc": "The typed value at the start, and after the dialog reopens. Empty by default.",
+          "default": "''"
+        }
+      ],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "banner",
+        "button",
+        "modal",
+        "stack",
+        "text",
+        "text-field"
+      ],
+      "rules": [
+        {
+          "id": "critical-confirmation-dialog.alert-role",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.type-to-confirm",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.enter-guarded",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.initial-focus",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.confirm-first",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.cost-named",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "critical-confirmation-dialog.only-critical",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "critical-confirmation-dialog.built-on-modal",
           "severity": "MEDIUM",
           "verify": "auto"
         }
@@ -1487,11 +1643,10 @@
         "banner",
         "button",
         "confirmation-dialog",
+        "critical-confirmation-dialog",
         "list",
-        "modal",
         "stack",
         "text",
-        "text-field",
         "toast"
       ],
       "rules": [

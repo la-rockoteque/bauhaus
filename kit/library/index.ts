@@ -73,6 +73,8 @@ export { AlertDialog } from './components/overlays/alert-dialog/alert-dialog';
 export type { AlertDialogProps } from './components/overlays/alert-dialog/alert-dialog';
 export { ConfirmationDialog } from './components/overlays/confirmation-dialog/confirmation-dialog';
 export type { ConfirmationDialogProps } from './components/overlays/confirmation-dialog/confirmation-dialog';
+export { CriticalConfirmationDialog } from './components/overlays/critical-confirmation-dialog/critical-confirmation-dialog';
+export type { CriticalConfirmationDialogProps } from './components/overlays/critical-confirmation-dialog/critical-confirmation-dialog';
 export { Popover } from './components/overlays/popover/popover';
 export type { PopoverProps } from './components/overlays/popover/popover';
 export { Tooltip } from './components/overlays/tooltip/tooltip';

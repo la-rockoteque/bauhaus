@@ -32,7 +32,7 @@ sources:
    - **Text:** `text.default`, `text.muted`, `text.inverse`, `text.link`.
    - **Surface:** `surface.default`, `surface.raised`, `surface.sunken`.
    - **Border:** `border.default`, `border.strong`. `border.default` is decorative (a divider); `border.strong` is the boundary of a control.
-   - **Action:** `action.primary`, `action.primary-hover`, `action.primary-pressed`, `action.primary-text` (the label on the fill), and the same four for `action.secondary`.
+   - **Action:** `action.primary`, `action.primary-hover`, `action.primary-pressed`, `action.primary-text` (the label on the fill), and the same four for `action.secondary` and for `action.danger` (the confirm of a destructive action).
    - **Status:** one family per state (see rule 7): `status.error` (solid) and `status.error-surface` (tint), and the same for success, warning, info.
    - **Focus, disabled, state layers:** `focus.ring.color`, `focus.ring.width`, `focus.ring.offset`, `disabled.text`, `disabled.surface`, `disabled.border`, `state.hover-layer`, `state.pressed-layer`, `state.selected`. See § State roles.
    Every theme defines every role. (Carbon: "Color token names and roles are the same across themes, only the assigned value will change".)

@@ -45,7 +45,7 @@ The Showcase story holds the live swatches, the role tables for both themes and 
 
 ## 3. Why the states look as they do
 
-Roles carry the interaction states: `action.primary` with `-hover` and `-pressed`, `state.hover-layer`, `state.pressed-layer`, `state.selected`, `disabled.*` and `focus.ring.color`.
+Roles carry the interaction states: `action.primary` (and `action.secondary`, `action.danger`) with `-hover` and `-pressed`, `state.hover-layer`, `state.pressed-layer`, `state.selected`, `disabled.*` and `focus.ring.color`.
 
 - **Each state colour differs from its base in lightness.** No state carries meaning by hue alone (WCAG 1.4.1, A).
 - **Layers are opaque tints.** A token cannot alias a colour with an alpha, so the layer is a solid light tint, not a transparent overlay.

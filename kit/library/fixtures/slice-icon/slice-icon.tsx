@@ -88,6 +88,7 @@ export const SLICE_ICONS = {
   Modal: [b([0, 0, 0], [4, 4, 0.3], grey), b([0.6, 0.6, 1.6], [2.8, 2.8, 0.4], { glyph: 'close' })],
   Popover: [cube(0, 0, 0, 1.2, grey), b([0, 1.4, 1.2], [3, 2.4, 0.4])],
   Tooltip: [cube(1, 1, 0, 1.4, grey), b([0.6, 0.6, 2.2], [2.2, 1, 0.3])],
+  'Critical confirmation dialog': [b([0, 0, 0], [4, 4, 0.3], grey), b([0.6, 0.6, 1.6], [2.8, 2.8, 0.4], { glyph: 'warning' }), b([1, 2.7, 2], [2, 0.5, 0.2], { shift: 1 })],
   // Navigation
   Breadcrumb: [cube(0, 0, 0, 1), cube(1.4, 0, 0, 1, { shift: 1 }), cube(2.8, 0, 0, 1, { shift: 2 })].map((c, i) => ({ ...c, size: [1, 1, 0.5 + i * 0.5] as Vec })),
   Pagination: [0, 1, 2, 3].map((i) => b([i, 0, 0], [0.8, 0.8, i === 1 ? 1.4 : 0.5], i === 1 ? {} : grey)),
