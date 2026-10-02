@@ -133,7 +133,7 @@ A fixture is a Storybook-only building block, structured like a component and ne
 |---|---|
 | `<name>.tsx` (or `.ts`) | The block. |
 | `<name>.css` | Its layout, with tokens only. |
-| `<name>.stories.tsx` | A dev story titled `Fixtures/<Name>` that shows the block alone with sample props. It is not a `DocPage`. The sidebar sorts `Fixtures` last. |
+| `<name>.stories.tsx` | A dev story titled `Fixtures/<Name>` that shows the block alone with sample props. It is not a `DocPage`. Storybook does not load it: `.storybook/main.ts` leaves `fixtures/` out of the sidebar. A utility built as a fixture, such as `palette-generator`, is listed there by path and titled `Utilities/<Name>`. |
 | `<name>.test.tsx` | Tests, wherever the block holds logic: a hook, or an exported function that is not a component. |
 
 A fixture has no `.mdx` and no `.rules.ts`.
