@@ -10,6 +10,8 @@ const config: StorybookConfig = {
     { name: '@storybook/addon-docs', options: { mdxPluginOptions: { mdxCompileOptions: { remarkPlugins: [remarkGfm] } } } },
   ],
   framework: '@storybook/react-vite',
+  // The release notice is Storybook's own chrome, not the design system's.
+  core: { disableWhatsNewNotifications: true },
   // The Examples pages print each element back as JSX by its component's name, so the build keeps the names.
   viteFinal: (vite) => mergeConfig(vite, { esbuild: { keepNames: true } }),
 };

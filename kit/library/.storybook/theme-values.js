@@ -44,3 +44,20 @@ export function managerValues(t) {
     inputBorderRadius: Number.parseInt(t.radius.control, 10),
   };
 }
+
+/**
+ * The tokens as one theme sees them: the default values with that theme's own laid over.
+ *
+ * @template T
+ * @param {T} base
+ * @param {object} [overrides]
+ * @returns {T}
+ */
+export function withTheme(base, overrides = {}) {
+  const merged = { ...base };
+  for (const [key, value] of Object.entries(overrides)) {
+    const isGroup = value && typeof value === 'object' && base?.[key] && typeof base[key] === 'object';
+    merged[key] = isGroup ? withTheme(base[key], value) : value;
+  }
+  return merged;
+}

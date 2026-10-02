@@ -132,6 +132,7 @@
   --ds-series-hue: 250;
   --ds-series-step: 137.508;
   --ds-series-chroma: 0.075;
+  --ds-series-chroma-vivid: 0.15;
   --ds-series-lightness: 0.55;
   --ds-z-base: 0;
   --ds-z-dropdown: 10;
