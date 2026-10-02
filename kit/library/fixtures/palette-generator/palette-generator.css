@@ -1,0 +1,312 @@
+/* Palette generator: the controls and the wheel side by side, the compact palette below. Tokens only; the swatches take their colour inline, computed at run time. */
+
+.pg-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--ds-space-12) * 6)), 1fr));
+  gap: var(--ds-space-4);
+  margin-block: var(--ds-space-6) var(--ds-space-4);
+}
+
+.pg-controls {
+  display: grid;
+  gap: var(--ds-space-4);
+  align-content: start;
+}
+
+.pg-panel {
+  margin: 0;
+  padding: var(--ds-space-4);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface-default);
+  color: var(--ds-text-default);
+  min-inline-size: 0;
+}
+
+.pg-panel > .doc-h3:first-child {
+  margin-block-start: 0;
+}
+
+.pg-label {
+  display: block;
+  margin-block-end: var(--ds-space-1);
+  font-family: var(--ds-text-label-family);
+  font-size: var(--ds-text-label-size);
+  font-weight: var(--ds-text-label-weight);
+  line-height: var(--ds-text-label-line-height);
+}
+
+/* Base colour */
+
+.pg-custom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ds-space-3);
+  margin-block-end: var(--ds-space-4);
+}
+
+.pg-custom > :last-child {
+  flex: 1 1 calc(var(--ds-space-12) * 3);
+}
+
+.pg-native input {
+  display: block;
+  inline-size: var(--ds-size-control-lg);
+  block-size: var(--ds-size-control-md);
+  padding: 0;
+  border: var(--ds-size-border-thin) solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-control);
+  background: none;
+  cursor: pointer;
+}
+
+.pg-curated {
+  display: grid;
+  justify-items: center;
+  gap: var(--ds-space-3);
+  margin-block-end: var(--ds-space-4);
+}
+
+.pg-radial {
+  display: grid;
+  justify-items: center;
+  gap: var(--ds-space-1);
+  border-radius: var(--ds-radius-lg);
+  font-size: var(--ds-font-size-xs);
+}
+
+.pg-radial svg {
+  inline-size: min(100%, calc(var(--ds-space-12) * 5.5));
+  aspect-ratio: 1;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.pg-cell-arc {
+  stroke: var(--ds-surface-default);
+  stroke-width: 0.3;
+}
+
+/* The chosen cell, drawn again on top: a ring in the text colour, so the choice does not rest on colour alone. */
+.pg-cell-arc--on {
+  stroke: var(--ds-text-default);
+  stroke-width: 1.4;
+}
+
+.pg-dial {
+  display: grid;
+  justify-items: center;
+  gap: var(--ds-space-1);
+  border-radius: var(--ds-radius-lg);
+  font-size: var(--ds-font-size-xs);
+}
+
+.pg-dial svg {
+  inline-size: calc(var(--ds-space-12) * 3.5);
+  aspect-ratio: 1;
+  touch-action: none;
+  cursor: grab;
+}
+
+.pg-detent {
+  stroke: var(--ds-surface-default);
+  stroke-width: 2;
+  transition: r var(--ds-motion-duration-base) ease-out;
+}
+
+.pg-detent--on {
+  stroke: var(--ds-text-default);
+}
+
+.pg-knob {
+  fill: var(--ds-surface-raised);
+  stroke: var(--ds-border-strong);
+  stroke-width: 1.5;
+}
+
+.pg-knob-pointer {
+  transition: transform var(--ds-motion-duration-base) ease-out;
+}
+
+.pg-knob-pointer line {
+  stroke: var(--ds-text-muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.pg-knob-pointer circle {
+  stroke: var(--ds-text-default);
+  stroke-width: 1.5;
+}
+
+:is(.pg-dial, .pg-radial, .pg-cell, .pg-native input, .pg-slider input):focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+  position: relative;
+  z-index: 1;
+}
+
+/* Tone */
+
+.pg-slider + .pg-slider {
+  margin-block-start: var(--ds-space-4);
+}
+
+.pg-slider input {
+  display: block;
+  inline-size: 100%;
+  min-block-size: var(--ds-size-target-min);
+  margin: 0;
+  accent-color: var(--ds-text-default);
+}
+
+.pg-slider-ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--ds-font-size-xs);
+}
+
+/* Wheel */
+
+.pg-wheel-panel {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: var(--ds-space-3);
+  text-align: center;
+  font-size: var(--ds-font-size-xs);
+}
+
+.pg-wheel {
+  inline-size: min(100%, calc(var(--ds-space-12) * 7));
+  aspect-ratio: 1;
+}
+
+.pg-segment {
+  stroke: var(--ds-surface-default);
+  stroke-width: 1.2;
+  cursor: pointer;
+  transition: opacity var(--ds-motion-duration-base) ease-out;
+}
+
+.pg-segment:hover {
+  opacity: 0.8;
+}
+
+.pg-segment--picked {
+  stroke: var(--ds-text-default);
+  stroke-width: 2;
+}
+
+.pg-picks {
+  display: grid;
+  justify-items: center;
+  gap: var(--ds-space-1);
+}
+
+/* Six tertiaries do not fit a phone row: the track wraps instead of squeezing each label. */
+.pg-picks .doc-segmented {
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-self: center;
+}
+
+.pg-picks .ds-button {
+  white-space: nowrap;
+}
+
+/* Palette: tight, no gap between swatches */
+
+.pg-palette-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-3);
+  margin-block-end: var(--ds-space-3);
+}
+
+.pg-palette-head > .doc-h3 {
+  margin: 0;
+  margin-inline-end: auto;
+}
+
+.pg-grid {
+  container-type: inline-size;
+}
+
+.pg-row {
+  display: grid;
+  grid-template-columns: calc(var(--ds-space-12) * 2.5) repeat(9, minmax(0, 1fr));
+  align-items: center;
+}
+
+.pg-row > [role='cell'] {
+  display: block;
+}
+
+.pg-row:nth-child(2) [role='cell']:nth-child(2) .pg-cell { border-start-start-radius: var(--ds-radius-md); }
+.pg-row:nth-child(2) [role='cell']:last-child .pg-cell { border-start-end-radius: var(--ds-radius-md); }
+.pg-row:last-child [role='cell']:nth-child(2) .pg-cell { border-end-start-radius: var(--ds-radius-md); }
+.pg-row:last-child [role='cell']:last-child .pg-cell { border-end-end-radius: var(--ds-radius-md); }
+
+.pg-name {
+  padding-inline-end: var(--ds-space-3);
+  font-size: var(--ds-font-size-xs);
+  white-space: nowrap;
+}
+
+.pg-grade-head {
+  padding-block-end: var(--ds-space-1);
+  font-size: var(--ds-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text-muted);
+  text-align: center;
+}
+
+.pg-cell {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  min-block-size: var(--ds-size-control-lg);
+  padding: 0;
+  border: 0;
+  font-family: var(--ds-text-code-family);
+  font-size: var(--ds-font-size-xs);
+  cursor: copy;
+}
+
+.pg-cell--base {
+  box-shadow: inset 0 0 0 var(--ds-size-border-thick) currentColor;
+}
+
+.pg-cell-hex {
+  opacity: 0.85;
+}
+
+/* Too narrow for nine hex values: the names go above their rows and the hex shows on hover only. */
+@container (inline-size < 40em) {
+  .pg-cell-hex { display: none; }
+}
+
+@container (inline-size < 28em) {
+  .pg-row { grid-template-columns: repeat(9, minmax(0, 1fr)); }
+  .pg-name { grid-column: 1 / -1; padding-block: var(--ds-space-1); }
+  .pg-row--head .pg-name { display: none; }
+  .pg-row:nth-child(2) [role='cell']:nth-child(2) .pg-cell,
+  .pg-row:nth-child(2) [role='cell']:last-child .pg-cell { border-radius: 0; }
+}
+
+.pg-status {
+  min-block-size: var(--ds-text-body-line-height);
+  margin-block: var(--ds-space-2) 0;
+  font-size: var(--ds-font-size-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-segment,
+  .pg-detent,
+  .pg-knob-pointer {
+    transition: none;
+  }
+}

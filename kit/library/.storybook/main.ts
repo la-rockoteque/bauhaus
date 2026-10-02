@@ -4,8 +4,14 @@ import { mergeConfig } from 'vite';
 
 // A slice holds its showcase (<name>.stories.tsx) and its guide (<name>.mdx) side by side,
 // so the globs start at the package root. Autodocs stays off: the guide is written by hand.
+// Fixtures have no stories; their tests cover them. The one utility built as a fixture comes in by name.
 const config: StorybookConfig = {
-  stories: ['../**/*.stories.@(ts|tsx)', '../**/*.mdx', '!../node_modules/**', '!../dist/**'],
+  stories: [
+    '../!(fixtures|node_modules|dist)/**/*.stories.@(ts|tsx)',
+    '../introduction.mdx',
+    '../!(fixtures|node_modules|dist)/**/*.mdx',
+    '../fixtures/palette-generator/palette-generator.stories.tsx',
+  ],
   addons: [
     { name: '@storybook/addon-docs', options: { mdxPluginOptions: { mdxCompileOptions: { remarkPlugins: [remarkGfm] } } } },
   ],

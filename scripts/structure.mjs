@@ -130,8 +130,7 @@ function sliceChecks({ root, dirs, files }) {
     const component = ['components', 'primitives'].includes(layer);
     const need = (id, severity, ok, what) => ok || out.push(finding(id, severity, dir, `Slice "${name}" has no ${what}.`, `Add ${what} to ${dir}/.`));
     if (layer === 'fixtures') {
-      // A fixture is a Storybook-only block: a story that shows it alone, and a test when it holds logic. No guide, no rulebook.
-      need('slice.story', 'HIGH', STORY_EXT.some((e) => files.has(`${dir}/${name}.stories.${e}`)), `${name}.stories.tsx`);
+      // A fixture is a Storybook-only block: a test when it holds logic. No story, no guide, no rulebook.
       const main = MAIN_EXT.map((e) => `${dir}/${name}.${e}`).find((f) => files.has(f));
       const logic = main && hasLogic(fs.readFileSync(path.join(root, main), 'utf8'));
       need('slice.test', 'MEDIUM', !logic || STORY_EXT.some((e) => files.has(`${dir}/${name}.test.${e}`)), `${name}.test.tsx`);

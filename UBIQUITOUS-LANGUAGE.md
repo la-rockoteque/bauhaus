@@ -22,7 +22,7 @@ One term per concept. Agents, skills, knowledge files and reports use these word
 | **Primitive** | A base building-block component other components are built from: Box, Text, Icon, Visually hidden. Lives in `primitives/`. A kind of component, not a layer. Also the first word of *primitive token*. | |
 | **Family** | A role group of components under `components/`: clickables, fields, data-structures, feedback, overlays, navigation. Exists from 2 members. | "category" |
 | **Slice** | One folder per foundation, theme, component or pattern, holding every file about it: code, styles, the showcase (`.stories.tsx`), the guide (`.mdx`), rules, tests, tokens. | "module" |
-| **Fixture** | A Storybook-only building block in `fixtures/`, structured like a component (one folder, its `.tsx`, `.css`, story and tests) and never exported or published: `DocPage`, the stage, the state matrix. Only stories, tests, `.storybook/` and other fixtures import one. | "helper", "util", "story helper" |
+| **Fixture** | A Storybook-only building block in `fixtures/`, structured like a component (one folder, its `.tsx`, `.css` and tests, no story) and never exported or published: `DocPage`, the stage, the state matrix. Only stories, tests, `.storybook/` and other fixtures import one. | "helper", "util", "story helper" |
 | **Library** | The design-system package, isolated from the app. Shape and rules: `docs/library.md`. | "shared folder" |
 | **Pattern** | A composition of components that answers a recurring need: filtering, empty state, wizard, data table. | "template" |
 | **Styleguide** | The set of all slice pages: every showcase and every guide. An optional `design-system.md` gives the overview. | "docs", "guidelines" |

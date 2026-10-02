@@ -1,6 +1,6 @@
 # 9. Storybook building blocks live in `fixtures/`, never exported
 
-- Status: accepted
+- Status: accepted, amended 2026-10-02
 - Date: 2026-09-30
 
 ## Context
@@ -17,3 +17,7 @@
 ## Consequences
 
 - `fixture.exposed` (HIGH) when shipped library code imports a fixture. ESLint mirrors it.
+
+## Amendment, 2026-10-02
+
+Fixtures have no dev stories. The `Fixtures/` sidebar section is gone. Tests cover each fixture. `structure.mjs` no longer asks a fixture for a story.

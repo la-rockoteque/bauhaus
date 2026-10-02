@@ -309,10 +309,10 @@ test('check: themes are one showcase and one guide at themes/, each theme folder
 
 const FX = (name, extra = {}) => Object.fromEntries(Object.entries({ [`${name}.tsx`]: 'export const A = () => null;', [`${name}.stories.tsx`]: '', ...extra }).map(([f, t]) => [`fixtures/${name}/${f}`, t]));
 
-test('check: fixtures is a root; a fixture slice needs a story, not a guide or a rulebook', () => {
+test('check: fixtures is a root; a fixture slice needs no story, guide or rulebook', () => {
   const ids = (dir) => checkStructure(dir).map((f) => `${f.id} ${f.path}`);
   assert.deepEqual(ids(tmpLibrary(FX('anatomy'))), []);
-  assert.deepEqual(ids(tmpLibrary({ 'fixtures/anatomy/anatomy.tsx': '' })), ['slice.story fixtures/anatomy']);
+  assert.deepEqual(ids(tmpLibrary({ 'fixtures/anatomy/anatomy.tsx': '' })), []);
 });
 
 test('check: a *.fixture.tsx beside a component may import fixtures; shipped code may not import it', () => {
