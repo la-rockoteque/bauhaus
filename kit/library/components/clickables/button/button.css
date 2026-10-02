@@ -66,11 +66,11 @@
 }
 
 /* Loading keeps the label in the tree (it names the button) and in the layout (no width shift). */
-.ds-button--loading {
+.ds-button[aria-busy='true'] {
   cursor: progress;
 }
 
-.ds-button--loading .ds-button__label {
+.ds-button[aria-busy='true'] .ds-button__label {
   opacity: 0;
 }
 

@@ -115,7 +115,7 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'list.no-literal': noLiteral(`${LIST}.css`),
   'list.dividers': uses(`${LIST}.css`, '.ds-list--divided > .ds-list__item + .ds-list__item', 'border-block-start', '--ds-border-default'),
   'list.selected-not-colour-alone': all(
-    uses(`${LIST}.css`, '.ds-list__item--selected::before', 'background', '--ds-selection-surface'),
+    uses(`${LIST}.css`, '.ds-list__item[data-selected]::before', 'background', '--ds-selection-surface'),
     sourceMatches(`${LIST}.tsx`, /aria-current=\{selected \? 'true'/, 'a selected link does not set aria-current'),
     sourceMatches(`${LIST}.tsx`, /aria-pressed=\{selected \|\| undefined\}/, 'a selected button does not set aria-pressed'),
   ),
@@ -131,7 +131,7 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'list.state.too-many': all(uses(`${LIST}.css`, '.ds-list__body', 'min-inline-size', '0'), uses(`${LIST}.css`, '.ds-list__body', 'overflow-wrap', 'anywhere')),
   'list.state.disabled': all(
     sourceMatches(`${LIST}.tsx`, /disabled=\{disabled\}/, 'a disabled row is not a native disabled button'),
-    uses(`${LIST}.css`, '.ds-list__item--disabled .ds-list__control', 'color', '--ds-disabled-text'),
+    uses(`${LIST}.css`, '.ds-list__item[data-disabled] .ds-list__control', 'color', '--ds-disabled-text'),
   ),
 
   'card.single-primary-action': all(

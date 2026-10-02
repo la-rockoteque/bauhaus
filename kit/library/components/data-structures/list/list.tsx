@@ -72,7 +72,7 @@ export interface ListItemProps extends Omit<HTMLAttributes<HTMLLIElement>, 'titl
 
 export function ListItem({ title, description, leading, trailing, href, onPress, selected = false, disabled = false, className, ...rest }: ListItemProps) {
   const interactive = href !== undefined || onPress !== undefined;
-  const classes = ['ds-list__item', interactive && 'ds-list__item--interactive', selected && 'ds-list__item--selected', disabled && 'ds-list__item--disabled', className];
+  const classes = ['ds-list__item', interactive && 'ds-list__item--interactive', className];
   const name = href !== undefined && !disabled ? (
     <a className="ds-list__control" href={href} aria-current={selected ? 'true' : undefined}>{title}</a>
   ) : onPress !== undefined || (href !== undefined && disabled) ? (
@@ -81,7 +81,7 @@ export function ListItem({ title, description, leading, trailing, href, onPress,
     <span className="ds-list__title">{title}</span>
   );
   return (
-    <li {...rest} className={classes.filter(Boolean).join(' ')}>
+    <li {...rest} className={classes.filter(Boolean).join(' ')} data-selected={selected || undefined} data-disabled={disabled || undefined}>
       {leading && <span className="ds-list__leading">{leading}</span>}
       <span className="ds-list__body">
         {name}

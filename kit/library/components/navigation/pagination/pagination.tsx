@@ -76,7 +76,7 @@ export function Pagination({
 
   // A plain function, not a component: a component defined here would remount on every render and drop focus.
   const item = ({ target, current = false, disabled = false, name, extra, children }: ItemProps) => {
-    const classes = ['ds-pagination__item', current && 'ds-pagination__item--current', extra].filter(Boolean).join(' ');
+    const classes = ['ds-pagination__item', extra].filter(Boolean).join(' ');
     if (disabled) {
       // aria-disabled keeps a button focusable, so a keyboard user who pages to the end does not lose their place.
       return getHref

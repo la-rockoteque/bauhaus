@@ -45,7 +45,7 @@ export function Chip({ variant = 'static', children, onRemove, removeLabel = 'Re
   const [inner, setInner] = useState(defaultSelected);
   const { ref, truncated } = useTruncated(children);
   const pressed = selected ?? inner;
-  const classes = ['ds-chip', `ds-chip--${variant}`, disabled && 'ds-chip--disabled', className].filter(Boolean).join(' ');
+  const classes = ['ds-chip', `ds-chip--${variant}`, className].filter(Boolean).join(' ');
 
   if (variant === 'selectable') {
     const toggle = (event: MouseEvent<HTMLButtonElement>) => {
@@ -70,7 +70,7 @@ export function Chip({ variant = 'static', children, onRemove, removeLabel = 'Re
     </span>
   );
   return (
-    <span {...rest} className={classes}>
+    <span {...rest} className={classes} data-disabled={disabled || undefined}>
       {truncated ? <Tooltip content={children}>{label}</Tooltip> : label}
       {variant === 'removable' && (
         <IconButton className="ds-chip__remove" label={`${removeLabel} ${children}`} icon={<Icon glyph="close" size="sm" />} disabled={disabled} onClick={onRemove} />

@@ -12,7 +12,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 }
 
 export function Button({ variant = 'primary', loading = false, type = 'button', className, children, onClick, ...rest }: ButtonProps) {
-  const classes = ['ds-button', `ds-button--${variant}`, loading && 'ds-button--loading', className];
+  const classes = ['ds-button', `ds-button--${variant}`, className];
   return (
     <button
       {...rest}

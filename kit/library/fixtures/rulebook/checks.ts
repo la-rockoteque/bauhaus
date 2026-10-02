@@ -320,7 +320,7 @@ export const AUTO_CHECKS: Readonly<Record<string, Check>> = {
   'button.state.loading': all(
     sourceMatches(`${BUTTON}.tsx`, /aria-busy=\{loading/, 'button.tsx does not set aria-busy while loading'),
     sourceMatches(`${BUTTON}.tsx`, /onClick=\{loading \? undefined/, 'button.tsx still passes onClick while loading'),
-    uses(`${BUTTON}.css`, '.ds-button--loading .ds-button__label', 'opacity', '0'),
+    uses(`${BUTTON}.css`, ".ds-button[aria-busy='true'] .ds-button__label", 'opacity', '0'),
   ),
   'button.states.not-variant': () => {
     const variants = /export type ButtonVariant = ([^;]+);/.exec(sourceOf(`${BUTTON}.tsx`) ?? '')?.[1];

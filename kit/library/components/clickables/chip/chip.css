@@ -89,7 +89,7 @@
   box-shadow: inset 0 0 0 var(--ds-size-border-thick) var(--ds-selection-text);
 }
 
-.ds-chip--disabled,
+.ds-chip[data-disabled],
 .ds-chip--selectable:disabled {
   border-color: var(--ds-disabled-border);
   background: var(--ds-disabled-surface);

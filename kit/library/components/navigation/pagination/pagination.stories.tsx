@@ -66,13 +66,13 @@ export const Showcase: StoryObj = {
           { n: 2, label: 'Total', note: 'text from a prop', target: '.ds-pagination__total' },
           { n: 3, label: 'Page-size select', note: 'native select, optional', target: '.ds-pagination__select', at: 'bottom-start' },
           { n: 4, label: 'Previous and next', note: 'disabled at the ends', target: '.ds-pagination__list li:first-child button', at: 'top-end' },
-          { n: 5, label: 'Page', note: 'current has aria-current', target: '.ds-pagination__item--current', at: 'bottom-end' },
+          { n: 5, label: 'Page', note: 'current has aria-current', target: '.ds-pagination__item[aria-current]', at: 'bottom-end' },
         ],
       }}
       specs={[
         { label: 'Structure', value: 'nav[aria-label] > ul > li, plus a summary before the list' },
-        { label: 'Control height', property: 'height', target: '.ds-pagination__item--current', token: 'size.target.min' },
-        { label: 'Control width', property: 'width', target: '.ds-pagination__item--current', token: 'size.target.min', value: 'a floor; a wide label such as Next grows past it' },
+        { label: 'Control height', property: 'height', target: '.ds-pagination__item[aria-current]', token: 'size.target.min' },
+        { label: 'Control width', property: 'width', target: '.ds-pagination__item[aria-current]', token: 'size.target.min', value: 'a floor; a wide label such as Next grows past it' },
         { label: 'Current page', value: 'action.primary fill, border.strong outline, aria-current="page"' },
         { label: 'Range', value: 'first, last, current ± siblings (default 1), ellipsis for gaps; up to 7 slots' },
         { label: 'Ends', value: 'previous on page 1 and next on the last page are aria-disabled and keep focus' },
