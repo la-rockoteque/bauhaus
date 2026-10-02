@@ -49,7 +49,7 @@ Do not reuse one component and one text for all five.
 |---|---|---|
 | Field | Under the field, bound by `aria-describedby` | Announced on focus |
 | Form | Error summary at the top, links to fields | `role="alert"`, focus moves to it |
-| Region (card, table) | In place of the content, with retry | `role="alert"` |
+| Region (card, table) | In place of the content, with retry | `role="status"`; `role="alert"` only for an urgent error (`patterns/messaging.md`) |
 | Page (route failed) | Full content area, with navigation kept | Focus to the heading |
 | Global (offline, session ended) | Banner | `role="alert"` or `status` |
 

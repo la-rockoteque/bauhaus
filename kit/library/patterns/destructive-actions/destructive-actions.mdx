@@ -1,0 +1,85 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './destructive-actions.stories';
+
+<Meta of={Stories} />
+
+# Destructive actions
+
+The Showcase story holds the stage, the state matrix and the recipe. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A destructive action removes something. The more it costs, the more the screen should slow you down. A cheap, reversible action should not slow you down at all.
+
+**Precisely:** Pattern. Friction scaled to cost: an Undo toast for a reversible action, a ConfirmationDialog for a permanent one, and a Modal with a typed name for a permanent one that removes other resources. It composes ConfirmationDialog, Modal, TextField, Toast, Banner, Button and Stack. It has no style and no token of its own.
+
+**The user need.** The user needs to be stopped before a loss they cannot undo, and left alone when nothing can be lost. A confirmation on everything trains the user to click through, and then it protects nothing.
+
+**When it exists.** Use it for any delete, remove, reset or revoke. It sits above components in the import order, so only an app or another pattern may import it.
+
+## 2. Usage
+
+### The friction table
+
+| Cost | Friction | Component |
+|---|---|---|
+| Reversible | None before, Undo after | Toast with an action |
+| Irreversible, one item, little data | One question | ConfirmationDialog, `destructive` |
+| Irreversible, removes other resources | One question and the typed name | Modal with a TextField |
+| Bulk | One question that states the count | ConfirmationDialog, count in the confirm label |
+
+GitLab Pajamas draws the same line with three severities: high (a modal, with type-to-confirm when other resources go too), medium (an intermediate step, such as an action inside a dropdown), and low (no friction when no data is lost).
+
+### When to use
+
+- Deleting a project, a file, a saved filter or an account.
+- Removing many rows at once.
+- Revoking access or resetting data.
+
+### When not to use, and what to use instead
+
+- **A reversible action.** Do it and show a Toast with Undo. A confirmation here is the defect the catalog names, "a confirmation where undo would do" (NN/g: "do try your best to offer undo"; WCAG 3.3.4, AA, lists reversible first).
+- **A message with one answer.** Use AlertDialog.
+- **An action the user may not take.** Show why in place of the button. That is product logic.
+
+### How
+
+- **Undo.** Remove the item at once, and move focus to the next row's control, or to the list or its empty message when none remains (WCAG 2.4.3, A). Show a Toast with `action={{ label: 'Undo', onAction }}`. A toast with an action does not time out (WCAG 2.2.1, A), so the user is never rushed. Commit the delete when the toast closes, or soft-delete on the server and purge later.
+- **The question.** The title asks it: "Delete project?". The description states the cost: what goes, how much, and whether it comes back (NN/g: be specific; Nielsen heuristic 5).
+- **The confirm label.** It names the action and the object: "Delete project". Never "OK", "Yes" or "Confirm" (NN/g, Pajamas).
+- **The cancel label.** It names the safe outcome: "Cancel", or "Keep project".
+- **Focus.** Focus starts on Cancel when the action is destructive. A stray Enter keeps the data. This is a project decision: the APG Alert and Message Dialogs page does not set initial focus. Some systems focus the confirm button for speed, so the point is contested. Bauhaus takes the safe default.
+- **Role.** `role="alertdialog"`, labelled by its title and described by its message (APG Alert and Message Dialogs). ConfirmationDialog sets it.
+- **Type to confirm.** Only when the deletion removes other resources. The field says what to type. The confirm button stays disabled until the text matches exactly, and the field description gives the reason (Pajamas, type-to-confirm).
+- **Loading.** Set `loading` on the confirm button. Keep the dialog open until the server answers (Nielsen heuristic 1).
+- **Failure.** Keep the dialog open. A Banner with `status="error"` and `urgent` says nothing was deleted and how to retry. The typed name stays.
+- **Done.** A permanent delete ends with a status message and focus on an element that exists, because the trigger is gone (WCAG 4.1.3, AA; 2.4.3, A).
+- **Reaching Undo.** The toast region is last in the page order. A keyboard user tabs to Undo after the other controls. The Toast component has no shortcut or jump key. After Undo, focus goes to the restored row.
+- **Known limit.** A region shows 3 toasts at a time and counts the rest as "+N more". The Undo of a waiting toast cannot be reached until another toast closes.
+- **Keep it apart.** Put a destructive trigger away from the main action, for example in a Menu (Pajamas, medium severity).
+- **i18n.** Every string is a prop. The recipes hold their English strings in the story only.
+
+## 3. Why the states look as they do
+
+- **Nothing shows the item, not a warning.** Danger shown before the user acts is noise.
+- **Loading keeps the dialog.** The user sees the request run, and a second press is ignored.
+- **None, one, some and too many are n/a.** The pattern acts on an item that exists. A bulk delete is a count in the label, not a state.
+- **Incorrect is a failed delete.** The data is still there. Saying so first matters more than the cause.
+- **Correct is n/a.** There is no half-way success. The enabled button is the only sign that the typed name matched.
+- **Done depends on cost.** A reversible delete offers Undo. A permanent one confirms in a status region.
+
+## 4. Pitfalls and don'ts
+
+- **Do not confirm a reversible action.** The user learns to click through. (NN/g dialog fatigue; `destructive.undo-over-confirm`)
+- **Do not label the button "OK".** The user cannot tell what it does without rereading the question. (NN/g; `destructive.names-the-action`)
+- **Do not start focus on the destructive button.** One stray Enter loses the data. (Project decision; `destructive.focus-on-cancel`)
+- **Do not ask "Are you sure?" and stop.** It names no cost. (NN/g; `destructive.states-the-cost`)
+- **Do not ask for the typed name on every delete.** It is friction with no protection where nothing else is lost. (Pajamas; `destructive.type-to-confirm-cascade`)
+- **Do not close the dialog on a failed delete.** The user cannot tell whether the data is gone. (Nielsen heuristic 9; `destructive.failure-keeps-dialog`)
+- **Do not leave focus on a removed trigger.** A keyboard user restarts from the top of the page. (WCAG 2.4.3, A; `destructive.done-announced`)
+- **Do not add a stylesheet to the pattern folder.** (`docs/library.md`; `destructive-actions.no-own-style`)
+
+## 5. Component gaps
+
+- Button has no `danger` variant. ConfirmationDialog confirms with a `primary` button. The pattern adds no style, so the words carry the risk, which also meets WCAG 1.4.1 (A). If three apps need a red confirm, propose `danger` on Button with its tokens, then use it here.
+- ConfirmationDialog has no slot for a field or a loading state. The type-to-confirm recipe composes Modal with its own footer.

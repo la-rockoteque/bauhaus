@@ -58,6 +58,8 @@ Knowledge shelves. Read the ones that match the task. Keep them in step.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/navigation.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/dashboards-charts.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/content-writing.md`
+- `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/messaging.md`
+- `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/destructive-actions.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/governance/rulebook.md`
 
 **Do not widen a known fork.** If the project has two implementations of one component
