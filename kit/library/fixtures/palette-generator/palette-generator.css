@@ -61,11 +61,43 @@
   cursor: pointer;
 }
 
+.pg-curated {
+  display: grid;
+  justify-items: center;
+  gap: var(--ds-space-3);
+  margin-block-end: var(--ds-space-4);
+}
+
+.pg-radial {
+  display: grid;
+  justify-items: center;
+  gap: var(--ds-space-1);
+  border-radius: var(--ds-radius-lg);
+  font-size: var(--ds-font-size-xs);
+}
+
+.pg-radial svg {
+  inline-size: min(100%, calc(var(--ds-space-12) * 5.5));
+  aspect-ratio: 1;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.pg-cell-arc {
+  stroke: var(--ds-surface-default);
+  stroke-width: 0.3;
+}
+
+/* The chosen cell, drawn again on top: a ring in the text colour, so the choice does not rest on colour alone. */
+.pg-cell-arc--on {
+  stroke: var(--ds-text-default);
+  stroke-width: 1.4;
+}
+
 .pg-dial {
   display: grid;
   justify-items: center;
   gap: var(--ds-space-1);
-  margin-block-end: var(--ds-space-4);
   border-radius: var(--ds-radius-lg);
   font-size: var(--ds-font-size-xs);
 }
@@ -108,7 +140,7 @@
   stroke-width: 1.5;
 }
 
-:is(.pg-dial, .pg-cell, .pg-native input, .pg-slider input):focus-visible {
+:is(.pg-dial, .pg-radial, .pg-cell, .pg-native input, .pg-slider input):focus-visible {
   outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
   outline-offset: var(--ds-focus-ring-offset);
   position: relative;

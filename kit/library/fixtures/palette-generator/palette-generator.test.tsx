@@ -3,10 +3,14 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { contrast } from '../rulebook/tokens';
 import { HARMONY, hexToLch, lchToHex, lightnesses, nearestGrade, normalizeHex, ramp, toDtcg, turn } from './oklch';
 import { nearestDetent } from './dial';
-import { CURATED, PaletteGenerator } from './palette-generator';
+import { CURATED_GRADES, CURATED_HUES, LIBRARY, findCurated, spotAt } from './curated';
+import { PaletteGenerator } from './palette-generator';
 
-const blue = CURATED.find((option) => option.name === 'dark-blue')!.hex;
-const scarlet = CURATED[0].hex;
+const blue = LIBRARY.find((option) => option.name === 'dark-blue')!.hex;
+const scarlet = LIBRARY[0].hex;
+const red = CURATED_HUES[0].grades[4].hex;
+const radial = () => screen.getByRole('slider', { name: /^Curated primary, 32 hues/ });
+const library = () => fireEvent.click(screen.getByRole('radio', { name: 'Library' }));
 const options = { contrast: 1, vibrancy: 1 };
 
 describe('oklch', () => {
@@ -18,7 +22,7 @@ describe('oklch', () => {
   });
 
   it('turns a colour into OKLCH and back without drift', () => {
-    for (const { hex } of CURATED) expect(lchToHex(hexToLch(hex))).toBe(hex);
+    for (const { hex } of LIBRARY) expect(lchToHex(hexToLch(hex))).toBe(hex);
   });
 
   it('cuts the chroma of a colour outside sRGB, and keeps a valid hex', () => {
@@ -70,6 +74,38 @@ describe('oklch', () => {
   });
 });
 
+describe('the 256 curated colours', () => {
+  it('holds 32 hues by 8 grades, all different', () => {
+    const all = CURATED_HUES.flatMap((hue) => hue.grades.map((option) => option.hex));
+    expect(CURATED_HUES).toHaveLength(32);
+    expect(all).toHaveLength(256);
+    expect(new Set(all).size).toBe(256);
+    expect(CURATED_HUES[0].grades.map((option) => option.name)).toEqual(CURATED_GRADES.map((at) => `hue-27.${at}`));
+  });
+
+  it('gives each grade one lightness across the hues, lightest first', () => {
+    for (const { grades } of CURATED_HUES) {
+      const ls = grades.map((option) => hexToLch(option.hex).l);
+      ls.slice(1).forEach((l, i) => expect(l).toBeLessThan(ls[i]));
+    }
+    const fifth = CURATED_HUES.map((hue) => hexToLch(hue.grades[4].hex).l);
+    expect(Math.max(...fifth) - Math.min(...fifth)).toBeLessThan(0.02);
+  });
+
+  it('finds where a hex sits in the 256', () => {
+    expect(findCurated(CURATED_HUES[13].grades[6].hex)).toEqual({ hue: 13, grade: 6 });
+    expect(findCurated(scarlet)).toBeNull();
+  });
+
+  it('reads the cell under a point: the angle is the hue, the distance is the grade', () => {
+    expect(spotAt(0, -15)).toEqual({ hue: 0, grade: 0 });
+    expect(spotAt(0, -58)).toEqual({ hue: 0, grade: 7 });
+    expect(spotAt(40, 0)).toEqual({ hue: 8, grade: 4 });
+    expect(spotAt(0, 0)).toBeNull();
+    expect(spotAt(0, -70)).toBeNull();
+  });
+});
+
 describe('PaletteGenerator', () => {
   afterEach(cleanup);
 
@@ -77,7 +113,7 @@ describe('PaletteGenerator', () => {
 
   it('starts on a curated hue with a primary, a secondary, a tertiary and a neutral row', () => {
     const { container } = render(<PaletteGenerator />);
-    expect(screen.getByRole('slider', { name: 'Curated primary' }).getAttribute('aria-valuetext')).toBe(`scarlet ${scarlet}`);
+    expect(radial().getAttribute('aria-valuetext')).toBe(`hue-27.500 ${red}`);
     expect(rows(container)).toBe(4);
     expect([...container.querySelectorAll('.pg-name code')].map((n) => n.textContent)).toEqual(['primary', 'secondary', 'tertiary', 'neutral']);
     expect(container.querySelectorAll('.pg-cell')).toHaveLength(36);
@@ -90,38 +126,52 @@ describe('PaletteGenerator', () => {
     fireEvent.click(screen.getByRole('radio', { name: '270°' }));
     expect(middle('tertiary')).not.toBe(before);
     fireEvent.click(screen.getByRole('radio', { name: '60°' }));
-    const base = hexToLch(scarlet).h;
+    const base = hexToLch(red).h;
     const hex = /#[0-9a-f]+/.exec(middle('secondary') ?? '')![0];
     expect(Math.abs(((hexToLch(hex).h - turn(base, 60) + 540) % 360) - 180)).toBeLessThan(3);
   });
 
   it('offers only the library hues with a hue to them on the dial', () => {
-    expect(CURATED.map((option) => option.name)).not.toContain('gray');
-    expect(CURATED.map((option) => option.name)).not.toContain('ink');
-    expect(CURATED.length).toBeGreaterThan(2);
+    expect(LIBRARY.map((option) => option.name)).not.toContain('gray');
+    expect(LIBRARY.map((option) => option.name)).not.toContain('ink');
+    expect(LIBRARY.length).toBeGreaterThan(2);
   });
 
   it('turns the dial with the arrow keys, and says when a typed colour is off the dial', () => {
     render(<PaletteGenerator />);
+    library();
     const dial = screen.getByRole('slider', { name: 'Curated primary' });
     fireEvent.keyDown(dial, { key: 'End' });
-    expect(dial.getAttribute('aria-valuetext')).toBe(`${CURATED.at(-1)!.name} ${CURATED.at(-1)!.hex}`);
+    expect(dial.getAttribute('aria-valuetext')).toBe(`${LIBRARY.at(-1)!.name} ${LIBRARY.at(-1)!.hex}`);
     fireEvent.keyDown(dial, { key: 'ArrowLeft' });
-    expect(dial.getAttribute('aria-valuenow')).toBe(String(CURATED.length - 2));
+    expect(dial.getAttribute('aria-valuenow')).toBe(String(LIBRARY.length - 2));
     fireEvent.change(screen.getByLabelText('Hex'), { target: { value: '123456' } });
     expect(dial.getAttribute('aria-valuetext')).toMatch(/custom/i);
   });
 
   it('takes a dial detent or a typed hex as the base, and flags a bad hex', () => {
     const { container } = render(<PaletteGenerator />);
+    library();
     const dial = screen.getByRole('slider', { name: 'Curated primary' });
     fireEvent.keyDown(dial, { key: 'Home' });
-    for (let i = 0; i < CURATED.findIndex((option) => option.hex === blue); i += 1) fireEvent.keyDown(dial, { key: 'ArrowRight' });
+    for (let i = 0; i < LIBRARY.findIndex((option) => option.hex === blue); i += 1) fireEvent.keyDown(dial, { key: 'ArrowRight' });
     expect((container.querySelector('input[type="color"]') as HTMLInputElement).value).toBe(blue);
     fireEvent.change(screen.getByLabelText('Hex'), { target: { value: 'nope' } });
     expect(screen.getByText(/Write 3 or 6 hex digits/)).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Hex'), { target: { value: scarlet.slice(1) } });
     expect((container.querySelector('input[type="color"]') as HTMLInputElement).value).toBe(scarlet);
+  });
+
+  it('moves on the radial with the arrow keys: hue round, grade in and out', () => {
+    const { container } = render(<PaletteGenerator />);
+    const colour = () => (container.querySelector('input[type="color"]') as HTMLInputElement).value;
+    fireEvent.keyDown(radial(), { key: 'ArrowLeft' });
+    expect(colour()).toBe(CURATED_HUES[31].grades[4].hex);
+    fireEvent.keyDown(radial(), { key: 'ArrowUp' });
+    expect(colour()).toBe(CURATED_HUES[31].grades[5].hex);
+    fireEvent.keyDown(radial(), { key: 'ArrowRight' });
+    fireEvent.keyDown(radial(), { key: 'ArrowRight' });
+    expect(colour()).toBe(CURATED_HUES[1].grades[5].hex);
   });
 
   it('draws the wheel: 3 primaries, 6 in the middle ring, 12 outside', () => {

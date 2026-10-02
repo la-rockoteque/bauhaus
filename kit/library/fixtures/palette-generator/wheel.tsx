@@ -27,7 +27,7 @@ const polar = (r: number, degrees: number): string => {
 };
 
 /** A ring segment centred on `at`, `span` degrees wide. */
-function segment(inner: number, outer: number, at: number, span: number): string {
+export function segment(inner: number, outer: number, at: number, span: number): string {
   const [from, to] = [at - span / 2, at + span / 2];
   return `M ${polar(outer, from)} A ${outer} ${outer} 0 0 1 ${polar(outer, to)} L ${polar(inner, to)} A ${inner} ${inner} 0 0 0 ${polar(inner, from)} Z`;
 }

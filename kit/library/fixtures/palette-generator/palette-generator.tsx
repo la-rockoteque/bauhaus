@@ -2,16 +2,15 @@ import { useId, useMemo, useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { Button } from '../../components/clickables/button/button';
 import { TextField } from '../../components/fields/text-field/text-field';
-import palette from '../../foundations/color/palette.tokens.json';
 import { Text } from '../../primitives/text/text';
 import { VisuallyHidden } from '../../primitives/visually-hidden/visually-hidden';
 import { grade, inkFor } from '../hue-ramp/hue-ramp';
-import { contrast as ratioOf, resolve } from '../rulebook/tokens';
+import { contrast as ratioOf } from '../rulebook/tokens';
 import { Segmented } from '../segmented/segmented';
 import { ThemeSwitch } from '../theme-switch/theme-switch';
 import { GRADES, HARMONY, hexToLch, nearestGrade, normalizeHex, ramp, toDtcg, turn } from './oklch';
 import type { Order } from './oklch';
-import { Dial } from './dial';
+import { CuratedPicker, DEFAULT_PRIMARY } from './curated';
 import { Wheel } from './wheel';
 import './palette-generator.css';
 
@@ -21,17 +20,7 @@ import './palette-generator.css';
  * first primary. Contrast spreads or bunches the grades; vibrancy turns the chroma up or down.
  */
 
-/**
- * The curated primaries: the library's own hues at 500, read from the tokens, never typed. A hue with no
- * 500 (an alpha scale such as ink) or no hue to speak of (gray) cannot seed a wheel, so it is left off.
- */
-const MIN_CHROMA = 0.03;
-export const CURATED = Object.entries(palette.palette)
-  .filter(([key, value]) => !key.startsWith('$') && typeof value === 'object' && '500' in value)
-  .map(([hue]) => ({ name: hue, hex: resolve('light', `--ds-palette-${hue}-500`) ?? '' }))
-  .filter((option) => hexToLch(option.hex).c >= MIN_CHROMA);
-
-const DEFAULT = CURATED[0].hex;
+const DEFAULT = DEFAULT_PRIMARY;
 
 /** The secondary and tertiary choices as segmented options: one per hue of that order on the wheel. */
 const choices = (order: Order) =>
@@ -93,12 +82,7 @@ function Picker({ hex, onPick }: { hex: string; onPick: (hex: string) => void })
   return (
     <section className="pg-panel" aria-labelledby={`${colorId}-title`}>
       <Text as="h3" className="doc-h3" id={`${colorId}-title`}>Primary</Text>
-      <Dial
-        label="Curated primary"
-        options={CURATED}
-        value={CURATED.findIndex((option) => option.hex === hex)}
-        onChange={(index) => { setDraft(null); onPick(CURATED[index].hex); }}
-      />
+      <CuratedPicker hex={hex} onPick={(next) => { setDraft(null); onPick(next); }} />
       <div className="pg-custom">
         <span className="pg-native">
           <label className="pg-label" htmlFor={colorId}>Or any colour</label>
