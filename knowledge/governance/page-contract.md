@@ -28,6 +28,8 @@ Each slice has two pages, and they never repeat each other's tables.
 - **The showcase** is `<name>.stories.tsx`. One story renders `<DocPage …/>`. It shows what a reader can see.
 - **The guide** is `<name>.mdx`. It holds the prose a picture cannot show. It declares `<Meta of={Stories}/>`, so one Storybook entry shows the guide as "Docs" and the showcase as a story.
 
+Beside the showcase, the stories file holds two more stories. `Advisories` renders `<AdvisoriesPage …/>`: the live Rulebook, the Accessibility coverage and the slice's tests. A component, primitive, foundation or pattern has a third story, `Examples`. It renders `<ExamplesPage …/>` from `fixtures/examples/examples`: a developer's reference, written for a junior or for someone with little frontend or design practice. Each use case is a card: when to pick it, an explanation point by point (what each prop or token does, why, what the user and assistive technology get, then the basis), the code with syntax highlighting, line numbers, a copy button and teaching comments, and the live result beside it. Plain words come before every basis, and every term is defined on first use. The use cases are exhaustive: every prop and variant, every state, content, composition, forms and accessibility wiring; for a foundation, how to consume its tokens in CSS and through the primitives; for a pattern, every lifecycle state as a working recipe. Examples show how to use the component. They never repeat the guide's reasons or the showcase's Do and don't. The sidebar lists Showcase, Advisories, Examples, then the Docs guide.
+
 | Section | Showcase (`DocPage` props) | Guide (`.mdx`) |
 |---|---|---|
 | 1 Introduction | short: `name`, `layer`, `family` (eyebrow), `plain`, `precise`, `usedFor` | full: plain words, then precise, the layer |
@@ -39,7 +41,7 @@ Each slice has two pages, and they never repeat each other's tables.
 | Rulebook | `rules`: the `<name>.rules.ts` export, graded live | every rule with its basis |
 | Accessibility | derived from the rules' `covers` (no prop) | keyboard and ARIA prose |
 
-`DocPage` lives in `fixtures/doc-page/`, a Storybook-only fixture outside the published package. `extra` adds sections between States and Do and don't; `guide` and `guideName` point to the guide. The props are typed in `.storybook/doc-page/types.ts` (`DocPageProps`). `scripts/structure.mjs` reports `slice.page` when the guide is missing and `slice.showcase` when the stories file does not render `DocPage`.
+`DocPage` lives in `fixtures/doc-page/`, a Storybook-only fixture outside the published package. `extra` adds sections between States and Do and don't; `guide` and `guideName` point to the guide. The props are typed in `.storybook/doc-page/types.ts` (`DocPageProps`). `scripts/structure.mjs` reports `slice.page` when the guide is missing, `slice.showcase` when the stories file does not render `DocPage`, and `slice.examples` when the stories file of a component, primitive, foundation or pattern does not render `ExamplesPage`.
 
 ## Rules
 

@@ -80,8 +80,8 @@ Basis: the library must build and run with the app absent. A hook that reads the
 Shim, at the old app path:
 
 ```ts
-/** @deprecated Import Button from "@acme/design-system". Removed when no import remains. */
-export { Button } from "@acme/design-system";
+/** @deprecated Import Button from "@bauhaus/design-system". Removed when no import remains. */
+export { Button } from "@bauhaus/design-system";
 ```
 
 Ratchet: a file (for example `.bauhaus/ratchet.json`) holds the current count of shims plus in-app duplicates of library components. A CI step computes the count and fails when it is higher than stored. When it is lower, the step asks for the file to be updated, so the number only falls.
@@ -190,7 +190,7 @@ Run: `npx depcruise --config .dependency-cruiser.cjs .` (untested).
 
   ```json
   {
-    "name": "@acme/design-system",
+    "name": "@bauhaus/design-system",
     "type": "module",
     "sideEffects": ["**/*.css"],
     "exports": {

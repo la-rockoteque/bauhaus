@@ -175,7 +175,8 @@ Test by product speech: no product owner asks for "a Box on the settings page". 
 - Each slice has two pages. The stories file is the showcase: one story renders `<DocPage …/>` and shows the visual sections (Tokens, Anatomy, the state matrix, live Rulebook, Accessibility, compact Do / Don't). The `.mdx` file is the guide: the full Introduction, Usage, the reasoning behind each state, Pitfalls with reasons. It declares `<Meta of={Stories}/>`, so one entry shows the guide as "Docs" and the showcase as a story.
 - The state matrix renders every designed cell live inside the showcase. A state is a cell of the grid, not a story of its own.
 - `DocPage` lives in `fixtures/doc-page/`, one of the Storybook-only fixtures (a slice each, structured like a component, never exported, never published; only stories, tests, `.storybook/` and other fixtures may import them). The sidebar sorts Principles, Foundations, Themes, Primitives, the component families, Patterns, Fixtures. A toolbar switches light and dark.
-- `scripts/structure.mjs` reports `slice.page` when the guide is missing and `slice.showcase` when the stories file does not render `DocPage`.
+- The stories file of a component, primitive, foundation or pattern also has an `Examples` story: `<ExamplesPage …/>` from `fixtures/examples/examples`, every use case as commented, highlighted code with its explanation and live result.
+- `scripts/structure.mjs` reports `slice.page` when the guide is missing, `slice.showcase` when the stories file does not render `DocPage`, and `slice.examples` when the stories file of a component, primitive, foundation or pattern does not render `ExamplesPage`.
 
 ## Import direction
 
@@ -187,7 +188,7 @@ patterns             →  components, primitives
 the app              →  the package's public entry only
 ```
 
-Nothing inside the package imports `patterns/`, and nothing imports the app. Enforcement: [extraction.md](extraction.md) § Boundary enforcement.
+Nothing inside the package imports `patterns/`, and nothing imports the app. A story (`*.stories.tsx`) is the exception: it ships nowhere, so it may import any slice to show it in use, such as a foundation's Examples page that draws a `Stack`. It never imports the public entry. Enforcement: [extraction.md](extraction.md) § Boundary enforcement.
 
 ## Non-React equivalents
 

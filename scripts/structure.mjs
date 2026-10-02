@@ -111,6 +111,10 @@ function nameProblem(dir, layer, files) {
 /** The showcase contract: the story file imports DocPage from a path ending in `fixtures/doc-page/doc-page` and renders `<DocPage`. */
 const rendersDocPage = (text) => /\bfrom\s*['"][^'"]*fixtures\/doc-page\/doc-page['"]/.test(text) && /<DocPage\b/.test(text);
 
+/** The examples contract (components, primitives, foundations and patterns): the story file imports ExamplesPage from `fixtures/examples/examples` and renders `<ExamplesPage`. */
+const EXAMPLE_LAYERS = ['components', 'primitives', 'foundations', 'patterns'];
+const rendersExamples = (text) => /\bfrom\s*['"][^'"]*fixtures\/examples\/examples['"]/.test(text) && /<ExamplesPage\b/.test(text);
+
 /** A fixture holds logic when its main file has a hook or an exported function that is not a component. */
 const hasLogic = (text) => /\buse(?:State|Effect|LayoutEffect|Memo|Ref|SyncExternalStore)\b|export (?:async )?function [a-z]/.test(text);
 
@@ -139,6 +143,9 @@ function sliceChecks({ root, dirs, files }) {
     const story = STORY_EXT.map((e) => `${dir}/${name}.stories.${e}`).find((f) => files.has(f));
     if (story && !rendersDocPage(fs.readFileSync(path.join(root, story), 'utf8'))) {
       out.push(finding('slice.showcase', 'MEDIUM', story, `Slice "${name}": the story file does not render a DocPage.`, `Import DocPage from a path ending in fixtures/doc-page/doc-page and render <DocPage …/> in ${name}.stories.tsx.`));
+    }
+    if (story && EXAMPLE_LAYERS.includes(layer) && !rendersExamples(fs.readFileSync(path.join(root, story), 'utf8'))) {
+      out.push(finding('slice.examples', 'MEDIUM', story, `Slice "${name}": the story file has no Examples page.`, `Import ExamplesPage from a path ending in fixtures/examples/examples and render <ExamplesPage …/> in an Examples story of ${name}.stories.tsx.`));
     }
     need('slice.rules', 'MEDIUM', layer === 'theme-set' || has(dir, 'rules.ts'), `${name}.rules.ts`);
     need('slice.test', 'MEDIUM', !component || STORY_EXT.some((e) => files.has(`${dir}/${name}.test.${e}`)), `${name}.test.tsx`);
@@ -261,6 +268,8 @@ function relativeImport(file, spec, files) {
   const layer = ROOTS.includes(file.split('/')[0]) ? file.split('/')[0] : null;
   const kind = kindOf(target);
   const entry = kind === 'root' && /^index(\.|$)/.test(target);
+  // A story documents its slice and ships nowhere: it may show any slice of the library, but not the public entry.
+  if (STORY_FILE.test(file) && kind !== 'root') return null;
   if (!layer || (MAY_IMPORT[layer].includes(kind) && !entry)) return null;
   return finding('structure.direction', 'HIGH', file, `${layer} imports ${entry ? 'the public entry' : kind} ("${spec}").`, `${layer} may import ${MAY_IMPORT[layer].join(', ') || 'nothing local'}. Move the shared piece down, or take it as a prop.`);
 }
@@ -376,7 +385,7 @@ export function scaffold(target, { name, prefix = 'ds' }) {
   fs.cpSync(KIT_LIBRARY, target, { recursive: true, filter: (src) => !['node_modules', 'storybook-static'].includes(path.basename(src)) });
   const files = fs.readdirSync(target, { recursive: true }).map((r) => path.join(target, r)).filter((f) => fs.statSync(f).isFile());
   for (const f of files.filter((x) => TEXT_FILE.test(x))) {
-    let text = fs.readFileSync(f, 'utf8').split('@acme/design-system').join(name);
+    let text = fs.readFileSync(f, 'utf8').split('@bauhaus/design-system').join(name);
     if (prefix !== 'ds') text = text.replace(/\bds-/g, `${prefix}-`).replace(/("prefix":\s*)"ds"/, `$1"${prefix}"`);
     fs.writeFileSync(f, text);
   }

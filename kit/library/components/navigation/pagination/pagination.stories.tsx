@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Text } from '../../../primitives/text/text';
+import { Stack } from '../../../primitives/stack/stack';
+import { useState } from 'react';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Pagination, type PaginationProps } from './pagination';
 import { paginationRules } from './pagination.rules';
 
@@ -133,4 +137,539 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Pagination" layer="Component" family="Navigation" rules={paginationRules} guide="navigation-pagination--docs" guideName="Pagination" />,
+};
+
+const TOTAL_ROWS = 1342;
+const rangeOf = (page: number, size: number) => `${(page - 1) * size + 1}–${Math.min(page * size, TOTAL_ROWS)} of ${TOTAL_ROWS.toLocaleString('en')}`;
+const noSize = { label: 'Rows per page', value: 25, options: [10, 25, 50], onChange: noop };
+
+/** The smallest working pager: the view owns the page. */
+function SimplePager() {
+  const [page, setPage] = useState(1);
+  return <Pagination label="Pagination" page={page} pageCount={8} onPageChange={setPage} status={`Page ${page} of 8`} total={`${(page - 1) * 25 + 1}–${page * 25} of 200`} />;
+}
+
+/** A pager that owns its page and page size, and announces each change. */
+function PagedResults() {
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(25);
+  const count = Math.ceil(TOTAL_ROWS / size);
+  return (
+    <Pagination
+      label="Results"
+      page={page}
+      pageCount={count}
+      onPageChange={setPage}
+      total={rangeOf(page, size)}
+      pageSize={{ label: 'Rows per page', value: size, options: [10, 25, 50], onChange: (next) => { setSize(next); setPage(1); } }}
+      status={`Page ${page} of ${count}`}
+    />
+  );
+}
+
+/** A pager in link mode: each page has an address, and the route change is yours. */
+function LinkedResults() {
+  const [page, setPage] = useState(3);
+  return (
+    <Stack gap={2}>
+      <Pagination label="Search results" page={page} pageCount={12} getHref={(n) => `#page-${n}`} onPageChange={setPage} total="51–75 of 300" status={`Page ${page} of 12`} />
+      <Text variant="caption" tone="muted" as="p">Current page: {page}</Text>
+    </Stack>
+  );
+}
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Pagination"
+      layer="Component"
+      family="Navigation"
+      imports="import { Pagination, Stack, Text } from '@bauhaus/design-system';"
+      intro={[
+        'Pagination cuts a long list into pages and lets the user move between them, like the page numbers under search results.',
+        'The pager does not hold the page. Your view owns `page` and changes it in `onPageChange`. This is a controlled component: you pass the value in, and it tells you when to change it.',
+        'Page numbers start at 1. `pageCount` is how many pages exist. A `page` outside 1 to `pageCount` is moved to the nearest valid one.',
+        'Every word is a prop, so you format and translate it: the total ("1–25 of 1,342"), the button names and the announcement. The defaults are English.',
+        'A live region is a hidden spot that screen readers read aloud when its text changes. `status` fills one, so a page change is announced without moving focus.',
+        'Use buttons to page in place, such as a table. Use links when each page has its own address, such as search results.',
+      ]}
+      guide="navigation-pagination--docs"
+      guideName="Pagination"
+      groups={[
+        {
+          title: 'Getting started',
+          kicker: 'Start here. Three steps: hold the page in state, pass the page count, and show a total.',
+          examples: [
+            {
+              title: 'A minimal pager',
+              when: 'A list of 200 items in pages of 25. Click a page and the pager moves.',
+              explain: [
+                '`page` and `onPageChange` work as a pair. `useState` holds the number, and `onPageChange` sets it. Without `onPageChange`, clicks change nothing.',
+                '`pageCount={8}` is 200 items divided by 25 per page. Work it out in your code from the real count.',
+                '`total` is text you build. It tells the user how much there is and where they are. A pager with no total hides this (Nielsen heuristic 1, visibility of system status).',
+                '`status` is read aloud after each page change, so a screen reader user knows the list changed (WCAG 4.1.3, AA).',
+                '`label` names the landmark for screen readers. Keep it short and unique on the page.',
+              ],
+              render: <SimplePager />,
+              code: `function SimplePager() {
+  // The view owns the current page. It starts at 1, never 0.
+  const [page, setPage] = useState(1);
+
+  return (
+    <Pagination
+      // Names the navigation landmark for screen readers.
+      label="Pagination"
+      page={page}
+      // 200 items / 25 per page = 8 pages. Compute this from your data.
+      pageCount={8}
+      // Called with the new page number when the user picks one.
+      onPageChange={setPage}
+      // Text you format yourself: the component does no arithmetic or number formatting.
+      status={\`Page \${page} of 8\`}
+      total={\`\${(page - 1) * 25 + 1}–\${page * 25} of 200\`}
+    />
+  );
+}`,
+            },
+            {
+              title: 'Page size and an announcement',
+              when: 'A table where the user picks the rows per page, and the change is announced.',
+              explain: [
+                '`pageSize` adds a native `select` with a visible label. Its `onChange` gives the new size; reset to page 1, or the user may land past the end.',
+                '`pageCount` follows the size: more rows per page, fewer pages. Compute it from the size on every render.',
+                '`status` goes into a hidden live region. A screen reader says "Page 2 of 54" after each change, without moving focus (WCAG 4.1.3, AA).',
+                'Without `status`, a blind user presses a page and hears nothing. They cannot tell the list changed.',
+              ],
+              render: <PagedResults />,
+              code: `function PagedResults() {
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(25);
+  // More rows per page means fewer pages.
+  const count = Math.ceil(1342 / size);
+
+  return (
+    <Pagination
+      label="Results"
+      page={page}
+      pageCount={count}
+      onPageChange={setPage}
+      total={\`\${(page - 1) * size + 1}–\${Math.min(page * size, 1342)} of 1,342\`}
+      pageSize={{
+        label: 'Rows per page',        // visible label of the select
+        value: size,
+        options: [10, 25, 50],
+        // Back to page 1: page 54 does not exist at 50 rows per page.
+        onChange: (next) => { setSize(next); setPage(1); },
+      }}
+      // Read aloud after each change, without moving focus.
+      status={\`Page \${page} of \${count}\`}
+    />
+  );
+}`,
+            },
+          ],
+        },
+        {
+          title: 'Page position',
+          kicker: 'The pager clamps the page to 1 through pageCount. Previous and next are dimmed at the ends but stay focusable.',
+          examples: [
+            {
+              title: 'First page',
+              when: 'The user is at the start. Previous is dimmed.',
+              explain: [
+                'On page 1, "Previous" has nowhere to go, so it is dimmed.',
+                'It uses `aria-disabled`, not the native `disabled` attribute. A keyboard user who pressed "Next" to the end keeps their focus in the pager instead of losing it to the page body (WCAG 2.4.3, A).',
+                'The current page and the total already tell the user why it is dimmed.',
+              ],
+              render: <Pagination label="Pagination" page={1} pageCount={8} total="1–25 of 200" />,
+              code: `// page={1}: "Previous" is dimmed but still focusable.
+<Pagination label="Pagination" page={1} pageCount={8} onPageChange={setPage} status="Page 1 of 8" total="1–25 of 200" />`,
+            },
+            {
+              title: 'Middle page',
+              when: 'Both directions are open.',
+              explain: [
+                'The current page is filled, outlined and carries `aria-current="page"`. Two cues besides colour mark it, so it still shows for people who cannot tell colours apart (WCAG 1.4.1, A).',
+              ],
+              render: <Pagination label="Pagination" page={4} pageCount={8} total="76–100 of 200" />,
+              code: `<Pagination label="Pagination" page={4} pageCount={8} onPageChange={setPage} status="Page 4 of 8" total="76–100 of 200" />`,
+            },
+            {
+              title: 'Last page',
+              when: 'The user reached the end. Next is dimmed.',
+              explain: ['On the last page, "Next" is dimmed the same way "Previous" is on page 1. Focus stays in the pager.'],
+              render: <Pagination label="Pagination" page={8} pageCount={8} total="176–200 of 200" />,
+              code: `// page equals pageCount: "Next" is dimmed but still focusable.
+<Pagination label="Pagination" page={8} pageCount={8} onPageChange={setPage} status="Page 8 of 8" total="176–200 of 200" />`,
+            },
+            {
+              title: 'One page',
+              when: 'There is nothing to move through. The list hides; the total stays.',
+              explain: [
+                'With `pageCount={1}` the page buttons disappear, because there is nothing to click.',
+                'The total stays, so the user still knows how much there is (Nielsen heuristic 1, visibility of system status).',
+              ],
+              render: <Pagination label="Pagination" page={1} pageCount={1} total="1–12 of 12" />,
+              code: `// One page: the buttons are hidden, the total remains.
+<Pagination label="Pagination" page={1} pageCount={1} total="1–12 of 12" />`,
+            },
+            {
+              title: 'No results',
+              when: 'The query matched nothing. The total says so.',
+              explain: [
+                'Zero results still gives `pageCount={1}`. A `pageCount` below 1 counts as 1.',
+                'Say "0 results" in `total`. Show an empty state in the list itself, not in the pager.',
+              ],
+              render: <Pagination label="Pagination" page={1} pageCount={1} total="0 results" />,
+              code: `// A pageCount of 0 would also count as 1; passing 1 says it plainly.
+<Pagination label="Pagination" page={1} pageCount={1} total="0 results" />`,
+            },
+          ],
+        },
+        {
+          title: 'Long ranges',
+          kicker: 'A long range shows the first and last page, the current page and its siblings, with gaps between.',
+          examples: [
+            {
+              title: 'Gap at the end',
+              when: 'Near the start of a long range.',
+              explain: [
+                'Listing 60 page buttons would overflow the screen (WCAG 1.4.10, AA). The pager shows the first pages, a gap "…" and the last page.',
+                'The gap is decoration and is hidden from screen readers. The user reaches far pages with Next, or by typing a URL in link mode.',
+              ],
+              render: <Pagination label="Pagination" page={2} pageCount={60} total="26–50 of 1,500" />,
+              code: `<Pagination label="Pagination" page={2} pageCount={60} onPageChange={setPage} status="Page 2 of 60" total="26–50 of 1,500" />`,
+            },
+            {
+              title: 'Gap on both sides',
+              when: 'In the middle of a long range.',
+              explain: ['The pager keeps the first page, the last page and the current page with one sibling on each side. Gaps fill the rest.'],
+              render: <Pagination label="Pagination" page={30} pageCount={60} total="726–750 of 1,500" />,
+              code: `<Pagination label="Pagination" page={30} pageCount={60} onPageChange={setPage} status="Page 30 of 60" total="726–750 of 1,500" />`,
+            },
+            {
+              title: 'Gap at the start',
+              when: 'Near the end of a long range.',
+              explain: ['The mirror of the first case: the first page, a gap, then the last pages.'],
+              render: <Pagination label="Pagination" page={59} pageCount={60} total="1,451–1,475 of 1,500" />,
+              code: `<Pagination label="Pagination" page={59} pageCount={60} onPageChange={setPage} status="Page 59 of 60" total="1,451–1,475 of 1,500" />`,
+            },
+            {
+              title: 'More siblings',
+              when: 'A wide screen with room for two pages on each side of the current one.',
+              explain: [
+                '`siblings` is how many pages show on each side of the current one. The default is 1.',
+                'A higher number gives the user more direct targets but a wider pager.',
+              ],
+              render: <Pagination label="Pagination" page={30} pageCount={60} siblings={2} total="726–750 of 1,500" />,
+              code: `// siblings={2}: pages 28, 29, [30], 31, 32.
+<Pagination label="Pagination" page={30} pageCount={60} siblings={2} onPageChange={setPage} status="Page 30 of 60" total="726–750 of 1,500" />`,
+            },
+            {
+              title: 'No siblings',
+              when: 'A tight area. Only the current page shows between the gaps.',
+              explain: ['`siblings={0}` keeps the first page, the current page and the last page. Users move with Previous and Next.'],
+              render: <Pagination label="Pagination" page={30} pageCount={60} siblings={0} total="726–750 of 1,500" />,
+              code: `<Pagination label="Pagination" page={30} pageCount={60} siblings={0} onPageChange={setPage} status="Page 30 of 60" total="726–750 of 1,500" />`,
+            },
+            {
+              title: 'Short range',
+              when: 'Few enough pages to list all of them, with no gap.',
+              explain: [
+                'Up to `siblings × 2 + 5` pages (7 by default) show in full, because gaps would hide as many pages as they save.',
+                'You pass nothing special: the pager decides.',
+              ],
+              render: <Pagination label="Pagination" page={3} pageCount={7} total="51–75 of 175" />,
+              code: `// 7 pages is the most the default pager lists in full.
+<Pagination label="Pagination" page={3} pageCount={7} onPageChange={setPage} status="Page 3 of 7" total="51–75 of 175" />`,
+            },
+          ],
+        },
+        {
+          title: 'Buttons or links',
+          kicker: 'Buttons page in place. Links give each page an address, so back, reload and sharing work.',
+          examples: [
+            {
+              title: 'Buttons',
+              when: 'A table that keeps its URL. onPageChange gets the number.',
+              explain: [
+                'Without `getHref`, each page is a `button`. A button runs an action in the current view. The navigation guide says: use a link to go to a place, a button to do something here.',
+                'Use this when the page number is not part of the address, such as a table inside a dashboard.',
+              ],
+              render: <Pagination label="Pagination" page={2} pageCount={8} onPageChange={noop} status="Page 2 of 8" total="26–50 of 200" />,
+              code: `// No getHref: every page is a <button>.
+<Pagination label="Pagination" page={page} pageCount={8} onPageChange={setPage} status={\`Page \${page} of 8\`} total="26–50 of 200" />`,
+            },
+            {
+              title: 'Links with getHref',
+              when: 'Each page has its own URL, for search results that people share.',
+              explain: [
+                '`getHref` receives a page number and returns its address. Each page becomes a real link (`<a href>`).',
+                'Back, reload, bookmarks and sharing now work, and search engines can follow the links.',
+                'A link goes to a place. A button does an action. Pick by whether the page has an address. The navigation guide says the same: links go to places, buttons do actions.',
+              ],
+              render: <Pagination label="Search results" page={2} pageCount={8} getHref={(n) => `#page-${n}`} total="26–50 of 200" />,
+              code: `<Pagination
+  label="Search results"
+  page={2}
+  pageCount={8}
+  // Returns the address of page n.
+  getHref={(n) => \`/results?page=\${n}\`}
+  total="26–50 of 200"
+/>`,
+            },
+            {
+              title: 'Links with a router',
+              when: 'The app has a router. Pass its link component as linkAs; onPageChange runs on click.',
+              explain: [
+                '`linkAs` replaces the plain `<a>` with your router link, so a click swaps the view without a full reload.',
+                '`onPageChange` still runs on click in link mode. Use it for work next to the route change, such as analytics.',
+                'Your router link must accept `href`. If it uses `to`, wrap it in a small component that maps `href` to `to`.',
+              ],
+              render: <Pagination label="Search results" page={2} pageCount={8} linkAs="a" getHref={(n) => `#page-${n}`} total="26–50 of 200" />,
+              code: `// RouterLink: the link component of your router. It must accept "href".
+<Pagination
+  label="Search results"
+  page={page}
+  pageCount={8}
+  linkAs={RouterLink}
+  getHref={(n) => \`/search?page=\${n}\`}
+  // Runs on click too. Here: record the page view.
+  onPageChange={(n) => track(n)}
+  status={\`Page \${page} of 8\`}
+  total="26–50 of 200"
+/>`,
+            },
+            {
+              title: 'Links that update the view',
+              when: 'Links with a client-side route change. The view reads the new page from onPageChange.',
+              explain: [
+                'When the URL changes in the page without a reload, the view must also learn the new number. `onPageChange` gives it.',
+                'The caption below the pager shows the number the view holds. In a real app, this is the data you load.',
+              ],
+              render: <LinkedResults />,
+              code: `function LinkedResults() {
+  const [page, setPage] = useState(3);
+  return (
+    <Stack gap={2}>
+      <Pagination
+        label="Search results"
+        page={page}
+        pageCount={12}
+        getHref={(n) => \`/search?page=\${n}\`}
+        // The link gives the address; this keeps the view in step.
+        onPageChange={setPage}
+        total="51–75 of 300"
+        status={\`Page \${page} of 12\`}
+      />
+      <Text variant="caption" tone="muted" as="p">Current page: {page}</Text>
+    </Stack>
+  );
+}`,
+            },
+            {
+              title: 'Link mode at the ends',
+              when: 'In link mode, the dimmed ends are not links.',
+              explain: [
+                'An `<a>` with no `href` is not a link, so the dimmed "Previous" on page 1 becomes a `span` with `aria-disabled`.',
+                'It looks the same as in button mode. Screen readers do not offer it as a link to follow.',
+              ],
+              render: <Pagination label="Search results" page={1} pageCount={8} getHref={(n) => `#page-${n}`} total="1–25 of 200" />,
+              code: `// page={1}: "Previous" is a dimmed span, not a link.
+<Pagination label="Search results" page={1} pageCount={8} getHref={(n) => \`/results?page=\${n}\`} total="1–25 of 200" />`,
+            },
+          ],
+        },
+        {
+          title: 'Total and page size',
+          kicker: 'Pass the total as text you formatted. A pager with no total hides how much there is.',
+          examples: [
+            {
+              title: 'Total only',
+              when: 'A fixed page size. The total tells the user how much there is.',
+              explain: [
+                'Format the text yourself with your locale: "26–50 of 200". The component does no arithmetic, so the app decides number and date formats.',
+                'The total answers "how much is there, and where am I?" before the user touches a button (Nielsen heuristic 1, visibility of system status).',
+              ],
+              render: <Pagination label="Pagination" page={2} pageCount={8} total="26–50 of 200" />,
+              code: `<Pagination
+  label="Pagination"
+  page={2}
+  pageCount={8}
+  onPageChange={setPage}
+  // Build it with your own locale rules, e.g. toLocaleString().
+  status="Page 2 of 8"
+  total="26–50 of 200"
+/>`,
+            },
+            {
+              title: 'Total and page size',
+              when: 'The user picks how many rows to see. The select has a visible label.',
+              explain: [
+                '`pageSize` takes `label`, the current `value`, the `options` list and an `onChange`. The component draws a native `select`.',
+                'A native `select` brings keyboard, touch and screen reader support for free. A custom listbox would need all of it rebuilt.',
+                'The label is visible, so everyone sees what the select does (WCAG 3.3.2, A).',
+              ],
+              render: <Pagination label="Pagination" page={2} pageCount={8} total="26–50 of 200" pageSize={noSize} />,
+              code: `<Pagination
+  label="Pagination"
+  page={2}
+  pageCount={8}
+  onPageChange={setPage}
+  status="Page 2 of 8"
+  total="26–50 of 200"
+  pageSize={{
+    label: 'Rows per page',
+    value: size,              // the current size, from your state
+    options: [10, 25, 50],
+    onChange: setSize,        // receives the new size as a number
+  }}
+/>`,
+            },
+            {
+              title: 'Page size, one page',
+              when: 'Everything fits on one page. The select stays so the user can change the size.',
+              explain: ['The page buttons hide, but the total and the select remain. The user can still lower the size to see pages.'],
+              render: <Pagination label="Pagination" page={1} pageCount={1} total="1–8 of 8" pageSize={noSize} />,
+              code: `<Pagination
+  label="Pagination"
+  page={1}
+  pageCount={1}
+  total="1–8 of 8"
+  pageSize={{ label: 'Rows per page', value: size, options: [10, 25, 50], onChange: setSize }}
+/>`,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The list wraps onto a new line on a narrow screen. Every word is a prop.',
+          examples: [
+            {
+              title: 'Phone width',
+              when: 'A long range on a phone. The controls wrap.',
+              frame: 'phone',
+              explain: [
+                'The summary, the page list and the select wrap onto new lines. Nothing scrolls sideways (WCAG 1.4.10, AA).',
+                'You set nothing for small screens. The same props work at every width.',
+              ],
+              render: <Pagination label="Pagination" page={30} pageCount={60} total="726–750 of 1,500" pageSize={noSize} />,
+              code: `<Pagination
+  label="Pagination"
+  page={30}
+  pageCount={60}
+  onPageChange={setPage}
+  status="Page 30 of 60"
+  total="726–750 of 1,500"
+  pageSize={{ label: 'Rows per page', value: size, options: [10, 25, 50], onChange: setSize }}
+/>`,
+            },
+            {
+              title: 'Narrow column',
+              when: 'A side panel. The pager wraps and nothing is cut.',
+              frame: 'narrow',
+              explain: ['In a narrow column the buttons wrap onto a second line. Keep the default `siblings` so the line stays short.'],
+              render: <Pagination label="Pagination" page={4} pageCount={8} total="76–100 of 200" />,
+              code: `<Pagination label="Pagination" page={4} pageCount={8} onPageChange={setPage} status="Page 4 of 8" total="76–100 of 200" />`,
+            },
+            {
+              title: 'Translated pager',
+              when: 'The app is not in English: pass every word, including the page name.',
+              explain: [
+                'Translate every text prop: `label`, `total`, `previousLabel`, `nextLabel`, `pageLabel`, `status` and the `label` inside `pageSize`.',
+                'A mixed-language pager is read with the wrong accent by a screen reader. Leave no English word behind.',
+                '`pageLabel` is a function: it gets the page number and returns the accessible name.',
+              ],
+              render: (
+                <Pagination
+                  label="Pagination"
+                  page={2}
+                  pageCount={8}
+                  total="26–50 sur 200"
+                  previousLabel="Précédent"
+                  nextLabel="Suivant"
+                  pageLabel={(n) => `Page ${n}`}
+                  status="Page 2 sur 8"
+                  pageSize={{ label: 'Lignes par page', value: 25, options: [10, 25, 50], onChange: noop }}
+                />
+              ),
+              code: `<Pagination
+  label="Pagination"
+  page={2}
+  pageCount={8}
+  total="26–50 sur 200"
+  previousLabel="Précédent"
+  nextLabel="Suivant"
+  // Called with the page number; returns the name a screen reader says.
+  pageLabel={(n) => \`Page \${n}\`}
+  status="Page 2 sur 8"
+  pageSize={{ label: 'Lignes par page', value: size, options: [10, 25, 50], onChange: setSize }}
+/>`,
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'Each page name contains its visible number. The status goes into a polite live region.',
+          examples: [
+            {
+              title: 'Custom page name',
+              when: 'A page needs more context than "Page 3", such as "Results page 3". The name keeps the number.',
+              explain: [
+                '`pageLabel` sets the accessible name of each page button. The default is "Page 3".',
+                'The name must contain the visible number. Voice control users say what they see ("click 3"), and it only works if the name holds that text (WCAG 2.5.3, A).',
+              ],
+              render: <Pagination label="Search results" page={3} pageCount={8} pageLabel={(n) => `Results page ${n}`} total="51–75 of 200" />,
+              code: `<Pagination
+  label="Search results"
+  page={3}
+  pageCount={8}
+  // Keep the visible number inside the name.
+  pageLabel={(n) => \`Results page \${n}\`}
+  total="51–75 of 200"
+/>`,
+            },
+            {
+              title: 'Announced change',
+              when: 'Say the new position without moving focus.',
+              explain: [
+                '`status` fills a polite live region. Screen readers read it when the text changes, at the next quiet moment.',
+                'Build the text from your state: `Page ${page} of ${count}`. It must change each time, or nothing is announced (WCAG 4.1.3, AA).',
+              ],
+              render: <Pagination label="Pagination" page={3} pageCount={8} status="Page 3 of 8" total="51–75 of 200" />,
+              code: `<Pagination
+  label="Pagination"
+  page={page}
+  pageCount={8}
+  onPageChange={setPage}
+  total="51–75 of 200"
+  // Hidden on screen, read aloud by screen readers on every change.
+  status={\`Page \${page} of 8\`}
+/>`,
+            },
+            {
+              title: 'Two pagers on one page',
+              when: 'A pager above and below a table. Give each its own name.',
+              explain: [
+                'Two landmarks with one name are impossible to tell apart in a screen reader list. Different `label` values fix that (APG Landmarks).',
+                'Both read the same `page` from your state, so they stay in step. Pass `status` to one pager only, or a screen reader announces each change twice.',
+              ],
+              render: (
+                <Stack gap={3}>
+                  <Pagination label="Pagination, top" page={2} pageCount={8} total="26–50 of 200" />
+                  <Pagination label="Pagination, bottom" page={2} pageCount={8} status="Page 2 of 8" total="26–50 of 200" />
+                </Stack>
+              ),
+              code: `<Stack gap={3}>
+  <Pagination label="Pagination, top" page={page} pageCount={8} onPageChange={setPage} total="26–50 of 200" />
+  {/* ...the table goes here... */}
+  <Pagination label="Pagination, bottom" page={page} pageCount={8} onPageChange={setPage} status={\`Page \${page} of 8\`} total="26–50 of 200" />
+</Stack>`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

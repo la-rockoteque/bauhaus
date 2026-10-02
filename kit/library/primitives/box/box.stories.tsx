@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DocPage } from '../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../fixtures/examples/examples';
+import { Button } from '../../components/clickables/button/button';
+import { Heading } from '../heading/heading';
+import { Stack } from '../stack/stack';
+import { Text } from '../text/text';
 import { Box } from './box';
 import type { BoxProps, Space } from './box';
 import { boxRules } from './box.rules';
@@ -123,4 +128,371 @@ export const Showcase: StoryObj<typeof meta> = {
 export const Advisories: StoryObj<typeof meta> = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Box" layer="Primitive" rules={boxRules} guide="primitives-box--docs" guideName="Box" />,
+};
+
+export const Examples: StoryObj<typeof meta> = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Box"
+      layer="Primitive"
+      imports="import { Box, Stack, Text, Heading, Button } from '@bauhaus/design-system';"
+      intro={[
+        'A box is an empty container. It draws nothing until you give it padding (space inside), a gap (space between its children) or a surface (a background).',
+        'Padding is the space between the edge of a box and what is inside it. A gap is the space between two children. A margin is space outside the box, and Box has none: the parent sets the space around a child.',
+        'Every distance comes from the space scale: steps `0` to `12`, each one 4px more than the last (`padding={4}` is 16px). You cannot write `13px`. The type check refuses it.',
+        'The scale beats a custom margin because the whole product then shares a few distances. Edges line up from screen to screen, and one theme change can shrink them all.',
+        'A surface is a background colour with a job: `default` for the page, `raised` for things that sit above it (cards), `sunken` for wells and inset areas. Text on each reaches the contrast it needs in light and dark themes.',
+        'A Box has no role and cannot be pressed. For anything the user clicks, use `Button` or `Link`.',
+      ]}
+      guide="primitives-box--docs"
+      guideName="Box"
+      groups={[
+        {
+          title: 'Padding',
+          kicker: 'Space inside the box. Start with `padding`, then refine one axis at a time.',
+          examples: [
+            {
+              title: 'Padding on all sides',
+              when: 'Give content room inside a container so the text does not touch the edge.',
+              explain: [
+                '`padding` takes a space step. `padding={4}` is 16px on every side.',
+                'A box with no background shows padding only as empty room. Here a `sunken` surface makes the room visible.',
+                'The padding is logical: it follows the reading direction, so nothing changes for right-to-left text.',
+              ],
+              render: <Box padding={4} surface="sunken">Content with room around it.</Box>,
+              code: `// padding 4 = 16px on all four sides.
+// surface="sunken" only makes the box visible for this demo.
+<Box padding={4} surface="sunken">Content with room around it.</Box>`,
+            },
+            {
+              title: 'Small, medium and large padding',
+              when: 'Pick the step that matches the size of the thing you wrap.',
+              explain: [
+                'Use `2` (8px) for small chips and tags, `4` (16px) for cards and panels, `6` (24px) or more for roomy areas.',
+                'Bigger blocks deserve more room. Padding that is the same everywhere makes small things look cramped and large things look empty.',
+                '`padding={0}` is a real step. Use it to turn padding off when a parent style would add some.',
+              ],
+              render: (
+                <Stack gap={4}>
+                  <Box padding={2} surface="sunken">padding 2 (8px)</Box>
+                  <Box padding={4} surface="sunken">padding 4 (16px)</Box>
+                  <Box padding={6} surface="sunken">padding 6 (24px)</Box>
+                </Stack>
+              ),
+              code: `<Stack gap={4}>
+  {/* 8px: tags, chips, dense rows. */}
+  <Box padding={2} surface="sunken">padding 2 (8px)</Box>
+  {/* 16px: cards and panels. */}
+  <Box padding={4} surface="sunken">padding 4 (16px)</Box>
+  {/* 24px: roomy areas. */}
+  <Box padding={6} surface="sunken">padding 6 (24px)</Box>
+</Stack>`,
+            },
+            {
+              title: 'Different padding on each axis',
+              when: 'The sides need different room: a wide row with less height, or a banner with deep top and bottom.',
+              explain: [
+                '`paddingInline` is the inline axis (left and right in English). `paddingBlock` is the block axis (top and bottom).',
+                'They win over `padding`, so you can set a base and then override one axis.',
+                'Because the axes are logical, right-to-left text swaps the sides for you.',
+              ],
+              render: <Box paddingInline={6} paddingBlock={2} surface="sunken">Wide and short</Box>,
+              code: `// 24px on the sides, 8px on top and bottom.
+<Box paddingInline={6} paddingBlock={2} surface="sunken">Wide and short</Box>`,
+            },
+            {
+              title: 'A base plus one override',
+              when: 'Most sides share one step and one axis differs.',
+              explain: [
+                '`padding={4}` sets 16px everywhere. `paddingBlock={1}` then wins on top and bottom, giving 4px there.',
+                'The order of the props does not matter. The more specific prop always wins.',
+              ],
+              render: <Box padding={4} paddingBlock={1} surface="sunken">16px sides, 4px top and bottom</Box>,
+              code: `// padding sets the base. paddingBlock wins on the block axis.
+<Box padding={4} paddingBlock={1} surface="sunken">
+  16px sides, 4px top and bottom
+</Box>`,
+            },
+          ],
+        },
+        {
+          title: 'Surfaces',
+          kicker: 'A surface is a background colour with a job. Pick by role, never by colour.',
+          examples: [
+            {
+              title: 'The three surfaces',
+              when: 'You need to separate a region from what is around it.',
+              explain: [
+                '`default` is the page background. `raised` sits above the page, like a card. `sunken` sits below it, like a well or an input area.',
+                'Each surface is a colour role: it changes with the theme (light, dark) and still keeps readable text (WCAG 1.4.3, AA).',
+                'A hex colour in your own CSS would stay the same in dark mode and break the contrast. Always use a role.',
+              ],
+              render: (
+                <Stack gap={4}>
+                  <Box padding={4} surface="default">default</Box>
+                  <Box padding={4} surface="raised">raised</Box>
+                  <Box padding={4} surface="sunken">sunken</Box>
+                </Stack>
+              ),
+              code: `<Stack gap={4}>
+  {/* The page background. Leave "surface" out to draw nothing. */}
+  <Box padding={4} surface="default">default</Box>
+  {/* Above the page: cards, popovers. */}
+  <Box padding={4} surface="raised">raised</Box>
+  {/* Below the page: wells, code blocks, inset areas. */}
+  <Box padding={4} surface="sunken">sunken</Box>
+</Stack>`,
+            },
+            {
+              title: 'Layers inside layers',
+              when: 'A card sits on a sunken page region, or a well sits inside a card.',
+              explain: [
+                'Nest a `raised` box inside a `sunken` one and the card pops forward. The difference in surface shows the depth.',
+                'Do not nest the same surface in itself. It adds padding and no visible change.',
+                'Use at most two or three layers. More stops being clear.',
+              ],
+              render: (
+                <Box padding={4} surface="sunken">
+                  <Box padding={4} surface="raised">A card on a sunken area</Box>
+                </Box>
+              ),
+              code: `// Outer: the sunken area. Inner: a raised card on top of it.
+<Box padding={4} surface="sunken">
+  <Box padding={4} surface="raised">A card on a sunken area</Box>
+</Box>`,
+            },
+          ],
+        },
+        {
+          title: 'Gap and display',
+          kicker: '`gap` only works when the box is a flex or a grid container. `display` turns that on.',
+          examples: [
+            {
+              title: 'Block (the default)',
+              when: 'A plain container where children flow one under the other.',
+              explain: [
+                '`display` defaults to `"block"`. Children keep the normal flow of the page.',
+                'A `gap` on a block box does nothing. Set `display="flex"` or `"grid"` first.',
+                'If you only need a column or a row with a gap, use `Stack`. It sets flex and the gap for you.',
+              ],
+              render: (
+                <Box padding={4} surface="sunken">
+                  <Text>Normal flow, like any block element.</Text>
+                </Box>
+              ),
+              code: `// display="block" is the default, so you can leave it out.
+<Box padding={4} surface="sunken">
+  <Text>Normal flow, like any block element.</Text>
+</Box>`,
+            },
+            {
+              title: 'Flex with a gap',
+              when: 'Children in a row or column with space between, and you also need a surface on the same element.',
+              explain: [
+                '`display="flex"` makes the children flex items, side by side. `gap={3}` puts 12px between them.',
+                'For a plain row or column, `Stack` is the shorter way. Reach for a flex Box when you need a surface or padding and a gap on the same element.',
+              ],
+              render: (
+                <Box display="flex" gap={3} padding={3} surface="sunken">
+                  <Text as="span">One</Text>
+                  <Text as="span">Two</Text>
+                  <Text as="span">Three</Text>
+                </Box>
+              ),
+              code: `// flex = children side by side. gap 3 = 12px between them.
+<Box display="flex" gap={3} padding={3} surface="sunken">
+  <Text as="span">One</Text>
+  <Text as="span">Two</Text>
+  <Text as="span">Three</Text>
+</Box>`,
+            },
+            {
+              title: 'Grid with a gap',
+              when: 'A grid container whose rows are spaced from the scale.',
+              explain: [
+                '`display="grid"` makes the box a grid. Without a column definition, each child takes its own row, and `gap` spaces the rows.',
+                'Box has no prop for columns. If you need columns, define them in your own stylesheet and keep the gap from the scale.',
+              ],
+              render: (
+                <Box display="grid" gap={2} padding={3} surface="sunken">
+                  <Text>Row one</Text>
+                  <Text>Row two</Text>
+                </Box>
+              ),
+              code: `// grid: each child gets its own row, 8px apart.
+<Box display="grid" gap={2} padding={3} surface="sunken">
+  <Text>Row one</Text>
+  <Text>Row two</Text>
+</Box>`,
+            },
+          ],
+        },
+        {
+          title: 'The element, and other attributes',
+          kicker: 'Choose the HTML element for the meaning of the content. Box adds no role of its own.',
+          examples: [
+            {
+              title: 'Pick the element with as',
+              when: 'The region has a meaning: a section, a navigation, a side note.',
+              explain: [
+                '`as` sets the HTML element. The default is `div`, which means nothing to assistive technology.',
+                '`section`, `nav`, `aside` and `main` are landmarks (regions that screen readers list for quick jumps). A `section` becomes a landmark only when it has a name (WCAG 1.3.1, A).',
+                '`aria-labelledby` names the section with the text of its heading. Point it at the heading `id`.',
+              ],
+              render: (
+                <Box as="section" aria-labelledby="box-ex-security" padding={4} surface="raised">
+                  <Stack gap={2}>
+                    <Heading level={2} id="box-ex-security">Security</Heading>
+                    <Text>Manage your password and sign-in devices.</Text>
+                  </Stack>
+                </Box>
+              ),
+              code: `// "section" + a name = a landmark that screen readers can jump to.
+<Box as="section" aria-labelledby="security-title" padding={4} surface="raised">
+  <Stack gap={2}>
+    <Heading level={2} id="security-title">Security</Heading>
+    <Text>Manage your password and sign-in devices.</Text>
+  </Stack>
+</Box>`,
+            },
+            {
+              title: 'A navigation or side note',
+              when: 'A group of links, or content that is aside from the main text.',
+              explain: [
+                '`as="aside"` marks content related to the main text, such as a tip. `as="nav"` marks a group of navigation links.',
+                'A page with two `nav` regions needs a different `aria-label` on each, so users can tell them apart.',
+              ],
+              render: (
+                <Box as="aside" aria-label="Tip" padding={3} surface="sunken">
+                  <Text variant="caption">Tip: press Tab to move between controls.</Text>
+                </Box>
+              ),
+              code: `<Box as="aside" aria-label="Tip" padding={3} surface="sunken">
+  <Text variant="caption">Tip: press Tab to move between controls.</Text>
+</Box>`,
+            },
+            {
+              title: 'Native attributes pass through',
+              when: 'You need an `id`, a `data-*` attribute for tests, a `lang` or a `className`.',
+              explain: [
+                'Every native HTML attribute goes to the element: `id`, `lang`, `dir`, `data-*`, `aria-*`, `className`.',
+                '`lang="fr"` tells screen readers to switch to French pronunciation for this text (WCAG 3.1.2, AA).',
+                'Box refuses `onClick`, `onKeyDown` and `onKeyUp`. A box has no role and no keyboard path, so a click handler would make a control that keyboard users cannot reach (WCAG 4.1.2, A). Use `Button` for that.',
+              ],
+              render: (
+                <Box lang="fr" data-testid="welcome" padding={3} surface="sunken">
+                  <Text>Bienvenue dans votre espace.</Text>
+                </Box>
+              ),
+              code: `// lang switches the screen reader voice. data-testid is for your tests.
+<Box lang="fr" data-testid="welcome" padding={3} surface="sunken">
+  <Text>Bienvenue dans votre espace.</Text>
+</Box>`,
+            },
+            {
+              title: 'Right-to-left content',
+              when: 'The text reads from right to left, such as Arabic or Hebrew.',
+              explain: [
+                '`dir="rtl"` turns the reading direction. Padding on the inline axis follows it, so you write nothing special.',
+                '`paddingInline={6}` gives the same room on both inline sides, so the box looks the same in either direction.',
+              ],
+              render: (
+                <Box dir="rtl" lang="ar" paddingInline={6} paddingBlock={2} surface="sunken">
+                  <Text>مرحبا بكم</Text>
+                </Box>
+              ),
+              code: `// dir="rtl" flips the inline axis. No extra CSS needed.
+<Box dir="rtl" lang="ar" paddingInline={6} paddingBlock={2} surface="sunken">
+  <Text>مرحبا بكم</Text>
+</Box>`,
+            },
+          ],
+        },
+        {
+          title: 'Recipes',
+          kicker: 'Box and Stack together: Box for the space around and the surface, Stack for the space between.',
+          examples: [
+            {
+              title: 'A card',
+              when: 'A bordered block of related content with one action.',
+              explain: [
+                'The Box gives the card a `raised` surface and `padding={4}`. The Stack spaces the three pieces inside it.',
+                '`gap={2}` between the title and the text keeps them as one group. `gap={4}` before the button sets the action apart.',
+                'Content must wrap and never be cut off. The card has no fixed width, so long text grows it downward (WCAG 1.4.10, AA).',
+              ],
+              render: (
+                <Box surface="raised" padding={4}>
+                  <Stack gap={4} align="start">
+                    <Stack gap={2}>
+                      <Heading level={3}>Weekly summary</Heading>
+                      <Text>Three tasks are due this week. One is overdue.</Text>
+                    </Stack>
+                    <Button variant="secondary">Open tasks</Button>
+                  </Stack>
+                </Box>
+              ),
+              code: `// Box: the surface and the space inside.
+<Box surface="raised" padding={4}>
+  {/* align="start": the button keeps its natural width. */}
+  <Stack gap={4} align="start">
+    {/* Tight inner group: title and text belong together. */}
+    <Stack gap={2}>
+      <Heading level={3}>Weekly summary</Heading>
+      <Text>Three tasks are due this week. One is overdue.</Text>
+    </Stack>
+    <Button variant="secondary" onClick={openTasks}>Open tasks</Button>
+  </Stack>
+</Box>`,
+            },
+            {
+              title: 'A card on a narrow screen',
+              when: 'Check that long text wraps instead of overflowing.',
+              explain: [
+                'The frame here is only 192px wide, which is narrower than any phone. The text wraps onto several lines and the card stays inside the frame.',
+                'There is no fixed width or height in the snippet, so text zoom and long translations cannot break it (WCAG 1.4.4, AA).',
+              ],
+              frame: 'narrow',
+              render: (
+                <Box surface="raised" padding={3}>
+                  <Text>Your subscription renews automatically at the end of each billing period.</Text>
+                </Box>
+              ),
+              code: `// No width or height: the box grows with its text.
+<Box surface="raised" padding={3}>
+  <Text>Your subscription renews automatically at the end of each billing period.</Text>
+</Box>`,
+            },
+            {
+              title: 'A form region',
+              when: 'A group of related fields that sits in a tinted area.',
+              explain: [
+                'Use `as="form"` plus an `aria-labelledby` name to make the area a form landmark.',
+                'The `sunken` surface shows the region without a border. The Stack spaces the heading and the fields.',
+                'Use the field components of the library for the fields themselves. They link labels to controls for you.',
+              ],
+              render: (
+                <Box as="form" aria-labelledby="box-ex-contact" surface="sunken" padding={4} onSubmit={(event) => event.preventDefault()}>
+                  <Stack gap={3} align="start">
+                    <Heading level={2} id="box-ex-contact">Contact us</Heading>
+                    <Text>We reply within one working day.</Text>
+                    <Button type="submit">Send message</Button>
+                  </Stack>
+                </Box>
+              ),
+              code: `// "form" + a name = a form landmark.
+<Box as="form" aria-labelledby="contact-title" surface="sunken" padding={4} onSubmit={send}>
+  <Stack gap={3} align="start">
+    <Heading level={2} id="contact-title">Contact us</Heading>
+    <Text>We reply within one working day.</Text>
+    {/* type="submit" makes Enter send the form. */}
+    <Button type="submit">Send message</Button>
+  </Stack>
+</Box>`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

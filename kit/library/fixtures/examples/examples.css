@@ -1,0 +1,243 @@
+/* The Examples page. Each use case is a card: the explanation, then the code as the main column, the live result beside it. */
+
+.doc-examples code {
+  font-family: var(--ds-text-code-family);
+  font-size: 0.92em;
+}
+
+.doc-example-setup {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin-block-start: var(--ds-space-4);
+}
+
+.doc-example-intro,
+.doc-example-explain {
+  display: grid;
+  gap: var(--ds-space-1);
+  margin: 0;
+  padding-inline-start: var(--ds-space-5);
+}
+
+.doc-example-intro {
+  max-inline-size: calc(var(--ds-space-12) * 16);
+}
+
+.doc-example-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ds-space-5);
+}
+
+.doc-example {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ds-space-4);
+  min-inline-size: 0;
+  padding: var(--ds-space-4);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-default);
+  container-type: inline-size;
+}
+
+.doc-example-head {
+  display: grid;
+  gap: var(--ds-space-2);
+  max-inline-size: calc(var(--ds-space-12) * 16);
+}
+
+.doc-example-title {
+  margin: 0;
+  font-size: var(--ds-text-heading-size);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.doc-example-when {
+  margin: 0;
+}
+
+/* Code first and widest; the result sits beside it once the card has room, and under it on a phone. */
+.doc-example-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ds-space-4);
+  align-items: start;
+}
+
+@container (min-inline-size: 45em) {
+  .doc-example-body:not(.doc-example-body--code-only) {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+.doc-example-result {
+  display: grid;
+  margin: 0;
+  min-inline-size: 0;
+  border: var(--ds-size-border-thin) dashed var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+}
+
+.doc-example-result-label {
+  padding: var(--ds-space-1) var(--ds-space-3);
+  border-block-end: var(--ds-size-border-thin) dashed var(--ds-border-default);
+  color: var(--ds-text-muted);
+  font-size: var(--ds-text-caption-size);
+}
+
+.doc-example-stage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: safe center;
+  gap: var(--ds-space-3);
+  min-inline-size: 0;
+  padding: var(--ds-space-5) var(--ds-space-4);
+  overflow-x: auto;
+}
+
+/* A frame narrows the result to show wrapping. Dashed, so it reads as a measure and not as part of the component. */
+.doc-example-frame {
+  display: block;
+  inline-size: 100%;
+  padding: var(--ds-space-2);
+  border: var(--ds-size-border-thin) dashed var(--ds-border-default);
+}
+
+.doc-example-frame--narrow { max-inline-size: calc(var(--ds-space-12) * 4); }
+.doc-example-frame--phone { max-inline-size: calc(var(--ds-space-12) * 20 / 3); }
+
+/* Code block */
+
+.doc-code {
+  min-inline-size: 0;
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-sunken);
+  overflow: hidden;
+}
+
+.doc-code-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-1) var(--ds-space-1) var(--ds-space-1) var(--ds-space-3);
+  border-block-end: var(--ds-size-border-thin) solid var(--ds-border-default);
+}
+
+.doc-code-lang,
+.doc-code-copy-status {
+  color: var(--ds-text-muted);
+  font-size: var(--ds-text-caption-size);
+}
+
+.doc-code-copy {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.doc-code-copy button {
+  min-block-size: var(--ds-size-target-min);
+  padding-inline: var(--ds-space-2);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface-default);
+  color: var(--ds-text-default);
+  font: inherit;
+  font-size: var(--ds-text-caption-size);
+  cursor: pointer;
+}
+
+.doc-code-copy button:hover {
+  background-image: linear-gradient(var(--ds-state-hover-layer), var(--ds-state-hover-layer));
+}
+
+.doc-code-copy button:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.doc-code-pre {
+  margin: 0;
+  padding-block: var(--ds-space-3);
+  overflow-x: auto;
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-code-family);
+  font-size: var(--ds-text-code-size);
+  line-height: var(--ds-text-code-line-height);
+  white-space: pre;
+}
+
+.doc-code-pre:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: calc(var(--ds-focus-ring-width) * -1);
+}
+
+.doc-code-pre code {
+  font-size: inherit;
+}
+
+.doc-code-line {
+  display: flex;
+}
+
+/* The number is chrome: out of a copy and out of the accessibility tree. */
+.doc-code-num {
+  flex: none;
+  min-inline-size: calc(var(--ds-space-1) * 9);
+  padding-inline: var(--ds-space-2) var(--ds-space-3);
+  color: var(--ds-text-muted);
+  text-align: end;
+  user-select: none;
+}
+
+.doc-code-text {
+  padding-inline-end: var(--ds-space-4);
+}
+
+/* Syntax colours. Light reads the status and text roles. Dark lifts them to the 300 steps: the dark roles sit at 200, too
+   pale to tell tokens apart. Set on the nearest [data-theme], so a panel switched on its own gets its own colours. */
+:root,
+[data-theme="light"] {
+  --doc-code-keyword: var(--ds-status-info-text);
+  --doc-code-tag: var(--ds-status-error-text);
+  --doc-code-attr: var(--ds-status-warning-text);
+  --doc-code-string: var(--ds-status-success-text);
+  --doc-code-function: var(--ds-text-link);
+}
+
+[data-theme="dark"] {
+  --doc-code-keyword: var(--ds-colors-info-300);
+  --doc-code-tag: var(--ds-colors-error-300);
+  --doc-code-attr: var(--ds-colors-warning-300);
+  --doc-code-string: var(--ds-colors-success-300);
+  --doc-code-function: var(--ds-colors-primary-300);
+}
+
+.doc-code-pre { font-variant-ligatures: none; }
+.doc-code .token.comment,
+.doc-code .token.prolog,
+.doc-code .token.doctype { color: var(--ds-text-muted); font-style: italic; }
+.doc-code .token.keyword,
+.doc-code .token.boolean,
+.doc-code .token.null,
+.doc-code .token.important,
+.doc-code .token.atrule { color: var(--doc-code-keyword); }
+.doc-code .token.tag,
+.doc-code .token.class-name,
+.doc-code .token.selector { color: var(--doc-code-tag); }
+.doc-code .token.attr-name,
+.doc-code .token.property,
+.doc-code .token.number,
+.doc-code .token.unit { color: var(--doc-code-attr); }
+.doc-code .token.string,
+.doc-code .token.attr-value,
+.doc-code .token.template-string,
+.doc-code .token.char { color: var(--doc-code-string); }
+.doc-code .token.function,
+.doc-code .token.variable { color: var(--doc-code-function); }
+.doc-code .token.punctuation,
+.doc-code .token.operator { color: var(--ds-text-muted); }

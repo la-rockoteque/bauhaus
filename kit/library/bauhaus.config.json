@@ -1,6 +1,6 @@
 {
   "$schema": "https://git.nexapptech.com/vbernier/bauhaus/bauhaus.config.schema.json",
-  "name": "Acme Design System",
+  "name": "Bauhaus Design System",
   "prefix": "ds",
   "tokens": {
     "source": "foundations",

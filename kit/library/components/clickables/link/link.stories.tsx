@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Stack } from '../../../primitives/stack/stack';
+import { Text } from '../../../primitives/text/text';
 import { DocPage } from '../../../fixtures/doc-page/doc-page';
 import { AdvisoriesPage } from '../../../fixtures/advisories/advisories';
+import { ExamplesPage } from '../../../fixtures/examples/examples';
 import { Link } from './link';
 import type { LinkProps } from './link';
 import { linkRules } from './link.rules';
@@ -130,4 +133,307 @@ export const Showcase: StoryObj = {
 export const Advisories: StoryObj = {
   name: 'Advisories',
   render: () => <AdvisoriesPage name="Link" layer="Component" family="Clickables" rules={linkRules} guide="clickables-link--docs" guideName="Link" />,
+};
+
+export const Examples: StoryObj = {
+  name: 'Examples',
+  render: () => (
+    <ExamplesPage
+      name="Link"
+      layer="Component"
+      family="Clickables"
+      imports="import { Link, Stack, Text } from '@bauhaus/design-system';"
+      intro={[
+        'A link takes the user to another URL, inside your app or outside it. It draws a native `<a>` element, so right-click, "open in new tab" and the Enter key work with no code. To run an action such as save, use `Button`.',
+        'Pass `href` for a plain link. Every other native anchor attribute passes through too: `download`, `hrefLang`, `aria-*`.',
+        'Glossary. A screen reader is software that reads the page aloud. Out of context means a user hears a list of all links on the page without the text around them, so each link text must make sense alone.',
+        'Glossary. `aria-current` is an extra label that tells assistive software "this link points at where you are now". A router is the code that changes pages in a single-page app.',
+        'Two props change the meaning: `external` for a link that leaves the app, `current` for a link to the place the user is in. A third, `standalone`, changes only the size of the click target.',
+      ]}
+      guide="clickables-link--docs"
+      guideName="Link"
+      groups={[
+        {
+          title: 'Basics',
+          kicker: 'A link goes to a URL. The underline stays on at rest, because colour alone is not enough to show a link.',
+          examples: [
+            {
+              title: 'In a sentence',
+              when: 'A link inside running text. This is the most common use.',
+              explain: [
+                'Leave `standalone` off. The link stays inline and keeps the line height. A 32px box would break the line apart.',
+                'The text names the destination: "shipping policy". A link reads alone in a screen reader list, so "here" tells nothing (WCAG 2.4.4, level A).',
+                'The underline stays on at rest. Without it, a user who cannot tell two colours apart would not see the link (WCAG 1.4.1, A).',
+              ],
+              render: <Text as="p">Read the <Link href="#shipping">shipping policy</Link> before you order.</Text>,
+              code: `// No standalone prop: the link flows inside the sentence.
+// href is the destination. The link text names it.
+<Text as="p">
+  Read the <Link href="/shipping">shipping policy</Link> before you order.
+</Text>`,
+            },
+            {
+              title: 'Standalone',
+              when: 'A link on its own line, such as a footer link.',
+              explain: [
+                '`standalone` gives the link a 32px-high click target. Small targets are hard to hit with a finger or a shaky hand (WCAG 2.5.8, AA).',
+                'Links in a sentence do not need it. The standard exempts them, because the text around them sets the size.',
+              ],
+              render: <Link href="#privacy" standalone>Privacy notice</Link>,
+              code: `// standalone: the link is not in a sentence, so it gets the bigger target.
+<Link href="/privacy" standalone>Privacy notice</Link>`,
+            },
+            {
+              title: 'Descriptive text',
+              when: 'Every link. Name the destination, so the link makes sense out of context.',
+              explain: [
+                'Screen reader users often jump through a list of links only. "Accessibility statement" tells them where it goes; "Read more" does not (WCAG 2.4.4, A).',
+              ],
+              render: <Link href="#accessibility">Accessibility statement</Link>,
+              code: `// Good link text works when read alone, with no text around it.
+<Link href="/accessibility">Accessibility statement</Link>`,
+            },
+          ],
+        },
+        {
+          title: 'External and current',
+          kicker: 'Two props change what the link means.',
+          examples: [
+            {
+              title: 'External',
+              when: 'The link leaves the app and opens in a new tab.',
+              explain: [
+                '`external` sets `target="_blank"` (open in a new tab) and `rel="noopener noreferrer"`. The `rel` stops the new page from controlling yours.',
+                'It adds an icon for sighted users and a hidden "opens in a new tab" for screen readers. Nobody is surprised by the new tab (WCAG 3.2.5, level AAA).',
+              ],
+              render: <Link href="https://example.com/terms" external>Terms of service</Link>,
+              code: `// external does three things: opens a new tab safely, draws the icon,
+// and adds the spoken warning "opens in a new tab".
+<Link href="https://example.com/terms" external>Terms of service</Link>`,
+            },
+            {
+              title: 'External, translated warning',
+              when: 'The app is not in English.',
+              explain: [
+                'The library cannot translate. `externalLabel` is the spoken warning in your page language.',
+                'If you leave it out, a French page would have an English phrase inside a French sentence.',
+              ],
+              render: <Link href="https://example.com/conditions" external externalLabel="s’ouvre dans un nouvel onglet">Conditions d’utilisation</Link>,
+              code: `// externalLabel replaces the default English "opens in a new tab".
+<Link href="https://example.com/conditions" external externalLabel="s’ouvre dans un nouvel onglet">
+  Conditions d’utilisation
+</Link>`,
+            },
+            {
+              title: 'Current page',
+              when: 'A navigation link that points at the page the user is on.',
+              explain: [
+                '`current` sets `aria-current="page"`. A screen reader says "current page" after the name.',
+                'The text turns heavier and the underline thicker, so sighted users do not rely on colour alone (WCAG 1.4.1, A).',
+              ],
+              render: <Link href="#shipments" current standalone>Shipments</Link>,
+              code: `// "true" means "page". Compute it from your own route.
+<Link href="/shipments" current standalone>Shipments</Link>`,
+            },
+            {
+              title: 'Current step',
+              when: 'The link marks the step the user is on in a process.',
+              explain: ['`current="step"` sets `aria-current="step"`, which a screen reader says as "current step".'],
+              render: <Link href="#payment" current="step" standalone>Payment</Link>,
+              code: `<Link href="/checkout/payment" current="step" standalone>Payment</Link>`,
+            },
+            {
+              title: 'Current location',
+              when: 'The place the user is in a set that is not pages or steps, such as a site map.',
+              explain: ['`current="location"` sets `aria-current="location"`. `current` alone (`true`) is the same as `"page"`.'],
+              render: <Link href="#warehouse" current="location" standalone>Warehouse</Link>,
+              code: `<Link href="/sites/warehouse" current="location" standalone>Warehouse</Link>`,
+            },
+          ],
+        },
+        {
+          title: 'Composition',
+          kicker: 'Standalone links in a list or a nav carry the 32px target.',
+          examples: [
+            {
+              title: 'Footer links',
+              when: 'A short list of standalone links, one destination each.',
+              explain: [
+                'The list is a real `ul`, so a screen reader says "list, 3 items".',
+                '`wrap` lets the links drop to a new line on a narrow screen instead of overflowing (WCAG 1.4.10, AA).',
+              ],
+              render: (
+                <Stack as="ul" direction="horizontal" gap={4} wrap aria-label="Footer">
+                  <li><Link href="#about" standalone>About</Link></li>
+                  <li><Link href="#careers" standalone>Careers</Link></li>
+                  <li><Link href="#privacy" standalone>Privacy</Link></li>
+                </Stack>
+              ),
+              code: `<Stack as="ul" direction="horizontal" gap={4} wrap aria-label="Footer">
+  <li><Link href="/about" standalone>About</Link></li>
+  <li><Link href="/careers" standalone>Careers</Link></li>
+  <li><Link href="/privacy" standalone>Privacy</Link></li>
+</Stack>`,
+            },
+            {
+              title: 'Navigation list',
+              when: 'Each destination has its own URL, and the current one is marked.',
+              explain: [
+                '`as="nav"` makes the `Stack` a navigation landmark. Screen reader users can jump straight to it.',
+                '`aria-label` names the landmark, which matters when the page has more than one `nav`.',
+                'Only one link has `current`: the page the user is on.',
+              ],
+              render: (
+                <Stack as="nav" aria-label="Orders" gap={1}>
+                  <Link href="#all" standalone current>All orders</Link>
+                  <Link href="#open" standalone>Open orders</Link>
+                  <Link href="#returns" standalone>Returns</Link>
+                </Stack>
+              ),
+              code: `<Stack as="nav" aria-label="Orders" gap={1}>
+  <Link href="/orders" standalone current>All orders</Link>
+  <Link href="/orders/open" standalone>Open orders</Link>
+  <Link href="/orders/returns" standalone>Returns</Link>
+</Stack>`,
+            },
+            {
+              title: 'Link beside a caption',
+              when: 'A secondary line that points to more detail.',
+              explain: [
+                'The link sits inside the caption sentence, so it stays inline and takes the caption size.',
+              ],
+              render: (
+                <Stack gap={1} align="start">
+                  <Text>Your plan renews on 1 March.</Text>
+                  <Text variant="caption" tone="muted" as="p">Questions? <Link href="#billing">See billing details</Link>.</Text>
+                </Stack>
+              ),
+              code: `<Stack gap={1} align="start">
+  <Text>Your plan renews on 1 March.</Text>
+  <Text variant="caption" tone="muted" as="p">
+    Questions? <Link href="/billing">See billing details</Link>.
+  </Text>
+</Stack>`,
+            },
+          ],
+        },
+        {
+          title: 'Router',
+          kicker: 'The library never imports a router. Pass your own link component through as.',
+          examples: [
+            {
+              title: 'With a router link',
+              when: 'The app has a router, and a plain anchor would reload the whole page.',
+              explain: [
+                '`as` swaps the element. The router component receives every prop, so give it the props it expects (`to`, not `href`).',
+                'The look, `external`, `current` and `standalone` still apply.',
+                'The `NavLink` import comes from your router, for example `react-router-dom`.',
+                'The live preview uses `as="a"` because the docs have no router. The code shows `NavLink`, the real use.',
+              ],
+              render: <Link as="a" href="#orders" standalone>Orders</Link>,
+              code: `// NavLink comes from your router, for example react-router-dom.
+// It receives every prop, so pass the ones it expects: "to", not "href".
+<Link as={NavLink} to="/orders" standalone>Orders</Link>`,
+            },
+          ],
+        },
+        {
+          title: 'Content',
+          kicker: 'The text wraps and never gets cut off. A long address breaks anywhere.',
+          examples: [
+            {
+              title: 'Long text',
+              when: 'Long link text in a narrow column.',
+              explain: [
+                'The text wraps onto new lines. Everything stays readable when users zoom or the column is narrow (WCAG 1.4.10, AA).',
+              ],
+              frame: 'narrow',
+              render: <Link href="#guide">Read the full guide to writing accessible link text for a public sector website</Link>,
+              code: `<Link href="/guide">
+  Read the full guide to writing accessible link text for a public sector website
+</Link>`,
+            },
+            {
+              title: 'Long URL',
+              when: 'A bare address as the link text.',
+              explain: [
+                'An address has no spaces, so normal wrapping would fail. The link breaks it anywhere, and it never makes the page scroll sideways.',
+              ],
+              frame: 'phone',
+              render: <Link href="#long">https://example.com/documents/2026/annual-report/section-4/appendix-b/final-version.pdf</Link>,
+              code: `<Link href="https://example.com/documents/2026/annual-report/section-4/appendix-b/final-version.pdf">
+  https://example.com/documents/2026/annual-report/section-4/appendix-b/final-version.pdf
+</Link>`,
+            },
+            {
+              title: 'Long external link',
+              when: 'An external link that wraps.',
+              explain: ['The icon follows the last word, after a space. On a very narrow line the text can break anywhere, so the icon can land alone on a line.'],
+              frame: 'narrow',
+              render: <Link href="https://example.com/handbook" external>Employee handbook for the regional offices</Link>,
+              code: `<Link href="https://example.com/handbook" external>
+  Employee handbook for the regional offices
+</Link>`,
+            },
+            {
+              title: 'Long translated text',
+              when: 'A long French label in a narrow column.',
+              explain: ['French and German text is often 30% longer than English. Check your longest text in a narrow column.'],
+              frame: 'narrow',
+              render: <Link href="#aide">Consulter l’aide à la déclaration des revenus de l’année précédente</Link>,
+              code: `<Link href="/aide">
+  Consulter l’aide à la déclaration des revenus de l’année précédente
+</Link>`,
+            },
+          ],
+        },
+        {
+          title: 'Accessibility wiring',
+          kicker: 'Every native anchor attribute passes through.',
+          examples: [
+            {
+              title: 'Described by a hint',
+              when: 'The link needs a file size or a consequence read after its name.',
+              explain: [
+                '`aria-describedby` points at the hint by `id`. A screen reader reads the link text, then "PDF, 2.4 MB".',
+                'The hint is also visible, so every user knows what they will get before they click.',
+              ],
+              render: (
+                <Stack gap={1} align="start">
+                  <Link href="#report" aria-describedby="link-report-hint">Annual report</Link>
+                  <Text variant="caption" tone="muted" as="p" id="link-report-hint">PDF, 2.4 MB.</Text>
+                </Stack>
+              ),
+              code: `<Stack gap={1} align="start">
+  {/* The id in aria-describedby must match the id below. */}
+  <Link href="/report.pdf" aria-describedby="link-report-hint">Annual report</Link>
+  <Text variant="caption" tone="muted" as="p" id="link-report-hint">PDF, 2.4 MB.</Text>
+</Stack>`,
+            },
+            {
+              title: 'Language of the target',
+              when: 'The destination is in another language than the page.',
+              explain: [
+                '`lang="fr"` makes a screen reader switch to a French voice for this text. Without it, it reads French with English sounds.',
+                '`hrefLang` tells the browser the language of the target page. It is a hint only; it does not change how the text is read.',
+              ],
+              render: <Link href="#fr" hrefLang="fr" lang="fr">Politique de confidentialité</Link>,
+              code: `// lang: the language of this text. hrefLang: the language of the page it opens.
+<Link href="/fr/confidentialite" hrefLang="fr" lang="fr">Politique de confidentialité</Link>`,
+            },
+            {
+              title: 'Download',
+              when: 'The link saves a file.',
+              explain: [
+                '`download` asks the browser to save the file instead of opening it.',
+                'Say it in the text too: "Download invoice 1042 (PDF)". Users learn the action and the format before they click.',
+              ],
+              render: <Link href="#invoice.pdf" download>Download invoice 1042 (PDF)</Link>,
+              code: `<Link href="/invoices/1042.pdf" download>Download invoice 1042 (PDF)</Link>`,
+            },
+          ],
+        },
+      ]}
+    />
+  ),
 };

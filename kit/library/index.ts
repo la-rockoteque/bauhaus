@@ -22,6 +22,8 @@ export type { ButtonProps, ButtonVariant } from './components/clickables/button/
 export { IconButton } from './components/clickables/icon-button/icon-button';
 export type { IconButtonProps } from './components/clickables/icon-button/icon-button';
 // Clickables
+export { Chip } from './components/clickables/chip/chip';
+export type { ChipProps, ChipVariant } from './components/clickables/chip/chip';
 export { Link } from './components/clickables/link/link';
 export type { LinkProps } from './components/clickables/link/link';
 export { MenuItem } from './components/clickables/menu-item/menu-item';
