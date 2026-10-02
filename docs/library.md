@@ -97,7 +97,7 @@ Delete a slice folder and the thing is gone everywhere. That is the test of a go
 3. **Shared code rises to the nearest common ancestor.** A hook used by one component sits beside it. Used by the whole family: at the family level (`components/clickables/use-press.ts`). Used across families: at the root, still named for what it does (`use-controllable-state.ts`), never grouped in a folder by kind.
 4. **Names are kebab-case, singular, and name the thing.** Folder `text-field/`, files `text-field.tsx`, `text-field.stories.tsx`. The exported symbol is `TextField`.
 5. **A family exists when it has 2 or more members.** One member sits in the closest existing family, or in a new one when the fifth member arrives. The default families are clickables, fields, data-structures, feedback, overlays, navigation. A project may add `layout` for Stack or Grid components.
-6. **Storybook's sidebar mirrors the tree.** `title` is derived from the path: Foundations/Spacing, Primitives/Text, Clickables/Button, Patterns/Filtering. Storybook sorts the groups: Principles, Foundations, Themes, Primitives, the component families, Patterns, Fixtures. A toolbar switches light and dark.
+6. **Storybook's sidebar mirrors the tree.** `title` is derived from the path: Foundations/Spacing, Primitives/Text, Clickables/Button, Patterns/Filtering. Storybook sorts the groups: Introduction, Utilities, Foundations (with Foundations/Themes), Primitives, the component families, Patterns. A single-level title would sit above every group, so each page has a group. A toolbar switches light and dark.
 
 ## Isolation rules
 

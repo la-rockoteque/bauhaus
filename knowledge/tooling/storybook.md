@@ -19,7 +19,7 @@ sources:
 ## Rules
 
 1. Give every foundation, component and pattern a showcase (`<name>.stories.tsx`, one story rendering `<DocPage/>`) and a guide (`<name>.mdx`). A component without both is unfinished. (Basis: four artifacts; `UBIQUITOUS-LANGUAGE.md`.)
-2. Sort the sidebar: Principles, Foundations, Themes, Primitives, the component families, Patterns. (Basis: `docs/architecture.md` § The three layers.)
+2. Sort the sidebar: Introduction, Utilities, Foundations (Themes among them), Primitives, the component families, Patterns. (Basis: `docs/architecture.md` § The three layers.)
 3. File a page by what it documents, not by what it is made of. Legacy pages sit beside their modern counterpart. (Basis: one place to look.)
 4. Render every showcase through `DocPage` so each has the same sections (see Doc page template). Declare `<Meta of={Stories}/>` in the guide so both share one entry. (Basis: Nielsen 4 Consistency and standards.)
 5. Show all required states in the state matrix of the showcase, live, in every theme. A state is a cell of the grid, not a story of its own. (Basis: `states/state-matrix.md`.)

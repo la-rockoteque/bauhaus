@@ -8,6 +8,7 @@ import { mergeConfig } from 'vite';
 const config: StorybookConfig = {
   stories: [
     '../!(fixtures|node_modules|dist)/**/*.stories.@(ts|tsx)',
+    '../introduction.mdx',
     '../!(fixtures|node_modules|dist)/**/*.mdx',
     '../fixtures/palette-generator/palette-generator.stories.tsx',
   ],

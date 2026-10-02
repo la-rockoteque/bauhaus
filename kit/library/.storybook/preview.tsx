@@ -34,7 +34,7 @@ const preview: Preview = {
     docs: { container: GuideContainer },
     options: {
       storySort: {
-        order: ['Principles', 'Foundations', 'Themes', 'Primitives', 'Clickables', 'Fields', 'Data structures', 'Feedback', 'Overlays', 'Navigation', 'Patterns', 'Utilities'],
+        order: ['Introduction', 'Utilities', 'Principles', 'Foundations', 'Primitives', 'Clickables', 'Fields', 'Data structures', 'Feedback', 'Overlays', 'Navigation', 'Patterns'],
       },
     },
   },

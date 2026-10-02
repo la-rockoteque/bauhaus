@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# Bauhaus Design System
+
+This Storybook is the reference for the Bauhaus Design System. Read this page first. It says what a design system is, what this one holds and how to read the pages after it.
+
+## 1. What a design system is
+
+**In plain words:** A design system is a shared kit for building screens. It holds the decisions (which blue, how much space, how a button behaves) and the parts made from them. Every team uses the same kit, so every screen looks and works the same way. A change made once in the kit reaches every screen.
+
+**Precisely:** A design system (DSM) is everything a product uses to stay visually and behaviourally coherent. It holds the tokens, the components, the patterns, the styleguide, this Storybook and the rulebook. A UI kit or a component library is one part of it, not all of it.
+
+## 2. What this one holds
+
+The system has three layers. Each layer builds only on the layers before it.
+
+- **Foundation:** the decisions every screen shares. Colour, typography, spacing, shape, elevation, motion, focus and iconography. In `foundations/`.
+- **Component:** a reusable part of a screen, built from foundations. Button, Text field, Modal, Tabs. In `components/`. A **primitive** is a base component that other components are built from: Box, Text, Stack, Icon. In `primitives/`.
+- **Pattern:** a set of components that answers a recurring need. Filtering, Empty results, Form validation. In `patterns/`.
+
+**Tokens** are not a layer. A token is a named decision, such as `color.text.default` or `space.4`. Tokens are stored as DTCG JSON and built into CSS custom properties (`--ds-…`). Components read tokens only, never a raw value.
+
+**Themes** give each colour role a value for one kind of page. This system has two themes: `light` (the default) and `dark`. Every theme defines the same role names. Use the toolbar, or the switch in a page header, to change the theme.
+
+## 3. How to read this Storybook
+
+The sidebar starts with **Utilities**: tools that help you work with the system, such as the palette generator. Then come the layers, in build order: Foundations (Themes among them), Primitives, the component families (Clickables, Fields, Data structures, Feedback, Overlays, Navigation), and Patterns.
+
+Each slice (one foundation, component or pattern) has four pages:
+
+| Page | Gives you |
+|---|---|
+| **Showcase** | The slice drawn live: its anatomy, measured specs, tokens, every state and a short Do and don't. |
+| **Advisories** | The rulebook for the slice, graded live, with its accessibility coverage and its tests. |
+| **Examples** | Every use case as code you can copy, with the live result and a plain explanation. |
+| **Docs** | The guide: when to use it, when not to, the reason for each state, and the pitfalls. |
+
+Every rule names its basis: a WCAG criterion with its level, a WAI-ARIA pattern, a heuristic, a published system or a research result.
+
+## 4. Use it in an app
+
+Import the tokens and the styles once, at the root of the app. Then import components from the package, never from a slice folder.
+
+```tsx
+import '@bauhaus/design-system/tokens.css';
+import '@bauhaus/design-system/style.css';
+import '@bauhaus/design-system/fonts.css';
+import { Button, TextField } from '@bauhaus/design-system';
+
+export function SignIn() {
+  return (
+    <form>
+      <TextField label="Email" type="email" required />
+      <Button type="submit">Sign in</Button>
+    </form>
+  );
+}
+```
+
+To theme a page, set `data-theme="dark"` on an ancestor, usually `<html>`. Without it, the page uses the light theme.
+
+## 5. Why the name
+
+The Bauhaus was a German school of art, craft and architecture (Weimar 1919, Dessau 1925, Berlin 1932–33). Its students learned form, colour and material first, and then made real objects in the workshops. This system follows the same order: foundations first, then the parts built from them, then the whole. The system borrows the method, not the look.
