@@ -4,7 +4,8 @@ import type { Lch, Order } from './oklch';
 /**
  * Itten's colour star as three rings, turned so the chosen hue sits at the top. The inner ring holds
  * the three primaries, the middle ring adds the three secondaries, the outer ring all twelve hues.
- * The wheel is a pointer shortcut: the swatch list beside it holds the same choices for the keyboard.
+ * A primary segment makes that hue the base. A secondary or a tertiary segment picks the palette's secondary
+ * or tertiary. The wheel is a pointer shortcut: the controls under it hold the same choices for the keyboard.
  */
 
 const RINGS: Record<Order, { inner: number; outer: number; span: number }> = {
@@ -33,10 +34,17 @@ function segment(inner: number, outer: number, at: number, span: number): string
 
 export interface WheelProps {
   base: Lch;
-  onPick: (hex: string) => void;
+  /** The offsets of the chosen secondary and tertiary, in degrees from the base. */
+  secondary: number;
+  tertiary: number;
+  /** A primary segment: that hue becomes the base. */
+  onBase: (hex: string) => void;
+  onPick: (order: Exclude<Order, 'primary'>, offset: number) => void;
 }
 
-export function Wheel({ base, onPick }: WheelProps) {
+export function Wheel({ base, secondary, tertiary, onBase, onPick }: WheelProps) {
+  const picked = (order: Order, offset: number) =>
+    offset === 0 || (order === 'secondary' && offset === secondary) || (order === 'tertiary' && offset === tertiary);
   return (
     <svg className="pg-wheel" viewBox="-100 -100 200 200" aria-hidden="true">
       {(Object.keys(RINGS) as Order[]).flatMap((ring) =>
@@ -46,10 +54,10 @@ export function Wheel({ base, onPick }: WheelProps) {
           return (
             <path
               key={`${ring}-${hue.name}`}
-              className={`pg-segment${hue.offset === 0 ? ' pg-segment--base' : ''}`}
+              className={`pg-segment${picked(hue.order, hue.offset) ? ' pg-segment--picked' : ''}`}
               d={segment(inner, outer, hue.offset, span)}
               fill={hex}
-              onClick={() => onPick(hex)}
+              onClick={() => (hue.order === 'primary' ? onBase(hex) : onPick(hue.order, hue.offset))}
             >
               <title>{`${hue.name} · ${hex}`}</title>
             </path>

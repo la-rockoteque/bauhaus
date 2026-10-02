@@ -11,6 +11,7 @@ import { Segmented } from '../segmented/segmented';
 import { ThemeSwitch } from '../theme-switch/theme-switch';
 import { GRADES, HARMONY, hexToLch, nearestGrade, normalizeHex, ramp, toDtcg, turn } from './oklch';
 import type { Order } from './oklch';
+import { Dial } from './dial';
 import { Wheel } from './wheel';
 import './palette-generator.css';
 
@@ -20,23 +21,23 @@ import './palette-generator.css';
  * first primary. Contrast spreads or bunches the grades; vibrancy turns the chroma up or down.
  */
 
-/** The library's own hues at three grades: the curated starting points. Read from the tokens, never typed. */
-const CURATED_GRADES = [300, 500, 700] as const;
-// A hue with no 500 (an alpha scale such as ink) is not a starting point.
-const HUES = Object.entries(palette.palette).filter(([key, value]) => !key.startsWith('$') && typeof value === 'object' && '500' in value).map(([key]) => key);
-export const CURATED = HUES.map((hue) => ({
-  hue,
-  swatches: CURATED_GRADES.map((at) => ({ name: `${hue}.${at}`, hex: resolve('light', `--ds-palette-${hue}-${at}`) ?? '' })),
-}));
+/**
+ * The curated primaries: the library's own hues at 500, read from the tokens, never typed. A hue with no
+ * 500 (an alpha scale such as ink) or no hue to speak of (gray) cannot seed a wheel, so it is left off.
+ */
+const MIN_CHROMA = 0.03;
+export const CURATED = Object.entries(palette.palette)
+  .filter(([key, value]) => !key.startsWith('$') && typeof value === 'object' && '500' in value)
+  .map(([hue]) => ({ name: hue, hex: resolve('light', `--ds-palette-${hue}-500`) ?? '' }))
+  .filter((option) => hexToLch(option.hex).c >= MIN_CHROMA);
 
-const DEFAULT = CURATED[0].swatches[1].hex;
+const DEFAULT = CURATED[0].hex;
 
-const ROWS: readonly { value: Order; label: string }[] = [
-  { value: 'primary', label: '3 hues' },
-  { value: 'secondary', label: '6 hues' },
-  { value: 'tertiary', label: '12 hues' },
-];
-const SHOWN: Record<Order, readonly Order[]> = { primary: ['primary'], secondary: ['primary', 'secondary'], tertiary: ['primary', 'secondary', 'tertiary'] };
+/** The secondary and tertiary choices as segmented options: one per hue of that order on the wheel. */
+const choices = (order: Order) =>
+  HARMONY.filter((hue) => hue.order === order).map((hue) => ({ value: String(hue.offset), label: `${hue.offset}°` }));
+const SECONDARIES = choices('secondary');
+const TERTIARIES = choices('tertiary');
 
 /** The neutral row keeps a trace of the chosen hue, so greys sit with the palette instead of beside it. */
 const NEUTRAL_CHROMA = 0.012;
@@ -91,10 +92,16 @@ function Picker({ hex, onPick }: { hex: string; onPick: (hex: string) => void })
   };
   return (
     <section className="pg-panel" aria-labelledby={`${colorId}-title`}>
-      <Text as="h3" className="doc-h3" id={`${colorId}-title`}>Base colour</Text>
+      <Text as="h3" className="doc-h3" id={`${colorId}-title`}>Primary</Text>
+      <Dial
+        label="Curated primary"
+        options={CURATED}
+        value={CURATED.findIndex((option) => option.hex === hex)}
+        onChange={(index) => { setDraft(null); onPick(CURATED[index].hex); }}
+      />
       <div className="pg-custom">
         <span className="pg-native">
-          <label className="pg-label" htmlFor={colorId}>Any colour</label>
+          <label className="pg-label" htmlFor={colorId}>Or any colour</label>
           <input id={colorId} type="color" value={hex} onChange={(event) => { setDraft(null); onPick(event.target.value); }} />
         </span>
         <TextField
@@ -106,22 +113,6 @@ function Picker({ hex, onPick }: { hex: string; onPick: (hex: string) => void })
           error={draft !== null && !normalizeHex(draft) ? 'Write 3 or 6 hex digits, such as 4681e4.' : undefined}
         />
       </div>
-      <span className="pg-label" id={`${colorId}-curated`}>Curated · the library&apos;s own hues</span>
-      <ul className="pg-curated" aria-labelledby={`${colorId}-curated`}>
-        {CURATED.flatMap(({ swatches }) => swatches).map((swatch) => (
-          <li key={swatch.name}>
-            <button
-              type="button"
-              className="pg-chip"
-              style={{ background: swatch.hex }}
-              aria-pressed={swatch.hex === hex}
-              aria-label={`${swatch.name} ${swatch.hex}`}
-              title={`${swatch.name} · ${swatch.hex}`}
-              onClick={() => { setDraft(null); onPick(swatch.hex); }}
-            />
-          </li>
-        ))}
-      </ul>
     </section>
   );
 }
@@ -139,7 +130,7 @@ function PaletteGrid({ rows, mark, onCopy }: { rows: readonly Row[]; mark: numbe
           {row.grades.map((hex, i) => {
             const ink = inkFor(hex, row.grades[8], row.grades[0]);
             const ratio = ratioOf(ink, hex) ?? 0;
-            const isBase = row.name === 'primary-1' && i === mark;
+            const isBase = row.name === 'primary' && i === mark;
             return (
               <span role="cell" key={GRADES[i]}>
                 <button
@@ -165,16 +156,20 @@ export function PaletteGenerator() {
   const [hex, setHex] = useState(DEFAULT);
   const [contrast, setContrast] = useState(0.85);
   const [vibrancy, setVibrancy] = useState(1);
-  const [order, setOrder] = useState<Order>('secondary');
+  // The complement, and the tertiary next to the base: a strong second colour and a quiet accent.
+  const [secondary, setSecondary] = useState(180);
+  const [tertiary, setTertiary] = useState(30);
   const [status, setStatus] = useState('');
 
   const base = useMemo(() => hexToLch(hex), [hex]);
   const rows = useMemo<Row[]>(() => {
     const options = { contrast, vibrancy };
-    const hues = HARMONY.filter((hue) => SHOWN[order].includes(hue.order))
-      .map((hue) => ({ name: hue.name, grades: ramp(turn(base.h, hue.offset), base.c, options) }));
-    return [...hues, { name: 'neutral', grades: ramp(base.h, NEUTRAL_CHROMA, { contrast, vibrancy: 1 }) }];
-  }, [base, contrast, vibrancy, order]);
+    const hues = [['primary', 0], ['secondary', secondary], ['tertiary', tertiary]] as const;
+    return [
+      ...hues.map(([name, offset]) => ({ name, grades: ramp(turn(base.h, offset), base.c, options) })),
+      { name: 'neutral', grades: ramp(base.h, NEUTRAL_CHROMA, { contrast, vibrancy: 1 }) },
+    ];
+  }, [base, contrast, vibrancy, secondary, tertiary]);
 
   const copy = async (text: string, what: string) => {
     try {
@@ -192,8 +187,8 @@ export function PaletteGenerator() {
           <Text variant="caption" as="p" className="doc-eyebrow">Utilities</Text>
           <Text variant="heading" as="h1" className="doc-h1">Palette generator</Text>
           <Text tone="muted" className="doc-lede">
-            Pick one colour. The wheel gives its primaries, secondaries and tertiaries. Each hue becomes nine grades, 100 to 900.
-            Select a grade to copy its hex.
+            Pick one colour, the primary. Choose a secondary and a tertiary on the wheel. Each becomes nine grades, 100 to 900,
+            beside a neutral. Select a grade to copy its hex.
           </Text>
         </div>
         <ThemeSwitch />
@@ -208,14 +203,27 @@ export function PaletteGenerator() {
           </section>
         </div>
         <figure className="pg-panel pg-wheel-panel">
-          <Wheel base={base} onPick={setHex} />
-          <figcaption className="doc-muted">The base sits at the top. Select a segment to make it the base.</figcaption>
+          <Wheel
+            base={base}
+            secondary={secondary}
+            tertiary={tertiary}
+            onBase={setHex}
+            onPick={(which, offset) => (which === 'secondary' ? setSecondary(offset) : setTertiary(offset))}
+          />
+          <figcaption className="doc-muted">
+            The base sits at the top. Select a primary to make it the base, or a secondary or tertiary to use it.
+          </figcaption>
+          <div className="pg-picks">
+            <span className="pg-label">Secondary · degrees from the base</span>
+            <Segmented label="Secondary, degrees from the base" options={SECONDARIES} value={String(secondary)} onChange={(v) => setSecondary(Number(v))} />
+            <span className="pg-label">Tertiary · degrees from the base</span>
+            <Segmented label="Tertiary, degrees from the base" options={TERTIARIES} value={String(tertiary)} onChange={(v) => setTertiary(Number(v))} />
+          </div>
         </figure>
       </div>
       <section className="pg-panel">
         <div className="pg-palette-head">
           <Text as="h3" className="doc-h3">Palette</Text>
-          <Segmented label="Hues: primaries, then secondaries, then tertiaries" options={ROWS} value={order} onChange={setOrder} />
           <Button variant="secondary" onClick={() => copy(toDtcg(rows), 'the palette as DTCG JSON')}>Copy as DTCG JSON</Button>
         </div>
         <PaletteGrid rows={rows} mark={nearestGrade(base.l, contrast)} onCopy={(value) => copy(value, value)} />

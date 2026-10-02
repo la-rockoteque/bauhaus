@@ -2,10 +2,11 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { contrast } from '../rulebook/tokens';
 import { HARMONY, hexToLch, lchToHex, lightnesses, nearestGrade, normalizeHex, ramp, toDtcg, turn } from './oklch';
+import { nearestDetent } from './dial';
 import { CURATED, PaletteGenerator } from './palette-generator';
 
-const blue = CURATED.find((group) => group.hue === 'dark-blue')!.swatches[1].hex;
-const scarlet = CURATED[0].swatches[1].hex;
+const blue = CURATED.find((option) => option.name === 'dark-blue')!.hex;
+const scarlet = CURATED[0].hex;
 const options = { contrast: 1, vibrancy: 1 };
 
 describe('oklch', () => {
@@ -17,7 +18,7 @@ describe('oklch', () => {
   });
 
   it('turns a colour into OKLCH and back without drift', () => {
-    for (const { swatches } of CURATED) for (const { hex } of swatches) expect(lchToHex(hexToLch(hex))).toBe(hex);
+    for (const { hex } of CURATED) expect(lchToHex(hexToLch(hex))).toBe(hex);
   });
 
   it('cuts the chroma of a colour outside sRGB, and keeps a valid hex', () => {
@@ -50,14 +51,22 @@ describe('oklch', () => {
     expect(turn(350, 30)).toBe(20);
   });
 
+  it('snaps a dial angle to the nearest detent, and holds the ends past the sweep', () => {
+    expect(nearestDetent(-135, 5)).toBe(0);
+    expect(nearestDetent(0, 5)).toBe(2);
+    expect(nearestDetent(130, 5)).toBe(4);
+    expect(nearestDetent(170, 5)).toBe(4);
+    expect(nearestDetent(-170, 5)).toBe(0);
+  });
+
   it('marks the grade nearest the chosen lightness', () => {
     expect(nearestGrade(lightnesses(1)[6], 1)).toBe(6);
   });
 
   it('writes the palette as DTCG JSON', () => {
-    const json = JSON.parse(toDtcg([{ name: 'primary-1', grades: ramp(0, 0.1, options) }]));
+    const json = JSON.parse(toDtcg([{ name: 'primary', grades: ramp(0, 0.1, options) }]));
     expect(json.palette.$type).toBe('color');
-    expect(Object.keys(json.palette['primary-1'])).toEqual(['100', '200', '300', '400', '500', '600', '700', '800', '900']);
+    expect(Object.keys(json.palette['primary'])).toEqual(['100', '200', '300', '400', '500', '600', '700', '800', '900']);
   });
 });
 
@@ -66,22 +75,48 @@ describe('PaletteGenerator', () => {
 
   const rows = (container: HTMLElement) => container.querySelectorAll('.pg-row:not(.pg-row--head)').length;
 
-  it('starts on a curated hue with primaries, secondaries and a neutral row', () => {
+  it('starts on a curated hue with a primary, a secondary, a tertiary and a neutral row', () => {
     const { container } = render(<PaletteGenerator />);
-    expect(screen.getByRole('button', { name: new RegExp(scarlet) }).getAttribute('aria-pressed')).toBe('true');
-    expect(rows(container)).toBe(7);
-    expect(container.querySelectorAll('.pg-cell')).toHaveLength(63);
+    expect(screen.getByRole('slider', { name: 'Curated primary' }).getAttribute('aria-valuetext')).toBe(`scarlet ${scarlet}`);
+    expect(rows(container)).toBe(4);
+    expect([...container.querySelectorAll('.pg-name code')].map((n) => n.textContent)).toEqual(['primary', 'secondary', 'tertiary', 'neutral']);
+    expect(container.querySelectorAll('.pg-cell')).toHaveLength(36);
   });
 
-  it('adds the six tertiaries on request', () => {
-    const { container } = render(<PaletteGenerator />);
-    fireEvent.click(screen.getByRole('radio', { name: '12 hues' }));
-    expect(rows(container)).toBe(13);
+  it('turns the secondary and the tertiary to the hue the controls pick', () => {
+    render(<PaletteGenerator />);
+    const middle = (name: string) => screen.getByRole('button', { name: new RegExp(`^Copy ${name} 500`) }).getAttribute('aria-label');
+    const before = middle('tertiary');
+    fireEvent.click(screen.getByRole('radio', { name: '270°' }));
+    expect(middle('tertiary')).not.toBe(before);
+    fireEvent.click(screen.getByRole('radio', { name: '60°' }));
+    const base = hexToLch(scarlet).h;
+    const hex = /#[0-9a-f]+/.exec(middle('secondary') ?? '')![0];
+    expect(Math.abs(((hexToLch(hex).h - turn(base, 60) + 540) % 360) - 180)).toBeLessThan(3);
   });
 
-  it('takes a curated swatch or a typed hex as the base, and flags a bad hex', () => {
+  it('offers only the library hues with a hue to them on the dial', () => {
+    expect(CURATED.map((option) => option.name)).not.toContain('gray');
+    expect(CURATED.map((option) => option.name)).not.toContain('ink');
+    expect(CURATED.length).toBeGreaterThan(2);
+  });
+
+  it('turns the dial with the arrow keys, and says when a typed colour is off the dial', () => {
+    render(<PaletteGenerator />);
+    const dial = screen.getByRole('slider', { name: 'Curated primary' });
+    fireEvent.keyDown(dial, { key: 'End' });
+    expect(dial.getAttribute('aria-valuetext')).toBe(`${CURATED.at(-1)!.name} ${CURATED.at(-1)!.hex}`);
+    fireEvent.keyDown(dial, { key: 'ArrowLeft' });
+    expect(dial.getAttribute('aria-valuenow')).toBe(String(CURATED.length - 2));
+    fireEvent.change(screen.getByLabelText('Hex'), { target: { value: '123456' } });
+    expect(dial.getAttribute('aria-valuetext')).toMatch(/custom/i);
+  });
+
+  it('takes a dial detent or a typed hex as the base, and flags a bad hex', () => {
     const { container } = render(<PaletteGenerator />);
-    fireEvent.click(screen.getByRole('button', { name: new RegExp(`dark-blue.500 ${blue}`) }));
+    const dial = screen.getByRole('slider', { name: 'Curated primary' });
+    fireEvent.keyDown(dial, { key: 'Home' });
+    for (let i = 0; i < CURATED.findIndex((option) => option.hex === blue); i += 1) fireEvent.keyDown(dial, { key: 'ArrowRight' });
     expect((container.querySelector('input[type="color"]') as HTMLInputElement).value).toBe(blue);
     fireEvent.change(screen.getByLabelText('Hex'), { target: { value: 'nope' } });
     expect(screen.getByText(/Write 3 or 6 hex digits/)).toBeTruthy();
