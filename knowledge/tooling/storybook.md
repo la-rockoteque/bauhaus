@@ -85,6 +85,10 @@ An advisory entry carries: `ref` (file and line), `route`, `severity`, `rule`, `
 
 `kit/storybook` is a seed for React, ported from a mature internal system. It holds: `.storybook` config and theme, `src/stories` (docs, foundations, components, patterns, a `benchmark` folder with rules and checks), `src/devOverlay`, and ratchet tests. It is to be pruned: copy only what the project needs, and drop domain-specific stories. Other stacks get tokens, styleguide and rulebook without it (`tooling/framework-adapters.md`).
 
+## Agent-readable manifest
+
+Storybook MCP serves the docs toolset to an agent from a components manifest ([overview](https://storybook.js.org/docs/ai/mcp/overview)). The library builds its own, `bauhaus-manifest.json`, with `scripts/manifest.mjs`. Read `tooling/ai-consumption.md` for the fields and the rules.
+
 ## Why
 
 A written spec drifts from the code. A running page cannot: it renders the real component. Putting rules, states and axe on the same page turns review into looking at one place.

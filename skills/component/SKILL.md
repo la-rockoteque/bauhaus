@@ -33,6 +33,7 @@ A component is a reusable block that does one job and consumes semantic tokens. 
 5. **Design the API.** Dispatch `bauhaus:ux-designer`: anatomy, props, variants, keyboard, ARIA, accessible name. Follow `api-design.md`. Prefer a variant prop over a new component.
 6. **Design the look.** Dispatch `bauhaus:ui-designer`: which semantic tokens it uses. Missing a token? Stop. Run `/bauhaus:tokens` first. Never write a raw value in the component. Check contrast of every state with `node ${CLAUDE_PLUGIN_ROOT}/scripts/contrast.mjs <fg> <bg>`.
 7. **Propose before you populate.** Show anatomy, variants and states to the user with `AskUserQuestion` (2-4 options). Populate after the answer.
+7a. **Look up before you build.** Read `bauhaus-manifest.json` in the library. If a component already does the job, reuse it or add a variant. Build a new one only when none fits (`knowledge/tooling/ai-consumption.md`).
 8. **Land the four artifacts in one pass.**
    1. **Styles and tokens.** The stylesheet or component CSS, using `--<prefix>-*` semantic tokens only (colour: roles, never `palette.*` or `colors.*`). Component tokens only if a semantic token is too broad.
    2. **Guide.** `<name>.mdx` (with `<Meta of={Stories}/>`), to the page contract. It holds the full text of: 1 Introduction (what, job, layer, plain words first), 2 Anatomy (parts, required or optional), 3 Tokens (consumed, with intent), 4 States (the matrix), 5 Usage (when, when not and the alternative, how: variants, composition, content, responsive, accessibility), 6 Pitfalls and don'ts (each with why).
@@ -43,6 +44,7 @@ A component is a reusable block that does one job and consumes semantic tokens. 
 11. **Migrate the first call site.** Replace the ad-hoc version with the component. Record the remaining call sites and set a ratchet on them.
 12. **Verify.**
     - `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check` exits 0.
+    - `node ${CLAUDE_PLUGIN_ROOT}/scripts/manifest.mjs build <library>` then `manifest.mjs agents <library>` run, and `manifest.mjs check <library>` exits 0.
     - No raw colour, size or duration in the component's CSS.
     - All four artifacts exist and name the same variants and tokens.
     - Matrix has zero unexplained `missing` cells.
@@ -64,6 +66,7 @@ A component is a reusable block that does one job and consumes semantic tokens. 
 - Story files in `<config.storybook.stories>`
 - Rule file in `<config.rulebook.rules>`, advisories in `<config.rulebook.advisories>`
 - One migrated call site
+- `bauhaus-manifest.json` and `AGENTS.md` in the library, rebuilt with `manifest.mjs`
 
 ## Output format
 

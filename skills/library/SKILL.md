@@ -53,7 +53,8 @@ Scaffold the package.
 5. Wire the workspace: add the package to the root workspaces field. Add the dependency to the app.
 6. Write `bauhaus.config.json` paths to the library layout (foundations, components, patterns, stories, tokens). Validate against `bauhaus.config.schema.json`.
 7. Add the boundary lint rule. Use `extraction.md` § Boundary enforcement. Ask which tool: `no-restricted-imports`, eslint-plugin-boundaries or dependency-cruiser. Mark the config untested until it runs.
-8. Verify: run `node ${CLAUDE_PLUGIN_ROOT}/scripts/structure.mjs check packages/<name>`. Report the result.
+8. Write the agent index: `node ${CLAUDE_PLUGIN_ROOT}/scripts/manifest.mjs build packages/<name>`, then `manifest.mjs agents packages/<name>`. Rerun both after each slice is added or changed.
+9. Verify: run `node ${CLAUDE_PLUGIN_ROOT}/scripts/structure.mjs check packages/<name>` and `manifest.mjs check packages/<name>`. Report the result.
 
 ## place
 
@@ -96,7 +97,7 @@ Report findings on the package.
 ## Writes
 
 - `options`: `<config.guide>` decision note.
-- `init`: `packages/<name>/`, workspace wiring, `bauhaus.config.json`, lint config.
+- `init`: `packages/<name>/`, workspace wiring, `bauhaus.config.json`, lint config, `bauhaus-manifest.json`, `AGENTS.md`.
 - `place`: `.bauhaus/analysis/library-placement.json`.
 - `move`: one slice, one shim, the ratchet file, `index.ts`.
 - `check`: nothing.
