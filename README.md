@@ -71,6 +71,8 @@ node scripts/normalise.mjs plan --analysis <dir>   # actions and batches
 node scripts/structure.mjs check packages/design-system   # slices, naming, import direction, isolation
 node scripts/structure.mjs place --components <file>      # target slice per component
 node scripts/structure.mjs scaffold packages/design-system --name @bauhaus/design-system
+node scripts/manifest.mjs build packages/design-system    # bauhaus-manifest.json: one lookup index of the slices
+node scripts/manifest.mjs agents packages/design-system   # AGENTS.md block for agents; `check` detects a stale manifest
 node scripts/contrast.mjs '#6b7280' '#fff'
 npm test
 ```

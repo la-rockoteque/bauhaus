@@ -4,8 +4,11 @@ title: Component API design
 shelf: components
 layer: component
 owner: ux-designer
-tags: [api, props, slots, composition, polymorphism, headless, refs]
+tags: [api, props, slots, composition, state-selectors, headless, refs]
 sources:
+  - React Aria, Styling — https://react-aria.adobe.com/styling
+  - WAI-ARIA 1.2 — https://www.w3.org/TR/wai-aria-1.2/
+  - Base UI, Composition — https://base-ui.com/react/handbook/composition
   - Radix Primitives — https://www.radix-ui.com/primitives/docs/overview/introduction
   - React Aria — https://react-spectrum.adobe.com/react-aria/
   - Headless UI — https://headlessui.com/
@@ -32,17 +35,14 @@ sources:
 11. Set the safe default: `type="button"` on buttons, `rel="noopener"` on `_blank` links. (Basis: HTML forms submit on the default button type.)
 12. Never let a prop remove an accessibility feature (a `noFocusRing` prop). (Basis: WCAG 2.4.7 Focus Visible (AA).)
 
-## Polymorphic `as`
+## No polymorphic prop
 
-Use `as` when one component must render as different elements while keeping its look. Example: a `Button` that renders `<a href>` for navigation.
+The system ships no polymorphic prop. A link and a button are distinct components: `Link` and `Button`. (Basis: APG, native element first; `accessibility/apg-patterns.md`.)
 
-```tsx
-<Button as="a" href="/reports">Open reports</Button>
-```
-
-- Type the props from the chosen element. A `Button as="a"` accepts `href`. `Button` alone does not.
-- Prefer a distinct component when semantics differ. A link and a button have different jobs and keyboard behaviour. Use `as` only for the look. (Basis: `accessibility/apg-patterns.md`, native element first.)
-- Some libraries use `asChild` (Radix) instead. It merges props into the child. Pick one style per system.
+- A link navigates and a button acts. They have different roles and keyboard behaviour. A shared look does not make them one component. (Basis: APG; WCAG 4.1.2 Name, Role, Value (A).)
+- If a need appears later, add a `render` prop. It merges the component props into the element it returns and forwards `ref`. Do not add `as`. (Basis: Base UI composition, https://base-ui.com/react/handbook/composition.)
+- A router link is not polymorphism. `Pagination` takes `linkAs` so the app can pass its router's link component; the element stays a link. (Basis: the role does not change.)
+- `asChild` (Radix) is the alternative not chosen. It also merges props into a child, but the child is implicit. A `render` prop is explicit and typed. (Basis: Base UI composition.)
 
 ## Headless vs styled
 
@@ -59,12 +59,46 @@ Guidance: do not hand-write the behaviour of Dialog, Combobox, Menu, Tabs or Too
 
 - A styled component reads semantic tokens only (roles for colour, never `palette.*` or `colors.*`), such as `var(--ds-text-muted)`. It never holds a raw value. (Basis: `taxonomy/layers.md`.)
 - Component tokens (`--ds-button-radius`) are optional and alias a semantic token.
-- A component exposes state as attributes: `data-state="open"`, `aria-expanded`, `aria-disabled`. CSS selects on them. (Basis: one source of truth for state.)
+- A component exposes each state through the selector ladder. CSS selects on that one hook. See § State selectors. (Basis: one source of truth for state.)
 
 ```css
 .ds-button[aria-disabled='true'] { color: var(--ds-disabled-text); }
 .ds-button:focus-visible { outline: var(--ds-focus-ring-color); outline-offset: var(--ds-focus-ring-offset); }
 ```
+
+## State selectors
+
+A state is a condition. A variant is a design choice. Style a state with the first rung of this ladder that applies. (Basis: `states/interaction-states.md`; UBIQUITOUS-LANGUAGE, Interaction state.)
+
+1. **Native pseudo-class**, when the platform has one: `:hover` (inside `@media (hover: hover)`), `:focus-visible`, `:active`, `:disabled`, `:checked`, `:indeterminate`, `:popover-open`. (Basis: HTML and Selectors Level 4; the browser keeps the state true.)
+2. **ARIA attribute** the component must already carry: `aria-pressed`, `aria-selected`, `aria-expanded`, `aria-current`, `aria-invalid`, `aria-busy`, `aria-disabled`, `aria-readonly`. The attribute that informs the screen reader also drives the style. (Basis: WAI-ARIA 1.2.)
+3. **Boolean `data-*` attribute**, when rungs 1 and 2 have no hook. Presence means true. Never write `data-state="..."`. (Basis: React Aria styling, https://react-aria.adobe.com/styling.)
+   - On parts React Aria renders: `data-entering`, `data-exiting`, `data-selected`, `data-disabled`, `data-pressed`, `data-focused`, `data-focus-visible`, `data-hovered`, `data-open`.
+   - On parts the component renders itself, with no ARIA attribute: `data-disabled` on a non-focusable `span`, `data-paused` on the toast, `data-selected` and `data-disabled` on a list row whose ARIA state sits on the inner control.
+4. **Never a BEM `--modifier`** for a state. A modifier names a variant only. (Basis: UBIQUITOUS-LANGUAGE, Interaction state.)
+
+| State | Selector |
+|---|---|
+| Default | Base class |
+| Hover | `:hover` inside `@media (hover: hover)`; `[data-hovered]` on a React Aria part |
+| Focus-visible | `:focus-visible`; `[data-focus-visible]` on a React Aria part |
+| Active (pressed) | `:active`; `[data-pressed]` on a React Aria part |
+| Disabled | `:disabled`; `[aria-disabled='true']` when it stays focusable; `[data-disabled]` on a non-focusable `span` or a React Aria part |
+| Loading | `[aria-busy='true']` |
+| Success, error | Text and `[aria-invalid='true']` on the field; no state selector for the message |
+| Selected (toggle) | `[aria-pressed='true']` |
+| Selected (tabs, listbox, grid) | `[aria-selected='true']`; `[data-selected]` on a React Aria part |
+| Checked | `:checked` |
+| Read-only | `[aria-readonly='true']` |
+| Invalid | `[aria-invalid='true']` |
+| Indeterminate | `:indeterminate` |
+| Expanded | `[aria-expanded='true']`; `[data-open]` on a React Aria part |
+| Current | `[aria-current]` |
+| Visited | `:visited` |
+| Dragging, drop target | `[data-dragging]`, `[data-drop-target]` (React Aria, rung 3) |
+| Required | `[aria-required='true']` or `:required` |
+
+(Basis: WAI-ARIA 1.2; React Aria styling.)
 
 ## When a new component is justified
 
@@ -96,6 +130,8 @@ Small typed APIs are easy to learn, check and evolve. Composition scales because
 - `api.requires-name` · auto · HIGH · Icon-only components require an accessible name. WCAG 4.1.2 (A).
 - `api.no-a11y-off-switch` · auto · HIGH · No prop disables focus visibility or semantics. WCAG 2.4.7 (AA).
 - `api.native-default` · auto · MEDIUM · Buttons default to `type="button"`.
+- `api.state-selector-ladder` · auto · MEDIUM · A state selector is a native pseudo-class, an ARIA attribute, or a boolean `data-*` attribute, in that order. Never `data-state`. (Basis: React Aria styling; WAI-ARIA 1.2.)
+- `api.no-state-modifier` · auto · MEDIUM · No BEM `--modifier` names a state. (Basis: UBIQUITOUS-LANGUAGE, Interaction state.)
 - `api.new-component-justified` · review · MEDIUM · A new component names its two call sites and its one job.
 
 ## Misfiles

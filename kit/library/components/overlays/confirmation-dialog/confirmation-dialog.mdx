@@ -28,12 +28,15 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 
 - **For an action that can be undone.** Do it, then offer Undo in a toast. A dialog in front of every action trains people to confirm without reading (Nielsen heuristic 3, user control and freedom).
 - **For a message with one answer.** Use Alert dialog.
+- **For a critical action that needs a typed name.** Use Critical confirmation dialog.
 - **For a task with fields.** Use Modal.
 
 ### How
 
 - **Role.** The dialog sets `role="alertdialog"` and `aria-describedby` on the message, so the question and its cost are read out on open (APG Alert and Message Dialogs; WCAG 4.1.2, A).
 - **Focus.** With `destructive`, focus starts on Cancel, the least destructive choice. Otherwise it starts on the confirm action (APG Alert and Message Dialogs).
+- **Order and colour.** With `destructive`, the confirm is a danger button and comes first. Cancel comes last. Without `destructive`, the confirm is primary and Cancel comes first. Red marks the one button that destroys something (GitLab Pajamas, destructive actions). The label still names the action, so colour is never the only cue (WCAG 1.4.1, A).
+- **Critical actions.** If the action is irreversible and also removes other resources, use Critical confirmation dialog. It asks the user to type the name.
 - **Labels.** The title asks the question. The confirm label names the action and its object: "Delete project". "OK" names nothing. Red alone fails WCAG 1.4.1 (Use of Color, A).
 - **Escape** calls `onClose`, the same as Cancel. The scrim does not close the dialog.
 - **Everything else** comes from Modal: the native `dialog`, the focus return, the sizes, the narrow full screen and the motion.
@@ -42,11 +45,12 @@ The Showcase story holds the tokens, the stage and the state matrix. The Advisor
 
 - **Some** is the question with its two answers.
 - **Too many** is a long message. It wraps, and the body scrolls when it runs out of room, as in Modal.
-- **Destructive** is a variant, not a state: focus starts on Cancel and the label names what goes.
+- **Destructive** is a variant, not a state: the confirm is a danger button and comes first, focus starts on Cancel and the label names what goes.
 - **Loading** and **Incorrect** are n/a. The dialog asks before the action runs. The view reports progress and failure.
 
 ## 4. Pitfalls and don'ts
 
 - **Do not label the destructive action "OK".** (WCAG 2.4.6, AA; `confirmation-dialog.destructive-named`)
 - **Do not start focus on a destructive action.** An Enter pressed out of habit deletes. (APG Alert and Message Dialogs; `confirmation-dialog.destructive-focus`)
+- **Do not use a primary confirm on a destructive action, or put it after Cancel.** The red button leads, so the user reads the cost before the way out. (GitLab Pajamas; `confirmation-dialog.destructive-danger`, `confirmation-dialog.destructive-order`)
 - **Do not build a confirmation from a Modal with its own buttons.** The role, the description and the focus rule get lost. (Nielsen heuristic 4; `confirmation-dialog.built-on-modal`)

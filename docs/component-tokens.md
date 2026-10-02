@@ -54,6 +54,8 @@ Read the family, size, weight and line height of a style together: `--ds-text-<s
 | `action.primary-text` | Label on the primary fill |
 | `action.secondary` · `secondary-hover` · `secondary-pressed` | Fill of the supporting action and its states |
 | `action.secondary-text` | Label on the secondary fill |
+| `action.danger` · `danger-hover` · `danger-pressed` | Fill of the destructive confirm and its states |
+| `action.danger-text` | Label on the danger fill |
 | `state.hover-layer` | Hover fill of a transparent or neutral control |
 | `state.pressed-layer` | Pressed fill of a transparent or neutral control |
 | `state.selected` | Fill of a selected item: menu item, list row, tab; a different value from `state.hover-layer` in both themes |

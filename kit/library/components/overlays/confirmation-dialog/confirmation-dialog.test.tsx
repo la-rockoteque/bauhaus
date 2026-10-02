@@ -22,6 +22,23 @@ describe('ConfirmationDialog', () => {
     expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Publish page', hidden: true }));
   });
 
+  it('puts Cancel first and a primary confirm second when not destructive', () => {
+    render(<ConfirmationDialog open inline {...props} title="Publish" confirmLabel="Publish page" />);
+    const [first, second] = screen.getAllByRole('button').slice(-2);
+    expect(first.textContent).toBe('Cancel');
+    expect(second.textContent).toBe('Publish page');
+    expect(second.className).toContain('ds-button--primary');
+  });
+
+  it('puts a danger confirm first and Cancel last when destructive', () => {
+    render(<ConfirmationDialog open inline {...props} destructive />);
+    const [first, second] = screen.getAllByRole('button').slice(-2);
+    expect(first.textContent).toBe('Delete project');
+    expect(first.className).toContain('ds-button--danger');
+    expect(second.textContent).toBe('Cancel');
+    expect(second.className).toContain('ds-button--secondary');
+  });
+
   it('calls onConfirm and onClose from its two actions', () => {
     const onConfirm = vi.fn();
     const onClose = vi.fn();

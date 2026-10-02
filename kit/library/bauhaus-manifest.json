@@ -1,0 +1,5866 @@
+{
+  "version": 1,
+  "name": "Bauhaus Design System",
+  "prefix": "ds",
+  "import": "@bauhaus/design-system",
+  "slices": [
+    {
+      "name": "alert-dialog",
+      "export": "AlertDialog",
+      "layer": "component",
+      "family": "overlays",
+      "path": "components/overlays/alert-dialog",
+      "summary": "An alert dialog stops you to tell you something you must know before you go on. It has one button, and pressing it says you have read it.",
+      "props": [
+        {
+          "name": "onClose",
+          "type": "() => void",
+          "optional": false,
+          "doc": "Called on the action and on Escape. There is no other way out."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "What happened and what it means for the user. Read out when the dialog opens."
+        },
+        {
+          "name": "actionLabel",
+          "type": "string",
+          "optional": false,
+          "doc": "The one answer, named for what it does: \"Sign in again\", \"Got it\", never a bare \"OK\" when a verb fits."
+        }
+      ],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "button",
+        "modal",
+        "text"
+      ],
+      "rules": [
+        {
+          "id": "alert-dialog.alert-role",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "alert-dialog.one-action",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "alert-dialog.action-named",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "alert-dialog.not-for-info",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "export": "Badge",
+      "layer": "component",
+      "family": "feedback",
+      "path": "components/feedback/badge",
+      "summary": "A badge is a small pill that shows a number, such as 3 unread, or a status word, such as Paid. It sits next to the thing it describes.",
+      "props": [
+        {
+          "name": "status",
+          "type": "BadgeStatus",
+          "optional": true,
+          "doc": "The meaning of the fill. A status badge also needs a word in `children`.",
+          "values": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ],
+          "default": "'neutral'"
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "optional": true,
+          "doc": "A number to show. It caps at `max` and shows \"99+\"."
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "optional": true,
+          "doc": "The largest number shown in full. Default 99.",
+          "default": "99"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": true,
+          "doc": "What the count counts, such as \"unread messages\". Read out after the full number."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The status word, such as \"Overdue\"."
+        },
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Hide the badge from assistive technology because the text beside it already says the same.",
+          "default": "false"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-badge-error",
+        "--ds-badge-error-text",
+        "--ds-badge-info",
+        "--ds-badge-info-text",
+        "--ds-badge-neutral",
+        "--ds-badge-neutral-text",
+        "--ds-badge-success",
+        "--ds-badge-success-text",
+        "--ds-badge-warning",
+        "--ds-badge-warning-text",
+        "--ds-radius-pill",
+        "--ds-size-border-thin",
+        "--ds-size-control-sm",
+        "--ds-space-inline-sm",
+        "--ds-space-inline-xs",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-label-family",
+        "--ds-text-label-weight"
+      ],
+      "composes": [
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "badge.not-colour-alone",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "badge.count-cap",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "badge.count-labelled",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "badge.decorative",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "badge.contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "badge.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "badge.not-a-control",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "banner",
+      "export": "Banner",
+      "layer": "component",
+      "family": "feedback",
+      "path": "components/feedback/banner",
+      "summary": "A banner is a note that stays on the page until the problem is gone or you close it. It tells you something about the page or the system: a trial is ending, a payment failed, a save worked.",
+      "props": [
+        {
+          "name": "status",
+          "type": "BannerStatus",
+          "optional": true,
+          "doc": "The kind of message. Shown by an icon and a word, never by colour alone.",
+          "values": [
+            "info",
+            "success",
+            "warning",
+            "error"
+          ],
+          "default": "'info'"
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "Optional lead line."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The message (children)."
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "Buttons or links under the message."
+        },
+        {
+          "name": "onDismiss",
+          "type": "() => void",
+          "optional": true,
+          "doc": "Show a close button and call this when it is pressed. The parent removes the banner."
+        },
+        {
+          "name": "dismissLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "Accessible name of the close button. Required with `onDismiss`."
+        },
+        {
+          "name": "urgent",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Read out at once (`role=\"alert\"`). Use only for an error the user must act on now.",
+          "default": "false"
+        },
+        {
+          "name": "statusLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "Spoken name of the icon, such as \"Error\". Defaults to the status word."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-radius-control",
+        "--ds-size-border-thin",
+        "--ds-space-1",
+        "--ds-space-inline-md",
+        "--ds-space-inline-sm",
+        "--ds-space-inset-md",
+        "--ds-space-inset-sm",
+        "--ds-space-stack-xs",
+        "--ds-status-error",
+        "--ds-status-error-border",
+        "--ds-status-error-surface",
+        "--ds-status-error-text",
+        "--ds-status-info",
+        "--ds-status-info-border",
+        "--ds-status-info-surface",
+        "--ds-status-info-text",
+        "--ds-status-success",
+        "--ds-status-success-border",
+        "--ds-status-success-surface",
+        "--ds-status-success-text",
+        "--ds-status-warning",
+        "--ds-status-warning-border",
+        "--ds-status-warning-surface",
+        "--ds-status-warning-text",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight"
+      ],
+      "composes": [
+        "icon",
+        "icon-button"
+      ],
+      "rules": [
+        {
+          "id": "banner.status-not-colour-alone",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "banner.role-matches-urgency",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "banner.dismiss-labelled",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "banner.status-tokens",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "banner.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "banner.no-blocking",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "box",
+      "export": "Box",
+      "layer": "primitive",
+      "family": null,
+      "path": "primitives/box",
+      "summary": "A box is an empty container. You choose how much space goes inside it and between its children, from a fixed list of sizes. It draws nothing until you give it a background.",
+      "props": [
+        {
+          "name": "as",
+          "type": "ElementType",
+          "optional": true,
+          "doc": "The element to render. Pick it for document structure; a Box adds no role."
+        },
+        {
+          "name": "padding",
+          "type": "Space",
+          "optional": true,
+          "doc": "Padding on all sides, as a space step."
+        },
+        {
+          "name": "paddingInline",
+          "type": "Space",
+          "optional": true,
+          "doc": "Padding on the inline axis. Wins over `padding`."
+        },
+        {
+          "name": "paddingBlock",
+          "type": "Space",
+          "optional": true,
+          "doc": "Padding on the block axis. Wins over `padding`."
+        },
+        {
+          "name": "gap",
+          "type": "Space",
+          "optional": true,
+          "doc": "Gap between children, as a space step. It has an effect only when `display` is \"flex\" or \"grid\"."
+        },
+        {
+          "name": "display",
+          "type": "'block' | 'flex' | 'grid'",
+          "optional": true,
+          "doc": "",
+          "values": [
+            "block",
+            "flex",
+            "grid"
+          ],
+          "default": "'block'"
+        },
+        {
+          "name": "surface",
+          "type": "'default' | 'raised' | 'sunken'",
+          "optional": true,
+          "doc": "Background, from the surface roles.",
+          "values": [
+            "default",
+            "raised",
+            "sunken"
+          ]
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-space-0",
+        "--ds-space-1",
+        "--ds-space-10",
+        "--ds-space-11",
+        "--ds-space-12",
+        "--ds-space-2",
+        "--ds-space-3",
+        "--ds-space-4",
+        "--ds-space-5",
+        "--ds-space-6",
+        "--ds-space-7",
+        "--ds-space-8",
+        "--ds-space-9",
+        "--ds-surface-default",
+        "--ds-surface-raised",
+        "--ds-surface-sunken"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "box.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "box.space-closed",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "box.element-by-structure",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "box.not-interactive",
+          "severity": "HIGH",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "export": "Breadcrumb",
+      "layer": "component",
+      "family": "navigation",
+      "path": "components/navigation/breadcrumb",
+      "summary": "A breadcrumb shows the path from the top of the site down to the page you are on, like the trail of crumbs in the fairy tale. Each step back up is a link.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "doc": "The accessible name of the landmark, such as \"Breadcrumb\"."
+        },
+        {
+          "name": "items",
+          "type": "readonly BreadcrumbItem[]",
+          "optional": false,
+          "doc": "The path from the root to the current page. The last item is the current page."
+        },
+        {
+          "name": "linkAs",
+          "type": "ElementType",
+          "optional": true,
+          "doc": "A router link component, passed to every Link as `as`."
+        },
+        {
+          "name": "maxItems",
+          "type": "number",
+          "optional": true,
+          "doc": "More items than this collapse into a \"…\" button that expands the path.",
+          "default": "4"
+        },
+        {
+          "name": "expandLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "The accessible name of the \"…\" button. Pass it in the app's language.",
+          "default": "'Show all levels'"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-space-inline-xs",
+        "--ds-space-inset-sm",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-default",
+        "--ds-text-label-weight",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "icon",
+        "icon-button",
+        "link"
+      ],
+      "rules": [
+        {
+          "id": "breadcrumb.nav-label",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "breadcrumb.current-marked",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "breadcrumb.separator-hidden",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "breadcrumb.collapse-expandable",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "breadcrumb.links-native",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "breadcrumb.wraps",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "breadcrumb.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "breadcrumb.deep-only",
+          "severity": "LOW",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "export": "Button",
+      "layer": "component",
+      "family": "clickables",
+      "path": "components/clickables/button",
+      "summary": "A button is the thing you press to make something happen. Save, send, delete. If pressing it takes you to another page, it is a link, not a button.",
+      "props": [
+        {
+          "name": "variant",
+          "type": "ButtonVariant",
+          "optional": true,
+          "doc": "One primary per view region. `subtle` is the quietest: neutral text, no fill or outline until hover. `danger` is only the confirm of a destructive action.",
+          "values": [
+            "primary",
+            "secondary",
+            "tertiary",
+            "subtle",
+            "danger"
+          ],
+          "default": "'primary'"
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The action is running. The label and the width stay; presses are ignored.",
+          "default": "false"
+        },
+        {
+          "name": "type",
+          "type": "'button' | 'submit' | 'reset'",
+          "optional": true,
+          "doc": "",
+          "values": [
+            "button",
+            "submit",
+            "reset"
+          ],
+          "default": "'button'"
+        }
+      ],
+      "variants": [
+        "primary",
+        "secondary",
+        "tertiary",
+        "subtle",
+        "danger"
+      ],
+      "tokens": [
+        "--ds-action-danger",
+        "--ds-action-danger-hover",
+        "--ds-action-danger-pressed",
+        "--ds-action-danger-text",
+        "--ds-action-primary",
+        "--ds-action-primary-hover",
+        "--ds-action-primary-pressed",
+        "--ds-action-primary-text",
+        "--ds-border-strong",
+        "--ds-disabled-border",
+        "--ds-disabled-surface",
+        "--ds-disabled-text",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-motion-duration-deliberate",
+        "--ds-radius-control",
+        "--ds-radius-full",
+        "--ds-size-control-md",
+        "--ds-space-2",
+        "--ds-space-4",
+        "--ds-space-inline-md",
+        "--ds-space-inline-sm",
+        "--ds-state-hover-layer",
+        "--ds-state-pressed-layer",
+        "--ds-surface-default",
+        "--ds-text-default",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight",
+        "--ds-text-link"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "button.native-element",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "button.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "button.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "button.padding-flat",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "button.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "button.state.disabled",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "button.state.loading",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "button.states.not-variant",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "button.one-primary",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "button.danger-roles",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "button.danger-names-action",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "button.label-verb",
+          "severity": "LOW",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "export": "Card",
+      "layer": "component",
+      "family": "data-structures",
+      "path": "components/data-structures/card",
+      "summary": "A card is a bordered box that groups what you know about one thing: a title, some detail, a note at the bottom. The whole card can be one link, or it can just sit there.",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "optional": false,
+          "doc": "The card's name. It is the heading, and the link text when the card has an `href`."
+        },
+        {
+          "name": "headingLevel",
+          "type": "HeadingLevel",
+          "optional": true,
+          "doc": "The outline level of the title. Pick it for the page's outline, not for the look.",
+          "default": "3"
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "A short, non-interactive line beside the title: a status word, a date."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The body."
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The footer. With `href` it holds text only: the card is already one link."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "optional": true,
+          "doc": "Makes the whole card one link named by the title. The link's target covers the card."
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Show placeholder lines in the body. The card keeps its size.",
+          "default": "false"
+        },
+        {
+          "name": "loadingLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "Text for assistive technology while loading.",
+          "default": "'Loading'"
+        },
+        {
+          "name": "empty",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "Body content when there are no children. The caller supplies the empty state."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The content failed to load. Replaces the body; announced as an alert."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-border-default",
+        "--ds-border-strong",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-motion-duration-loop",
+        "--ds-radius-md",
+        "--ds-radius-sm",
+        "--ds-size-border-thin",
+        "--ds-skeleton-base",
+        "--ds-skeleton-highlight",
+        "--ds-space-inline-md",
+        "--ds-space-inset-md",
+        "--ds-space-inset-sm",
+        "--ds-space-inset-xs",
+        "--ds-space-stack-sm",
+        "--ds-space-stack-xs",
+        "--ds-state-pressed-layer",
+        "--ds-status-error",
+        "--ds-surface-raised",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-default",
+        "--ds-text-link",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "heading",
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "card.single-primary-action",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "card.link-name",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "card.heading-level",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "card.bordered-not-shadowed",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "card.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "card.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "card.states.hover-guarded",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "card.reduced-motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "card.state.loading",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "card.state.none",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "card.state.incorrect",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "card.state.too-many",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "card.right-shape",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "export": "Checkbox",
+      "layer": "component",
+      "family": "fields",
+      "path": "components/fields/checkbox",
+      "summary": "A checkbox is a small box you tick to say yes. It is for one independent choice, like accepting the terms, or for picking rows in a list. Ticking one does not untick another.",
+      "props": [
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "Always visible, and part of the target: a click on it toggles the box."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The error text, for a box that must be checked. Its presence sets aria-invalid."
+        },
+        {
+          "name": "requiredText",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "errorPrefix",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "indeterminate",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The mixed state of a parent whose children are partly checked. Cleared when the user toggles it.",
+          "default": "false"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-disabled-border",
+        "--ds-disabled-surface",
+        "--ds-disabled-text",
+        "--ds-field-border",
+        "--ds-field-border-hover",
+        "--ds-field-border-invalid",
+        "--ds-field-surface",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-radius-sm",
+        "--ds-selection-mark",
+        "--ds-selection-surface",
+        "--ds-size-border-thick",
+        "--ds-size-icon-md"
+      ],
+      "composes": [
+        "icon"
+      ],
+      "rules": [
+        {
+          "id": "checkbox.native-element",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "checkbox.label-clickable",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "checkbox.mixed-exposed",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "checkbox.box-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "checkbox.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "checkbox.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "checkbox.error-bound",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "checkbox.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "chip",
+      "export": "Chip",
+      "layer": "component",
+      "family": "clickables",
+      "path": "components/clickables/chip",
+      "summary": "A chip is a small pill that holds one value the user chose, such as a filter. It can carry a button to remove that value, or it can switch on and off.",
+      "props": [
+        {
+          "name": "variant",
+          "type": "ChipVariant",
+          "optional": true,
+          "doc": "`static` shows a value. `removable` adds a remove button. `selectable` is a toggle.",
+          "values": [
+            "static",
+            "removable",
+            "selectable"
+          ],
+          "default": "'static'"
+        },
+        {
+          "name": "children",
+          "type": "string",
+          "optional": false,
+          "doc": "The visible text. It stays whole in the accessible name; a long one truncates and a Tooltip shows the rest."
+        },
+        {
+          "name": "onRemove",
+          "type": "() => void",
+          "optional": true,
+          "doc": "Removable: called when the remove button is pressed."
+        },
+        {
+          "name": "removeLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "Removable: the words before the label in the remove button's name. Default \"Remove\", giving \"Remove Status: Shipped\".",
+          "default": "'Remove'"
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Selectable: the pressed state, controlled."
+        },
+        {
+          "name": "defaultSelected",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Selectable: the starting state when `selected` is not set.",
+          "default": "false"
+        },
+        {
+          "name": "onSelectedChange",
+          "type": "(selected: boolean) => void",
+          "optional": true,
+          "doc": "Selectable: called with the new state on a press."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "optional": true,
+          "doc": "",
+          "default": "false"
+        }
+      ],
+      "variants": [
+        "static",
+        "removable",
+        "selectable"
+      ],
+      "tokens": [
+        "--ds-border-default",
+        "--ds-border-strong",
+        "--ds-disabled-border",
+        "--ds-disabled-surface",
+        "--ds-disabled-text",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-radius-full",
+        "--ds-radius-pill",
+        "--ds-selection-surface",
+        "--ds-selection-text",
+        "--ds-size-border-thick",
+        "--ds-size-border-thin",
+        "--ds-size-control-md",
+        "--ds-size-control-sm",
+        "--ds-size-overlay-sm",
+        "--ds-space-control-gap",
+        "--ds-space-inline-md",
+        "--ds-state-hover-layer",
+        "--ds-state-pressed-layer",
+        "--ds-surface-default",
+        "--ds-surface-sunken",
+        "--ds-text-default",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight"
+      ],
+      "composes": [
+        "icon",
+        "icon-button",
+        "tooltip"
+      ],
+      "rules": [
+        {
+          "id": "chip.removable-labelled",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "chip.selectable-pressed",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "chip.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "chip.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "chip.padding-flat",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "chip.one-shape",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "chip.selected-not-colour-alone",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "chip.truncate-tooltip",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "chip.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "chip.states.not-variant",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "color",
+      "export": null,
+      "layer": "foundation",
+      "family": null,
+      "path": "foundations/color",
+      "summary": "Color tells users what things are for: text, surface, border, the main action. Components ask for a job, never for a shade of blue. Three steps stand between a hex value and a component, so a rebrand or a dark theme changes one step and no component.",
+      "props": [],
+      "variants": [],
+      "tokens": [
+        "--ds-series-chroma",
+        "--ds-series-chroma-vivid",
+        "--ds-series-hue",
+        "--ds-series-lightness",
+        "--ds-series-step"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "color.text-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "color.ui-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "color.semantic-by-intent",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "color.no-palette-at-call-site",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "color.roles-alias-colors",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "color.theme-parity",
+          "severity": "HIGH",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "combobox",
+      "export": "Combobox",
+      "layer": "component",
+      "family": "fields",
+      "path": "components/fields/combobox",
+      "summary": "A combobox is a text box with a list of suggestions. You type a few letters, the list narrows, and you pick one. Use it when the list is too long to scroll.",
+      "props": [
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "Always visible."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The error text. Its presence sets aria-invalid and the error look."
+        },
+        {
+          "name": "requiredText",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "errorPrefix",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "options",
+          "type": "readonly ComboboxOption[]",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "emptyText",
+          "type": "string",
+          "optional": true,
+          "doc": "Shown in the list when the typed text matches nothing. Default \"No results\".",
+          "default": "'No results'"
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The options are being fetched. The list says so, and aria-busy is set.",
+          "default": "false"
+        },
+        {
+          "name": "loadingText",
+          "type": "string",
+          "optional": true,
+          "doc": "",
+          "default": "'Loading'"
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "selectedKey",
+          "type": "string | null",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "defaultSelectedKey",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "onSelectionChange",
+          "type": "(key: string | null) => void",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "inputValue",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "defaultInputValue",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "onInputChange",
+          "type": "(value: string) => void",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-disabled-text",
+        "--ds-field-text",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-motion-duration-fast",
+        "--ds-motion-ease-enter",
+        "--ds-motion-ease-exit",
+        "--ds-overlay-border",
+        "--ds-overlay-surface",
+        "--ds-radius-control",
+        "--ds-radius-overlay",
+        "--ds-shadow-1",
+        "--ds-size-border-thin",
+        "--ds-size-control-md",
+        "--ds-size-icon-sm",
+        "--ds-size-overlay-md",
+        "--ds-space-1",
+        "--ds-space-control-gap",
+        "--ds-space-inset-sm",
+        "--ds-state-hover-layer",
+        "--ds-state-pressed-layer",
+        "--ds-state-selected",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-default",
+        "--ds-text-muted",
+        "--ds-z-dropdown"
+      ],
+      "composes": [
+        "icon",
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "combobox.focus-stays-in-input",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.visible-label",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.error-bound",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.count-announced",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.state.none",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.state.loading",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.popup-layer",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.option-focus",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.reduced-motion",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "combobox.long-list",
+          "severity": "LOW",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "confirmation-dialog",
+      "export": "ConfirmationDialog",
+      "layer": "component",
+      "family": "overlays",
+      "path": "components/overlays/confirmation-dialog",
+      "summary": "A confirmation dialog asks one yes-or-no question before an action goes ahead. You confirm it or cancel it.",
+      "props": [
+        {
+          "name": "onClose",
+          "type": "() => void",
+          "optional": false,
+          "doc": "Called on Cancel, Escape and the scrim."
+        },
+        {
+          "name": "onConfirm",
+          "type": "() => void",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "What the choice does and what it costs. Read out when the dialog opens."
+        },
+        {
+          "name": "confirmLabel",
+          "type": "string",
+          "optional": false,
+          "doc": "Names the action and its object: \"Delete 3 files\", never \"OK\"."
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "destructive",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The action cannot be undone. The confirm is a danger button and comes first. Focus starts on Cancel, the least destructive choice.",
+          "default": "false"
+        }
+      ],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "button",
+        "modal",
+        "text"
+      ],
+      "rules": [
+        {
+          "id": "confirmation-dialog.alert-role",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "confirmation-dialog.destructive-focus",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "confirmation-dialog.destructive-danger",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "confirmation-dialog.destructive-order",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "confirmation-dialog.destructive-named",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "confirmation-dialog.built-on-modal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "critical-confirmation-dialog",
+      "export": "CriticalConfirmationDialog",
+      "layer": "component",
+      "family": "overlays",
+      "path": "components/overlays/critical-confirmation-dialog",
+      "summary": "A critical confirmation dialog stops the user before an action that cannot be undone and that also removes other things. To go on, the user types the name of the thing they are about to delete.",
+      "props": [
+        {
+          "name": "onClose",
+          "type": "() => void",
+          "optional": false,
+          "doc": "Called on Cancel, Escape and the scrim. Ignored while `loading`."
+        },
+        {
+          "name": "onConfirm",
+          "type": "() => void",
+          "optional": false,
+          "doc": "Called by the confirm button and by Enter, only when the typed value equals `confirmText`."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "The cost: what goes, how much, and what else goes with it. Read out when the dialog opens."
+        },
+        {
+          "name": "confirmLabel",
+          "type": "string",
+          "optional": false,
+          "doc": "Names the action and its object: \"Delete project\", never \"OK\"."
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "confirmText",
+          "type": "string",
+          "optional": false,
+          "doc": "The exact text the user must type. The comparison is exact: case and spaces count."
+        },
+        {
+          "name": "fieldLabel",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "The label of the text field: \"Type Apollo to confirm\"."
+        },
+        {
+          "name": "fieldDescription",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "Says why the confirm is disabled: \"The Delete project button stays disabled until the name matches exactly.\""
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The action is running. The confirm keeps its label and width, Cancel and Escape are off.",
+          "default": "false"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The action failed. Shown as an alert above the cost. The dialog stays open and the typed value stays."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "optional": true,
+          "doc": "The typed value at the start, and after the dialog reopens. Empty by default.",
+          "default": "''"
+        }
+      ],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "banner",
+        "button",
+        "modal",
+        "stack",
+        "text",
+        "text-field"
+      ],
+      "rules": [
+        {
+          "id": "critical-confirmation-dialog.alert-role",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.type-to-confirm",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.enter-guarded",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.initial-focus",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.confirm-first",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "critical-confirmation-dialog.cost-named",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "critical-confirmation-dialog.only-critical",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "critical-confirmation-dialog.built-on-modal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "destructive-actions",
+      "export": null,
+      "layer": "pattern",
+      "family": null,
+      "path": "patterns/destructive-actions",
+      "summary": "A destructive action removes something. The more it costs, the more the screen should slow you down. A cheap, reversible action should not slow you down at all.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "banner",
+        "button",
+        "confirmation-dialog",
+        "critical-confirmation-dialog",
+        "list",
+        "stack",
+        "text",
+        "toast"
+      ],
+      "rules": [
+        {
+          "id": "destructive-actions.no-own-style",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "destructive.undo-over-confirm",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "destructive.names-the-action",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "destructive.focus-on-cancel",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "destructive.type-to-confirm-cascade",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "destructive.states-the-cost",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "destructive.failure-keeps-dialog",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "destructive.done-announced",
+          "severity": "HIGH",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "disclosure",
+      "export": "Disclosure",
+      "layer": "component",
+      "family": "data-structures",
+      "path": "components/data-structures/disclosure",
+      "summary": "A disclosure is a heading you can press to show or hide a block of text under it. A group of them stacked together is an accordion, and it can be set so only one stays open.",
+      "props": [
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "The summary text. It stays visible open or closed."
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The content is on its way. The panel shows placeholder lines and sets `aria-busy`.",
+          "default": "false"
+        },
+        {
+          "name": "loadingLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "Text for assistive technology while loading.",
+          "default": "'Loading'"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The panel."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-border-default",
+        "--ds-disabled-text",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-motion-duration-base",
+        "--ds-motion-duration-loop",
+        "--ds-motion-ease-enter",
+        "--ds-motion-ease-standard",
+        "--ds-radius-md",
+        "--ds-radius-sm",
+        "--ds-size-border-thin",
+        "--ds-size-control-md",
+        "--ds-skeleton-base",
+        "--ds-skeleton-highlight",
+        "--ds-space-1",
+        "--ds-space-inline-md",
+        "--ds-space-inset-sm",
+        "--ds-space-inset-xs",
+        "--ds-space-stack-xs",
+        "--ds-state-hover-layer",
+        "--ds-state-pressed-layer",
+        "--ds-surface-default",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-default",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "heading",
+        "icon",
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "disclosure.native-first",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.expanded-exposed",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "accordion.header-is-button",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "accordion.single-open",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "accordion.keyboard",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.reduced-motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.padding-flat",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.states.hover-guarded",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.state.disabled",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.state.loading",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.state.too-many",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "disclosure.content-not-essential",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "divider",
+      "export": "Divider",
+      "layer": "primitive",
+      "family": null,
+      "path": "primitives/divider",
+      "summary": "A divider is a thin line that separates two groups of content. It can run across the page or, between items in a row, up and down.",
+      "props": [
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "optional": true,
+          "doc": "",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "'horizontal'"
+        },
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The line is only decoration. It is then hidden from assistive technology. Default false: the line marks a change of topic.",
+          "default": "false"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-border-default",
+        "--ds-size-border-thin"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "divider.native-element",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "divider.decorative-hidden",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "divider.orientation-exposed",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "divider.border-token",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "divider.meaning-not-line-alone",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "elevation",
+      "export": null,
+      "layer": "foundation",
+      "family": null,
+      "path": "foundations/elevation",
+      "summary": "Elevation says how far a surface floats above the page. A menu floats above a card, and a dialog floats above the menu. The library keeps only two levels, so each one keeps its meaning.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [],
+      "rules": [
+        {
+          "id": "elevation.rungs",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "elevation.z-token",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "elevation.z-order",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "elevation.z-single-source",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "elevation.single-scrim",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "elevation.dark-derived",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "elevation.forced-colors-border",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "elevation.focus-not-obscured",
+          "severity": "HIGH",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "empty-results",
+      "export": null,
+      "layer": "pattern",
+      "family": null,
+      "path": "patterns/empty-results",
+      "summary": "An empty result is what a list shows when there is nothing to show. It should say why, and give the user a way forward.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "banner",
+        "button",
+        "empty-state",
+        "heading",
+        "icon",
+        "list",
+        "stack",
+        "table",
+        "text",
+        "text-field"
+      ],
+      "rules": [
+        {
+          "id": "empty-results.no-own-style",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "empty-results.says-why",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "empty-results.offers-exit",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "empty-results.announced",
+          "severity": "HIGH",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "export": "EmptyState",
+      "layer": "component",
+      "family": "feedback",
+      "path": "components/feedback/empty-state",
+      "summary": "An empty state is what a list or a page shows when there is nothing to show. It says why it is empty, and what to do next.",
+      "props": [
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "The fact, in a few words: \"No projects yet\"."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "One or two sentences: why, and what to do."
+        },
+        {
+          "name": "media",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "An illustration or an Icon. Hidden from assistive technology: the title says it in words."
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The next step: one primary button, and at most one more."
+        },
+        {
+          "name": "headingLevel",
+          "type": "HeadingLevel",
+          "optional": true,
+          "doc": "Outline level of the title. Pick it for the page outline; the look does not change. Default 2.",
+          "default": "2"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-size-overlay-md",
+        "--ds-space-inline-sm",
+        "--ds-space-inset-lg",
+        "--ds-space-inset-md",
+        "--ds-space-stack-sm",
+        "--ds-space-stack-xs",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-default",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "heading"
+      ],
+      "rules": [
+        {
+          "id": "empty.says-next-step",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "empty.filtered-offers-clear",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "empty.heading-level",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "empty.media-hidden",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "empty.kinds-differ",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "empty.announced",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "empty.text-from-props",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "empty.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "filtering",
+      "export": null,
+      "layer": "pattern",
+      "family": null,
+      "path": "patterns/filtering",
+      "summary": "Filtering narrows a long list. It shows what is set, how many results are left, and a way to undo each choice.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "badge",
+        "button",
+        "checkbox",
+        "chip",
+        "empty-state",
+        "list",
+        "pagination",
+        "select",
+        "spinner",
+        "stack",
+        "table",
+        "text",
+        "text-field"
+      ],
+      "rules": [
+        {
+          "id": "filtering.no-own-style",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "filtering.active-visible",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "filtering.chip-removable",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "filtering.clear-all",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "filtering.count-announced",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "filtering.no-dead-end",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "filtering.instant-with-cue",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "filtering.url-state",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "filtering.search-labelled",
+          "severity": "HIGH",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "focus",
+      "export": null,
+      "layer": "foundation",
+      "family": null,
+      "path": "foundations/focus",
+      "summary": "Focus is the mark that shows which control the keyboard will act on. Without it, keyboard users are lost.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [],
+      "rules": [
+        {
+          "id": "focus.ring-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "focus.ring-min-width",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "focus.never-removed",
+          "severity": "HIGH",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "form-validation",
+      "export": null,
+      "layer": "pattern",
+      "family": null,
+      "path": "patterns/form-validation",
+      "summary": "Form validation is how a form tells you what is wrong and how to fix it. It waits until you finish a field, then says so in plain words next to it.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "banner",
+        "button",
+        "checkbox",
+        "link",
+        "list",
+        "radio-group",
+        "select",
+        "stack",
+        "text",
+        "text-field"
+      ],
+      "rules": [
+        {
+          "id": "form-validation.no-own-style",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "form-validation.visible-label",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "form-validation.validate-on-blur",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "form-validation.error-names-fix",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "form-validation.error-linked",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "form-validation.summary-focus",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "form-validation.submit-enabled",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "form-validation.correct-only-when-unclear",
+          "severity": "LOW",
+          "verify": "review"
+        },
+        {
+          "id": "form-validation.done-announced",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "form-validation.no-redundant-entry",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "heading",
+      "export": "Heading",
+      "layer": "primitive",
+      "family": null,
+      "path": "primitives/heading",
+      "summary": "A heading is a title for the part of the page below it. Screen reader users jump from heading to heading to find their way, so the order of the titles matters more than their size.",
+      "props": [
+        {
+          "name": "level",
+          "type": "HeadingLevel",
+          "optional": false,
+          "doc": "The outline level, 1 to 6. It sets the element (h1 to h6) and nothing about the look."
+        },
+        {
+          "name": "size",
+          "type": "HeadingSize",
+          "optional": true,
+          "doc": "The look. Defaults to the size that suits the level; pass it to look smaller or larger than the outline says.",
+          "values": [
+            "display",
+            "heading",
+            "subheading",
+            "label"
+          ],
+          "default": "SIZE_BY_LEVEL[level]"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-font-size-md",
+        "--ds-text-default",
+        "--ds-text-display-family",
+        "--ds-text-display-line-height",
+        "--ds-text-display-size",
+        "--ds-text-display-weight",
+        "--ds-text-heading-family",
+        "--ds-text-heading-line-height",
+        "--ds-text-heading-size",
+        "--ds-text-heading-weight",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "heading.level-sets-element",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "heading.size-decoupled",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "heading.size-from-text-style",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "heading.no-skipped-level",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "heading.one-h1",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "heading.describes-section",
+          "severity": "LOW",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "icon",
+      "export": "Icon",
+      "layer": "primitive",
+      "family": null,
+      "path": "primitives/icon",
+      "summary": "An icon is a small picture that stands for an action or a state, such as a check, a magnifying glass or a warning triangle. It sits beside words or inside a button. It does not replace them.",
+      "props": [
+        {
+          "name": "glyph",
+          "type": "IconGlyph",
+          "optional": false,
+          "doc": "The drawing, by name."
+        },
+        {
+          "name": "size",
+          "type": "IconSize",
+          "optional": true,
+          "doc": "The side of the icon box, from size.icon.*.",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "'md'"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": true,
+          "doc": "The accessible name. Set it only when the icon says something the text nearby does not; without it the icon is hidden from assistive technology."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-icon-stroke",
+        "--ds-size-icon-lg",
+        "--ds-size-icon-md",
+        "--ds-size-icon-sm"
+      ],
+      "composes": [
+        "iconography"
+      ],
+      "rules": [
+        {
+          "id": "icon.hidden-by-default",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "icon.label-names-it",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "icon.size-from-token",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "icon.current-color",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "icon.glyph-set-closed",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "icon.not-sole-cue",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "icon-button",
+      "export": "IconButton",
+      "layer": "component",
+      "family": "clickables",
+      "path": "components/clickables/icon-button",
+      "summary": "An icon button is a button drawn as a small picture, such as a cross to close. Because there is no text, you must give it a name that a screen reader can say.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "doc": "The accessible name. An icon alone names nothing."
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "The icon, already sized by its own component. Hidden from assistive technology."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-size-control-md"
+      ],
+      "composes": [
+        "button"
+      ],
+      "rules": [
+        {
+          "id": "icon-button.accessible-name",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "icon-button.icon-hidden",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "icon-button.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "icon-button.known-icon",
+          "severity": "LOW",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "iconography",
+      "export": "GLYPH_NAMES",
+      "layer": "foundation",
+      "family": null,
+      "path": "foundations/iconography",
+      "summary": "Icons are small pictures for actions and things. They work when they look like one family: the same grid, the same line weight, the same corners. The library draws its own 42, built from circles, squares, triangles and straight lines.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [],
+      "rules": [
+        {
+          "id": "iconography.grid",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "iconography.primary-forms",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "iconography.stroke-token",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "iconography.current-color",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "iconography.named-set-complete",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "iconography.decorative-hidden",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "iconography.icon-only-has-name",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "iconography.no-colour-only",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "iconography.mirror-directional",
+          "severity": "LOW",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "export": "Link",
+      "layer": "component",
+      "family": "clickables",
+      "path": "components/clickables/link",
+      "summary": "A link takes you somewhere else: another page, another site, another part of the same page. If pressing it does something in place, like saving, it is a button, not a link.",
+      "props": [
+        {
+          "name": "as",
+          "type": "ElementType",
+          "optional": true,
+          "doc": "The element to render, such as an app router's link component. It receives every prop, `href` included. Default: a native `a`."
+        },
+        {
+          "name": "external",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The link leaves the app and opens in a new tab. Adds the icon and the spoken warning.",
+          "default": "false"
+        },
+        {
+          "name": "externalLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "The warning read out for an external link. Pass it in the app's language.",
+          "default": "'opens in a new tab'"
+        },
+        {
+          "name": "current",
+          "type": "boolean | 'page' | 'step' | 'location'",
+          "optional": true,
+          "doc": "The link points at the place the user is in. Sets `aria-current`; `true` means \"page\".",
+          "default": "false"
+        },
+        {
+          "name": "standalone",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The link stands alone (a nav item, a crumb, a footer link), so it draws at 32px (size.control.md). Leave it off inside a sentence.",
+          "default": "false"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-size-border-thick",
+        "--ds-size-border-thin",
+        "--ds-size-control-md",
+        "--ds-space-inline-xs",
+        "--ds-text-default",
+        "--ds-text-label-weight",
+        "--ds-text-link",
+        "--ds-text-link-visited"
+      ],
+      "composes": [
+        "icon",
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "link.native-element",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "link.not-colour-alone",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "link.text-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "link.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "link.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "link.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "link.no-router",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "link.external-warned",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "link.current-marked",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "link.states.hover-guarded",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "link.descriptive-text",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "link.not-a-button",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "export": "List",
+      "layer": "component",
+      "family": "data-structures",
+      "path": "components/data-structures/list",
+      "summary": "A list is a stack of rows, one thing per row. Each row can have a picture on the left, a name, a line of detail, and a value on the right. A whole row can be one link or one button.",
+      "props": [
+        {
+          "name": "ordered",
+          "type": "boolean",
+          "optional": true,
+          "doc": "An `ol` when order carries meaning (a ranking, steps); a `ul` otherwise.",
+          "default": "false"
+        },
+        {
+          "name": "divided",
+          "type": "boolean",
+          "optional": true,
+          "doc": "A rule between rows.",
+          "default": "false"
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Show skeleton rows that mirror the leading, title and description slots.",
+          "default": "false"
+        },
+        {
+          "name": "skeletonRows",
+          "type": "number",
+          "optional": true,
+          "doc": "",
+          "default": "3"
+        },
+        {
+          "name": "loadingLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "Text for assistive technology while loading.",
+          "default": "'Loading items'"
+        },
+        {
+          "name": "empty",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "Content when there are no rows. The caller supplies the empty state; the list imports no pattern."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The rows failed to load. Replaces the rows; announced as an alert."
+        },
+        {
+          "name": "partial",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "Some rows loaded and some did not. Shown under the rows."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "`ListItem` elements."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-border-default",
+        "--ds-disabled-text",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-motion-duration-loop",
+        "--ds-radius-full",
+        "--ds-radius-sm",
+        "--ds-selection-surface",
+        "--ds-size-border-thick",
+        "--ds-size-border-thin",
+        "--ds-size-control-md",
+        "--ds-size-icon-lg",
+        "--ds-skeleton-base",
+        "--ds-skeleton-highlight",
+        "--ds-space-1",
+        "--ds-space-2",
+        "--ds-space-3",
+        "--ds-space-inline-md",
+        "--ds-space-inset-md",
+        "--ds-space-inset-xs",
+        "--ds-state-hover-layer",
+        "--ds-state-pressed-layer",
+        "--ds-state-selected",
+        "--ds-status-error",
+        "--ds-status-warning-surface",
+        "--ds-status-warning-text",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-default",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight",
+        "--ds-text-link",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "list.semantic-list",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "list.one-control-per-row",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "list.row-target-covers",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "list.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.dividers",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "list.selected-not-colour-alone",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.states.hover-guarded",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "list.reduced-motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.state.loading",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.state.none",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.state.incorrect",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.state.partial",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "list.state.too-many",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.state.disabled",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "list.title-names-row",
+          "severity": "LOW",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "menu",
+      "export": "Menu",
+      "layer": "component",
+      "family": "overlays",
+      "path": "components/overlays/menu",
+      "summary": "A menu is a short list of actions that opens from a button. Press the button, pick one action, and the list closes. Arrow keys move, and typing a letter jumps to a match.",
+      "props": [
+        {
+          "name": "trigger",
+          "type": "PressTarget",
+          "optional": true,
+          "doc": "The button that opens the menu. It is the tab stop; the menu never takes one. Without it, the open menu is drawn in the flow (a preview or an embedded list): no popover, no focus move."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "doc": "The accessible name of the menu, usually the trigger's own name."
+        },
+        {
+          "name": "placement",
+          "type": "Placement",
+          "optional": true,
+          "doc": "Which side of the trigger the menu opens on. It flips at the viewport edge.",
+          "default": "'bottom start'"
+        },
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(isOpen: boolean) => void",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "portalContainer",
+          "type": "Element | null",
+          "optional": true,
+          "doc": "Mount the open menu in this element instead of the end of the body. For previews and embedded panels."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-border-default",
+        "--ds-motion-duration-fast",
+        "--ds-motion-ease-enter",
+        "--ds-motion-ease-exit",
+        "--ds-overlay-border",
+        "--ds-overlay-surface",
+        "--ds-radius-overlay",
+        "--ds-shadow-1",
+        "--ds-size-border-thin",
+        "--ds-size-overlay-md",
+        "--ds-size-overlay-sm",
+        "--ds-space-1",
+        "--ds-space-6",
+        "--ds-space-control-inline",
+        "--ds-space-inset-xs",
+        "--ds-text-default",
+        "--ds-text-kicker-family",
+        "--ds-text-kicker-line-height",
+        "--ds-text-kicker-size",
+        "--ds-text-kicker-weight",
+        "--ds-text-muted",
+        "--ds-z-dropdown"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "menu.built-on-aria",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "menu.labelled",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "menu.arrow-keys",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "menu.focus-return",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "menu.actions-only",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "menu.selection-modes",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu.fits-viewport",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu.elevation",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu.motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "menu-item",
+      "export": "MenuItem",
+      "layer": "component",
+      "family": "clickables",
+      "path": "components/clickables/menu-item",
+      "summary": "A menu item is one row in a menu: an action you can pick. It can carry an icon, a second line of detail and a hint of the keyboard shortcut.",
+      "props": [
+        {
+          "name": "children",
+          "type": "string",
+          "optional": false,
+          "doc": "The label. A string, so the typeahead and the accessible name have text to use."
+        },
+        {
+          "name": "icon",
+          "type": "IconGlyph",
+          "optional": true,
+          "doc": "A leading glyph. Hidden from assistive technology; the label names the item."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "optional": true,
+          "doc": "A second line under the label, also read as the item's description."
+        },
+        {
+          "name": "shortcut",
+          "type": "string",
+          "optional": true,
+          "doc": "A hint of the key combination, such as \"Ctrl+S\". A hint only; the app binds the key."
+        },
+        {
+          "name": "destructive",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The item deletes or discards something. It reads in the error colour, and its label must say what it deletes.",
+          "default": "false"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-disabled-text",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-width",
+        "--ds-radius-control",
+        "--ds-size-control-md",
+        "--ds-size-icon-sm",
+        "--ds-space-control-gap",
+        "--ds-space-control-inline",
+        "--ds-space-inline-md",
+        "--ds-space-inset-xs",
+        "--ds-state-hover-layer",
+        "--ds-state-pressed-layer",
+        "--ds-state-selected",
+        "--ds-status-error",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-code-family",
+        "--ds-text-code-line-height",
+        "--ds-text-code-size",
+        "--ds-text-code-weight",
+        "--ds-text-default",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "icon"
+      ],
+      "rules": [
+        {
+          "id": "menu-item.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu-item.padding-flat",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu-item.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "menu-item.state.tokens",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu-item.state.disabled",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu-item.state.selected",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu-item.destructive-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "menu-item.destructive-named",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "menu-item.shortcut-hint",
+          "severity": "LOW",
+          "verify": "review"
+        },
+        {
+          "id": "menu-item.icon-hidden",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "menu-item.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "messaging",
+      "export": null,
+      "layer": "pattern",
+      "family": null,
+      "path": "patterns/messaging",
+      "summary": "Messaging is how the product tells a user something. Most of the time the best message is none. When one is needed, pick the one that interrupts least.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "alert-dialog",
+        "badge",
+        "banner",
+        "button",
+        "confirmation-dialog",
+        "empty-state",
+        "link",
+        "list",
+        "popover",
+        "stack",
+        "text",
+        "toast",
+        "tooltip"
+      ],
+      "rules": [
+        {
+          "id": "messaging.no-own-style",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "messaging.least-disruptive",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "messaging.one-per-event",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "messaging.announced",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "messaging.assertive-only-when-urgent",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "messaging.toast-not-for-errors-needing-action",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "messaging.toast-action-persists",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "messaging.not-only-in-toast",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "messaging.dialog-takes-focus",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "messaging.no-essential-in-tooltip",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "messaging.popover-on-click",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "modal",
+      "export": "Modal",
+      "layer": "component",
+      "family": "overlays",
+      "path": "components/overlays/modal",
+      "summary": "A modal is a small window that stops you and asks for a few details. You finish the task or close it, and then you are back where you were.",
+      "props": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "optional": false,
+          "doc": "Whether the dialog is shown. The parent owns this state."
+        },
+        {
+          "name": "onClose",
+          "type": "() => void",
+          "optional": false,
+          "doc": "Called on Escape, on a scrim click (when allowed), and on the close button. Set `open` to false in response."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "The name of the dialog. It labels the dialog and is the fallback focus target."
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The actions row. It stays in view while the body scrolls."
+        },
+        {
+          "name": "size",
+          "type": "ModalSize",
+          "optional": true,
+          "doc": "Maximum inline size, from size.overlay.*.",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "'md'"
+        },
+        {
+          "name": "role",
+          "type": "'dialog' | 'alertdialog'",
+          "optional": true,
+          "doc": "`alertdialog` for a message that needs a response. AlertDialog and ConfirmationDialog set it.",
+          "values": [
+            "dialog",
+            "alertdialog"
+          ],
+          "default": "'dialog'"
+        },
+        {
+          "name": "dismissOnScrim",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Close on a click on the scrim. Off by default, so a stray click never loses typed work.",
+          "default": "false"
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "The accessible name of the close button. Without it, no close button is drawn."
+        },
+        {
+          "name": "busy",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Content is loading. The body is marked aria-busy.",
+          "default": "false"
+        },
+        {
+          "name": "inline",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Render open, in the flow, with no scrim and no focus trap. For previews and embedded panels.",
+          "default": "false"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-motion-duration-base",
+        "--ds-motion-ease-enter",
+        "--ds-motion-ease-exit",
+        "--ds-overlay-border",
+        "--ds-overlay-surface",
+        "--ds-radius-none",
+        "--ds-radius-overlay",
+        "--ds-scrim",
+        "--ds-shadow-2",
+        "--ds-size-border-thin",
+        "--ds-size-overlay-lg",
+        "--ds-size-overlay-md",
+        "--ds-size-overlay-sm",
+        "--ds-space-4",
+        "--ds-space-8",
+        "--ds-space-inline-md",
+        "--ds-space-inset-lg",
+        "--ds-space-inset-md",
+        "--ds-space-inset-sm",
+        "--ds-text-default",
+        "--ds-z-modal"
+      ],
+      "composes": [
+        "heading",
+        "icon",
+        "icon-button"
+      ],
+      "rules": [
+        {
+          "id": "modal.native-element",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.labelled",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.focus-in-and-restore",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.esc-closes",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.scrim-configurable",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.footer-stays",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.full-screen-narrow",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.size-from-tokens",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.elevation",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.state.loading",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "modal.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "motion",
+      "export": null,
+      "layer": "foundation",
+      "family": null,
+      "path": "foundations/motion",
+      "summary": "Motion is how things move between states. Small, quick movement tells users something changed. Long or looping movement gets in the way.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [],
+      "rules": [
+        {
+          "id": "motion.duration-ceiling",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "motion.reduced-motion",
+          "severity": "HIGH",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "export": "Pagination",
+      "layer": "component",
+      "family": "navigation",
+      "path": "components/navigation/pagination",
+      "summary": "Pagination cuts a long list into pages and lets you move between them, like the page numbers at the bottom of a search result.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "doc": "The accessible name of the landmark, such as \"Pagination\"."
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "optional": false,
+          "doc": "The current page, from 1."
+        },
+        {
+          "name": "pageCount",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "onPageChange",
+          "type": "(page: number) => void",
+          "optional": true,
+          "doc": "Called with the new page. In link mode it runs on click too, for a client-side route change."
+        },
+        {
+          "name": "getHref",
+          "type": "(page: number) => string",
+          "optional": true,
+          "doc": "Link mode: each page is a link to this URL, so back, reload and sharing work. Without it, each page is a button."
+        },
+        {
+          "name": "linkAs",
+          "type": "ElementType",
+          "optional": true,
+          "doc": "A router link component for link mode, rendered instead of `a`."
+        },
+        {
+          "name": "total",
+          "type": "string",
+          "optional": true,
+          "doc": "The range and count as text, already formatted: \"1–25 of 1,342\"."
+        },
+        {
+          "name": "pageSize",
+          "type": "PageSizeControl",
+          "optional": true,
+          "doc": "The page-size select."
+        },
+        {
+          "name": "previousLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "",
+          "default": "'Previous'"
+        },
+        {
+          "name": "nextLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "",
+          "default": "'Next'"
+        },
+        {
+          "name": "pageLabel",
+          "type": "(page: number) => string",
+          "optional": true,
+          "doc": "The accessible name of a page item. Default: \"Page n\".",
+          "default": "(n) => `Page ${n}`"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "optional": true,
+          "doc": "Announced when the page changes, such as \"Page 3 of 60\". Renders a polite live region."
+        },
+        {
+          "name": "siblings",
+          "type": "number",
+          "optional": true,
+          "doc": "How many pages show on each side of the current one. Default 1.",
+          "default": "1"
+        },
+        {
+          "name": "pageClassName",
+          "type": "(page: number) => string | undefined",
+          "optional": true,
+          "doc": "An extra class on one page control, for a forced state in a showcase."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-action-primary",
+        "--ds-action-primary-text",
+        "--ds-border-strong",
+        "--ds-disabled-border",
+        "--ds-disabled-surface",
+        "--ds-disabled-text",
+        "--ds-field-border",
+        "--ds-field-border-focus",
+        "--ds-field-border-hover",
+        "--ds-field-surface",
+        "--ds-field-text",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-radius-control",
+        "--ds-size-border-thick",
+        "--ds-size-border-thin",
+        "--ds-size-control-md",
+        "--ds-size-target-min",
+        "--ds-space-control-gap",
+        "--ds-space-control-inline",
+        "--ds-space-inline-lg",
+        "--ds-space-inline-md",
+        "--ds-space-inline-xs",
+        "--ds-state-hover-layer",
+        "--ds-state-pressed-layer",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-default",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight",
+        "--ds-text-link",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "icon",
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "pagination.nav-landmark",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.current-marked",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.total-shown",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.change-announced",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.boundaries",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.ellipsis-decorative",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.native-controls",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.padding-flat",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.wraps",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.states.hover-guarded",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "pagination.one-page",
+          "severity": "LOW",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "export": "Popover",
+      "layer": "component",
+      "family": "overlays",
+      "path": "components/overlays/popover",
+      "summary": "A popover is a small panel that appears next to the button you pressed. It holds a bit more than a hint: a few options, a short form, some detail. Press outside or Escape and it goes away.",
+      "props": [
+        {
+          "name": "trigger",
+          "type": "PressTarget",
+          "optional": true,
+          "doc": "The button that opens the popover. Without it, the open popover is drawn in the flow (a preview or an embedded panel): no anchoring, no focus move."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "doc": "The accessible name of the popover content."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode | ((context: { close: () => void }) => ReactNode)",
+          "optional": false,
+          "doc": "The content. A function receives `close`, for an action inside the popover."
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Modal: the page behind is inert and an outside press closes it. Non-modal (default): the page stays reachable, and moving focus away closes it.",
+          "default": "false"
+        },
+        {
+          "name": "placement",
+          "type": "Placement",
+          "optional": true,
+          "doc": "Which side of the trigger the popover opens on. It flips at the viewport edge.",
+          "default": "'bottom start'"
+        },
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(isOpen: boolean) => void",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "portalContainer",
+          "type": "Element | null",
+          "optional": true,
+          "doc": "Mount the open popover in this element instead of the end of the body. For previews and embedded panels."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-motion-duration-base",
+        "--ds-motion-ease-enter",
+        "--ds-motion-ease-exit",
+        "--ds-overlay-border",
+        "--ds-overlay-surface",
+        "--ds-radius-overlay",
+        "--ds-shadow-1",
+        "--ds-size-border-thin",
+        "--ds-size-overlay-md",
+        "--ds-space-1",
+        "--ds-space-6",
+        "--ds-space-inset-md",
+        "--ds-text-default"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "popover.built-on-aria",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "popover.labelled",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "popover.esc-closes",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "popover.fits-viewport",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "popover.modality",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "popover.elevation",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "popover.motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "popover.not-for-hints",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "popover.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "export": "Progress",
+      "layer": "component",
+      "family": "feedback",
+      "path": "components/feedback/progress",
+      "summary": "A progress bar shows how far a long task has got, such as an upload. It always says what it is and how much is done, in words as well as in the bar.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "doc": "The visible label: what is in progress, such as \"Uploading report.pdf\"."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "optional": true,
+          "doc": "How much is done. Leave it out for an indeterminate bar (unknown length)."
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "optional": true,
+          "doc": "The value that means done. Default 100.",
+          "default": "100"
+        },
+        {
+          "name": "valueText",
+          "type": "string",
+          "optional": true,
+          "doc": "The value in words, shown beside the label. Defaults to the percent. Also the accessible value text."
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "optional": true,
+          "doc": "The work failed. Shown as text with an icon; the bar takes the error colour."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-motion-duration-base",
+        "--ds-motion-duration-loop",
+        "--ds-progress-fill",
+        "--ds-progress-track",
+        "--ds-radius-pill",
+        "--ds-size-border-thin",
+        "--ds-space-2",
+        "--ds-space-field-gap",
+        "--ds-space-inline-md",
+        "--ds-space-inline-sm",
+        "--ds-status-error",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-code-family",
+        "--ds-text-default",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "icon"
+      ],
+      "rules": [
+        {
+          "id": "progress.value-exposed",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "progress.contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "progress.linear-easing",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "progress.reduced-motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "progress.error-in-text",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "progress.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "progress.honest",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "progress.completion-announced",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "export": "RadioGroup",
+      "layer": "component",
+      "family": "fields",
+      "path": "components/fields/radio-group",
+      "summary": "A radio group is a short list where you choose exactly one, and every choice is visible. Picking one un-picks the other. A question above the list says what you are choosing.",
+      "props": [
+        {
+          "name": "legend",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "The question the options answer. It becomes the legend, so a screen reader announces it with each option."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The error text. Its presence sets aria-invalid on the group."
+        },
+        {
+          "name": "requiredText",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "errorPrefix",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "options",
+          "type": "readonly RadioOption[]",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": true,
+          "doc": "Shared by the radios. It makes them one group with one Tab stop. A generated name is used when omitted."
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "optional": true,
+          "doc": "Controlled value."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "optional": true,
+          "doc": "Uncontrolled starting value. Preselect only with a reason: a chosen default hides the question."
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "onBlur",
+          "type": "(event: FocusEvent<HTMLFieldSetElement>) => void",
+          "optional": true,
+          "doc": "Group blur: called when focus leaves the group, not when it moves from one radio to another. Validate here."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-disabled-border",
+        "--ds-disabled-surface",
+        "--ds-disabled-text",
+        "--ds-field-border",
+        "--ds-field-border-hover",
+        "--ds-field-border-invalid",
+        "--ds-field-surface",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-radius-full",
+        "--ds-selection-mark",
+        "--ds-selection-surface",
+        "--ds-size-border-thick",
+        "--ds-size-icon-md",
+        "--ds-space-2"
+      ],
+      "composes": [
+        "stack"
+      ],
+      "rules": [
+        {
+          "id": "radio.fieldset-legend",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "radio.arrow-keys",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "radio.error-bound",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "radio.circle-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "radio.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "radio.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "radio.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "radio.preselect",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "export": "Select",
+      "layer": "component",
+      "family": "fields",
+      "path": "components/fields/select",
+      "summary": "A select is a drop-down list. You pick one item from a short list of choices that are already known: a country, a size, a status.",
+      "props": [
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The error text. Its presence sets aria-invalid and the error look."
+        },
+        {
+          "name": "requiredText",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "errorPrefix",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "options",
+          "type": "readonly SelectOption[]",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "Text of the empty choice, such as \"Choose a country\". Leave it out when a value is always preselected."
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "optional": true,
+          "doc": "The value shows but cannot change. A native select has no readonly attribute, so this blocks the opening keys and clicks."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-disabled-text",
+        "--ds-field-text",
+        "--ds-size-icon-md",
+        "--ds-space-control-gap",
+        "--ds-space-control-inline"
+      ],
+      "composes": [
+        "icon"
+      ],
+      "rules": [
+        {
+          "id": "select.native-first",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "select.visible-label",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "select.error-bound",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "select.read-only",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "select.chevron-decorative",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "select.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "select.empty-choice",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "shape",
+      "export": null,
+      "layer": "foundation",
+      "family": null,
+      "path": "foundations/shape",
+      "summary": "Shape is how round the corners are. Sharp corners feel strict, round ones feel friendly. The library picks one for controls and keeps it.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [],
+      "rules": [
+        {
+          "id": "shape.controls-use-control-radius",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "shape.boundary-visible",
+          "severity": "HIGH",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "export": "Skeleton",
+      "layer": "component",
+      "family": "feedback",
+      "path": "components/feedback/skeleton",
+      "summary": "A skeleton is a grey outline of what is about to appear. It holds the space while content loads, so the page does not jump when the content arrives.",
+      "props": [
+        {
+          "name": "shape",
+          "type": "SkeletonShape",
+          "optional": true,
+          "doc": "The placeholder shape: a line of text, a rectangle, or a circle. Mirror the real layout.",
+          "values": [
+            "text",
+            "block",
+            "circle"
+          ],
+          "default": "'text'"
+        },
+        {
+          "name": "lines",
+          "type": "number",
+          "optional": true,
+          "doc": "Lines of text. Only for `shape=\"text\"`. The last line is shorter.",
+          "default": "1"
+        },
+        {
+          "name": "width",
+          "type": "string",
+          "optional": true,
+          "doc": "CSS inline size, as a token expression such as `var(--ds-space-12)`."
+        },
+        {
+          "name": "height",
+          "type": "string",
+          "optional": true,
+          "doc": "CSS block size, as a token expression."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-motion-duration-loop",
+        "--ds-radius-control",
+        "--ds-radius-full",
+        "--ds-radius-sm",
+        "--ds-skeleton-base",
+        "--ds-skeleton-highlight",
+        "--ds-space-12",
+        "--ds-space-3",
+        "--ds-space-8",
+        "--ds-space-stack-sm"
+      ],
+      "composes": [
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "skeleton.aria-busy",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "skeleton.reduced-motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "skeleton.mirrors-layout",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "skeleton.tokens",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "skeleton.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "skeleton.short-wait",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "spacing",
+      "export": null,
+      "layer": "foundation",
+      "family": null,
+      "path": "foundations/spacing",
+      "summary": "Spacing is the air between things. Close things read as one group. Far things read as separate. One fixed set of gaps keeps every screen in the same rhythm.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [],
+      "rules": [
+        {
+          "id": "spacing.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "spacing.scale-closed",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "spacing.groups-distinct",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "spacing.target-min",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "spacing.breakpoints-match",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "spacing.text-spacing-safe",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "spacing.control-border-box",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "export": "Spinner",
+      "layer": "component",
+      "family": "feedback",
+      "path": "components/feedback/spinner",
+      "summary": "A spinner is a small turning ring that says 'working on it'. Use it for a short wait of one or two seconds, in the spot where the result will appear.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "doc": "The accessible name, such as \"Loading orders\". Say what loads."
+        },
+        {
+          "name": "size",
+          "type": "SpinnerSize",
+          "optional": true,
+          "doc": "The side of the ring, from size.icon.*.",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "default": "'md'"
+        },
+        {
+          "name": "showLabel",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Show the label beside the ring instead of hiding it from sight.",
+          "default": "false"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-motion-duration-deliberate",
+        "--ds-progress-fill",
+        "--ds-progress-track",
+        "--ds-radius-full",
+        "--ds-size-border-thick",
+        "--ds-size-icon-lg",
+        "--ds-size-icon-md",
+        "--ds-size-icon-sm",
+        "--ds-space-control-gap",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "spinner.has-text",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "spinner.reduced-motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "spinner.sizes-from-tokens",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "spinner.contrast",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "spinner.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "spinner.scoped",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "spinner.min-delay",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "stack",
+      "export": "Stack",
+      "layer": "primitive",
+      "family": null,
+      "path": "primitives/stack",
+      "summary": "A stack puts things in a line, one after the other, with an even gap between them. The line runs down the page or across it.",
+      "props": [
+        {
+          "name": "as",
+          "type": "ElementType",
+          "optional": true,
+          "doc": "The element to render. Use \"ul\" or \"ol\" with `li` children for a list: the stack resets its markers and padding, and keeps the list role."
+        },
+        {
+          "name": "direction",
+          "type": "'vertical' | 'horizontal'",
+          "optional": true,
+          "doc": "",
+          "values": [
+            "vertical",
+            "horizontal"
+          ],
+          "default": "'vertical'"
+        },
+        {
+          "name": "gap",
+          "type": "Space",
+          "optional": true,
+          "doc": "Gap between children, as a space step.",
+          "default": "4"
+        },
+        {
+          "name": "align",
+          "type": "'start' | 'center' | 'end' | 'stretch' | 'baseline'",
+          "optional": true,
+          "doc": "Alignment on the cross axis.",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "stretch",
+            "baseline"
+          ],
+          "default": "'stretch'"
+        },
+        {
+          "name": "justify",
+          "type": "'start' | 'center' | 'end' | 'between'",
+          "optional": true,
+          "doc": "Distribution on the main axis.",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "between"
+          ],
+          "default": "'start'"
+        },
+        {
+          "name": "wrap",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Let children flow onto a new line instead of shrinking or overflowing.",
+          "default": "false"
+        }
+      ],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "box"
+      ],
+      "rules": [
+        {
+          "id": "stack.gap-from-space",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "stack.no-reverse",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "stack.wraps",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "stack.list-semantics",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "export": "Switch",
+      "layer": "component",
+      "family": "fields",
+      "path": "components/fields/switch",
+      "summary": "A switch is a light switch on screen. Flip it and the setting changes at once: notifications on, dark mode off. There is no Save button.",
+      "props": [
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "Names the setting. It never changes with the state: \"Email alerts\", not \"Email alerts on\"."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": ""
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-disabled-border",
+        "--ds-disabled-surface",
+        "--ds-disabled-text",
+        "--ds-field-border",
+        "--ds-field-border-hover",
+        "--ds-field-surface",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-motion-duration-base",
+        "--ds-motion-ease-standard",
+        "--ds-radius-full",
+        "--ds-selection-mark",
+        "--ds-selection-surface",
+        "--ds-size-border-thin",
+        "--ds-size-icon-md",
+        "--ds-space-4",
+        "--ds-space-5",
+        "--ds-space-9"
+      ],
+      "composes": [
+        "icon"
+      ],
+      "rules": [
+        {
+          "id": "switch.role",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "switch.not-colour-alone",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "switch.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "switch.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "switch.track-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "switch.reduced-motion",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "switch.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "switch.immediate-effect",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "switch.label-stable",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "export": "Table",
+      "layer": "component",
+      "family": "data-structures",
+      "path": "components/data-structures/table",
+      "summary": "A table lays rows of facts along shared columns, so you can scan down a column and compare. Use it when people look up exact values, sort them and pick some. When each row holds one thing, use a list.",
+      "props": [
+        {
+          "name": "caption",
+          "type": "string",
+          "optional": false,
+          "doc": "The table's name. Required: it names the table and its scroll region."
+        },
+        {
+          "name": "hideCaption",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Keep the caption for assistive technology and hide it from the eye.",
+          "default": "false"
+        },
+        {
+          "name": "columns",
+          "type": "readonly TableColumn<Row>[]",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "rows",
+          "type": "readonly Row[]",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "getRowId",
+          "type": "(row: Row) => string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "getRowLabel",
+          "type": "(row: Row) => string",
+          "optional": true,
+          "doc": "The name of a row's checkbox, such as its identifier. Defaults to the row id.",
+          "default": "getRowId"
+        },
+        {
+          "name": "sort",
+          "type": "TableSort | null",
+          "optional": true,
+          "doc": "The column and direction the caller has sorted by.",
+          "default": "null"
+        },
+        {
+          "name": "onSortChange",
+          "type": "(sort: TableSort) => void",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "selectedIds",
+          "type": "readonly string[]",
+          "optional": true,
+          "doc": "Ids of the selected rows, on any page. Giving `onSelectionChange` turns on the checkbox column.",
+          "default": "[]"
+        },
+        {
+          "name": "onSelectionChange",
+          "type": "(ids: string[]) => void",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "density",
+          "type": "'comfortable' | 'compact'",
+          "optional": true,
+          "doc": "",
+          "values": [
+            "comfortable",
+            "compact"
+          ],
+          "default": "'comfortable'"
+        },
+        {
+          "name": "sticky",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Keep the header in view. Give the root a `max-block-size` so the region scrolls.",
+          "default": "false"
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Show skeleton rows that mirror the columns.",
+          "default": "false"
+        },
+        {
+          "name": "skeletonRows",
+          "type": "number",
+          "optional": true,
+          "doc": "",
+          "default": "5"
+        },
+        {
+          "name": "empty",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "Content for a row set with no rows. The caller supplies the empty state; the table imports no pattern."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The rows failed to load. Replaces the rows; announced as an alert."
+        },
+        {
+          "name": "partial",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "Some rows loaded and some did not. Shown under the rows."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<TableLabels>",
+          "optional": true,
+          "doc": ""
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-border-strong",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-motion-duration-fast",
+        "--ds-motion-duration-loop",
+        "--ds-motion-ease-standard",
+        "--ds-radius-control",
+        "--ds-radius-md",
+        "--ds-radius-sm",
+        "--ds-selection-surface",
+        "--ds-size-border-thin",
+        "--ds-size-control-md",
+        "--ds-size-control-sm",
+        "--ds-size-icon-md",
+        "--ds-size-icon-sm",
+        "--ds-size-target-min",
+        "--ds-skeleton-base",
+        "--ds-skeleton-highlight",
+        "--ds-space-1",
+        "--ds-space-4",
+        "--ds-space-inline-md",
+        "--ds-space-inline-sm",
+        "--ds-space-inline-xs",
+        "--ds-space-inset-md",
+        "--ds-space-inset-xs",
+        "--ds-space-stack-sm",
+        "--ds-space-stack-xs",
+        "--ds-state-hover-layer",
+        "--ds-state-pressed-layer",
+        "--ds-status-error",
+        "--ds-status-warning-surface",
+        "--ds-status-warning-text",
+        "--ds-surface-raised",
+        "--ds-table-border",
+        "--ds-table-header-surface",
+        "--ds-table-row-hover",
+        "--ds-table-row-selected",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-code-family",
+        "--ds-text-code-line-height",
+        "--ds-text-code-size",
+        "--ds-text-code-weight",
+        "--ds-text-default",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight",
+        "--ds-text-muted",
+        "--ds-z-sticky"
+      ],
+      "composes": [
+        "icon",
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "table.native-markup",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "table.caption",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.header-scope",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "table.numbers-right",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "table.sort-exposed",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "table.sort-announced",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.select-all-scope",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.selection-native",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.row-states",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.states.hover-guarded",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "table.sticky-scroll-padding",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "table.card-stack-narrow",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "table.state.too-many",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.padding-flat",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "table.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.reduced-motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.density",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "table.state.loading",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.state.none",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.state.incorrect",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "table.state.partial",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "table.row-actions-visible",
+          "severity": "HIGH",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "export": "Tabs",
+      "layer": "component",
+      "family": "navigation",
+      "path": "components/navigation/tabs",
+      "summary": "Tabs let you flip between a few views of the same thing without leaving the page, like the tabs of a folder. Only one view shows at a time.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "doc": "The accessible name of the tab list."
+        },
+        {
+          "name": "tabs",
+          "type": "readonly TabItem[]",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "optional": true,
+          "doc": "The selected tab id, for a controlled tabs."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "onValueChange",
+          "type": "(id: string) => void",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "optional": true,
+          "doc": "",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "'horizontal'"
+        },
+        {
+          "name": "activation",
+          "type": "'automatic' | 'manual'",
+          "optional": true,
+          "doc": "\"automatic\" selects a tab when it takes focus. \"manual\" waits for Enter or Space.",
+          "values": [
+            "automatic",
+            "manual"
+          ],
+          "default": "'automatic'"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-border-default",
+        "--ds-border-strong",
+        "--ds-disabled-surface",
+        "--ds-disabled-text",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-size-border-thick",
+        "--ds-size-border-thin",
+        "--ds-size-control-md",
+        "--ds-space-inline-lg",
+        "--ds-space-inline-md",
+        "--ds-space-inset-md",
+        "--ds-space-inset-xs",
+        "--ds-state-hover-layer",
+        "--ds-state-pressed-layer",
+        "--ds-state-selected",
+        "--ds-surface-default",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-default",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight",
+        "--ds-text-muted"
+      ],
+      "composes": [
+        "icon",
+        "visually-hidden"
+      ],
+      "rules": [
+        {
+          "id": "tabs.roles-wired",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.arrow-keys",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.single-tab-stop",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.panel-linked",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.activation-modes",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.padding-flat",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.selected-not-colour-alone",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.overflow-scrolls",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.state.disabled",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.states.hover-guarded",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "tabs.not-navigation",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "text",
+      "export": "Text",
+      "layer": "primitive",
+      "family": null,
+      "path": "primitives/text",
+      "summary": "Text is how words appear on screen. It picks the size and the weight so that a heading looks like a heading and a note looks like a note.",
+      "props": [
+        {
+          "name": "variant",
+          "type": "TextVariant",
+          "optional": true,
+          "doc": "",
+          "values": [
+            "body",
+            "caption",
+            "heading"
+          ],
+          "default": "'body'"
+        },
+        {
+          "name": "tone",
+          "type": "'default' | 'muted'",
+          "optional": true,
+          "doc": "",
+          "values": [
+            "default",
+            "muted"
+          ],
+          "default": "'default'"
+        },
+        {
+          "name": "as",
+          "type": "ElementType",
+          "optional": true,
+          "doc": "The element to render. Pick it for document structure; the variant only sets the look."
+        }
+      ],
+      "variants": [
+        "body",
+        "caption",
+        "heading"
+      ],
+      "tokens": [
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-default",
+        "--ds-text-heading-family",
+        "--ds-text-heading-line-height",
+        "--ds-text-heading-size",
+        "--ds-text-heading-weight",
+        "--ds-text-muted"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "text.size-from-role",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "text.body-min-size",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "text.muted-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "text.element-by-structure",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "text-field",
+      "export": "TextField",
+      "layer": "component",
+      "family": "fields",
+      "path": "components/fields/text-field",
+      "summary": "A text field is a box where you type one line: your name, an email address, a search. A label above it says what to type. If something goes wrong, a message under it says what and how to fix it.",
+      "props": [
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "Always visible. A placeholder is never the label (WCAG 3.3.2)."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "Help shown between the label and the input, tied with aria-describedby."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The error text. Its presence sets aria-invalid and the error look. Say what is wrong and how to fix it."
+        },
+        {
+          "name": "success",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "A quiet confirmation, such as \"Meets the 12 character rule\". Announced politely, styled as success, never as an error. Hidden while `error` is set."
+        },
+        {
+          "name": "requiredText",
+          "type": "string",
+          "optional": true,
+          "doc": "The word that explains the required marker. Default \"required\"."
+        },
+        {
+          "name": "errorPrefix",
+          "type": "string",
+          "optional": true,
+          "doc": "The hidden word before the error text. Default \"Error\"."
+        },
+        {
+          "name": "successPrefix",
+          "type": "string",
+          "optional": true,
+          "doc": "The hidden word before the success text. Default \"Correct\"."
+        },
+        {
+          "name": "type",
+          "type": "'text' | 'email' | 'tel' | 'url' | 'password' | 'search' | 'number'",
+          "optional": true,
+          "doc": "Pick the type that matches the data, so the keyboard and validation fit.",
+          "values": [
+            "text",
+            "email",
+            "tel",
+            "url",
+            "password",
+            "search",
+            "number"
+          ],
+          "default": "'text'"
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Show a clear button while the field holds text. On by default for `type=\"search\"`."
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "The name of the clear button. Default \"Clear search\" for a search field, else \"Clear\"."
+        },
+        {
+          "name": "onClear",
+          "type": "() => void",
+          "optional": true,
+          "doc": "Called after the clear button emptied the field and returned focus to it."
+        },
+        {
+          "name": "trailing",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "Content inside the box, after the text: a unit, an icon, a small button. Give a button its own accessible name."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-size-border-thin",
+        "--ds-space-control-gap"
+      ],
+      "composes": [
+        "icon",
+        "icon-button"
+      ],
+      "rules": [
+        {
+          "id": "text-field.native-element",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.visible-label",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.error-bound",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.focus-ring",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.boundary-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.value-contrast",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.no-ios-zoom",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.touch-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.state.disabled",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.state.read-only",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.state.invalid",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "text-field.autocomplete",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "text-field.validate-on-blur",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "export": "Textarea",
+      "layer": "component",
+      "family": "fields",
+      "path": "components/fields/textarea",
+      "summary": "A textarea is a text field with room for several lines: a message, a comment, an address. It grows with what you write and you can drag its corner to make it taller.",
+      "props": [
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "optional": false,
+          "doc": "Always visible. A placeholder is never the label (WCAG 3.3.2)."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "optional": true,
+          "doc": "The error text. Its presence sets aria-invalid and the error look."
+        },
+        {
+          "name": "requiredText",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "errorPrefix",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "optional": true,
+          "doc": "The text shows \"n / max\" when both `maxLength` and a count are known. Pass the current length."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-space-1",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-muted"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "textarea.native-element",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "textarea.visible-label",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "textarea.error-bound",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "textarea.counter-bound",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "textarea.resizable",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "textarea.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "textarea.limit-explained",
+          "severity": "LOW",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "export": "ToastRegion",
+      "layer": "component",
+      "family": "feedback",
+      "path": "components/feedback/toast",
+      "summary": "A toast is a small message that slides in to say that something happened, such as 'Draft saved', and goes away by itself. It never grabs your keyboard focus.",
+      "props": [
+        {
+          "name": "toasts",
+          "type": "readonly ToastData[]",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "onDismiss",
+          "type": "(id: string) => void",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "dismissLabel",
+          "type": "string",
+          "optional": true,
+          "doc": "Accessible name of each close button.",
+          "default": "'Dismiss notification'"
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "optional": true,
+          "doc": "Default time on screen, in ms. Default 5000.",
+          "default": "5000"
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "optional": true,
+          "doc": "Most toasts shown at once. The rest wait, and show as the first ones close. Default 3.",
+          "default": "3"
+        },
+        {
+          "name": "moreLabel",
+          "type": "(count: number) => string",
+          "optional": true,
+          "doc": "Text for the waiting toasts, such as \"+2 more\".",
+          "default": "(count) => `+${count} more`"
+        },
+        {
+          "name": "position",
+          "type": "'fixed' | 'static'",
+          "optional": true,
+          "doc": "`fixed` sits at the corner of the viewport, `static` stays in the flow (for a specimen).",
+          "values": [
+            "fixed",
+            "static"
+          ],
+          "default": "'fixed'"
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-border-strong",
+        "--ds-motion-duration-base",
+        "--ds-motion-ease-enter",
+        "--ds-motion-ease-exit",
+        "--ds-motion-shift",
+        "--ds-overlay-border",
+        "--ds-overlay-surface",
+        "--ds-radius-overlay",
+        "--ds-radius-pill",
+        "--ds-shadow-2",
+        "--ds-size-border-thin",
+        "--ds-size-overlay-sm",
+        "--ds-space-1",
+        "--ds-space-inline-md",
+        "--ds-space-inline-sm",
+        "--ds-space-inset-md",
+        "--ds-space-inset-sm",
+        "--ds-space-inset-xs",
+        "--ds-space-stack-sm",
+        "--ds-space-stack-xs",
+        "--ds-status-error",
+        "--ds-status-error-border",
+        "--ds-status-info",
+        "--ds-status-success",
+        "--ds-status-warning",
+        "--ds-surface-inverse",
+        "--ds-text-body-family",
+        "--ds-text-body-line-height",
+        "--ds-text-body-size",
+        "--ds-text-body-weight",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-default",
+        "--ds-text-inverse",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight",
+        "--ds-z-toast"
+      ],
+      "composes": [
+        "button",
+        "icon",
+        "icon-button"
+      ],
+      "rules": [
+        {
+          "id": "toast.announced",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "toast.no-timer-with-action",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "toast.pausable",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "toast.no-focus-steal",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "toast.not-sole-error",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "toast.status-not-colour-alone",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "toast.dismiss-target",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "toast.reduced-motion",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "toast.stacking",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "toast.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "export": "Tooltip",
+      "layer": "component",
+      "family": "overlays",
+      "path": "components/overlays/tooltip",
+      "summary": "A tooltip is a few words that pop up when you point at a button or tab to it. It adds a detail to something that already has a name. It never holds anything you have to do.",
+      "props": [
+        {
+          "name": "children",
+          "type": "PressTarget",
+          "optional": false,
+          "doc": "The control the tooltip describes. It must already have its own name."
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "optional": false,
+          "doc": "A short hint. A string, so it can never hold a link or a button."
+        },
+        {
+          "name": "placement",
+          "type": "Placement",
+          "optional": true,
+          "doc": "Which side of the trigger the tooltip opens on. It flips at the viewport edge.",
+          "default": "'top'"
+        },
+        {
+          "name": "delay",
+          "type": "number",
+          "optional": true,
+          "doc": "Milliseconds of hover or focus before it opens.",
+          "default": "500"
+        },
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(isOpen: boolean) => void",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "portalContainer",
+          "type": "Element | null",
+          "optional": true,
+          "doc": "Mount the open tooltip in this element instead of the end of the body. For previews and embedded panels."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-motion-duration-fast",
+        "--ds-motion-ease-enter",
+        "--ds-motion-ease-exit",
+        "--ds-radius-control",
+        "--ds-shadow-1",
+        "--ds-size-overlay-sm",
+        "--ds-space-1",
+        "--ds-space-2",
+        "--ds-space-6",
+        "--ds-surface-inverse",
+        "--ds-text-caption-family",
+        "--ds-text-caption-line-height",
+        "--ds-text-caption-size",
+        "--ds-text-caption-weight",
+        "--ds-text-inverse"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "tooltip.opens-on-focus",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tooltip.dismissible",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tooltip.no-essential-content",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "tooltip.delay",
+          "severity": "LOW",
+          "verify": "auto"
+        },
+        {
+          "id": "tooltip.inverse-surface",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "tooltip.reflow",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "tooltip.not-a-label",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "tooltip.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
+      "name": "typography",
+      "export": null,
+      "layer": "foundation",
+      "family": null,
+      "path": "foundations/typography",
+      "summary": "Typography is how words look: which typeface, how big, how heavy, how tall each line is. Typefaces are the fonts you own, fonts are the jobs, and text styles are how a job looks at each size. A heading looks the same wherever it appears.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [],
+      "rules": [
+        {
+          "id": "typography.body-min-size",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "typography.line-height-min",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "typography.roles-closed",
+          "severity": "LOW",
+          "verify": "review"
+        },
+        {
+          "id": "typography.fallback-generic",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "typography.typeface-at-call-site",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "typography.handwriting-accent-only",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "typography.max-families",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "typography.self-hosted",
+          "severity": "MEDIUM",
+          "verify": "review"
+        }
+      ]
+    },
+    {
+      "name": "visually-hidden",
+      "export": "VisuallyHidden",
+      "layer": "primitive",
+      "family": null,
+      "path": "primitives/visually-hidden",
+      "summary": "Some text is for screen readers only, such as 'opens in a new tab' or 'Close' next to an icon. Visually hidden keeps that text out of sight and in the page for assistive technology.",
+      "props": [
+        {
+          "name": "as",
+          "type": "ElementType",
+          "optional": true,
+          "doc": "The element to render. Use \"a\" with `focusable` for a skip link."
+        },
+        {
+          "name": "focusable",
+          "type": "boolean",
+          "optional": true,
+          "doc": "Appear on keyboard focus. For a skip link and any control that must be reachable but not always seen.",
+          "default": "false"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "optional": true,
+          "doc": "The target, when `as` is \"a\"."
+        }
+      ],
+      "variants": [],
+      "tokens": [
+        "--ds-border-strong",
+        "--ds-focus-ring-color",
+        "--ds-focus-ring-offset",
+        "--ds-focus-ring-width",
+        "--ds-radius-control",
+        "--ds-shadow-1",
+        "--ds-size-border-thin",
+        "--ds-space-1",
+        "--ds-space-2",
+        "--ds-space-inline-lg",
+        "--ds-space-inset-sm",
+        "--ds-surface-default",
+        "--ds-text-label-family",
+        "--ds-text-label-line-height",
+        "--ds-text-label-size",
+        "--ds-text-label-weight",
+        "--ds-text-link",
+        "--ds-z-tooltip"
+      ],
+      "composes": [],
+      "rules": [
+        {
+          "id": "visually-hidden.clip-pattern",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "visually-hidden.stays-in-tree",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "visually-hidden.focusable-shows",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "visually-hidden.no-literal",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "visually-hidden.not-a-control-hider",
+          "severity": "HIGH",
+          "verify": "review"
+        }
+      ]
+    }
+  ]
+}

@@ -50,7 +50,7 @@ export const Showcase: StoryObj<typeof meta> = {
         rows: [
           { name: 'overlay.surface · overlay.border · scrim · shadow.2', tier: 'role', use: 'The panel and the wash, from Modal', swatch: '--ds-overlay-surface' },
           { name: 'text.default', tier: 'role', use: 'Title and message', swatch: '--ds-text-default' },
-          { name: 'action.primary · action.secondary', tier: 'role', use: 'The confirm and the cancel buttons', swatch: '--ds-action-primary' },
+          { name: 'action.primary · action.danger · action.secondary', tier: 'role', use: 'The confirm button (danger when destructive) and the cancel button', swatch: '--ds-action-danger' },
           { name: 'focus.ring.color · width · offset', tier: 'role', use: 'Focus ring on the first action', swatch: '--ds-focus-ring-color' },
           { name: 'size.overlay.sm · md · lg', tier: '2', use: 'Maximum inline size, from Modal' },
         ],
@@ -74,12 +74,13 @@ export const Showcase: StoryObj<typeof meta> = {
           { n: 1, label: 'Title', note: 'required, the question', target: '.ds-modal__title' },
           { n: 2, label: 'Message', note: 'required, what it costs', target: '.ds-modal__body' },
           { n: 3, label: 'Cancel', note: 'required, cancelLabel', target: '.ds-modal__footer .ds-button--secondary' },
-          { n: 4, label: 'Confirm', note: 'required, names the action', target: '.ds-modal__footer .ds-button--primary', at: 'end' },
+          { n: 4, label: 'Confirm', note: 'required, names the action; danger when destructive', target: '.ds-modal__footer .ds-button:not(.ds-button--secondary)', at: 'end' },
         ],
       }}
       specs={[
         { label: 'Role', value: 'alertdialog, described by the message' },
         { label: 'Focus', value: 'On Cancel when destructive, else on the confirm action' },
+        { label: 'Order', value: 'Cancel then confirm. When destructive: danger confirm, then Cancel' },
         { label: 'Escape and scrim', value: 'Escape cancels. The scrim does not close it' },
         { label: 'Layout', value: 'From Modal: sizes, the narrow full screen, the motion' },
       ]}
@@ -90,7 +91,7 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'description', value: 'Required. What it costs.', control: { kind: 'text', value: del.description } },
         { label: 'confirmLabel', value: 'Required. Names the action and its object: "Delete project".', control: { kind: 'text', value: del.confirmLabel } },
         { label: 'cancelLabel', value: 'Required. The label of the cancel action.', control: { kind: 'text', value: del.cancelLabel } },
-        { label: 'destructive', value: 'The action cannot be undone. Focus starts on Cancel.', control: { kind: 'boolean', value: true } },
+        { label: 'destructive', value: 'The action cannot be undone. The confirm is a danger button and comes first, then Cancel. Focus starts on Cancel.', control: { kind: 'boolean', value: true } },
         { label: 'size', value: 'Passed to Modal.', control: { kind: 'select', options: SIZES, value: 'md' } },
         { label: 'inline', value: 'Passed to Modal.' },
       ]}
@@ -107,7 +108,7 @@ export const Showcase: StoryObj<typeof meta> = {
           { id: 'correct', status: 'n/a', reason: 'The dialog takes no input.' },
           { id: 'done', status: 'n/a', reason: 'Confirm closes the dialog. The view behind announces the result in a status message.' },
           { id: 'default', status: 'designed', render: <ConfirmationDialog inline open onClose={noop} onConfirm={noop} {...publish} />, trigger: 'rest', note: 'Focus starts on the confirm action.' },
-          { id: 'default', variant: 'Destructive', status: 'designed', render: <ConfirmationDialog inline open onClose={noop} onConfirm={noop} {...del} destructive />, trigger: 'destructive', note: 'Focus starts on Cancel. The label names what goes.' },
+          { id: 'default', variant: 'Destructive', status: 'designed', render: <ConfirmationDialog inline open onClose={noop} onConfirm={noop} {...del} destructive />, trigger: 'destructive', note: 'Danger confirm first, then Cancel. Focus starts on Cancel. The label names what goes.' },
           { id: 'hover', status: 'n/a', reason: 'The panel is not interactive. Its buttons carry their own hover.' },
           { id: 'focus-visible', status: 'n/a', reason: 'Its buttons carry the focus ring; see Button.' },
           { id: 'active', status: 'n/a', reason: 'The panel is not pressable. Its buttons carry their own pressed state.' },
@@ -125,6 +126,7 @@ export const Showcase: StoryObj<typeof meta> = {
       donts={[
         { text: 'Label the destructive action "OK" or mark it with red alone.', basis: 'WCAG 1.4.1 (A), 2.4.6 (AA)', rule: 'confirmation-dialog.destructive-named' },
         { text: 'Start focus on a destructive action.', basis: 'APG Alert and Message Dialogs', rule: 'confirmation-dialog.destructive-focus' },
+        { text: 'Use a primary confirm, or put it after Cancel, on a destructive action.', basis: 'GitLab Pajamas; project decision', rule: 'confirmation-dialog.destructive-danger' },
         { text: 'Build a confirmation from a div, or from a Modal with its own buttons.', basis: 'Nielsen 4', rule: 'confirmation-dialog.built-on-modal' },
       ]}
       guide="overlays-confirmation-dialog--docs"
@@ -233,7 +235,7 @@ export const Examples: StoryObj<typeof meta> = {
         'Ask only when the action costs something: it cannot be undone, or it reaches other people. For an action the user can undo, do it and offer Undo in a toast. A dialog before every action teaches people to click without reading.',
         'You own the state. You pass `open` (true or false), `onClose` (Cancel and Escape) and `onConfirm` (the confirm button). The dialog never closes itself, so each handler must set `open` to false.',
         'Focus is the outline that shows where the keyboard is. When the dialog opens, focus moves onto one of its buttons. When it closes, focus goes back to the button that opened it.',
-        'With `destructive`, focus starts on Cancel. An Enter pressed out of habit then keeps the data. Without it, focus starts on the confirm button.',
+        'With `destructive`, the confirm is a red danger button and comes first. Cancel comes last, and focus starts on it. An Enter pressed out of habit then keeps the data. Without `destructive`, Cancel comes first and focus starts on the confirm button.',
         'Escape and Cancel both call `onClose`. A click on the dark area outside (the scrim) does nothing.',
       ]}
       guide="overlays-confirmation-dialog--docs"
@@ -248,6 +250,7 @@ export const Examples: StoryObj<typeof meta> = {
               when: 'The action cannot be undone. Start with this one.',
               explain: [
                 '`destructive` moves the first focus to Cancel. A user who presses Enter right away keeps the project instead of losing it (APG Alert and Message Dialogs).',
+                '`destructive` also makes the confirm a danger button (red) and puts it first, before Cancel. The label still names the action, so red is not the only cue (WCAG 1.4.1, A).',
                 '`confirmLabel` names the action and its object: "Delete project". "OK" would name nothing, and the user could not tell what Enter does (WCAG 2.4.6, AA).',
                 '`description` states the cost: what goes, and that it cannot be undone. The dialog links it with `aria-describedby` (a label read by screen readers), so the cost is read out on open (WCAG 4.1.2, A).',
                 'The status line shows both answers. Cancel and Escape say "Cancelled". Confirm says "Project deleted". `role="status"` makes a screen reader announce the text (WCAG 4.1.3, AA).',
@@ -624,7 +627,7 @@ export const Examples: StoryObj<typeof meta> = {
           examples: [
             {
               title: 'Inline, destructive',
-              when: 'A preview shows the dialog with its focus rule: Cancel first.',
+              when: 'A preview shows the dialog with its focus rule (Cancel) and its button order (danger confirm, then Cancel).',
               explain: [
                 '`inline` draws the dialog open, where you put it. There is no dark scrim, and focus does not move.',
                 'Use it for documentation and tests. Do not use it for a real question: the page behind stays usable.',
@@ -649,7 +652,7 @@ export const Examples: StoryObj<typeof meta> = {
               when: 'A preview shows the dialog with its other focus rule: the confirm action first.',
               explain: [
                 'The only difference from the destructive preview is the missing `destructive` prop.',
-                'Compare the two to see the button order stay the same: Cancel, then Confirm. Only the first focus changes.',
+                'Compare the two. Without `destructive`, the confirm is primary and comes after Cancel, and focus starts on it. With `destructive`, the confirm is a danger button and comes first.',
               ],
               render: <ConfirmationDialog inline open onClose={noop} onConfirm={noop} {...publish} />,
               code: `<ConfirmationDialog

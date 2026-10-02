@@ -76,6 +76,10 @@ The `$schema` value is an example. Point it at the real schema location for the 
 - `<config.tokens.source>/*.tokens.json` (from the kit)
 - Token outputs listed in `config.tokens.outputs` (from `tokens.mjs build`)
 
+## Agent context
+
+If the project has a component library, offer to write `AGENTS.md` for agents: `node ${CLAUDE_PLUGIN_ROOT}/scripts/manifest.mjs build <library>`, then `manifest.mjs agents <library> --out AGENTS.md`. It edits only the marked block (`knowledge/tooling/ai-consumption.md`).
+
 ## Verify
 
 - Config validates against the schema.

@@ -44,6 +44,11 @@
   color: var(--ds-text-default);
 }
 
+.ds-button--danger {
+  background: var(--ds-action-danger);
+  color: var(--ds-action-danger-text);
+}
+
 .ds-button--primary:hover { background: var(--ds-action-primary-hover); }
 .ds-button--primary:active { background: var(--ds-action-primary-pressed); }
 .ds-button--secondary:hover { background: var(--ds-state-hover-layer); }
@@ -52,6 +57,12 @@
 .ds-button--tertiary:active { background: var(--ds-state-pressed-layer); }
 .ds-button--subtle:hover { background: var(--ds-state-hover-layer); }
 .ds-button--subtle:active { background: var(--ds-state-pressed-layer); }
+
+.ds-button--danger:active { background: var(--ds-action-danger-pressed); }
+
+@media (hover: hover) {
+  .ds-button--danger:hover { background: var(--ds-action-danger-hover); }
+}
 
 .ds-button:focus-visible {
   outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
@@ -66,11 +77,11 @@
 }
 
 /* Loading keeps the label in the tree (it names the button) and in the layout (no width shift). */
-.ds-button--loading {
+.ds-button[aria-busy='true'] {
   cursor: progress;
 }
 
-.ds-button--loading .ds-button__label {
+.ds-button[aria-busy='true'] .ds-button__label {
   opacity: 0;
 }
 

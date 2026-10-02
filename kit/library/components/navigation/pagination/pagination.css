@@ -88,12 +88,12 @@
 }
 
 @media (hover: hover) {
-  .ds-pagination__item:hover:not(.ds-pagination__item--current):not(:disabled):not([aria-disabled]) {
+  .ds-pagination__item:hover:not(.ds-pagination__item[aria-current]):not(:disabled):not([aria-disabled]) {
     background: var(--ds-state-hover-layer);
   }
 }
 
-.ds-pagination__item:active:not(.ds-pagination__item--current):not(:disabled):not([aria-disabled]) {
+.ds-pagination__item:active:not(.ds-pagination__item[aria-current]):not(:disabled):not([aria-disabled]) {
   background: var(--ds-state-pressed-layer);
 }
 
@@ -103,7 +103,7 @@
 }
 
 /* The current page is filled and outlined: two cues beyond hue. */
-.ds-pagination__item--current {
+.ds-pagination__item[aria-current] {
   border-color: var(--ds-border-strong);
   background: var(--ds-action-primary);
   color: var(--ds-action-primary-text);

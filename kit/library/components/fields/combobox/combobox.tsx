@@ -92,7 +92,8 @@ export function Combobox({
   );
   return (
     <ComboBox
-      className={['ds-field', 'ds-combobox', forceOpen && 'ds-combobox--open', className].filter(Boolean).join(' ')}
+      className={['ds-field', 'ds-combobox', className].filter(Boolean).join(' ')}
+      data-forced-open={forceOpen || undefined}
       defaultItems={options}
       name={name}
       selectedKey={selectedKey}

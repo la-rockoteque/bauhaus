@@ -48,6 +48,7 @@ One term per concept. Agents, skills, knowledge files and reports use these word
 | **Basis** | What a finding stands on: `WCAG 1.4.3 (AA)`, `Nielsen 1`, `APG Tabs`, `Doherty 1982`. A finding with no basis is an opinion and is not reported. | |
 | **Lifecycle state** | One of Speelman's nine states of a component or screen over time: nothing, loading, none, one, some, too-many, incorrect, correct, done. | "edge case" |
 | **Interaction state** | How a control answers input: default, hover, focus-visible, active, disabled; functional: loading, success, error, selected; structural: read-only, indeterminate, expanded, current, visited, dragging, invalid, required. | "variant" (a variant is a design choice, a state is a condition) |
+| **State selector** | The CSS hook that shows an interaction state, chosen by the ladder: native pseudo-class, then ARIA attribute, then boolean `data-*` attribute. Never a BEM modifier. See `knowledge/components/api-design.md` § State selectors. | "state class", "modifier" |
 | **State matrix** | The grid of states × variants for one component, pattern or screen. Each cell is designed, n/a with a reason, or missing. | |
 | **Page contract** | The six sections every DSM page carries: introduction, tokens, anatomy, states, usage, pitfalls and don'ts. | "template" |
 | **Slop** | A documentation line with no basis, or one that would be true of any design system unchanged. | |

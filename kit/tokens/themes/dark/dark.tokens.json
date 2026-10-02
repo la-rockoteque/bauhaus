@@ -60,6 +60,18 @@
     },
     "secondary-text": {
       "$value": "{colors.neutral.900}"
+    },
+    "danger": {
+      "$value": "{colors.error.400}"
+    },
+    "danger-hover": {
+      "$value": "{colors.error.300}"
+    },
+    "danger-pressed": {
+      "$value": "{colors.error.200}"
+    },
+    "danger-text": {
+      "$value": "{colors.neutral.900}"
     }
   },
   "status": {

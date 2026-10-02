@@ -9,7 +9,7 @@ A pattern composes existing components to answer a recurring need. It introduces
 
 ## Loads
 
-- `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/<topic>.md` — the matching shelf: `loading`, `empty-and-error`, `forms`, `data-tables`, `filtering-search`, `navigation`, `dashboards-charts`, `responsive`, `content-writing`.
+- `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/<topic>.md` — the matching shelf: `loading`, `empty-and-error`, `forms`, `data-tables`, `filtering-search`, `navigation`, `dashboards-charts`, `responsive`, `content-writing`, `messaging`, `destructive-actions`.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/layers.md`, `decision-tree.md`, `misfiles.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/states/lifecycle-states.md`, `state-matrix.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/accessibility/apg-patterns.md`
@@ -40,6 +40,7 @@ A pattern composes existing components to answer a recurring need. It introduces
 12. **Verify.**
     - The pattern's CSS holds no raw value: grep.
     - `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check` exits 0.
+    - `node ${CLAUDE_PLUGIN_ROOT}/scripts/manifest.mjs build <library>` then `manifest.mjs agents <library>` run, and `manifest.mjs check <library>` exits 0.
     - All six sections exist across the guide and the showcase.
     - Every Usage rule and Pitfall has a basis.
     - Matrix has zero unexplained `missing` cells.

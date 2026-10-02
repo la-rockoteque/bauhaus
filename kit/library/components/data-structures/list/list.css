@@ -107,13 +107,13 @@
   }
 }
 
-.ds-list__item--selected,
-.ds-list__item--selected:hover {
+.ds-list__item[data-selected],
+.ds-list__item[data-selected]:hover {
   background: var(--ds-state-selected);
 }
 
 /* Selected also shows a bar, so the state does not rest on fill alone. */
-.ds-list__item--selected::before {
+.ds-list__item[data-selected]::before {
   content: '';
   position: absolute;
   inset-block: 0;
@@ -122,13 +122,13 @@
   background: var(--ds-selection-surface);
 }
 
-.ds-list__item--disabled .ds-list__control {
+.ds-list__item[data-disabled] .ds-list__control {
   color: var(--ds-disabled-text);
   cursor: not-allowed;
 }
 
-.ds-list__item--disabled .ds-list__leading,
-.ds-list__item--disabled .ds-list__trailing {
+.ds-list__item[data-disabled] .ds-list__leading,
+.ds-list__item[data-disabled] .ds-list__trailing {
   color: var(--ds-disabled-text);
 }
 
@@ -183,5 +183,5 @@
 }
 
 @media (forced-colors: active) {
-  .ds-list__item--selected::before { background: Highlight; }
+  .ds-list__item[data-selected]::before { background: Highlight; }
 }

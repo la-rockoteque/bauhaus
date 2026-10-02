@@ -7,6 +7,7 @@ import { CSS_PATHS, sourceOf } from './sources';
  * the rulebook table grades against.
  */
 const FORM = 'patterns/form-validation/form-validation.stories.tsx';
+const MESSAGING = 'patterns/messaging/messaging.stories.tsx';
 const FILTERING = 'patterns/filtering/filtering.stories.tsx';
 
 const noPatternStyle = (name: string): Check => () => {
@@ -21,6 +22,31 @@ const sourceLacks = (path: string, pattern: RegExp, failure: string): Check => (
 };
 
 export const CHECKS: Readonly<Record<string, Check>> = {
+  'messaging.no-own-style': noPatternStyle('messaging'),
+  // A live region announces unreliably when it is mounted with its text. Each recipe keeps the
+  // region in the page and renders only the content conditionally.
+  'messaging.announced': all(
+    sourceMatches('components/feedback/toast/toast.tsx', /role="status"[^>]*aria-live="polite"/, 'the toast region has no polite status region'),
+    sourceMatches('components/feedback/banner/banner.tsx', /role=\{urgent && status === 'error' \? 'alert' : 'status'\}/, 'the banner is not a status or alert region'),
+    sourceMatches(MESSAGING, /<Text role="status">\{deleted && /, 'the delete recipe does not keep its status region in the page'),
+    sourceMatches(MESSAGING, /<div role="status">\s*\{projects\.length === 0 && /, 'the empty state recipe does not keep its status region in the page'),
+    sourceLacks(MESSAGING, /&& <(?:Text|div)\b[^>]*role="status"/, 'a recipe mounts its status region together with its text'),
+  ),
+  'messaging.toast-action-persists': sourceMatches('components/feedback/toast/toast.tsx', /persistent = total === null \|\| Boolean\(action\)/, 'a toast with an action can time out'),
+  'messaging.dialog-takes-focus': all(
+    sourceMatches('components/overlays/modal/modal.tsx', /showModal\(\)/, 'the modal is not a native modal dialog'),
+    sourceMatches('components/overlays/modal/modal.tsx', /opener\.current\??\.focus\(\)/, 'the modal does not return focus to its opener'),
+    sourceMatches('components/overlays/modal/modal.tsx', /aria-labelledby=\{titleId\}/, 'the modal has no name'),
+    ...['alert-dialog', 'confirmation-dialog'].flatMap((name) => {
+      const path = `components/overlays/${name}/${name}.tsx`;
+      return [
+        sourceMatches(path, /role="alertdialog"/, `the ${name} is not an alertdialog`),
+        sourceMatches(path, /aria-describedby=\{descriptionId\}/, `the ${name} message is not tied to the dialog`),
+        sourceMatches(path, /title=\{title\}/, `the ${name} has no name`),
+      ];
+    }),
+  ),
+
   'form-validation.no-own-style': noPatternStyle('form-validation'),
   'form-validation.error-linked': all(
     sourceMatches(FORM, /error=\{shown\('email'\)\}/, 'the recipe does not pass the error to the field component'),
@@ -50,4 +76,6 @@ export const CHECKS: Readonly<Record<string, Check>> = {
     sourceMatches(FILTERING, /onStateChange\?\.\(/, 'onStateChange is never called'),
     sourceLacks(FILTERING, /from '(?:react-router|next\/|@tanstack|wouter)/, 'the recipe imports a router'),
   ),
+
+  'destructive-actions.no-own-style': noPatternStyle('destructive-actions'),
 };

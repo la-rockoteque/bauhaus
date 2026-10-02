@@ -58,7 +58,7 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   'breadcrumb.no-literal': noLiteral(`${CRUMB}.css`),
 
   'pagination.nav-landmark': has(`${PAGER}.tsx`, [/<nav aria-label=\{label\}/, 'has no named nav'], [/<ul[\s>]/, 'has no list']),
-  'pagination.current-marked': all(has(`${PAGER}.tsx`, [/'aria-current': current/, 'sets no aria-current']), uses(`${PAGER}.css`, '.ds-pagination__item--current', 'background', '--ds-action-primary'), uses(`${PAGER}.css`, '.ds-pagination__item--current', 'border-color', '--ds-border-strong')),
+  'pagination.current-marked': all(has(`${PAGER}.tsx`, [/'aria-current': current/, 'sets no aria-current']), uses(`${PAGER}.css`, '.ds-pagination__item[aria-current]', 'background', '--ds-action-primary'), uses(`${PAGER}.css`, '.ds-pagination__item[aria-current]', 'border-color', '--ds-border-strong')),
   'pagination.total-shown': has(`${PAGER}.tsx`, [/\{total &&/, 'does not render the total']),
   'pagination.change-announced': has(`${PAGER}.tsx`, [/role="status"/, 'has no status region']),
   'pagination.boundaries': has(`${PAGER}.tsx`, [/disabled: page === 1/, 'does not disable previous on page 1'], [/disabled: page === count/, 'does not disable next on the last page'], [/aria-disabled="true"/, 'sets no aria-disabled'], [/Math\.min\(Math\.max\(1/, 'does not clamp the page']),

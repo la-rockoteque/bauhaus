@@ -279,6 +279,8 @@ tokens or the stylesheet on your own initiative. Put the proposal to the user fi
    what it costs. Lead with your recommendation.
 3. When the answer is in, populate all four artifacts in one pass.
 
+**Read the manifest before you propose a new component.** Open `bauhaus-manifest.json` in the library. Propose a new component only when no slice fits (`knowledge/tooling/ai-consumption.md`).
+
 If `AskUserQuestion` is unavailable, ask in prose with the same options. Use prose only
 when it is unavailable or when you need a free-form value (a brand hex, a font name).
 

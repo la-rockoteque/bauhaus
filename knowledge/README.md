@@ -55,6 +55,8 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 - `patterns/dashboards-charts.md`
 - `patterns/responsive.md`
 - `patterns/content-writing.md` — UX writing, voice, i18n.
+- `patterns/messaging.md` — which message component: the least disruptive one that does the job.
+- `patterns/destructive-actions.md` — friction scaled to cost: undo, confirm, type the name.
 
 ## governance/ — keeping it coherent
 - `governance/page-contract.md` — the six sections every DSM page carries, per layer, and the anti-slop test.
@@ -82,6 +84,7 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 - `tooling/framework-adapters.md` — React, Vue, Svelte, Angular, web components, Tailwind, native.
 - `tooling/design-tool-sync.md` — Figma variables, Tokens Studio, code connect.
 - `tooling/visual-regression.md`
+- `tooling/ai-consumption.md` — the manifest and AGENTS.md: agents look up before they build.
 
 ## references/
 - `references/systems.md` — Material 3, Carbon, Fluent 2, Polaris, Atlassian, Primer, Spectrum, GOV.UK: what each is best at and what to borrow.

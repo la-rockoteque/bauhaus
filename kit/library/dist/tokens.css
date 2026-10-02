@@ -290,6 +290,10 @@
   --ds-action-secondary-hover: var(--ds-colors-secondary-700);
   --ds-action-secondary-pressed: var(--ds-colors-secondary-800);
   --ds-action-secondary-text: var(--ds-colors-neutral-100);
+  --ds-action-danger: var(--ds-colors-error-600);
+  --ds-action-danger-hover: var(--ds-colors-error-700);
+  --ds-action-danger-pressed: var(--ds-colors-error-800);
+  --ds-action-danger-text: var(--ds-colors-neutral-100);
   --ds-status-error: var(--ds-colors-error-600);
   --ds-status-error-surface: var(--ds-colors-error-100);
   --ds-status-success: var(--ds-colors-success-600);
@@ -369,6 +373,10 @@
   --ds-action-secondary-hover: var(--ds-colors-secondary-700);
   --ds-action-secondary-pressed: var(--ds-colors-secondary-800);
   --ds-action-secondary-text: var(--ds-colors-neutral-100);
+  --ds-action-danger: var(--ds-colors-error-600);
+  --ds-action-danger-hover: var(--ds-colors-error-700);
+  --ds-action-danger-pressed: var(--ds-colors-error-800);
+  --ds-action-danger-text: var(--ds-colors-neutral-100);
   --ds-status-error: var(--ds-colors-error-600);
   --ds-status-error-surface: var(--ds-colors-error-100);
   --ds-status-success: var(--ds-colors-success-600);
@@ -448,6 +456,10 @@
   --ds-action-secondary-hover: var(--ds-colors-secondary-300);
   --ds-action-secondary-pressed: var(--ds-colors-secondary-200);
   --ds-action-secondary-text: var(--ds-colors-neutral-900);
+  --ds-action-danger: var(--ds-colors-error-400);
+  --ds-action-danger-hover: var(--ds-colors-error-300);
+  --ds-action-danger-pressed: var(--ds-colors-error-200);
+  --ds-action-danger-text: var(--ds-colors-neutral-900);
   --ds-status-error: var(--ds-colors-error-300);
   --ds-status-error-surface: var(--ds-colors-error-900);
   --ds-status-success: var(--ds-colors-success-300);

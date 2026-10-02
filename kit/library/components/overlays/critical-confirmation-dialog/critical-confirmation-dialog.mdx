@@ -1,0 +1,67 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from './critical-confirmation-dialog.stories';
+
+<Meta of={Stories} />
+
+# Critical confirmation dialog
+
+The Showcase story holds the tokens, the stage and the state matrix. The Advisories story holds the live rulebook and the accessibility coverage. This guide holds the reasoning.
+
+## 1. Introduction
+
+**In plain words:** A critical confirmation dialog stops the user before an action that cannot be undone and that also removes other things. To go on, the user types the name of the thing they are about to delete.
+
+**Precisely:** Component in the overlays family. It is an alert dialog with a text field, a danger confirm action and a cancel action, built on Modal. It is not a plain question (Confirmation dialog) and not a message (Alert dialog).
+
+**The job.** The typed name is friction on purpose. It makes the user read the name and see which thing goes. The friction is worth it only when the loss is large: the action is irreversible and it cascades.
+
+**The layer.** The critical confirmation dialog is a component. It renders through Modal, Banner, TextField and Button, so it has no stylesheet and no tokens of its own.
+
+**When it exists.** Use it for the top tier of the destructive friction ladder. Use Confirmation dialog for the tier below.
+
+## 2. Usage
+
+### When to use
+
+- Before an action that cannot be undone and that removes other resources too: delete a project with its repositories, remove a team with its boards, close an account with its data. GitLab Pajamas asks for a typed name in this case.
+
+### When not to use, and what to use instead
+
+- **For an action that can be undone.** Do it, then offer Undo in a toast (Nielsen heuristic 3, user control and freedom).
+- **For an irreversible action that removes one thing and nothing else.** Use Confirmation dialog with `destructive`. A typed name there is friction with no payoff, and people start to paste the name without reading it.
+- **For a message with one answer.** Use Alert dialog.
+- **For a task with several fields.** Use Modal.
+
+### How
+
+- **Role.** The dialog sets `role="alertdialog"` and `aria-describedby` on the cost, so the cost is read out on open (APG Alert and Message Dialogs; WCAG 4.1.2, A).
+- **The cost.** The description says what goes, how much, and what else goes with it: "This permanently deletes Apollo, its 3 repositories and 128 files. It cannot be recovered." A vague cost hides the cascade (NN/g, be specific about what will be deleted).
+- **The typed name.** `confirmText` is the exact text to type. The comparison is exact: case and spaces count. The confirm button stays disabled until the value matches (GitLab Pajamas, type-to-confirm; WCAG 3.3.4 Error Prevention, AA).
+- **The reason.** A disabled button gives no reason by itself. `fieldDescription` says why: "The Delete project button stays disabled until the name matches exactly." The text field links it with `aria-describedby` (Nielsen heuristic 1, visibility of system status).
+- **Enter.** Enter in the field confirms only when the value matches. A wrong value does nothing.
+- **Focus.** Focus starts on the text field. The user must type before any action works, so the field is the only useful first stop. This differs from Confirmation dialog, where focus starts on Cancel (WCAG 2.4.3 Focus Order, A). A stray Enter on an empty field does nothing, so the field is as safe as Cancel.
+- **Order and colour.** The confirm is a danger button and comes first. Cancel comes last. The label names the action and its object, so colour is never the only cue (WCAG 1.4.1, A; 2.4.6, AA).
+- **Loading.** `loading` keeps the label and the width of the confirm, sets `aria-busy`, disables Cancel and turns off Escape. The action runs once.
+- **Failure.** `error` shows an alert above the cost. The dialog stays open and the typed value stays, so the user can retry (Nielsen heuristic 9; WCAG 4.1.3, AA).
+- **Reopening.** The field empties when the dialog closes. A reopened dialog asks again.
+- **Escape** calls `onClose`, the same as Cancel. The scrim does not close the dialog.
+- **i18n.** Every text arrives as a prop. The component holds no text of its own (`docs/library.md`, isolation rule 4).
+
+## 3. Why the states look as they do
+
+- **Some** is the question, the cost, the field and the two answers.
+- **Too many** is a long cost. It wraps, and the body scrolls when it runs out of room, as in Modal.
+- **Loading** is the confirm in its loading state while the request runs. Cancel is off.
+- **Incorrect** is the failed request. The alert says nothing was deleted, and the user can retry.
+- **Correct** is the typed value that matches. The confirm turns on.
+- **Disabled** is the confirm before the value matches. The field description gives the reason.
+- **Nothing, none, one and done** are n/a. The dialog holds no collection. The view behind announces the result.
+
+## 4. Pitfalls and don'ts
+
+- **Do not use it for an action that is not critical.** Typing a name for every delete trains people to paste it. (GitLab Pajamas; `critical-confirmation-dialog.only-critical`)
+- **Do not enable the confirm before the name matches.** The typed name guards nothing then. (WCAG 3.3.4, AA; `critical-confirmation-dialog.type-to-confirm`)
+- **Do not let Enter confirm a wrong value.** The keyboard path must obey the same guard as the button. (WCAG 3.3.4, AA; `critical-confirmation-dialog.enter-guarded`)
+- **Do not leave the disabled confirm without a reason.** Say why in the field description. (Nielsen heuristic 1)
+- **Do not describe the cost in vague words.** Name what goes and what goes with it. (NN/g; `critical-confirmation-dialog.cost-named`)
+- **Do not build it from a Modal with its own field and buttons.** The role, the description and the focus rule get lost. (Nielsen heuristic 4; `critical-confirmation-dialog.built-on-modal`)

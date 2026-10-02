@@ -14,7 +14,7 @@ const meta = { title: 'Clickables/Button', component: Button, parameters: { layo
 
 export default meta;
 
-const VARIANTS = ['primary', 'secondary', 'tertiary', 'subtle'] as const satisfies readonly ButtonVariant[];
+const VARIANTS = ['primary', 'secondary', 'tertiary', 'subtle', 'danger'] as const satisfies readonly ButtonVariant[];
 const TYPES = ['button', 'submit', 'reset'] as const satisfies readonly NonNullable<ButtonProps['type']>[];
 
 export const Showcase: StoryObj<typeof meta> = {
@@ -33,6 +33,8 @@ export const Showcase: StoryObj<typeof meta> = {
         rows: [
           { name: 'action.primary · primary-hover · primary-pressed', tier: 'role', use: 'Fill of the primary variant and its hover and pressed states', swatch: '--ds-action-primary' },
           { name: 'action.primary-text', tier: 'role', use: 'Label on the primary fill; the pair reaches 4.5:1 in both themes', swatch: '--ds-action-primary-text' },
+          { name: 'action.danger · danger-hover · danger-pressed', tier: 'role', use: 'Fill of the danger variant and its hover and pressed states', swatch: '--ds-action-danger' },
+          { name: 'action.danger-text', tier: 'role', use: 'Label on the danger fill; the pair reaches 4.5:1 in both themes', swatch: '--ds-action-danger-text' },
           { name: 'border.strong', tier: 'role', use: 'Outline of the secondary variant', swatch: '--ds-border-strong' },
           { name: 'surface.default', tier: 'role', use: 'Secondary fill', swatch: '--ds-surface-default' },
           { name: 'text.default · text.link', tier: 'role', use: 'Secondary and tertiary labels', swatch: '--ds-text-link' },
@@ -69,7 +71,7 @@ export const Showcase: StoryObj<typeof meta> = {
         { label: 'Icon', value: 'no slot; use icon-button for an icon alone' },
       ]}
       api={[
-        { label: 'variant', value: '"primary" | "secondary" | "tertiary" | "subtle", default "primary". One primary per view region. Subtle is the quietest: neutral text, no fill or outline until hover.', control: { kind: 'select', options: VARIANTS, value: 'primary' } },
+        { label: 'variant', value: '"primary" | "secondary" | "tertiary" | "subtle" | "danger", default "primary". One primary per view region. Subtle is the quietest: neutral text, no fill or outline until hover. Danger is only the confirm of a destructive action.', control: { kind: 'select', options: VARIANTS, value: 'primary' } },
         { label: 'loading', value: 'The action is running. The label and width stay, aria-busy is set, presses are ignored.', control: { kind: 'boolean', value: true } },
         { label: 'type', value: '"button" | "submit" | "reset", default "button". A button in a form does not submit unless you ask.', control: { kind: 'select', options: TYPES, value: 'button' } },
         { label: 'disabled', value: 'The native disabled attribute.', control: { kind: 'boolean', value: false } },
@@ -95,6 +97,7 @@ export const Showcase: StoryObj<typeof meta> = {
                 <Button variant="secondary">Secondary</Button>
                 <Button variant="tertiary">Tertiary</Button>
                 <Button variant="subtle">Subtle</Button>
+                <Button variant="danger">Delete project</Button>
               </div>
             ),
             trigger: 'variant',
@@ -109,6 +112,7 @@ export const Showcase: StoryObj<typeof meta> = {
       dos={[
         { text: 'Start the label with a verb and name the object: "Save changes".', basis: 'WCAG 2.4.6 (AA)' },
         { text: 'Show one primary button per view region.', basis: 'Hick 1952; Nielsen 8' },
+        { text: 'Use danger only for the confirm of a destructive action, and name the action in the label.', basis: 'WCAG 1.4.1 (A); GitLab Pajamas', rule: 'button.danger-names-action' },
         { text: 'Keep the label and width while loading, and announce the result elsewhere.', basis: 'Nielsen 1; WCAG 4.1.3 (AA)' },
         { text: 'Let the label wrap on a narrow screen.', basis: 'WCAG 1.4.10 (AA)' },
       ]}
@@ -117,6 +121,7 @@ export const Showcase: StoryObj<typeof meta> = {
         { text: 'Use a div with a click handler.', basis: 'APG Button; WCAG 4.1.2 (A)', rule: 'button.native-element' },
         { text: 'Model disabled as a variant.', basis: 'misfile.state-as-variant', rule: 'button.states.not-variant' },
         { text: 'Put two primary buttons side by side.', basis: 'Hick 1952; Nielsen 8', rule: 'button.one-primary' },
+        { text: 'Use danger for a page action, or let red carry the meaning alone.', basis: 'WCAG 1.4.1 (A); GitLab Pajamas', rule: 'button.danger-names-action' },
         { text: 'Swap the label for a spinner while loading.', basis: 'Nielsen 1; WCAG 4.1.2 (A)', rule: 'button.state.loading' },
         { text: 'Write a colour literal in button.css.', basis: 'misfile.raw-value-in-component', rule: 'button.no-literal' },
         { text: 'Label a button "Click here".', basis: 'WCAG 2.4.6 (AA)', rule: 'button.label-verb' },
@@ -212,6 +217,20 @@ export const Examples: StoryObj<typeof meta> = {
               render: <Button variant="tertiary">Skip for now</Button>,
               code: `// Text only. It is still a button: it runs an action and does not navigate.
 <Button variant="tertiary" onClick={skip}>Skip for now</Button>`,
+            },
+            {
+              title: 'Danger',
+              when: 'The confirm button of a destructive action, inside the dialog that asks the user to confirm.',
+              explain: [
+                'A solid red fill. Use it only on the button that destroys something, and only after the user has asked for that action. Do not use it as the main button of a page.',
+                'Red is not the only cue. The label names the action and its object: "Delete project", never "OK" (WCAG 1.4.1 Use of Color, A; 2.4.6, AA).',
+                'The label reaches 4.5:1 on the fill in light and dark themes, and on hover and pressed (WCAG 1.4.3, AA).',
+                'In a dialog footer, put the danger button first and Cancel last. `ConfirmationDialog` does this for you when `destructive` is set.',
+              ],
+              render: <Button variant="danger">Delete project</Button>,
+              code: `// Only for the confirm of a destructive action. The label names the action and its object.
+// "confirmDelete" stands for your own function.
+<Button variant="danger" onClick={confirmDelete}>Delete project</Button>`,
             },
             {
               title: 'Subtle',

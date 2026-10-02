@@ -88,6 +88,7 @@ export const SLICE_ICONS = {
   Modal: [b([0, 0, 0], [4, 4, 0.3], grey), b([0.6, 0.6, 1.6], [2.8, 2.8, 0.4], { glyph: 'close' })],
   Popover: [cube(0, 0, 0, 1.2, grey), b([0, 1.4, 1.2], [3, 2.4, 0.4])],
   Tooltip: [cube(1, 1, 0, 1.4, grey), b([0.6, 0.6, 2.2], [2.2, 1, 0.3])],
+  'Critical confirmation dialog': [b([0, 0, 0], [4, 4, 0.3], grey), b([0.6, 0.6, 1.6], [2.8, 2.8, 0.4], { glyph: 'warning' }), b([1, 2.7, 2], [2, 0.5, 0.2], { shift: 1 })],
   // Navigation
   Breadcrumb: [cube(0, 0, 0, 1), cube(1.4, 0, 0, 1, { shift: 1 }), cube(2.8, 0, 0, 1, { shift: 2 })].map((c, i) => ({ ...c, size: [1, 1, 0.5 + i * 0.5] as Vec })),
   Pagination: [0, 1, 2, 3].map((i) => b([i, 0, 0], [0.8, 0.8, i === 1 ? 1.4 : 0.5], i === 1 ? {} : grey)),
@@ -96,6 +97,10 @@ export const SLICE_ICONS = {
   'Empty results': [b([0, 0, 0], [4, 3.6, 0.3], grey), b([0.8, 0.6, 0.3], [2.4, 2.4, 0.6], { glyph: 'search', ghost: true })],
   Filtering: [b([1.4, 1.4, 0], [1, 1, 0.5]), b([0.9, 0.9, 0.9], [2, 2, 0.4], { shift: 1 }), b([0.3, 0.3, 1.7], [3.2, 3.2, 0.4], { glyph: 'filter' })],
   'Form validation': [b([0, 0, 0], [3, 1, 0.5], grey), b([0, 1.4, 0], [3, 1, 0.5], grey), cube(3.2, 1.4, 0, 1, { glyph: 'check' })],
+  // Three messages, quietest first: the least disruptive one that does the job.
+  Messaging: [b([0, 0, 0], [4, 4, 0.3], grey), b([0.2, 2.6, 0.3], [1.4, 1, 0.3]), b([1.8, 1.4, 0.3], [2, 2.4, 0.9], { shift: 1, glyph: 'bell' })],
+  // One item kept, one lifted for deletion, one already gone.
+  'Destructive actions': [cube(0, 0, 0, 1.2, grey), b([1.4, 1.4, 0.8], [1.4, 1.4, 0.4], { glyph: 'delete' }), cube(2.8, 2.8, 0, 1.2, ghost)],
 } as const satisfies Record<string, Shape>;
 
 export type SliceName = keyof typeof SLICE_ICONS;

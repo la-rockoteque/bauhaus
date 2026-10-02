@@ -17,7 +17,7 @@ sources:
 
 > A light switch tells you three things without a word: it is there, it is on or off, and it moved when you pressed it. An interaction state is how a control does the same on screen: "you can use me", "you are pointing at me", "I felt that", "not now, and here is why".
 
-An interaction state is a **condition** of a component at this instant. It is never a variant (a variant is a design choice, such as primary or secondary). Every state is styled with semantic **state tokens**, never with literals. See `model.md` for the lifecycle axis.
+An interaction state is a **condition** of a component at this instant. It is never a variant (a variant is a design choice, such as primary or secondary). Every state is styled with semantic **state tokens**, never with literals. Every state selector follows the ladder in `../components/api-design.md` § State selectors. See `model.md` for the lifecycle axis.
 
 ## Rules
 
@@ -47,7 +47,7 @@ States a control enters because of the work it triggers.
 
 | State | Job | Rules | Basis |
 |---|---|---|---|
-| **Loading** | The action is running. | Keep the label or its width (no layout shift). Block duplicate submission. Set `aria-busy` on the region, not only a spinner. | Nielsen 1; Nielsen 5, Error prevention (double submit); WCAG 4.1.3 (AA). |
+| **Loading** | The action is running. | Keep the label or its width (no layout shift). Block duplicate submission. Set `aria-busy` on the region, not only a spinner. Style it with `[aria-busy='true']`, never a `--loading` modifier. | Nielsen 1; Nielsen 5, Error prevention (double submit); WCAG 4.1.3 (AA). |
 | **Success** | The action landed. | Brief, in text ("Saved"), announced. Return to default when the next action is possible. | WCAG 4.1.3 (AA); WCAG 1.4.1 (A): not colour alone. |
 | **Error** | The action failed. | Return the control to operable. Put the explanation inline, in text, next to the control. | Figma: "Reset button to clickable state and provide clear inline message". WCAG 3.3.1 (A). |
 | **Selected** / toggled | On until turned off. | `aria-pressed` for toggle buttons, `aria-selected` in tabs, listboxes and grids, `aria-checked` for checkboxes and switches. Differs from focus and from hover. | WAI-ARIA 1.2; APG Button, Tabs, Listbox. |
@@ -56,13 +56,13 @@ States a control enters because of the work it triggers.
 
 | State | Attribute | Applies to | Note |
 |---|---|---|---|
-| **Read-only** | `readonly`, `aria-readonly` | Fields, grids | Focusable and copyable. Not disabled: the value is real and submitted. |
+| **Read-only** | `readonly`, `[aria-readonly='true']` | Fields, grids | Focusable and copyable. Not disabled: the value is real and submitted. |
 | **Invalid** | `aria-invalid="true"` | Fields | The interaction face of the *incorrect* lifecycle state. |
-| **Indeterminate** | `indeterminate` property, `aria-checked="mixed"` | Checkbox, tree | "Some children selected." A third visual, not a disabled look. |
+| **Indeterminate** | `:indeterminate`, `aria-checked="mixed"` | Checkbox, tree | "Some children selected." A third visual, not a disabled look. |
 | **Expanded** | `aria-expanded` | Disclosure, accordion, combobox, menu button | The icon rotates or swaps; the state is also in the accessible name or role. |
 | **Current** | `aria-current="page|step|date|true"` | Navigation, breadcrumbs, steppers, calendars | Distinct from selected. |
 | **Visited** | `:visited` | Links | Only colour may change (browser privacy limits). Useful in long result lists. |
-| **Dragging / drop target** | App state | Sortable lists, uploads | Needs a single-pointer alternative: WCAG 2.5.7 Dragging Movements (AA). |
+| **Dragging / drop target** | `[data-dragging]`, `[data-drop-target]` | Sortable lists, uploads | Needs a single-pointer alternative: WCAG 2.5.7 Dragging Movements (AA). |
 | **Required** | `required`, `aria-required` | Fields | Shown in text or a symbol explained once, not only with colour. WCAG 3.3.2 (A). |
 
 ## Combinations and precedence
@@ -156,6 +156,7 @@ Owned by `motion-designer` (`../foundations/motion.md`):
 
 ## See also
 
+- `../components/api-design.md` § State selectors
 - `model.md`, `lifecycle-states.md`, `state-matrix.md`
 - `../foundations/color.md`, `../foundations/motion.md`, `../foundations/elevation.md`, `../tokens/theming.md`
 - `../accessibility/apg-patterns.md`, `../components/catalog.md`
