@@ -385,7 +385,7 @@ export function scaffold(target, { name, prefix = 'ds' }) {
   fs.cpSync(KIT_LIBRARY, target, { recursive: true, filter: (src) => !['node_modules', 'storybook-static'].includes(path.basename(src)) });
   const files = fs.readdirSync(target, { recursive: true }).map((r) => path.join(target, r)).filter((f) => fs.statSync(f).isFile());
   for (const f of files.filter((x) => TEXT_FILE.test(x))) {
-    let text = fs.readFileSync(f, 'utf8').split('@acme/design-system').join(name);
+    let text = fs.readFileSync(f, 'utf8').split('@bauhaus/design-system').join(name);
     if (prefix !== 'ds') text = text.replace(/\bds-/g, `${prefix}-`).replace(/("prefix":\s*)"ds"/, `$1"${prefix}"`);
     fs.writeFileSync(f, text);
   }

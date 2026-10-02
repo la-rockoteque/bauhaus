@@ -192,7 +192,7 @@ export const Examples: StoryObj = {
       name="Menu item"
       layer="Component"
       family="Clickables"
-      imports="import { Button, Menu, MenuItem, MenuSection, MenuSeparator, Stack, Text } from '@acme/design-system';"
+      imports="import { Button, Menu, MenuItem, MenuSection, MenuSeparator, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A menu item is one row of a `Menu`: an action to run or a choice to make. It has no meaning outside a `Menu`. The `Menu` opens from a button, handles the arrow keys and closes on Escape.',
         'Every item needs an `id`. It is the key your code gets back in `onAction` or in the selection, so it tells your code which item the user picked.',

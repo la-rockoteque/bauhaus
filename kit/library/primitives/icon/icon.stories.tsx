@@ -149,7 +149,7 @@ export const Examples: StoryObj = {
     <ExamplesPage
       name="Icon"
       layer="Primitive"
-      imports="import { Icon, GLYPH_GROUPS, Stack, Text, Box } from '@acme/design-system';"
+      imports="import { Icon, GLYPH_GROUPS, Stack, Text, Box } from '@bauhaus/design-system';"
       intro={[
         'An icon is a small drawing that speeds up recognition. You pick it by name (`glyph`) from a fixed set of 42. You cannot paste your own SVG.',
         'An icon must not carry meaning alone. People who cannot see it, or cannot tell its colour, miss it. Put words beside it (WCAG 1.4.1, A).',
@@ -379,7 +379,7 @@ export const Examples: StoryObj = {
                   ))}
                 </Stack>
               ),
-              code: `import { GLYPH_GROUPS } from '@acme/design-system';
+              code: `import { GLYPH_GROUPS } from '@bauhaus/design-system';
 
 // Each name is a valid value for the "glyph" prop.
 <Stack direction="horizontal" gap={4} wrap>

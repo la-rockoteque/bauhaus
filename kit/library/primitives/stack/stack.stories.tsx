@@ -155,7 +155,7 @@ export const Examples: StoryObj<typeof meta> = {
     <ExamplesPage
       name="Stack"
       layer="Primitive"
-      imports="import { Stack, Box, Text, Heading, Button } from '@acme/design-system';"
+      imports="import { Stack, Box, Text, Heading, Button } from '@bauhaus/design-system';"
       intro={[
         'A stack puts its children in one line, one after the other. The line runs down the page (a column) or across it (a row).',
         'The gap is the empty space between two children. You pick it from the space scale: a short list of sizes, `0` to `12`, where each step is 4px more than the last (`gap={4}` is 16px).',

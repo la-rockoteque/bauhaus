@@ -177,7 +177,7 @@ export const Examples: StoryObj = {
       name="Spinner"
       layer="Component"
       family="Feedback"
-      imports="import { Banner, Button, Spinner, Stack, Text } from '@acme/design-system';"
+      imports="import { Banner, Button, Spinner, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A spinner is a small turning ring that says "working on it". It does not know how far along the work is. When you know the progress, use a progress bar instead.',
         'Every spinner has a text `label`, and the label is required. The ring is a picture; screen readers (tools that read the page aloud) read the label.',

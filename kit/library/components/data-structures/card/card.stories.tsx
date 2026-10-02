@@ -196,7 +196,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Card"
       layer="Component"
       family="Data structures"
-      imports="import { Badge, Button, Card, List, Stack, Text } from '@acme/design-system';"
+      imports="import { Badge, Button, Card, List, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A card is a bordered box that sums up one thing: a project, a person, a product. Think of the cover of a folder.',
         'Only `title` is required. `meta`, the body (`children`) and `footer` are optional parts that you add as needed.',

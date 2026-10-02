@@ -144,7 +144,7 @@ export const Examples: StoryObj = {
       name="Icon button"
       layer="Component"
       family="Clickables"
-      imports="import { Button, Icon, IconButton, Stack, Text, Tooltip } from '@acme/design-system';"
+      imports="import { Button, Icon, IconButton, Stack, Text, Tooltip } from '@bauhaus/design-system';"
       intro={[
         'An icon button is a button that shows only a small picture, such as an X to close. It is a `Button` underneath, so it takes the same props: `variant`, `loading`, `disabled`, `type`, `onClick`.',
         'The picture is not text, so a screen reader (software that reads the page aloud for blind users) has nothing to say. The required `label` prop is the fix: it becomes the accessible name, the text a screen reader says for the control.',

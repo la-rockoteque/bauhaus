@@ -162,7 +162,7 @@ export const Examples: StoryObj = {
       name="Progress"
       layer="Component"
       family="Feedback"
-      imports="import { Button, Progress, Stack, Text } from '@acme/design-system';"
+      imports="import { Button, Progress, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A progress bar shows how far a long task has got: an upload, an import, an export. It names the task and says how much is done, in words as well as in the bar.',
         'Pick the feedback component by the message. `Progress` follows work that takes time. A spinner shows a short wait of unknown length. A skeleton holds the place of content that loads in one or two seconds. A `Banner` stays on the page. A toast confirms, then fades.',

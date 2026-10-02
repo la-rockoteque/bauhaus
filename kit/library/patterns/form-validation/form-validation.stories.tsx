@@ -339,7 +339,7 @@ export const Examples: StoryObj = {
     <ExamplesPage
       name="Form validation"
       layer="Pattern"
-      imports={`import { Banner, Button, Checkbox, Link, RadioGroup, Select, Stack, TextField } from '@acme/design-system';
+      imports={`import { Banner, Button, Checkbox, Link, RadioGroup, Select, Stack, TextField } from '@bauhaus/design-system';
 import { useState } from 'react';`}
       intro={[
         'Validation is how a form tells the user what is wrong and how to fix it. The pattern waits until the user has finished a field, then says so in plain words next to it.',

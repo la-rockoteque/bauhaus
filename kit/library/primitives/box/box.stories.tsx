@@ -136,7 +136,7 @@ export const Examples: StoryObj<typeof meta> = {
     <ExamplesPage
       name="Box"
       layer="Primitive"
-      imports="import { Box, Stack, Text, Heading, Button } from '@acme/design-system';"
+      imports="import { Box, Stack, Text, Heading, Button } from '@bauhaus/design-system';"
       intro={[
         'A box is an empty container. It draws nothing until you give it padding (space inside), a gap (space between its children) or a surface (a background).',
         'Padding is the space between the edge of a box and what is inside it. A gap is the space between two children. A margin is space outside the box, and Box has none: the parent sets the space around a child.',

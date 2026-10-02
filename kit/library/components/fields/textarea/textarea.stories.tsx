@@ -199,7 +199,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Textarea"
       layer="Component"
       family="Fields"
-      imports="import { Textarea, TextField, Stack, Text, Button } from '@acme/design-system';"
+      imports="import { Textarea, TextField, Stack, Text, Button } from '@bauhaus/design-system';"
       intro={[
         'A textarea is a text field with room for several lines: a message, a comment, an address. It renders a native `<textarea>`. Enter adds a new line.',
         'It shares its label, description and error with `TextField` (see that page for the full wiring). The label is always visible. A placeholder (grey sample text inside the box) is never the label.',

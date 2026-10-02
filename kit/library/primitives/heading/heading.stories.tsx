@@ -131,7 +131,7 @@ export const Examples: StoryObj = {
     <ExamplesPage
       name="Heading"
       layer="Primitive"
-      imports="import { Heading, Stack, Text, Box, Icon } from '@acme/design-system';"
+      imports="import { Heading, Stack, Text, Box, Icon } from '@bauhaus/design-system';"
       intro={[
         'A heading is the title of a part of the page. Screen reader users jump from heading to heading to skim a page, the way sighted users skim big text.',
         'The level (1 to 6) is the place in the outline, like chapters and sub-chapters. Level 1 is the page title, level 2 is a section, level 3 is a part of a section.',

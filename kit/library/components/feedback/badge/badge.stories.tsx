@@ -172,7 +172,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Badge"
       layer="Component"
       family="Feedback"
-      imports="import { Badge, Button, Card, Stack, Text } from '@acme/design-system';"
+      imports="import { Badge, Button, Card, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A badge is a small pill with a word or a number. It sits beside the thing it describes: "Paid" on an invoice, "3" on the Inbox tab. It stays quiet and shows a fact the user can scan.',
         'Pick the feedback component by the message. A badge marks one item. A `Banner` speaks about the whole page and stays until the cause ends. A toast confirms an action, then fades. `Progress` follows work that takes time. `EmptyState` fills a list with nothing in it.',

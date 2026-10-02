@@ -190,7 +190,7 @@ export const Examples: StoryObj = {
       name="Chip"
       layer="Component"
       family="Clickables"
-      imports="import { Chip, Stack, Text } from '@acme/design-system';"
+      imports="import { Chip, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A chip is a small pill that holds one value, such as a filter the user chose. Depending on `variant`, it only shows the value, lets the user remove it, or lets the user switch it on and off.',
         'The `variant` decides what the user can do. `static` shows a value. `removable` adds a remove button. `selectable` is a toggle (a button with two states, on and off).',

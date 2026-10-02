@@ -243,7 +243,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="List"
       layer="Component"
       family="Data structures"
-      imports="import { Badge, Button, Icon, List, ListItem, Pagination, Stack, Text } from '@acme/design-system';"
+      imports="import { Badge, Button, Icon, List, ListItem, Pagination, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A list is a stack of rows. Each row stands for one thing: a file, a message, a setting.',
         '`List` is the real HTML `ul` (bullet list) or `ol` (numbered list), and each `ListItem` is an `li`. Screen readers then announce "list, 3 items" and each position.',

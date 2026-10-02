@@ -242,7 +242,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Popover"
       layer="Component"
       family="Overlays"
-      imports="import { useState } from 'react'; import { Button, Checkbox, Menu, MenuItem, Popover, Stack, Text, TextField, Tooltip } from '@acme/design-system';"
+      imports="import { useState } from 'react'; import { Button, Checkbox, Menu, MenuItem, Popover, Stack, Text, TextField, Tooltip } from '@bauhaus/design-system';"
       intro={[
         'A popover is a small panel that opens beside the button you pressed. It holds more than a hint: a few options, a short form, some detail. The user sees the panel and its button together.',
         'Three overlays look alike and do different jobs. A menu lists actions to pick from. A popover holds richer content, which can include fields and buttons. A tooltip is a few words of hint on a control that already has a name.',

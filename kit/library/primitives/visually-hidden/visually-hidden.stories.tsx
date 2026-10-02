@@ -113,7 +113,7 @@ export const Examples: StoryObj<typeof meta> = {
     <ExamplesPage
       name="Visually hidden"
       layer="Primitive"
-      imports="import { VisuallyHidden, Stack, Text, Icon, Heading, Box } from '@acme/design-system';"
+      imports="import { VisuallyHidden, Stack, Text, Icon, Heading, Box } from '@bauhaus/design-system';"
       intro={[
         'Visually hidden text is on the page for screen readers but invisible on screen. It is shrunk and clipped, not removed.',
         'A screen reader (software that reads the page aloud) needs context that the layout gives to sighted users: "this number is a price", "this table column holds actions".',

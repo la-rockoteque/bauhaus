@@ -137,7 +137,7 @@ export const Examples: StoryObj = {
       name="Breadcrumb"
       layer="Component"
       family="Navigation"
-      imports="import { Breadcrumb, Stack, Text } from '@acme/design-system';"
+      imports="import { Breadcrumb, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A breadcrumb shows the path from the top of the site to the page you are on, like the crumbs in the fairy tale. Each earlier step is a link back up.',
         'Pass the path as `items`, ordered from the top to the current page. The last item is always the current page.',

@@ -507,7 +507,7 @@ export const Examples: StoryObj = {
     <ExamplesPage
       name="Filtering"
       layer="Pattern"
-      imports={`import { Badge, Button, Checkbox, Chip, EmptyState, List, ListItem, Pagination, Select, Spinner, Stack, Table, Text, TextField } from '@acme/design-system';
+      imports={`import { Badge, Button, Checkbox, Chip, EmptyState, List, ListItem, Pagination, Select, Spinner, Stack, Table, Text, TextField } from '@bauhaus/design-system';
 import { useEffect, useRef, useState } from 'react';`}
       intro={[
         'Filtering narrows a long list. After each change the user must be able to answer three questions: what is set, how many results are left, and how do I undo it?',

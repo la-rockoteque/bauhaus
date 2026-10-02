@@ -200,7 +200,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Checkbox"
       layer="Component"
       family="Fields"
-      imports="import { Checkbox, Button, Stack } from '@acme/design-system';"
+      imports="import { Checkbox, Button, Stack } from '@bauhaus/design-system';"
       intro={[
         'Pick a checkbox for a yes or no that a form saves later: "Send me the newsletter". Ticking one box never changes another.',
         'Pick a switch instead when the change applies at once, with no Save button. Pick a radio group when the user must choose exactly one of several options.',

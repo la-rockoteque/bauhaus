@@ -178,7 +178,7 @@ export const Examples: StoryObj = {
     <ExamplesPage
       name="Empty results"
       layer="Pattern"
-      imports={`import { Button, EmptyState, List, ListItem, Stack, TextField, Text } from '@acme/design-system';
+      imports={`import { Button, EmptyState, List, ListItem, Stack, TextField, Text } from '@bauhaus/design-system';
 import { useEffect, useRef, useState } from 'react';`}
       intro={[
         'An empty result is the screen a list shows when it has zero rows. A blank area looks broken, so this pattern tells the user why it is empty and what to do next.',

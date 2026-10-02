@@ -177,7 +177,7 @@ export const Examples: StoryObj = {
       name="Tabs"
       layer="Component"
       family="Navigation"
-      imports="import { Badge, Icon, Stack, Tabs, Text } from '@acme/design-system';"
+      imports="import { Badge, Icon, Stack, Tabs, Text } from '@bauhaus/design-system';"
       intro={[
         'Tabs flip between a few views of one thing without leaving the page, like the tabs of a folder. Only one view shows at a time.',
         'Each item in `tabs` has an `id`, a `label` (the tab) and a `panel` (the view). The `id` must be unique and stay the same between renders.',

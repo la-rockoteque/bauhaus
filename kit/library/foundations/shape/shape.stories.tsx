@@ -88,8 +88,8 @@ export const Examples: StoryObj = {
     <ExamplesPage
       name="Shape"
       layer="Foundation"
-      imports={`import '@acme/design-system/tokens.css';
-import { Button, Badge, Card, Stack, Text } from '@acme/design-system';`}
+      imports={`import '@bauhaus/design-system/tokens.css';
+import { Button, Badge, Card, Stack, Text } from '@bauhaus/design-system';`}
       intro={[
         'Shape is how round the corners are. A radius of 0 gives a sharp corner; a larger radius gives a softer one.',
         'A token is a named design value. `--ds-radius-control` is a CSS custom property (a variable you read with `var(...)`) that holds `4px` today.',

@@ -116,8 +116,8 @@ export const Examples: StoryObj = {
     <ExamplesPage
       name="Spacing"
       layer="Foundation"
-      imports={`import '@acme/design-system/tokens.css';
-import { Box, Stack, Text, Heading, Button, TextField } from '@acme/design-system';`}
+      imports={`import '@bauhaus/design-system/tokens.css';
+import { Box, Stack, Text, Heading, Button, TextField } from '@bauhaus/design-system';`}
       intro={[
         'Spacing is the air between things: padding (inside a box), gap (between children) and margin (outside a box). Close things read as one group. Far things read as separate groups.',
         'A token is a named design value. `space.4` is `16px`. In CSS it is the custom property `--ds-space-4` (a variable you read with `var(...)`). Never type `16px` by hand.',

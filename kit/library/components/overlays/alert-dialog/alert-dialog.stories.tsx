@@ -201,7 +201,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Alert dialog"
       layer="Component"
       family="Overlays"
-      imports={"import { useState } from 'react';\nimport { AlertDialog, Button, Stack, Text } from '@acme/design-system';"}
+      imports={"import { useState } from 'react';\nimport { AlertDialog, Button, Stack, Text } from '@bauhaus/design-system';"}
       intro={[
         'An alert dialog is a small window that stops the user and tells them one thing they must know. It has one button. Pressing it means "I have read this".',
         'Pick the right dialog. Use `AlertDialog` for a message with one answer. Use `ConfirmationDialog` for a yes-or-no question. Use `Modal` for a task with fields. For news that needs no answer, use a toast or a banner.',

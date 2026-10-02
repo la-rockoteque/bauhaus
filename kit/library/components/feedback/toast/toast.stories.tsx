@@ -305,7 +305,7 @@ export const Examples: StoryObj = {
       name="Toast"
       layer="Component"
       family="Feedback"
-      imports="import { Banner, Button, Stack, Text, ToastRegion, useToast } from '@acme/design-system';"
+      imports="import { Banner, Button, Stack, Text, ToastRegion, useToast } from '@bauhaus/design-system';"
       intro={[
         'A toast is a small message that appears, says what happened ("Draft saved") and leaves by itself. It never takes keyboard focus, so the user keeps working where they were.',
         'Three pieces make it work. `useToast()` keeps the list of toasts. `show(...)` adds one to the list. `<ToastRegion />` draws the list on screen.',

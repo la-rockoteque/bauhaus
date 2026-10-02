@@ -252,7 +252,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Text field"
       layer="Component"
       family="Fields"
-      imports="import { TextField, Stack, Text, Button } from '@acme/design-system';"
+      imports="import { TextField, Stack, Text, Button } from '@bauhaus/design-system';"
       intro={[
         'A text field is a box where the user types one line: a name, an email, a search. It renders a native `<input>`, so typing, selecting, copying and pasting work with no code.',
         'A field is the label, the input and the messages around it. The label is always visible. A placeholder (grey sample text inside the box) is never the label, because it vanishes as soon as the user types.',

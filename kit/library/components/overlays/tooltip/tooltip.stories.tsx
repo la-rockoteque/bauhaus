@@ -165,7 +165,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Tooltip"
       layer="Component"
       family="Overlays"
-      imports="import { useState } from 'react'; import { Button, Icon, IconButton, Stack, Text, Tooltip } from '@acme/design-system';"
+      imports="import { useState } from 'react'; import { Button, Icon, IconButton, Stack, Text, Tooltip } from '@bauhaus/design-system';"
       intro={[
         'A tooltip is a few words that pop up when you point at a control or tab to it. It adds a detail to a control that already has a name. It never holds something the user must do.',
         'Three overlays look alike and do different jobs. A menu lists actions to pick from. A popover is a panel with richer content, such as a form. A tooltip is a short hint, with no buttons, links or fields.',

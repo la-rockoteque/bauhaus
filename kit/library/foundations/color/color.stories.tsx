@@ -115,8 +115,8 @@ export const Examples: StoryObj = {
       name="Color"
       layer="Foundation"
       family="Foundations"
-      imports={`import '@acme/design-system/tokens.css'; // defines every --ds-* colour variable, for both themes
-import { Banner, Box, Icon, Stack, Text } from '@acme/design-system';`}
+      imports={`import '@bauhaus/design-system/tokens.css'; // defines every --ds-* colour variable, for both themes
+import { Banner, Box, Icon, Stack, Text } from '@bauhaus/design-system';`}
       intro={[
         'A colour reaches your screen in three steps. The palette is the raw paint: `dark-blue-600` is one exact blue. A colours scale says which paint plays which part: `primary-600` points at `dark-blue-600`. A role says the job: `action.primary` means "the fill of the main button".',
         'Your code uses roles only. In CSS a role is a variable such as `var(--ds-text-default)`. Never write a hex value, `--ds-palette-*` or `--ds-colors-*` in a component.',
@@ -433,7 +433,7 @@ input[aria-invalid='true'] { border-color: var(--ds-field-border-invalid); }`,
                 'Save the user choice (for example in `localStorage`) and read it before the first paint to avoid a flash of the wrong theme.',
               ],
               lang: 'ts',
-              code: `import '@acme/design-system/tokens.css';
+              code: `import '@bauhaus/design-system/tokens.css';
 
 // Follow the system setting on load.
 const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;

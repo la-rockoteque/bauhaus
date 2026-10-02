@@ -132,7 +132,7 @@ export const Examples: StoryObj<typeof meta> = {
     <ExamplesPage
       name="Divider"
       layer="Primitive"
-      imports="import { Divider, Stack, Text, Heading, Box } from '@acme/design-system';"
+      imports="import { Divider, Stack, Text, Heading, Box } from '@bauhaus/design-system';"
       intro={[
         'A divider is a thin line between two groups of content. It is an HTML `<hr>`, a "thematic break": a change of topic.',
         'A gap alone often separates groups well enough. Add a divider when the groups look alike and the eye needs a clear stop.',

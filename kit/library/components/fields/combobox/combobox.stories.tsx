@@ -288,7 +288,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Combobox"
       layer="Component"
       family="Fields"
-      imports="import { Combobox, Stack, Text, Button } from '@acme/design-system';"
+      imports="import { Combobox, Stack, Text, Button } from '@bauhaus/design-system';"
       intro={[
         'A combobox is a text box with a list of suggestions. The user types a few letters, the list narrows, and the user picks one. Use it when the list is too long to scroll.',
         'The data goes in `options`: a list of `{ id, label }`. The `id` is what your code reads. The `label` is what the user sees and what the typing filters. Add `disabled: true` to show an option that is not available.',

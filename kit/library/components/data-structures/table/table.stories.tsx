@@ -339,7 +339,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Table"
       layer="Component"
       family="Data structures"
-      imports="import { Badge, Button, Pagination, Stack, Table, Text, VisuallyHidden } from '@acme/design-system';"
+      imports="import { Badge, Button, Pagination, Stack, Table, Text, VisuallyHidden } from '@bauhaus/design-system';"
       intro={[
         'A table lays out records in rows and columns, so people can scan down a column and compare. Use it for exact values: amounts, dates, statuses.',
         'It is a real HTML `table`. Screen readers announce the column header with each cell ("Total, 12,040.50"). A grid of `div`s loses that.',

@@ -162,7 +162,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Switch"
       layer="Component"
       family="Fields"
-      imports="import { Switch, Stack, Text } from '@acme/design-system';"
+      imports="import { Switch, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'Pick a switch for a setting that applies the moment it changes, like a light switch: notifications on, dark mode off. There is no Save button.',
         'Pick a checkbox instead when the user changes a form and presses Save later. A switch that waits for Save misleads (APG Switch).',

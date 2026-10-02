@@ -216,7 +216,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Select"
       layer="Component"
       family="Fields"
-      imports="import { Select, Stack, Text, Button } from '@acme/design-system';"
+      imports="import { Select, Stack, Text, Button } from '@bauhaus/design-system';"
       intro={[
         'A select is a drop-down list: the user picks one item from a short list of known choices, such as a country or a size. It renders a native `<select>`.',
         'Native means the browser draws the open list. The keyboard (arrows, Home, End, typing a letter), the screen-reader role and the picker on a phone all come for free (WAI-ARIA APG; WCAG 2.1.1, A).',

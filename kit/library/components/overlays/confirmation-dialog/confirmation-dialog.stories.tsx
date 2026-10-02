@@ -226,7 +226,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Confirmation dialog"
       layer="Component"
       family="Overlays"
-      imports={"import { useState } from 'react';\nimport { Button, ConfirmationDialog, Stack, Text } from '@acme/design-system';"}
+      imports={"import { useState } from 'react';\nimport { Button, ConfirmationDialog, Stack, Text } from '@bauhaus/design-system';"}
       intro={[
         'A confirmation dialog asks one yes-or-no question before an action goes ahead. The user confirms it or cancels it.',
         'Pick the right dialog. Use `ConfirmationDialog` for a question with two answers. Use `AlertDialog` for a message with one answer. Use `Modal` for a task with fields.',

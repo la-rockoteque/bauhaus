@@ -94,7 +94,7 @@ export const Examples: StoryObj = {
       name="Elevation"
       layer="Foundation"
       family="Foundations"
-      imports="import '@acme/design-system/tokens.css'; // defines --ds-shadow-*, --ds-scrim and --ds-z-*"
+      imports="import '@bauhaus/design-system/tokens.css'; // defines --ds-shadow-*, --ds-scrim and --ds-z-*"
       intro={[
         'Elevation says how far a surface floats above the page. A menu floats above a card; a dialog floats above a menu.',
         'The library keeps two levels on purpose. `--ds-shadow-1` is for small floating surfaces (menu, popover, tooltip). `--ds-shadow-2` is for large ones (dialog, drawer, toast).',

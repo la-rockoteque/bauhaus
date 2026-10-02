@@ -114,7 +114,7 @@ export const Examples: StoryObj<typeof meta> = {
     <ExamplesPage
       name="Text"
       layer="Primitive"
-      imports="import { Text, Stack, Icon } from '@acme/design-system';"
+      imports="import { Text, Stack, Icon } from '@bauhaus/design-system';"
       intro={[
         'Text shows a run of words. It takes its size, weight, line height and colour from design tokens (named design values), so every piece of text in the product matches.',
         'Two props are independent. `variant` is how the text looks: `body`, `caption` or `heading`. `as` is what the text is in the page: a paragraph, a list item, a label.',

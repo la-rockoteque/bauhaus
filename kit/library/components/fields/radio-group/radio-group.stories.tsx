@@ -184,7 +184,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Radio group"
       layer="Component"
       family="Fields"
-      imports="import { RadioGroup, Button, Stack, Text } from '@acme/design-system';"
+      imports="import { RadioGroup, Button, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'Pick a radio group when the user must choose exactly one of two to five options, and you want all options visible to compare. Picking one un-picks the other.',
         'Pick a checkbox instead when each option is a separate yes or no, or when the user may choose several. Pick a switch for a setting that applies at once.',

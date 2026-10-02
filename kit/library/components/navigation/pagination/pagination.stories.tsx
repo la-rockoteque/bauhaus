@@ -185,7 +185,7 @@ export const Examples: StoryObj = {
       name="Pagination"
       layer="Component"
       family="Navigation"
-      imports="import { Pagination, Stack, Text } from '@acme/design-system';"
+      imports="import { Pagination, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'Pagination cuts a long list into pages and lets the user move between them, like the page numbers under search results.',
         'The pager does not hold the page. Your view owns `page` and changes it in `onPageChange`. This is a controlled component: you pass the value in, and it tells you when to change it.',

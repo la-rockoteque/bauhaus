@@ -142,7 +142,7 @@ export const Examples: StoryObj = {
       name="Link"
       layer="Component"
       family="Clickables"
-      imports="import { Link, Stack, Text } from '@acme/design-system';"
+      imports="import { Link, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A link takes the user to another URL, inside your app or outside it. It draws a native `<a>` element, so right-click, "open in new tab" and the Enter key work with no code. To run an action such as save, use `Button`.',
         'Pass `href` for a plain link. Every other native anchor attribute passes through too: `download`, `hrefLang`, `aria-*`.',

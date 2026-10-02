@@ -274,7 +274,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Menu"
       layer="Component"
       family="Overlays"
-      imports="import { useState } from 'react'; import { Button, Icon, IconButton, Menu, MenuItem, MenuSection, MenuSeparator, Stack, Text } from '@acme/design-system';"
+      imports="import { useState } from 'react'; import { Button, Icon, IconButton, Menu, MenuItem, MenuSection, MenuSeparator, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A menu is a short list of actions that opens from a button. The user presses the button, picks one action, and the list closes. A menu is for doing things, not for reading.',
         'Three overlays look alike and do different jobs. A menu lists actions to pick from. A popover is a small panel with richer content, such as a form. A tooltip is a few words of hint on a control that already has a name.',

@@ -104,7 +104,7 @@ export const Examples: StoryObj = {
       name="Iconography"
       layer="Foundation"
       family="Foundations"
-      imports="import { Banner, Button, Icon, IconButton, Link, Stack, Text } from '@acme/design-system';"
+      imports="import { Banner, Button, Icon, IconButton, Link, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'An icon is a small picture for an action or a thing. The library draws its own set, all with the same line weight, so the set looks like one hand drew it.',
         'You draw an icon with the `Icon` component and the name of the glyph (the picture): `<Icon glyph="search" />`. You never write SVG paths yourself.',
@@ -422,8 +422,8 @@ export const Examples: StoryObj = {
                 'Keep the lookup next to the data, not scattered in the JSX.',
               ],
               lang: 'tsx',
-              code: `import { Icon } from '@acme/design-system';
-import type { IconGlyph } from '@acme/design-system';
+              code: `import { Icon } from '@bauhaus/design-system';
+import type { IconGlyph } from '@bauhaus/design-system';
 
 // One entry per status. Add a status and TypeScript asks for its glyph.
 const GLYPH_BY_STATUS: Record<'draft' | 'sent' | 'late', IconGlyph> = {

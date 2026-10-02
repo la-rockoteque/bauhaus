@@ -236,7 +236,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Skeleton"
       layer="Component"
       family="Feedback"
-      imports="import { Banner, Button, Skeleton, SkeletonRegion, Stack, Text } from '@acme/design-system';"
+      imports="import { Banner, Button, Skeleton, SkeletonRegion, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A skeleton is a grey placeholder shaped like the content that is about to appear. It holds the space, so the page does not jump when the content arrives (a "layout shift").',
         'Two parts work together. `Skeleton` draws one placeholder. `SkeletonRegion` wraps the placeholders and tells assistive technology (screen readers and similar tools) that the area is loading.',

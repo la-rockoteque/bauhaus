@@ -116,9 +116,9 @@ export const Examples: StoryObj = {
     <ExamplesPage
       name="Typography"
       layer="Foundation"
-      imports={`import '@acme/design-system/tokens.css';
-import '@acme/design-system/fonts.css'; // optional: loads the six default typefaces
-import { Text, Heading, TextField } from '@acme/design-system';`}
+      imports={`import '@bauhaus/design-system/tokens.css';
+import '@bauhaus/design-system/fonts.css'; // optional: loads the six default typefaces
+import { Text, Heading, TextField } from '@bauhaus/design-system';`}
       intro={[
         'Typography is how words look: which typeface (the font family), how big, how heavy, and how tall each line is.',
         'A text style is one named bundle of those four settings, such as `text.body` or `text.heading`. Each has four custom properties (CSS variables read with `var(...)`): `--ds-text-body-family`, `-size`, `-weight` and `-line-height`.',
@@ -555,8 +555,8 @@ p {
                 'The package cannot be edited. Copy `fonts.css` into your project and keep only the imports you use. An unused role ships no file.',
               ],
               lang: 'ts',
-              code: `import '@acme/design-system/tokens.css'; // the styles and sizes
-import '@acme/design-system/fonts.css';  // the typeface files; self-hosted from your package`,
+              code: `import '@bauhaus/design-system/tokens.css'; // the styles and sizes
+import '@bauhaus/design-system/fonts.css';  // the typeface files; self-hosted from your package`,
             },
             {
               title: 'Swap a family',

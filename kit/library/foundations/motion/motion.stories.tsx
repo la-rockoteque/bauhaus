@@ -118,8 +118,8 @@ function EnterExitDemo() {
   );
 }
 
-const MOTION_IMPORTS = `import '@acme/design-system/tokens.css'; // defines every --ds-motion-* property
-import '@acme/design-system/style.css';`;
+const MOTION_IMPORTS = `import '@bauhaus/design-system/tokens.css'; // defines every --ds-motion-* property
+import '@bauhaus/design-system/style.css';`;
 
 export const Examples: StoryObj = {
   name: 'Examples',
@@ -152,10 +152,10 @@ export const Examples: StoryObj = {
               ],
               lang: 'ts',
               code: `// 1. The values: durations, easing curves and the travel distance.
-import '@acme/design-system/tokens.css';
+import '@bauhaus/design-system/tokens.css';
 
 // 2. The component styles. They read the tokens above.
-import '@acme/design-system/style.css';
+import '@bauhaus/design-system/style.css';
 
 // 3. Your own CSS goes last, so it can read all of the above.
 //    In it, write the reduced-motion rule from the "Reduced motion" section.

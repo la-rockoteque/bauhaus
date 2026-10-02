@@ -79,7 +79,7 @@ design-system/                 own repo, own CI, own release
 ├─ packages/ or one package    shape of option 1 or 2 inside
 ├─ .changeset/                 release notes per change
 └─ renovate.json               consumers update through pull requests
-app-a/  app-b/                 depend on "@acme/design-system": "^3.2.0"
+app-a/  app-b/                 depend on "@bauhaus/design-system": "^3.2.0"
 ```
 
 - **Strengths:** independent release cadence. Semantic versions give consumers a contract. Consumers upgrade when they choose. The design system cannot import an app: the app is not there.

@@ -407,7 +407,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Modal"
       layer="Component"
       family="Overlays"
-      imports={"import { useState } from 'react';\nimport { Banner, Button, Checkbox, ConfirmationDialog, Modal, Spinner, Stack, Text, TextField } from '@acme/design-system';"}
+      imports={"import { useState } from 'react';\nimport { Banner, Button, Checkbox, ConfirmationDialog, Modal, Spinner, Stack, Text, TextField } from '@bauhaus/design-system';"}
       intro={[
         'A modal is a small window that stops the user and asks for a few details. The user finishes the task or closes it, then returns to where they were. The page behind it stops responding while it is open.',
         'Pick the right dialog. Use `Modal` for a task with fields. Use `AlertDialog` for a message with one answer. Use `ConfirmationDialog` for a yes-or-no question. For a long form or a multi-step flow, use a page.',

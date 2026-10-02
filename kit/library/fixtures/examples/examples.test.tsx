@@ -78,7 +78,7 @@ describe('ExamplesPage', () => {
         name="Button"
         layer="Component"
         family="Clickables"
-        imports="import { Button } from '@acme/design-system';"
+        imports="import { Button } from '@bauhaus/design-system';"
         guide="clickables-button--docs"
         guideName="Button"
         groups={[
@@ -94,7 +94,7 @@ describe('ExamplesPage', () => {
     expect(screen.getByRole('heading', { level: 3, name: 'Primary' })).toBeTruthy();
     expect(codeOf('Primary')).toBe('<Button>Save</Button>');
     expect(codeOf('Submit')).toBe('const custom = true;');
-    expect(codeOf('Import')).toBe("import { Button } from '@acme/design-system';");
+    expect(codeOf('Import')).toBe("import { Button } from '@bauhaus/design-system';");
     expect(screen.getByRole('button', { name: 'Save' })).toBeTruthy();
   });
 
@@ -140,7 +140,7 @@ describe('ExamplesPage', () => {
       <ExamplesPage
         name="Spacing"
         layer="Foundation"
-        imports="import '@acme/design-system/tokens.css';"
+        imports="import '@bauhaus/design-system/tokens.css';"
         guide="foundations-spacing--docs"
         guideName="Spacing"
         intro={['Steps run from `space.0` to `space.12`.']}

@@ -70,7 +70,7 @@ node scripts/patterns.mjs --components <file> src/ --out <dir>   # co-occurrence
 node scripts/normalise.mjs plan --analysis <dir>   # actions and batches
 node scripts/structure.mjs check packages/design-system   # slices, naming, import direction, isolation
 node scripts/structure.mjs place --components <file>      # target slice per component
-node scripts/structure.mjs scaffold packages/design-system --name @acme/design-system
+node scripts/structure.mjs scaffold packages/design-system --name @bauhaus/design-system
 node scripts/contrast.mjs '#6b7280' '#fff'
 npm test
 ```

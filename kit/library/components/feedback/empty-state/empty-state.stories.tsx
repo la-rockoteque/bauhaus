@@ -199,7 +199,7 @@ export const Examples: StoryObj = {
       name="Empty state"
       layer="Component"
       family="Feedback"
-      imports="import { Button, Card, EmptyState, Icon, Stack, Text } from '@acme/design-system';"
+      imports="import { Button, Card, EmptyState, Icon, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'An empty state is what a list or a page shows when it has nothing to show. A blank screen looks broken. The empty state says why it is empty and what to do next.',
         'Pick the feedback component by the message. `EmptyState` fills a space that has no content. A `Banner` speaks about the whole page. A toast confirms an action, then fades. A badge marks one item. `Progress` shows work in motion.',

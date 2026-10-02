@@ -3,7 +3,7 @@
 set -euo pipefail
 mkdir -p packages/design-system
 cat > packages/design-system/package.json <<'BAUHAUS_FIXTURE_EOF'
-{ "name": "@acme/design-system", "version": "0.1.0", "peerDependencies": { "react": ">=18" }, "exports": { ".": "./index.ts" } }
+{ "name": "@bauhaus/design-system", "version": "0.1.0", "peerDependencies": { "react": ">=18" }, "exports": { ".": "./index.ts" } }
 BAUHAUS_FIXTURE_EOF
 mkdir -p packages/design-system
 cat > packages/design-system/index.ts <<'BAUHAUS_FIXTURE_EOF'

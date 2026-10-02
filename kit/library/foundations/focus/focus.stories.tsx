@@ -80,8 +80,8 @@ export const Examples: StoryObj = {
       name="Focus"
       layer="Foundation"
       family="Foundations"
-      imports={`import '@acme/design-system/tokens.css'; // defines the --ds-focus-ring-* variables
-import { Button, Link } from '@acme/design-system';`}
+      imports={`import '@bauhaus/design-system/tokens.css'; // defines the --ds-focus-ring-* variables
+import { Button, Link } from '@bauhaus/design-system';`}
       intro={[
         'Focus is the mark that shows which control the keyboard will act on. Press Tab on any page: the control that gets an outline has focus. The outline is the focus ring.',
         'Without a ring, a keyboard user cannot tell where they are. Without a visible ring, the page fails WCAG 2.4.7 (Focus Visible, AA).',

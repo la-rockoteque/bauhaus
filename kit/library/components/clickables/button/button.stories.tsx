@@ -159,7 +159,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Button"
       layer="Component"
       family="Clickables"
-      imports="import { Button, Stack, Text } from '@acme/design-system';"
+      imports="import { Button, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A button runs one action on the current page: save, send, delete. To go to another page, use `Link`. To turn a setting on or off, use `Switch` or `Checkbox`.',
         'It draws a native `<button>`, the browser\'s own button element. Keyboard focus, the Space key and the Enter key work with no extra code. Every other native attribute passes through: `onClick`, `aria-*`, `form`.',

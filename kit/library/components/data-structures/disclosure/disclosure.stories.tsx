@@ -207,7 +207,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Disclosure"
       layer="Component"
       family="Data structures"
-      imports="import { Accordion, AccordionItem, Badge, Button, Disclosure, Stack, Text } from '@acme/design-system';"
+      imports="import { Accordion, AccordionItem, Badge, Button, Disclosure, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A disclosure is a title you press to show or hide a block under it. It keeps a page short and lets the reader choose to read the detail.',
         'Two parts exist. `Disclosure` is one block. `Accordion` with `AccordionItem` is a group of blocks, such as a list of questions and answers.',

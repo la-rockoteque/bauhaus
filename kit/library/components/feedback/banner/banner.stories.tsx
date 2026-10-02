@@ -208,7 +208,7 @@ export const Examples: StoryObj<typeof meta> = {
       name="Banner"
       layer="Component"
       family="Feedback"
-      imports="import { Banner, Button, Link, Stack, Text } from '@acme/design-system';"
+      imports="import { Banner, Button, Link, Stack, Text } from '@bauhaus/design-system';"
       intro={[
         'A banner is a note that stays on the page until the cause ends or the user closes it. It speaks about the whole page or system: a trial that ends, a failed save, offline mode.',
         'Pick the feedback component by the message. A banner stays and the user can reread it. A toast confirms an action, then fades. A badge marks one item. `EmptyState` fills a list with nothing in it. An error on one field belongs next to that field.',
