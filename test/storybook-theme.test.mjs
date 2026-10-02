@@ -12,7 +12,8 @@ const config = JSON.parse(fs.readFileSync(path.join(KIT, 'bauhaus.config.json'),
 const built = buildOutputs(config, KIT);
 const tsOutput = built.outputs.find((o) => o.path.endsWith('.ts'));
 const tokens = JSON.parse(/export const tokens = ([\s\S]*?) as const;/.exec(tsOutput.content)[1]);
-const { managerValues } = await import(pathToFileURL(path.join(KIT, '.storybook', 'theme-values.js')).href);
+const themes = JSON.parse(/export const themes = ([\s\S]*?) as const;/.exec(tsOutput.content)[1]);
+const { managerValues, withTheme } = await import(pathToFileURL(path.join(KIT, '.storybook', 'theme-values.js')).href);
 
 const leaves = (node) => (node && typeof node === 'object' ? Object.values(node).flatMap(leaves) : [node]);
 
@@ -52,4 +53,12 @@ test('theme.ts builds the Storybook theme from the tokens and holds no value of 
   assert.match(source, /managerValues\(tokens\)/);
   assert.match(source, /brandTitle: 'Bauhaus design system'/);
   assert.doesNotMatch(source, /#[0-9a-f]{3,8}\b/i);
+});
+
+test('the dark chrome reads the dark theme roles', () => {
+  const values = managerValues(withTheme(tokens, themes.dark));
+  assert.equal(values.appContentBg, themes.dark.surface.default);
+  assert.equal(values.textColor, themes.dark.text.default);
+  assert.notEqual(values.appContentBg, managerValues(tokens).appContentBg);
+  assert.equal(values.fontBase, tokens.font.sans, 'a theme keeps the values it does not set');
 });

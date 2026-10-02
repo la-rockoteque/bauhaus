@@ -1,0 +1,54 @@
+/* The slice icon. Each block takes vivid series colour n = the slice's part plus the block's shift
+   (series.css holds the rule). The left face is shaded a little and the right face more, so the light
+   comes from the top left, as on the isometric fixture. */
+
+.slice-icon {
+  inline-size: var(--slice-icon-size, var(--ds-size-icon-md));
+  block-size: var(--slice-icon-size, var(--ds-size-icon-md));
+  flex: none;
+  overflow: visible;
+}
+
+.slice-block {
+  --slice-color: var(--ds-series-color);
+}
+
+.slice-block--neutral {
+  --slice-color: var(--ds-border-strong);
+}
+
+.slice-face {
+  stroke: color-mix(in oklch, var(--slice-color), var(--ds-colors-neutral-900) 55%);
+  stroke-width: 0.08;
+  stroke-linejoin: round;
+}
+
+.slice-face--top {
+  fill: var(--slice-color);
+}
+
+.slice-face--left {
+  fill: color-mix(in oklch, var(--slice-color), var(--ds-colors-neutral-900) 20%);
+}
+
+.slice-face--right {
+  fill: color-mix(in oklch, var(--slice-color), var(--ds-colors-neutral-900) 40%);
+}
+
+.slice-block--ghost .slice-face {
+  fill: color-mix(in oklch, var(--slice-color), transparent 80%);
+  stroke: var(--slice-color);
+  stroke-dasharray: 0.25 0.18;
+}
+
+.slice-glyph {
+  fill: none;
+  stroke: var(--ds-text-inverse);
+  stroke-width: 3;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.slice-block--ghost .slice-glyph {
+  stroke: var(--slice-color);
+}

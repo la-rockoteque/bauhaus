@@ -1,6 +1,7 @@
 import { DocsContainer } from '@storybook/addon-docs/blocks';
 import { MDXProvider } from '@storybook/addon-docs/mdx-react-shim';
 import type { ComponentProps, ElementType, ReactNode } from 'react';
+import { Link } from '../../components/clickables/link/link';
 import { Text } from '../../primitives/text/text';
 import { TableScroll } from '../doc-page/sections';
 import { ThemeSwitch } from '../theme-switch/theme-switch';
@@ -32,6 +33,8 @@ const H3 = ({ children, id }: Props) => (
 );
 
 const P = ({ children }: Props) => <Text as="p">{children}</Text>;
+const Li = ({ children }: ComponentProps<'li'>) => <Text as="li">{children}</Text>;
+const A = ({ children, href }: ComponentProps<'a'>) => <Link href={href}>{children}</Link>;
 const Table = ({ children }: ComponentProps<'table'>) => (
   <TableScroll label="Table">
     <table className="doc-table">{children}</table>
@@ -45,6 +48,8 @@ export const GUIDE_COMPONENTS = {
   h3: H3,
   h4: H3,
   p: P,
+  li: Li,
+  a: A,
   table: Table,
   pre: Pre,
 };

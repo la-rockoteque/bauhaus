@@ -1,0 +1,46 @@
+/* Storybook's sidebar, in the design system's icons. Storybook draws its own node icon before the label;
+   where the label brings a Bauhaus icon, that one is hidden. */
+
+.sidebar-item:has(.bh-label) svg[type] {
+  display: none;
+}
+
+.sidebar-item:has(.bh-label) > :is(a, button):first-child,
+.sidebar-item:has(.bh-label) > :is(a, button):first-child > div {
+  align-items: center;
+}
+
+.bh-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.bh-label .slice-icon {
+  --slice-icon-size: var(--ds-space-5);
+  margin-inline-start: calc(var(--ds-space-1) * -1);
+}
+
+.bh-label--showcase {
+  --bh-glyph: var(--ds-action-primary);
+}
+
+.bh-label--advisories {
+  --bh-glyph: var(--ds-status-warning);
+}
+
+.bh-label--examples {
+  --bh-glyph: var(--ds-action-secondary);
+}
+
+.bh-label--docs {
+  --bh-glyph: var(--ds-text-muted);
+}
+
+.bh-label .ds-icon {
+  color: var(--bh-glyph);
+}
+
+.sidebar-item[data-selected='true'] .bh-label .ds-icon {
+  color: inherit;
+}

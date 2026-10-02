@@ -13,6 +13,10 @@
     "chroma": {
       "$value": 0.075,
       "$description": "Fixed chroma, so every series has the same semi-muted weight."
+    },
+    "chroma-vivid": {
+      "$value": 0.15,
+      "$description": "Twice the chroma, for a mark that is not data, such as the slice icons in the Storybook sidebar. Never for a chart: series of data keep the semi-muted weight."
     }
   }
 }

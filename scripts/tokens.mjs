@@ -125,7 +125,11 @@ const nestedTokens = (model) => nest(model.tokens.map((t) => [t.path.split('.'),
 export function renderJs(model, { ts = false } = {}) {
   const body = JSON.stringify(nestedTokens(model), null, 2);
   const tail = ts ? ' as const;\n\nexport type Tokens = typeof tokens;\n' : ';\n';
-  return `// ${HEADER}\nexport const tokens = ${body}${tail}`;
+  // What each theme sets, nested like `tokens`, for a reader that cannot read custom properties.
+  const themes = Object.fromEntries(model.themes.map((t) => [t.name, nestedTokens(t)]));
+  const themesTail = ts ? ' as const;\n' : ';\n';
+  const themesPart = model.themes.length ? `\nexport const themes = ${JSON.stringify(themes, null, 2)}${themesTail}` : '';
+  return `// ${HEADER}\nexport const tokens = ${body}${tail}${themesPart}`;
 }
 
 export function renderJson(model) {

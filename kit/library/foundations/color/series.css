@@ -3,3 +3,8 @@
 .ds-series {
   --ds-series-color: oklch(var(--ds-series-lightness) var(--ds-series-chroma) calc(var(--ds-series-hue) + var(--part) * var(--ds-series-step)));
 }
+
+/* The vivid variant: the same hues at series.chroma-vivid, for marks, not data. Add it beside .ds-series. */
+.ds-series--vivid {
+  --ds-series-color: oklch(var(--ds-series-lightness) var(--ds-series-chroma-vivid) calc(var(--ds-series-hue) + var(--part) * var(--ds-series-step)));
+}
