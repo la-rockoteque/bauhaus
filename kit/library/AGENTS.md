@@ -50,7 +50,7 @@ Import from `@bauhaus/design-system`. Never import from a slice folder.
 | `Tooltip` | component | A tooltip is a few words that pop up when you point at a button or tab to it. | - |
 | `VisuallyHidden` | primitive | Some text is for screen readers only, such as 'opens in a new tab' or 'Close' next to an icon. | - |
 
-**Patterns** (a recipe of components, see the manifest `composes` field): `destructive-actions`, `empty-results`, `filtering`, `form-validation`, `messaging`.
+**Patterns** (a recipe of components, see the manifest `composes` field): `destructive-actions`, `empty-results`, `filtering`, `form-validation`, `messaging`, `saving`.
 
 Rules live in each slice as `<name>.rules.ts`. The manifest lists their ids.
 <!-- bauhaus:end -->

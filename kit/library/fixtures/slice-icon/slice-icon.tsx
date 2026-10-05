@@ -101,6 +101,8 @@ export const SLICE_ICONS = {
   Messaging: [b([0, 0, 0], [4, 4, 0.3], grey), b([0.2, 2.6, 0.3], [1.4, 1, 0.3]), b([1.8, 1.4, 0.3], [2, 2.4, 0.9], { shift: 1, glyph: 'bell' })],
   // One item kept, one lifted for deletion, one already gone.
   'Destructive actions': [cube(0, 0, 0, 1.2, grey), b([1.4, 1.4, 0.8], [1.4, 1.4, 0.4], { glyph: 'delete' }), cube(2.8, 2.8, 0, 1.2, ghost)],
+  // A sheet of work and, beside it, the one indicator: saved.
+  Saving: [b([0, 0, 0], [3, 4, 0.3], grey), b([0.4, 0.4, 0.3], [2.2, 3.2, 0.5], { glyph: 'edit' }), cube(3.4, 0, 0, 1, { shift: 1, glyph: 'check' })],
 } as const satisfies Record<string, Shape>;
 
 export type SliceName = keyof typeof SLICE_ICONS;

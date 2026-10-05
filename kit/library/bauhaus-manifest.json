@@ -4060,6 +4060,91 @@
       ]
     },
     {
+      "name": "saving",
+      "export": null,
+      "layer": "pattern",
+      "family": null,
+      "path": "patterns/saving",
+      "summary": "Saving should never be a guess. The page tells you, in one fixed place, whether your work is safe: not yet, in progress, saved, or lost and what to do.",
+      "props": [],
+      "variants": [],
+      "tokens": [],
+      "composes": [
+        "banner",
+        "button",
+        "confirmation-dialog",
+        "icon",
+        "list",
+        "spinner",
+        "stack",
+        "switch",
+        "text",
+        "text-field"
+      ],
+      "rules": [
+        {
+          "id": "saving.no-own-style",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "saving.model-by-dependency",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "saving.one-indicator",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "saving.status-announced",
+          "severity": "HIGH",
+          "verify": "auto"
+        },
+        {
+          "id": "saving.states-in-words",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "saving.failure-retry",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "saving.autosave-timing",
+          "severity": "MEDIUM",
+          "verify": "review"
+        },
+        {
+          "id": "saving.latest-wins",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "saving.manual-guarded",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        },
+        {
+          "id": "saving.draft-on-create",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "saving.warn-on-update",
+          "severity": "HIGH",
+          "verify": "review"
+        },
+        {
+          "id": "saving.beforeunload-only-dirty",
+          "severity": "MEDIUM",
+          "verify": "auto"
+        }
+      ]
+    },
+    {
       "name": "select",
       "export": "Select",
       "layer": "component",
