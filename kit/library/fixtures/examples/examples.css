@@ -1,48 +1,225 @@
-/* The Examples page. A deck: one use case per slide, the code as the main column, the live result beside it, the explanation under them. */
+/* The Examples page: a deck the size of the window. One slide fills it above a bar that never moves. */
 
-.doc-examples code {
+.doc-deck {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  --deck-gutter: max(var(--ds-space-4), min(var(--ds-space-10), 6vw));
+  block-size: 100vh;
+  block-size: 100dvh;
+  background: var(--ds-surface-default);
+  color: var(--ds-text-default);
+  font-family: var(--ds-text-body-family);
+}
+
+.doc-deck code {
   font-family: var(--ds-text-code-family);
   font-size: 0.92em;
 }
 
-.doc-example-setup {
+/* A slide taller than the window scrolls inside the viewport, so the bar stays put. Never sideways. */
+.doc-deck-viewport {
   display: grid;
-  gap: var(--ds-space-3);
-  margin-block-start: var(--ds-space-4);
+  grid-template-columns: minmax(0, 1fr);
+  min-block-size: 0;
+  overflow: hidden auto;
+  container-type: inline-size;
 }
 
-.doc-example-intro,
-.doc-example-explain {
+.doc-slide {
   display: grid;
-  gap: var(--ds-space-1);
+  gap: var(--ds-space-6);
+  align-content: center;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  overflow-wrap: break-word;
+  padding: var(--ds-space-8) var(--deck-gutter);
+}
+
+/* Big titles hyphenate, so a long word fits a phone. Code and prose never do. */
+.doc-slide-name,
+.doc-slide-group,
+.doc-slide-title {
+  hyphens: auto;
+}
+
+.doc-slide-eyebrow {
+  margin: 0;
+  color: var(--ds-text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.doc-slide-points,
+.doc-slide-explain {
+  display: grid;
+  gap: var(--ds-space-2);
   margin: 0;
   padding-inline-start: var(--ds-space-5);
 }
 
-.doc-example-intro {
-  max-inline-size: calc(var(--ds-space-12) * 16);
+/* Title: the name and the import on the left, the intro on the right once there is room. */
+.doc-slide-lead {
+  display: grid;
+  gap: var(--ds-space-4);
+  align-content: start;
+  min-inline-size: 0;
 }
 
-/* The deck. The bar sticks to the top, so Previous and Next stay in reach on a long slide. */
-.doc-deck {
-  display: grid;
-  gap: var(--ds-space-3);
-  margin-block-start: var(--ds-space-5);
+.doc-slide-name {
+  margin: 0;
+  font-size: clamp(var(--ds-text-display-size), 9cqi, calc(var(--ds-text-display-size) * 2.5));
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: 1;
 }
+
+@container (min-inline-size: 60em) {
+  .doc-slide--title {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--ds-space-10);
+  }
+}
+
+/* Group divider: a big number and title, then the use cases it holds. */
+.doc-slide--group {
+  gap: var(--ds-space-3);
+}
+
+.doc-slide-num {
+  margin: 0;
+  color: var(--ds-text-muted);
+  font-size: clamp(var(--ds-text-display-size), 7cqi, calc(var(--ds-text-display-size) * 2));
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.doc-slide-group {
+  margin: 0;
+  font-size: clamp(var(--ds-text-display-size), 9cqi, calc(var(--ds-text-display-size) * 2.5));
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: 1.05;
+}
+
+.doc-slide-kicker {
+  margin: 0;
+  max-inline-size: 60ch;
+  color: var(--ds-text-muted);
+  font-size: var(--ds-text-heading-size);
+}
+
+.doc-slide-agenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+  margin: var(--ds-space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-slide-agenda-item,
+.doc-deck-group {
+  min-block-size: var(--ds-size-target-min);
+  padding-inline: var(--ds-space-3);
+  border: var(--ds-size-border-thin) solid var(--ds-border-default);
+  border-radius: var(--ds-radius-control);
+  background: none;
+  color: var(--ds-text-default);
+  font: inherit;
+  cursor: pointer;
+}
+
+.doc-slide-agenda-item:hover,
+.doc-deck-group:hover {
+  background-image: linear-gradient(var(--ds-state-hover-layer), var(--ds-state-hover-layer));
+}
+
+.doc-slide-agenda-item:focus-visible,
+.doc-deck-group:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+/* Use case: the title across the top, the code and the explanation on the left, the live result on the right. */
+.doc-slide--example {
+  grid-template-areas: "head" "code" "result";
+}
+
+@container (min-inline-size: 50em) {
+  .doc-slide--example:not(.doc-slide--code-only) {
+    grid-template-areas: "head head" "code result";
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+.doc-slide-head {
+  grid-area: head;
+  display: grid;
+  gap: var(--ds-space-2);
+}
+
+.doc-slide-title {
+  margin: 0;
+  font-size: clamp(var(--ds-text-display-size), 5cqi, calc(var(--ds-text-display-size) * 1.5));
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: 1.1;
+}
+
+.doc-slide-when {
+  margin: 0;
+  max-inline-size: 70ch;
+  font-size: var(--ds-text-heading-size);
+}
+
+.doc-slide-code {
+  grid-area: code;
+  display: grid;
+  gap: var(--ds-space-4);
+  align-content: start;
+  min-inline-size: 0;
+}
+
+/* The result sits on the slide itself, centred in its column: no box around it. */
+.doc-slide-result {
+  grid-area: result;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--ds-space-2);
+  margin: 0;
+  min-inline-size: 0;
+}
+
+.doc-slide-result-label {
+  color: var(--ds-text-muted);
+  font-size: var(--ds-text-caption-size);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.doc-slide-result-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: safe center;
+  gap: var(--ds-space-3);
+  min-inline-size: 0;
+}
+
+/* Nothing on a slide scrolls sideways: a wide result shrinks into its column. */
+.doc-slide-result-body > * {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+/* The bar */
 
 .doc-deck-bar {
-  position: sticky;
-  inset-block-start: 0;
-  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ds-space-3);
-  padding: var(--ds-space-2) var(--ds-space-3);
-  border: var(--ds-size-border-thin) solid var(--ds-border-default);
-  border-radius: var(--ds-radius-md);
-  background: var(--ds-surface-default);
+  gap: var(--ds-space-2) var(--ds-space-4);
+  padding: var(--ds-space-2) var(--deck-gutter);
+  border-block-start: var(--ds-size-border-thin) solid var(--ds-border-default);
+  background: var(--ds-surface-sunken);
 }
 
 .doc-deck-groups {
@@ -52,24 +229,10 @@
 }
 
 .doc-deck-group {
-  min-block-size: var(--ds-size-target-min);
   padding-inline: var(--ds-space-2);
-  border: var(--ds-size-border-thin) solid transparent;
-  border-radius: var(--ds-radius-control);
-  background: none;
+  border-color: transparent;
   color: var(--ds-text-muted);
-  font: inherit;
   font-size: var(--ds-text-caption-size);
-  cursor: pointer;
-}
-
-.doc-deck-group:hover {
-  background-image: linear-gradient(var(--ds-state-hover-layer), var(--ds-state-hover-layer));
-}
-
-.doc-deck-group:focus-visible {
-  outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
-  outline-offset: var(--ds-focus-ring-offset);
 }
 
 /* The current group: a border and the default text, not colour alone (WCAG 1.4.1). */
@@ -84,10 +247,12 @@
   font-variant-numeric: tabular-nums;
 }
 
-.doc-deck-controls {
+.doc-deck-controls,
+.doc-deck-steps {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--ds-space-2);
+  gap: var(--ds-space-3);
 }
 
 .doc-deck-count {
@@ -95,70 +260,6 @@
   min-inline-size: calc(var(--ds-space-1) * 14);
   text-align: center;
   font-variant-numeric: tabular-nums;
-}
-
-.doc-example {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--ds-space-5);
-  min-inline-size: 0;
-  container-type: inline-size;
-}
-
-.doc-example-head {
-  display: grid;
-  gap: var(--ds-space-2);
-  max-inline-size: calc(var(--ds-space-12) * 16);
-}
-
-.doc-example-title {
-  margin: 0;
-  font-size: var(--ds-text-display-size);
-  font-weight: var(--ds-font-weight-semibold);
-}
-
-.doc-example-when {
-  margin: 0;
-}
-
-/* Code first and widest; the result sits beside it once the card has room, and under it on a phone. */
-.doc-example-body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--ds-space-4);
-  align-items: start;
-}
-
-@container (min-inline-size: 45em) {
-  .doc-example-body:not(.doc-example-body--code-only) {
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  }
-}
-
-.doc-example-result {
-  display: grid;
-  margin: 0;
-  min-inline-size: 0;
-  border: var(--ds-size-border-thin) dashed var(--ds-border-default);
-  border-radius: var(--ds-radius-md);
-}
-
-.doc-example-result-label {
-  padding: var(--ds-space-1) var(--ds-space-3);
-  border-block-end: var(--ds-size-border-thin) dashed var(--ds-border-default);
-  color: var(--ds-text-muted);
-  font-size: var(--ds-text-caption-size);
-}
-
-.doc-example-stage {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: safe center;
-  gap: var(--ds-space-3);
-  min-inline-size: 0;
-  padding: var(--ds-space-5) var(--ds-space-4);
-  overflow-x: auto;
 }
 
 /* A frame narrows the result to show wrapping. Dashed, so it reads as a measure and not as part of the component. */
@@ -227,12 +328,13 @@
 .doc-code-pre {
   margin: 0;
   padding-block: var(--ds-space-3);
-  overflow-x: auto;
   color: var(--ds-text-default);
   font-family: var(--ds-text-code-family);
   font-size: var(--ds-text-code-size);
   line-height: var(--ds-text-code-line-height);
-  white-space: pre;
+  /* Long lines wrap instead of scrolling sideways; the indent of the line stays. */
+  white-space: break-spaces;
+  overflow-wrap: anywhere;
 }
 
 .doc-code-pre:focus-visible {
@@ -259,6 +361,8 @@
 }
 
 .doc-code-text {
+  flex: 1;
+  min-inline-size: 0;
   padding-inline-end: var(--ds-space-4);
 }
 
