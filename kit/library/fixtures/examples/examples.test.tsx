@@ -88,14 +88,61 @@ describe('ExamplesPage', () => {
       />,
     );
 
-  it('draws one section per group and one card per example, with its code', () => {
+  it('shows one slide at a time, with its group as the section heading and its code', () => {
     page();
-    expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual(['Variants', 'Wiring']);
+    expect(screen.getByRole('region', { name: 'Button examples' }).getAttribute('aria-roledescription')).toBe('carousel');
+    expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual(['Variants']);
+    expect(screen.getByRole('article', { name: '1 of 2' })).toBeTruthy();
     expect(screen.getByRole('heading', { level: 3, name: 'Primary' })).toBeTruthy();
+    expect(screen.queryByRole('heading', { level: 3, name: 'Submit' })).toBeNull();
     expect(codeOf('Primary')).toBe('<Button>Save</Button>');
-    expect(codeOf('Submit')).toBe('const custom = true;');
     expect(codeOf('Import')).toBe("import { Button } from '@bauhaus/design-system';");
     expect(screen.getByRole('button', { name: 'Save' })).toBeTruthy();
+  });
+
+  it('steps with Previous and Next, and stops at both ends', () => {
+    page();
+    const previous = screen.getByRole('button', { name: 'Previous' }) as HTMLButtonElement;
+    const next = screen.getByRole('button', { name: 'Next' }) as HTMLButtonElement;
+    expect(previous.disabled).toBe(true);
+    fireEvent.click(next);
+    expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual(['Wiring']);
+    expect(codeOf('Submit')).toBe('const custom = true;');
+    expect(screen.getByText(/^2 \/ 2/).textContent).toBe('2 / 2: Submit');
+    expect(next.disabled).toBe(true);
+    fireEvent.click(previous);
+    expect(screen.getByRole('heading', { level: 3, name: 'Primary' })).toBeTruthy();
+  });
+
+  it('hands focus to the other button when the focused one reaches an end', () => {
+    page();
+    const next = screen.getByRole('button', { name: 'Next' });
+    next.focus();
+    fireEvent.click(next);
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Previous' }));
+  });
+
+  it('jumps to a group, and marks the current one', () => {
+    page();
+    const wiring = screen.getByRole('button', { name: 'Wiring 1' });
+    expect(wiring.getAttribute('aria-current')).toBeNull();
+    fireEvent.click(wiring);
+    expect(wiring.getAttribute('aria-current')).toBe('true');
+    expect(screen.getByRole('heading', { level: 3, name: 'Submit' })).toBeTruthy();
+  });
+
+  it('moves with the arrow keys, Home and End on its controls only', () => {
+    page();
+    const next = screen.getByRole('button', { name: 'Next' });
+    fireEvent.keyDown(next, { key: 'ArrowRight' });
+    expect(screen.getByRole('heading', { level: 3, name: 'Submit' })).toBeTruthy();
+    fireEvent.keyDown(next, { key: 'Home' });
+    expect(screen.getByRole('heading', { level: 3, name: 'Primary' })).toBeTruthy();
+    fireEvent.keyDown(next, { key: 'End' });
+    expect(screen.getByRole('heading', { level: 3, name: 'Submit' })).toBeTruthy();
+    // A live result keeps its own arrows.
+    fireEvent.keyDown(screen.getByRole('button', { name: 'Send' }), { key: 'ArrowLeft' });
+    expect(screen.getByRole('heading', { level: 3, name: 'Submit' })).toBeTruthy();
   });
 
   it('copies the code and says so', async () => {
