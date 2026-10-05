@@ -9,6 +9,7 @@ import { CSS_PATHS, sourceOf } from './sources';
 const FORM = 'patterns/form-validation/form-validation.stories.tsx';
 const MESSAGING = 'patterns/messaging/messaging.stories.tsx';
 const FILTERING = 'patterns/filtering/filtering.stories.tsx';
+const SAVING = 'patterns/saving/saving.stories.tsx';
 
 const noPatternStyle = (name: string): Check => () => {
   const own = CSS_PATHS.filter((path) => path.startsWith(`patterns/${name}/`));
@@ -78,4 +79,21 @@ export const CHECKS: Readonly<Record<string, Check>> = {
   ),
 
   'destructive-actions.no-own-style': noPatternStyle('destructive-actions'),
+
+  'saving.no-own-style': noPatternStyle('saving'),
+  // The indicator region is always in the page; only its children are conditional.
+  'saving.status-announced': all(
+    sourceMatches(SAVING, /<Stack role="status"/, 'the save indicator is not a status region'),
+    sourceLacks(SAVING, /&& <(?:Stack|Text|div)\b[^>]*role="status"/, 'a recipe mounts its status region together with its text'),
+  ),
+  'saving.manual-guarded': all(
+    sourceMatches(SAVING, /if \(busy\.current\) return/, 'a second Save press is not ignored'),
+    sourceMatches(SAVING, /loading=\{status === 'saving'\}/, 'the Save button does not use loading'),
+    sourceLacks(SAVING, /disabled=\{status === 'saving'/, 'the Save button is disabled while it runs'),
+    sourceMatches('components/clickables/button/button.tsx', /onClick=\{loading \? undefined/, 'Button still passes onClick while loading'),
+  ),
+  'saving.beforeunload-only-dirty': all(
+    sourceMatches(SAVING, /if \(!dirty \|\| left\) return;/, 'the beforeunload listener is added when nothing is unsaved'),
+    sourceMatches(SAVING, /return \(\) => window\.removeEventListener\('beforeunload', warn\)/, 'the beforeunload listener is never removed'),
+  ),
 };

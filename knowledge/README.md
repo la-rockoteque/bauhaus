@@ -57,6 +57,7 @@ Read order for a new task: `taxonomy/layers.md` → the shelf of the layer in qu
 - `patterns/content-writing.md` — UX writing, voice, i18n.
 - `patterns/messaging.md` — which message component: the least disruptive one that does the job.
 - `patterns/destructive-actions.md` — friction scaled to cost: undo, confirm, type the name.
+- `patterns/saving.md` — manual save or autosave, one save indicator, drafts and the leave warning.
 
 ## governance/ — keeping it coherent
 - `governance/page-contract.md` — the six sections every DSM page carries, per layer, and the anti-slop test.

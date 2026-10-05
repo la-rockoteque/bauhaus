@@ -9,7 +9,7 @@ A pattern composes existing components to answer a recurring need. It introduces
 
 ## Loads
 
-- `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/<topic>.md` — the matching shelf: `loading`, `empty-and-error`, `forms`, `data-tables`, `filtering-search`, `navigation`, `dashboards-charts`, `responsive`, `content-writing`, `messaging`, `destructive-actions`.
+- `${CLAUDE_PLUGIN_ROOT}/knowledge/patterns/<topic>.md` — the matching shelf: `loading`, `empty-and-error`, `forms`, `data-tables`, `filtering-search`, `navigation`, `dashboards-charts`, `responsive`, `content-writing`, `messaging`, `destructive-actions`, `saving`.
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/taxonomy/layers.md`, `decision-tree.md`, `misfiles.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/states/lifecycle-states.md`, `state-matrix.md`
 - `${CLAUDE_PLUGIN_ROOT}/knowledge/accessibility/apg-patterns.md`
