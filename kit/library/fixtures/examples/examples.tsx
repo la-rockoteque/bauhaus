@@ -1,16 +1,14 @@
 import type { ReactNode } from 'react';
-import { Text } from '../../primitives/text/text';
-import { Header } from '../doc-page/doc-page';
-import { GuideLink, Section } from '../doc-page/sections';
 import type { DocPageProps } from '../doc-page/types';
-import { CodeBlock } from './code-block';
 import type { CodeLanguage } from './code-block';
-import { toJsx } from './to-jsx';
+import { Deck } from './deck';
+import '../../primitives/visually-hidden/visually-hidden.css';
 import './examples.css';
 
 export type { CodeLanguage } from './code-block';
+export { Prose } from './prose';
 
-/** One use case. The code is the focus: the explanation leads into it, the live result confirms it. */
+/** One use case, one slide. The code is the focus: the live result confirms it, the explanation walks through it. */
 export interface Example {
   title: string;
   /** When a reader picks this use case, in one sentence. */
@@ -33,7 +31,7 @@ export interface Example {
   lang?: CodeLanguage;
 }
 
-/** A section of the page: Variants, States, Composition, In a form… */
+/** A section of the deck: Variants, States, Composition, In a form… It opens on a divider slide. */
 export interface ExampleGroup {
   title: string;
   kicker?: string;
@@ -48,70 +46,10 @@ export interface ExamplesPageProps extends Pick<DocPageProps, 'name' | 'layer' |
   groups: readonly ExampleGroup[];
 }
 
-/** Prose with `code` spans: the backticks become <code>. */
-export function Prose({ text }: { text: string }) {
-  return <>{text.split(/(`[^`]+`)/).map((part, i) => (part.length > 2 && part.startsWith('`') && part.endsWith('`') ? <code key={i}>{part.slice(1, -1)}</code> : part))}</>;
-}
-
-function ExampleCard({ example }: { example: Example }) {
-  const code = example.code ?? (example.render === undefined ? '' : toJsx(example.render));
-  const hasResult = example.render !== undefined;
-  return (
-    <article className="doc-example">
-      <header className="doc-example-head">
-        <Text as="h3" className="doc-example-title">{example.title}</Text>
-        <Text as="p" className="doc-example-when"><Prose text={example.when} /></Text>
-        {example.explain && example.explain.length > 0 && (
-          <ul className="doc-example-explain">
-            {example.explain.map((point, i) => (
-              <Text as="li" variant="caption" key={i}><Prose text={point} /></Text>
-            ))}
-          </ul>
-        )}
-      </header>
-      <div className={hasResult ? 'doc-example-body' : 'doc-example-body doc-example-body--code-only'}>
-        <CodeBlock code={code} lang={example.lang} label={example.title} />
-        {hasResult && (
-          <figure className="doc-example-result">
-            <figcaption className="doc-example-result-label">Result</figcaption>
-            <div className="doc-example-stage">
-              {example.frame ? <div className={`doc-example-frame doc-example-frame--${example.frame}`}>{example.render}</div> : example.render}
-            </div>
-          </figure>
-        )}
-      </div>
-    </article>
-  );
-}
-
-/** The Examples page of a slice: every use case as commented code, its explanation and the live result. Beside the Showcase and the Advisories. */
-export function ExamplesPage({ name, layer, family, imports, intro, groups, guide, guideName }: ExamplesPageProps) {
-  return (
-    <article className="doc doc-examples">
-      <Header name={name} layer={layer} family={family} />
-      <div className="doc-example-setup">
-        <CodeBlock code={imports} lang="ts" label="Import" />
-        {intro && intro.length > 0 && (
-          <ul className="doc-example-intro">
-            {intro.map((point, i) => (
-              <Text as="li" key={i}><Prose text={point} /></Text>
-            ))}
-          </ul>
-        )}
-        <Text variant="caption" tone="muted" as="p">
-          Snippets that hold state use React&apos;s <code>useState</code>. Names such as <code>rows</code> or <code>topics</code> stand for your own data.
-        </Text>
-      </div>
-      {groups.map((group) => (
-        <Section key={group.title} title={group.title} kicker={group.kicker}>
-          <div className="doc-example-list">
-            {group.examples.map((example) => (
-              <ExampleCard key={example.title} example={example} />
-            ))}
-          </div>
-        </Section>
-      ))}
-      <GuideLink guide={guide} guideName={guideName} />
-    </article>
-  );
+/**
+ * The Examples page of a slice: a deck the size of the window. A title slide (the import and the intro), a divider per
+ * group, then one slide per use case with its commented code, the live result and the explanation.
+ */
+export function ExamplesPage(props: ExamplesPageProps) {
+  return <Deck {...props} />;
 }

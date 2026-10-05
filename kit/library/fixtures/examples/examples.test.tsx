@@ -88,20 +88,90 @@ describe('ExamplesPage', () => {
       />,
     );
 
-  it('draws one section per group and one card per example, with its code', () => {
+  /** Slides: 1 title, 2 Variants, 3 Primary, 4 Wiring, 5 Submit. */
+  const next = () => screen.getByRole('button', { name: 'Next' }) as HTMLButtonElement;
+  const previous = () => screen.getByRole('button', { name: 'Previous' }) as HTMLButtonElement;
+  const toSlide = (n: number) => {
+    for (let i = 1; i < n; i += 1) fireEvent.click(next());
+  };
+  const slide = () => screen.getByRole('region', { name: 'Button examples' }).querySelector('[aria-roledescription="slide"]') as HTMLElement;
+
+  it('opens on a title slide with the name, the import and the guide', () => {
     page();
-    expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual(['Variants', 'Wiring']);
-    expect(screen.getByRole('heading', { level: 3, name: 'Primary' })).toBeTruthy();
-    expect(codeOf('Primary')).toBe('<Button>Save</Button>');
-    expect(codeOf('Submit')).toBe('const custom = true;');
+    expect(screen.getByRole('region', { name: 'Button examples' }).getAttribute('aria-roledescription')).toBe('carousel');
+    expect(slide().getAttribute('aria-label')).toBe('1 of 5');
+    expect(screen.getByRole('heading', { level: 1, name: 'Button' })).toBeTruthy();
     expect(codeOf('Import')).toBe("import { Button } from '@bauhaus/design-system';");
+    expect(screen.getByRole('link', { name: 'Button docs page' })).toBeTruthy();
+    expect(previous().disabled).toBe(true);
+  });
+
+  it('opens each group on a divider that lists its use cases', () => {
+    page();
+    toSlide(2);
+    expect(screen.getByRole('heading', { level: 2, name: 'Variants' })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Primary' }));
+    expect(screen.getByRole('heading', { level: 2, name: 'Primary' })).toBeTruthy();
+    expect(slide().getAttribute('aria-label')).toBe('3 of 5');
+  });
+
+  it('shows one use case per slide, with its code and its live result', () => {
+    page();
+    toSlide(3);
+    expect(screen.getByRole('heading', { level: 2, name: 'Primary' })).toBeTruthy();
+    expect(screen.queryByRole('heading', { name: 'Submit' })).toBeNull();
+    expect(codeOf('Primary')).toBe('<Button>Save</Button>');
     expect(screen.getByRole('button', { name: 'Save' })).toBeTruthy();
+    expect(document.querySelector('.doc-deck-count')?.textContent).toBe('3 / 5: Primary');
+  });
+
+  it('stops at the last slide and steps back', () => {
+    page();
+    toSlide(5);
+    expect(codeOf('Submit')).toBe('const custom = true;');
+    expect(next().disabled).toBe(true);
+    fireEvent.click(previous());
+    expect(screen.getByRole('heading', { level: 2, name: 'Wiring' })).toBeTruthy();
+  });
+
+  it('hands focus to the other button when the focused one reaches an end', () => {
+    page();
+    toSlide(4);
+    next().focus();
+    fireEvent.click(next());
+    expect(document.activeElement).toBe(previous());
+  });
+
+  it('jumps to a group from the bar, and marks the current one', () => {
+    page();
+    const wiring = screen.getByRole('button', { name: 'Wiring 1' });
+    expect(wiring.getAttribute('aria-current')).toBeNull();
+    fireEvent.click(wiring);
+    expect(wiring.getAttribute('aria-current')).toBe('true');
+    expect(screen.getByRole('heading', { level: 2, name: 'Wiring' })).toBeTruthy();
+  });
+
+  it('moves with the arrow keys, Home and End from the page, but not from a live result or with a modifier', () => {
+    page();
+    fireEvent.keyDown(document.body, { key: 'End' });
+    expect(slide().getAttribute('aria-label')).toBe('5 of 5');
+    // A live result keeps its own arrows.
+    fireEvent.keyDown(screen.getByRole('button', { name: 'Send' }), { key: 'ArrowLeft' });
+    expect(slide().getAttribute('aria-label')).toBe('5 of 5');
+    // Alt+Left is the browser's Back.
+    fireEvent.keyDown(document.body, { key: 'ArrowLeft', altKey: true });
+    expect(slide().getAttribute('aria-label')).toBe('5 of 5');
+    fireEvent.keyDown(next(), { key: 'ArrowLeft' });
+    expect(slide().getAttribute('aria-label')).toBe('4 of 5');
+    fireEvent.keyDown(document.body, { key: 'Home' });
+    expect(slide().getAttribute('aria-label')).toBe('1 of 5');
   });
 
   it('copies the code and says so', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.assign(navigator, { clipboard: { writeText } });
     page();
+    toSlide(3);
     const copy = screen.getByRole('button', { name: 'Copy code: Primary' });
     fireEvent.click(copy);
     const status = statusOf(copy);
@@ -113,6 +183,7 @@ describe('ExamplesPage', () => {
   it('says when the copy fails', async () => {
     Object.assign(navigator, { clipboard: { writeText: vi.fn().mockRejectedValue(new Error('denied')) } });
     page();
+    toSlide(3);
     const copy = screen.getByRole('button', { name: 'Copy code: Primary' });
     fireEvent.click(copy);
     const status = statusOf(copy);
@@ -124,6 +195,7 @@ describe('ExamplesPage', () => {
     try {
       Object.assign(navigator, { clipboard: { writeText: vi.fn().mockResolvedValue(undefined) } });
       page();
+      toSlide(3);
       const copy = screen.getByRole('button', { name: 'Copy code: Primary' });
       fireEvent.click(copy);
       const status = statusOf(copy);
@@ -147,14 +219,19 @@ describe('ExamplesPage', () => {
         groups={[{ title: 'In CSS', examples: [{ title: 'Padding', when: 'A custom block.', explain: ['Read `--ds-space-4`.'], code: '.card { padding: var(--ds-space-4); }', lang: 'css' }] }]}
       />,
     );
-    expect(screen.getByText('--ds-space-4', { selector: 'li code' })).toBeTruthy();
     expect(screen.getByText('space.0').tagName).toBe('CODE');
+    toSlide(3);
+    expect(screen.getByText('--ds-space-4', { selector: 'li code' })).toBeTruthy();
     expect(screen.queryByText('Result')).toBeNull();
     expect(screen.getByText('CSS')).toBeTruthy();
   });
 
   it('has no axe violations', async () => {
     const { container } = page();
+    await expectNoAxeViolations(container);
+    toSlide(2);
+    await expectNoAxeViolations(container);
+    toSlide(2);
     await expectNoAxeViolations(container);
   });
 });
