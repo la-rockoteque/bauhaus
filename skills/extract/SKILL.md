@@ -32,7 +32,7 @@ Lead agent: `bauhaus:design-system-architect`. Supports: `bauhaus:ui-designer` (
    Ask one `AskUserQuestion` per foundation: 2-4 options, cost stated in uses to snap.
 4. **Name the tokens (phase 4).** Run:
    ```
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/normalise.mjs tokens --foundations .bauhaus/analysis/03-foundations.json --out .bauhaus/analysis/04-tokens
+   node ${CLAUDE_PLUGIN_ROOT}/scripts/normalise.mjs tokens --analysis .bauhaus/analysis
    ```
    Show the primitive token tier and the semantic tier. Colour comes as palette (named hues), colors (role scales) and roles for the light theme. Ask once: accept the set and names, rename first, or drop a family.
 5. **Write the source.** Save the accepted tokens into `<config.tokens.source>`. Do not edit call sites.

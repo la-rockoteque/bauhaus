@@ -10,8 +10,8 @@ The workflow has no state file. `scripts/analyse.mjs status` derives progress fr
 |---|---|---|---|---|---|
 | 1 | Scope | `analyse.mjs init <dir>` | architect | `01-scope.json`, `01-scope.md` | Confirm scope and users |
 | 2 | Values | `extract.mjs <dir> --out .bauhaus/analysis/02-values` | — | `02-values/{inventory,custom-properties,tokens.draft}.json`, `report.md` | — |
-| 3 | Foundations | `foundations.mjs` | ui-designer, motion-designer | `03-foundations.json`, `03-foundations.md` | One question per foundation: accept the inferred scale |
-| 4 | Tokens | `normalise.mjs tokens` | architect, ui-designer | `04-tokens/` (DTCG, tiered; colour as palette, colors and the roles of the light theme), `04-tokens.md` | Accept token set and names |
+| 3 | Foundations | `foundations.mjs` | ui-designer, motion-designer | `03-foundations.json`, `03-foundations.md`; the gate writes `03-foundations.accepted.json` | One question per foundation: accept the inferred scale |
+| 4 | Tokens | `normalise.mjs tokens --analysis .bauhaus/analysis` | architect, ui-designer | `04-tokens/` (DTCG, tiered; colour as palette, colors and the roles of the light theme), `04-tokens.md` | Accept token set and names |
 | 5 | Components | `components.mjs <dir>` | architect, ux-designer | `05-components.json`, `05-components.md` | Accept component candidates and merges |
 | 6 | Patterns | `patterns.mjs` | architect, ux-designer | `06-patterns.json`, `06-patterns.md` | Accept pattern candidates |
 | 7 | Classification | — | architect | `07-classification.md` | — |
@@ -48,6 +48,10 @@ All JSON is UTF-8, 2-space indented, keys in the order shown. File references ar
   "fontFamily": { "values": ["…"] } }
 ```
 `fit` is the share of uses (weighted by count) that land on a step, 0–1.
+
+### `03-foundations.accepted.json`
+
+Same schema as `03-foundations.json`. It holds the scales the user accepted at the phase-3 gate: the inferred steps, a changed set, or the hand-tuned values. The agent writes it after the last foundation question. `normalise.mjs tokens --analysis` and `normalise.mjs plan` read it when it exists, else `03-foundations.json`. An explicit `--foundations <file>` wins over both.
 
 ### `05-components.json`
 ```json
@@ -98,4 +102,5 @@ All JSON is UTF-8, 2-space indented, keys in the order shown. File references ar
 - A component is a component candidate only if it is used in 2 or more folders, is structural, and has one job (`knowledge/governance/contribution.md`).
 - A co-occurrence set is a pattern candidate only if its support is 2 or more.
 - Every merge or snap states its delta: pixels, ΔE, or call sites changed.
+- A foundation token never aliases a theme role. Themes read foundations. `normalise.mjs plan` and `tokens.mjs check` report it as a tier error.
 - Every report carries a `## States` summary and uses the three layers (foundation, component, pattern; tokens are the foundation's stored form).

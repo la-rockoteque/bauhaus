@@ -189,3 +189,67 @@ test('plan bundles low and medium merges into one batch per risk, high merges st
   assert.ok(mergeBatches.some((b) => b.risk === 'low' && b.title.includes('2 ')));
   assert.ok(mergeBatches.some((b) => b.risk === 'high' && b.title.includes('C2')));
 });
+
+// ---------- accepted foundations ----------
+
+const RAW = { ...FOUND, spacing: { base: 2, fit: 0.95, steps: Array.from({ length: 24 }, (_, i) => (i + 1) * 2), outliers: [] } };
+const ACCEPTED = { ...FOUND, spacing: { base: 4, fit: 1, steps: [4, 8, 12, 16, 24, 32, 48, 64], outliers: [] } };
+
+function analysisDir({ accepted = true, tokens } = {}) {
+  const dir = tmp();
+  const write = (name, content) => {
+    fs.mkdirSync(path.dirname(path.join(dir, name)), { recursive: true });
+    fs.writeFileSync(path.join(dir, name), JSON.stringify(content));
+  };
+  write('02-values/inventory.json', { color: [], spacing: [], radius: [], 'font-size': [], duration: [] });
+  write('03-foundations.json', RAW);
+  if (accepted) write('03-foundations.accepted.json', ACCEPTED);
+  write('05-components.json', { components: [], groups: [] });
+  write('06-patterns.json', NO_PATTERNS);
+  for (const [name, tree] of Object.entries(tokens ?? {})) write(`04-tokens/${name}`, tree);
+  return dir;
+}
+const spaceSteps = (dir) => Object.keys(JSON.parse(fs.readFileSync(path.join(dir, '04-tokens', 'primitives.tokens.json'), 'utf8')).space).filter((k) => !k.startsWith('$'));
+
+test('tokens --analysis prefers 03-foundations.accepted.json', () => {
+  const dir = analysisDir();
+  assert.equal(main(['tokens', '--analysis', dir], quiet), 0);
+  assert.deepEqual(spaceSteps(dir), ['1', '2', '3', '4', '6', '8', '12', '16']);
+});
+
+test('tokens --analysis falls back to 03-foundations.json without an accepted file', () => {
+  const dir = analysisDir({ accepted: false });
+  assert.equal(main(['tokens', '--analysis', dir], quiet), 0);
+  assert.equal(spaceSteps(dir).length, 24);
+});
+
+test('tokens: an explicit --foundations wins over the accepted file', () => {
+  const dir = analysisDir();
+  assert.equal(main(['tokens', '--foundations', path.join(dir, '03-foundations.json')], quiet), 0);
+  assert.equal(spaceSteps(dir).length, 24);
+});
+
+test('plan reads the accepted foundations', () => {
+  const dir = analysisDir();
+  assert.equal(main(['tokens', '--analysis', dir], quiet), 0);
+  assert.equal(main(['plan', '--analysis', dir], quiet), 0);
+  assert.match(fs.readFileSync(path.join(dir, '08-plan.md'), 'utf8'), /Spacing base 4px/);
+});
+
+const SPACE = { space: { $type: 'dimension', 1: { $value: '4px' } } };
+const PALETTE = { palette: { $type: 'color', gray: { 900: { $value: '#111111' } } } };
+const LIGHT = { text: { $type: 'color', default: { $value: '{palette.gray.900}' } }, border: { $type: 'color', focus: { $value: '{palette.gray.900}' } } };
+
+test('plan accepts the tiered layout, themes aliasing foundations', () => {
+  const dir = analysisDir({ tokens: { 'foundations/spacing/spacing.tokens.json': SPACE, 'foundations/color/palette.tokens.json': PALETTE, 'themes/light/light.tokens.json': LIGHT } });
+  assert.equal(main(['plan', '--analysis', dir], quiet), 0);
+});
+
+test('plan names a foundation that aliases a theme role as a tier error', () => {
+  const focus = { focus: { ring: { color: { $type: 'color', $value: '{border.focus}' } } } };
+  const dir = analysisDir({ tokens: { 'foundations/focus/focus.tokens.json': focus, 'foundations/color/palette.tokens.json': PALETTE, 'themes/light/light.tokens.json': LIGHT } });
+  const errors = [];
+  assert.equal(main(['plan', '--analysis', dir], { log() {}, error: (e) => errors.push(e) }), 2);
+  assert.match(errors.join('\n'), /focus\.ring\.color aliases the theme role \{border\.focus\}/);
+  assert.doesNotMatch(errors.join('\n'), /dangling|run `normalise\.mjs tokens` again/);
+});

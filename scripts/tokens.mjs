@@ -6,7 +6,7 @@ import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import {
-  deepMerge, dimensionString, durationString, flatten, loadTree, resolveTokens, substituteAliases, validateTokens,
+  deepMerge, dimensionString, durationString, flatten, loadTree, resolveTokens, substituteAliases, tierErrors, validateTokens,
 } from './lib/dtcg.mjs';
 import { FONT_GROUP, GENERIC_FAMILIES, TEXT_GROUP, TYPEFACE_GROUP, ROLES, catalogIds, lastFamily } from './lib/typography.mjs';
 
@@ -214,9 +214,10 @@ export function loadModel(config, root) {
   }
   const sourceTree = loadTree(at(config.tokens.source), { skip: [at(path.join(config.tokens.source, 'themes')), ...themeDirs.map(([, d]) => at(d))] });
   const defaultDir = themeDirs.find(([name]) => name === defaultTheme)?.[1];
-  const baseTree = defaultDir ? deepMerge(sourceTree, loadTree(at(defaultDir))) : sourceTree;
+  const defaultTree = defaultDir ? loadTree(at(defaultDir)) : {};
+  const baseTree = defaultDir ? deepMerge(sourceTree, defaultTree) : sourceTree;
   const base = resolveTokens(flatten(baseTree));
-  const baseErrors = [...base.errors, ...validateTokens(base.tokens)];
+  const baseErrors = [...tierErrors(sourceTree, defaultTree), ...base.errors, ...validateTokens(base.tokens)];
   const themes = themeDirs.map(([name, dir]) => loadTheme(name, at(dir), baseTree, base.tokens, baseErrors, { siblings: defaultDir !== undefined }));
   return {
     model: { tokens: base.tokens, themes: themes.map((t) => t.theme) },

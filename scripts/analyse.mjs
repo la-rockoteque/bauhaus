@@ -80,7 +80,7 @@ const PHASES = (dir, out) => [
   ['Scope', ['01-scope.json'], `node scripts/analyse.mjs init ${dir} --out ${out}`],
   ['Values', ['02-values/inventory.json'], `node scripts/extract.mjs ${dir} --out ${out}/02-values`],
   ['Foundations', ['03-foundations.json'], `node scripts/foundations.mjs --inventory ${out}/02-values/inventory.json --out ${out}`],
-  ['Tokens', tokensState, `node scripts/normalise.mjs tokens --foundations ${out}/03-foundations.json --out ${out}/04-tokens`],
+  ['Tokens', tokensState, `node scripts/normalise.mjs tokens --analysis ${out}`],
   ['Components', ['05-components.json'], `node scripts/components.mjs ${dir} --out ${out}`],
   ['Patterns', ['06-patterns.json'], `node scripts/patterns.mjs --components ${out}/05-components.json ${dir} --out ${out}`],
   ['Classification', ['07-classification.md'], `ask the architect agent to write ${out}/07-classification.md`],

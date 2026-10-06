@@ -38,7 +38,7 @@ sources:
 |---|---|---|---|---|
 | 1 | Scope | none | `01-scope.json` and `01-scope.md` exist. The user confirmed the root folder, the stack and who uses the product. | Confirm scope and users |
 | 2 | Values | foundation (raw) | `02-values/` holds the inventory, the custom properties and the draft tokens. The totals are stated. | none |
-| 3 | Foundations | foundation | `03-foundations.json` and `.md` exist. Every family has an accepted scale or an explicit "hand-tuned". | One question per foundation |
+| 3 | Foundations | foundation | `03-foundations.json` and `.md` exist. Every family has an accepted scale or an explicit "hand-tuned", recorded in `03-foundations.accepted.json`. | One question per foundation |
 | 4 | Tokens | foundation (stored as tokens) | `04-tokens/` builds and passes `tokens.mjs check`. It holds `palette`, `colors` and the roles of each theme (light, dark), plus the other foundations' tokens. Names are accepted. | Accept token set and names |
 | 5 | Components | component | `05-components.json` and `.md` exist. Every group has a keeper or a "keep both" reason. | Accept component candidates and merges |
 | 6 | Patterns | pattern | `06-patterns.json` and `.md` exist. Every accepted candidate names its user need. | Accept pattern candidates |
