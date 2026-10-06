@@ -84,6 +84,34 @@ test('status marks phases done from their artifacts', () => {
   assert.deepEqual(phaseStatus(out).map((p) => p.done), [true, true, true, true, false, false, false, false, false]);
 });
 
+function touch(out, files) {
+  for (const f of files) {
+    fs.mkdirSync(path.dirname(path.join(out, f)), { recursive: true });
+    fs.writeFileSync(path.join(out, f), '{}');
+  }
+}
+
+test('status marks phase 4 done from the tiered library layout', () => {
+  const out = tmp();
+  touch(out, ['01-scope.json', '02-values/inventory.json', '03-foundations.json',
+    '04-tokens/foundations/color/palette.tokens.json', '04-tokens/foundations/color/colors.tokens.json',
+    '04-tokens/foundations/spacing/spacing.tokens.json', '04-tokens/themes/light/light.tokens.json']);
+  const tokens = phaseStatus(out)[3];
+  assert.deepEqual([tokens.name, tokens.done, tokens.state], ['Tokens', true, 'done']);
+});
+
+test('status marks phase 4 partial when only one tier exists, and prints it', () => {
+  const out = tmp();
+  touch(out, ['01-scope.json', '02-values/inventory.json', '03-foundations.json', '04-tokens/foundations/color/palette.tokens.json']);
+  const tokens = phaseStatus(out)[3];
+  assert.deepEqual([tokens.done, tokens.state], [false, 'partial']);
+  assert.equal(phaseStatus(out)[4].state, 'pending');
+  const lines = [];
+  main(['status', '--out', out], { log: (l) => lines.push(l), error() {} });
+  assert.match(lines.join('\n'), /4 Tokens\s+partial/);
+  assert.match(lines.join('\n'), /Next: 4 Tokens/);
+});
+
 test('usage errors exit 2', () => {
   assert.equal(main([], quiet), 2);
   assert.equal(main(['init'], quiet), 2);

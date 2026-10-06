@@ -219,6 +219,26 @@ test('place: a named glyph goes to the iconography foundation, the Icon componen
   assert.equal(to.IconButton, 'components/clickables/icon-button/icon-button.tsx');
 });
 
+test('classify: one primitive word on its own is not high confidence', () => {
+  assert.ok(classify({ name: 'Thumbnails', props: [] }).confidence < 0.9);
+  assert.ok(classify({ name: 'Box', props: [] }).confidence < 0.9);
+  assert.equal(classify({ name: 'IconButton', props: [] }).confidence, 0.9);
+});
+
+test('place: a component deep in a feature folder is unplaced, with a question', () => {
+  const comp = (name, file) => ({ name, file, location: 'shared', usages: 3, usedIn: 2, props: [], framework: 'react' });
+  const { placements } = placeComponents({ components: [
+    comp('Thumbnails', 'src/components/SseForm/fields/rich/Thumbnails.tsx:1'),
+    comp('Box', 'src/components/Box/Box.tsx:1'),
+  ], groups: [] });
+  const by = Object.fromEntries(placements.map((p) => [p.name, p]));
+  assert.deepEqual([by.Thumbnails.to, by.Thumbnails.family], [null, null]);
+  assert.ok(by.Thumbnails.confidence < 0.5);
+  assert.match(by.Thumbnails.question, /SseForm/);
+  assert.match(by.Thumbnails.question, /primitives/);
+  assert.equal(by.Box.to, 'primitives/box/box.tsx', 'a folder named after the component is not a feature folder');
+});
+
 // ---------- colour foundation ----------
 
 function tmpLibrary(files) {

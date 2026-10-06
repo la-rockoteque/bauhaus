@@ -137,6 +137,15 @@ function cycleMessage(loop) {
   return `alias cycle: ${members.join(' <-> ')}`;
 }
 
+/** Foundation tokens that alias a theme role. Themes read foundations, never the reverse. */
+export function tierErrors(foundationTree, themeTree) {
+  const foundations = flatten(foundationTree);
+  const own = new Set(foundations.map((t) => t.path));
+  const roles = new Set(flatten(themeTree).map((t) => t.path));
+  return foundations.flatMap((t) => findAliases(t.$value).filter((ref) => !own.has(ref) && roles.has(ref)).map((ref) =>
+    `tier error: foundation token ${t.path} aliases the theme role {${ref}}; a foundation never reads a theme. Alias a palette or colors token, or move ${t.path} into the theme`));
+}
+
 // ---------- validation ----------
 
 const HEX = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;

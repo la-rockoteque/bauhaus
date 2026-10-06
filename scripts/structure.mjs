@@ -9,13 +9,13 @@
 //   - imports are found by regex: an import built at runtime, or inside a template string, is missed;
 //   - an app path alias is only recognised as `@/`, `~/` or `src/`;
 //   - dot-folders (.storybook, .git) are skipped by the slice checks; only `storybook.literal` reads .storybook;
-//   - `place` reads the name and props only: two components with one name get the same target.
+//   - `place` reads the name, the props and the folder only: two components with one name get the same target.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { cleanSource } from './extract.mjs';
-import { UsageError, readJson, requireDir, run, runIfMain, table, writeArtifact } from './lib/analysis.mjs';
+import { UsageError, readJson, requireDir, round, run, runIfMain, table, writeArtifact } from './lib/analysis.mjs';
 import { FONT_GROUP, FONT_SCALES, TYPEFACE_GROUP } from './lib/typography.mjs';
 
 const USAGE_TEXT = `Usage: structure.mjs check <package-dir> [--json]
@@ -317,6 +317,12 @@ const PHRASES = [['menu-item', 'clickables'], ['link-list', 'navigation'], ['vis
 const FAMILY_OF = new Map(Object.entries(FAMILY_WORDS).flatMap(([fam, words]) => words.split(' ').map((w) => [w, fam])));
 const PAGE_FILE = /(^|\/)(pages?|views?|routes?|screens?)\//i;
 const PAGE_NAME = /(Page|Screen)$/;
+// A primitive word (thumbnail, image, text) also names many feature components, so it alone stays medium.
+const PRIMITIVE_WORD_MAX = 0.6;
+const FEATURE_PENALTY = 0.3;
+const PLACE_MIN = 0.5;
+const FEATURE_DIR = /^(features?|modules?|domains?)$/i;
+const PASCAL_DIR = /^[A-Z][A-Za-z0-9]*$/;
 
 const lookup = (word) => FAMILY_OF.get(ALIASES[word] ?? word) ?? FAMILY_OF.get(word.replace(/s$/, ''));
 
@@ -334,7 +340,10 @@ export function classify({ name, props = [] }) {
   if (phrase) return { family: phrase[1], confidence: 0.9, reason: `name phrase "${phrase[0]}"` };
   for (let i = words.length - 1; i >= 0; i--) {
     const family = lookup(words[i]);
-    if (family) return { family, confidence: i === words.length - 1 ? 0.9 : 0.6, reason: `name word "${words[i]}"` };
+    if (family) {
+      const confidence = Math.min(i === words.length - 1 ? 0.9 : 0.6, family === 'primitives' ? PRIMITIVE_WORD_MAX : 1);
+      return { family, confidence, reason: `name word "${words[i]}"` };
+    }
   }
   const hint = propHint(props);
   if (hint) return { family: hint, confidence: 0.4, reason: `props: ${props.slice(0, 4).join(', ')}` };
@@ -349,25 +358,45 @@ function keeperNames(components, groups) {
   return new Set((groups ?? []).map((g) => [...g.members].sort((a, b) => usages(b) - usages(a))[0]));
 }
 
-/** Propose a slice for each shared component and each group keeper. Pages and other local components are skipped. */
+/** The feature folder a file sits in: the child of a features/ folder, or a PascalCase folder not named after the component. */
+function featureFolder(file, name) {
+  const dirs = file.split('/').slice(0, -1);
+  const i = dirs.findIndex((d) => FEATURE_DIR.test(d));
+  return i >= 0 && dirs[i + 1] ? dirs[i + 1] : dirs.find((d) => PASCAL_DIR.test(d) && d !== name);
+}
+
+function unplaced(c, from, guess, confidence, feature) {
+  const where = feature ? ` It sits in the feature folder ${feature}.` : '';
+  const question = guess.family
+    ? `Is ${c.name} a library ${guess.family} slice (${guess.reason})?${where} Place it, rename its family, or keep it in the app.`
+    : `Where does ${c.name} go? Its name and props match no family.${where}`;
+  return { name: c.name, from, to: null, family: null, confidence, reason: guess.reason, question };
+}
+
+/** Propose a slice for each shared component and each group keeper. Pages and other local components are skipped. Low confidence leaves it unplaced, with a question. */
 export function placeComponents({ components, groups }) {
   const keepers = keeperNames(components, groups);
   const chosen = components.filter((c) => (c.location === 'shared' || keepers.has(c.name)) && !PAGE_FILE.test(c.file) && !PAGE_NAME.test(c.name));
   const placements = chosen.map((c) => {
-    const { family, confidence, reason } = classify(c);
+    const guess = classify(c);
+    const { family, reason } = guess;
+    const from = c.file.replace(/:\d+$/, '');
+    const feature = featureFolder(from, c.name);
+    const confidence = feature ? round(Math.max(0, guess.confidence - FEATURE_PENALTY), 1) : guess.confidence;
     const slug = kebab(c.name);
     const ext = EXT_OF[c.framework] ?? 'tsx';
     // A named glyph (GearIcon) is an asset of the iconography foundation; only Icon itself is a primitive.
-    if (GLYPH.test(c.name)) return { name: c.name, from: c.file.replace(/:\d+$/, ''), to: `foundations/iconography/${slug}.${ext}`, family: 'iconography', confidence: 0.9, reason: 'named glyph' };
+    if (GLYPH.test(c.name)) return { name: c.name, from, to: `foundations/iconography/${slug}.${ext}`, family: 'iconography', confidence: 0.9, reason: 'named glyph' };
+    if (!family || confidence < PLACE_MIN) return unplaced(c, from, guess, confidence, feature);
     const dir = family === 'primitives' ? `primitives/${slug}` : `components/${family}/${slug}`;
-    return { name: c.name, from: c.file.replace(/:\d+$/, ''), to: family ? `${dir}/${slug}.${ext}` : null, family, confidence, reason };
+    return { name: c.name, from, to: `${dir}/${slug}.${ext}`, family, confidence, reason };
   });
   return { placements };
 }
 
 function renderPlacements({ placements }) {
   const groups = Map.groupBy(placements, (p) => p.family ?? 'unplaced');
-  const sections = [...groups].map(([family, list]) => `### ${family} (${list.length})\n\n${table(['Component', 'From', 'To', 'Confidence', 'Reason'], list.map((p) => [p.name, p.from, p.to ?? '-', p.confidence, p.reason]))}`);
+  const sections = [...groups].map(([family, list]) => `### ${family} (${list.length})\n\n${table(['Component', 'From', 'To', 'Confidence', 'Reason'], list.map((p) => [p.name, p.from, p.to ?? '-', p.confidence, p.question ?? p.reason]))}`);
   return `${placements.length} placements\n\n${sections.join('\n\n')}`;
 }
 

@@ -62,7 +62,7 @@ Propose a slice path for every component found by the analyser.
 
 1. Require `.bauhaus/analysis/05-components.json`. Missing: run `/bauhaus:analyse` through phase 5 first.
 2. Run: `node ${CLAUDE_PLUGIN_ROOT}/scripts/structure.mjs place --components .bauhaus/analysis/05-components.json`
-3. Show the proposal grouped by family: component, proposed path, primitive or component, reason.
+3. Show the proposal grouped by family: component, proposed path, primitive or component, reason. A component with low confidence (one primitive word, a feature folder, a props hint only) is `unplaced` with a `question`: ask it, never guess a slice.
 4. Confirm the families with `AskUserQuestion`: one question per doubtful family (a family needs 2 members; a lone member sits in the closest one). Options: accept, rename, merge into another family.
 5. Save the confirmed map to `.bauhaus/analysis/library-placement.json`. Write no source.
 

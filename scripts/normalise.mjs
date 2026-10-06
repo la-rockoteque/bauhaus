@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// normalise.mjs tokens --foundations <03-foundations.json> [--inventory <inventory.json>] [--out <04-tokens dir>]
-// normalise.mjs plan --analysis <dir>
+// normalise.mjs tokens --analysis <dir> | --foundations <03-foundations.json> [--inventory <inventory.json>] [--out <04-tokens dir>]
+// normalise.mjs plan --analysis <dir> [--foundations <file>]
+// With --analysis, both read 03-foundations.accepted.json (the phase-3 gate's decisions) when it exists, else 03-foundations.json.
 // `tokens` turns the inferred scales into tiered DTCG (primitives, then semantic aliases) and checks it.
 // `plan` maps every literal, component group and pattern to an action and orders them into batches.
 //
@@ -19,13 +20,17 @@ import { luminance } from './contrast.mjs';
 import { isPageSpecific, isComponentCandidate } from './components.mjs';
 import { deltaE76, opaque } from './lib/color.mjs';
 import { UsageError, readJson, round, run, runIfMain, sum, table, uniq, writeArtifact } from './lib/analysis.mjs';
-import { flatten, loadTokens } from './lib/dtcg.mjs';
+import { flatten, loadTokens, loadTree, tierErrors } from './lib/dtcg.mjs';
 
-const USAGE_TEXT = 'Usage: normalise.mjs tokens --foundations <03-foundations.json> [--inventory <inventory.json>] [--out <dir>]\n       normalise.mjs plan --analysis <dir>';
+const USAGE_TEXT = 'Usage: normalise.mjs tokens --analysis <dir> | --foundations <03-foundations.json> [--inventory <inventory.json>] [--out <dir>]\n       normalise.mjs plan --analysis <dir> [--foundations <file>]';
 const FULL_RADIUS = 999;
 const SNAP_MAX_LENGTH = 8;
 const SNAP_MAX_COLOR = 10;
 const MIN_USES_NOTE = 2; // buildDraft wants a count; the notes it writes are stripped
+const ACCEPTED_FOUNDATIONS = '03-foundations.accepted.json';
+
+/** The scales the user accepted at the phase-3 gate when that file exists, else the inferred ones. */
+const foundationsIn = (dir) => (fs.existsSync(path.join(dir, ACCEPTED_FOUNDATIONS)) ? path.join(dir, ACCEPTED_FOUNDATIONS) : path.join(dir, '03-foundations.json'));
 
 // ---------- primitives ----------
 
@@ -148,9 +153,10 @@ function renderTokensMd(primitives, semantic, errors) {
 }
 
 function tokensCommand(opts, io) {
-  if (!opts.foundations) throw new UsageError('--foundations is required');
-  const foundations = readJson(opts.foundations);
-  const home = path.dirname(path.resolve(opts.foundations));
+  const file = opts.foundations ?? (opts.analysis && foundationsIn(opts.analysis));
+  if (!file) throw new UsageError('--analysis or --foundations is required');
+  const foundations = readJson(file);
+  const home = path.dirname(path.resolve(file));
   const inventoryFile = opts.inventory ?? path.join(home, '02-values', 'inventory.json');
   const inventory = fs.existsSync(inventoryFile) ? readJson(inventoryFile) : { color: [] };
   const out = opts.out ?? path.join(home, '04-tokens');
@@ -334,10 +340,13 @@ function planCommand(opts, io) {
   if (!opts.analysis) throw new UsageError('--analysis is required');
   const dir = opts.analysis;
   const inventory = readJson(path.join(dir, '02-values', 'inventory.json'));
-  const foundations = readJson(path.join(dir, '03-foundations.json'));
+  const foundations = readJson(opts.foundations ?? foundationsIn(dir));
   const tokenDir = path.join(dir, '04-tokens');
   if (!fs.existsSync(tokenDir)) throw new UsageError(`no such folder: ${tokenDir}`);
   const { tokens, errors } = loadTokens(tokenDir);
+  const themesDir = path.join(tokenDir, 'themes');
+  const tier = fs.existsSync(themesDir) ? tierErrors(loadTree(tokenDir), loadTree(themesDir)) : [];
+  if (tier.length) throw new Error(`${tokenDir}: ${tier.join('\n')}`);
   if (errors.length) throw new Error(`${tokenDir} has ${errors.length} validation errors; run \`normalise.mjs tokens\` again`);
   const components = readJson(path.join(dir, '05-components.json'));
   const patterns = readJson(path.join(dir, '06-patterns.json'));

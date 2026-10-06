@@ -263,6 +263,13 @@ test('defaultTheme must be a key of tokens.themes', () => {
   assert.match(buildOutputs(config, root).errors.join('\n'), /defaultTheme "sepia" is not a theme \(light, dark\)/);
 });
 
+test('defaultTheme: a foundation that aliases a theme role is a tier error, as in normalise.mjs plan', () => {
+  const { root, config, write } = siblingProject();
+  write('tokens/focus.tokens.json', { focus: { ring: { $type: 'color', $value: '{text.default}' } } });
+  assert.match(buildOutputs(config, root).errors.join('\n'), /tier error: foundation token focus\.ring aliases the theme role \{text\.default\}/);
+  assert.equal(main(['check', '--config', path.join(root, 'bauhaus.config.json')], quiet), 1);
+});
+
 test('parity: a role missing from a theme is an error', () => {
   const { root, config } = siblingProject({ dark: { text: role(100, 900).text } });
   const errors = buildOutputs(config, root).errors;

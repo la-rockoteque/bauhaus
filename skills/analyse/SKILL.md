@@ -45,7 +45,7 @@ In plain words: a builder inherits a house with no plans. She measures every wal
    ```
    node ${CLAUDE_PLUGIN_ROOT}/scripts/analyse.mjs status
    ```
-   It lists each phase as `done`, `partial` or `missing`, from the artifacts on disk. There is no state file.
+   It lists each phase as `done`, `partial` or `pending`, from the artifacts on disk. Phase 4 is `done` with a `*.tokens.json` under both `04-tokens/foundations/` and `04-tokens/themes/` (or the older flat `04-tokens/primitives.tokens.json`), and `partial` with only one of them. There is no state file.
 3. `status` option: print the list and stop.
 4. Otherwise resume at the first phase that is not `done`. Read the `.md` reports of the earlier phases, including `## Decisions`. Do not ask an answered question again.
 5. If the repo changed since the artifacts were written, say so. Offer to redo from the earliest affected phase.
@@ -76,14 +76,15 @@ In plain words: a builder inherits a house with no plans. She measures every wal
 - **Command:** `node ${CLAUDE_PLUGIN_ROOT}/scripts/foundations.mjs --inventory .bauhaus/analysis/02-values/inventory.json --out .bauhaus/analysis`
 - **Agents, in parallel:** `bauhaus:ui-designer` judges colour, type, spacing, radius, shadow, z-index and breakpoints. `bauhaus:motion-designer` judges duration and easing. Each reads `03-foundations.json` and proposes a scale, or says "no scale found". They judge fit, outliers and overrides (a heavy off-scale value is a decision).
 - **Knowledge:** `analysis/scale-inference.md`, `foundations/<family>.md` for each family.
-- **Writes:** `03-foundations.json`, `03-foundations.md`.
+- **Writes:** `03-foundations.json`, `03-foundations.md`. After the gate: `03-foundations.accepted.json`.
 - **Gate, one per foundation:** "Spacing runs on a 4px grid, 91% fit. Adopt it?" Options: adopt as inferred; adopt with a change (name it); keep the code's hand-tuned values. State the cost in uses to snap.
+- **After the last gate:** write `03-foundations.accepted.json`, same schema as `03-foundations.json`, with the accepted steps of each foundation. Phase 4 builds tokens from this file, not from the raw inference.
 - **Say:** "Your spacing mostly follows a 4px grid. I found 3 values that do not fit."
 
 ### 4. Tokens
 
 - **Goal:** write the accepted foundation decisions as DTCG tokens: scale steps and intents. Colour is emitted as three parts: `palette.tokens.json` (named hues with grades, primitive), `colors.tokens.json` (primary, secondary, error, success, warning, info, neutral, aliasing the palette) and the roles of `themes/light` (the default). `themes/dark` follows in phase 9 as a sibling, with the same role names.
-- **Command:** `node ${CLAUDE_PLUGIN_ROOT}/scripts/normalise.mjs tokens --foundations .bauhaus/analysis/03-foundations.json --out .bauhaus/analysis/04-tokens`
+- **Command:** `node ${CLAUDE_PLUGIN_ROOT}/scripts/normalise.mjs tokens --analysis .bauhaus/analysis`. It reads `03-foundations.accepted.json`, or `03-foundations.json` when no gate wrote one.
 - **Agents:** `bauhaus:design-system-architect` checks tiers and names. `bauhaus:ui-designer` checks values and contrast pairs.
 - **Knowledge:** `tokens/architecture.md`, `tokens/naming.md`, `analysis/scale-inference.md` § Colour.
 - **Writes:** `04-tokens/` (tiered DTCG: `foundations/color/palette.tokens.json`, `colors.tokens.json`, `themes/light/light.tokens.json`, and the other foundations' files), `04-tokens.md`. Validate the draft with `node ${CLAUDE_PLUGIN_ROOT}/scripts/tokens.mjs check`.

@@ -64,7 +64,7 @@ node scripts/tokens.mjs check            # validate, lint names, detect drift
 node scripts/analyse.mjs init src/       # scope the repo; `status` shows analysis progress
 node scripts/extract.mjs src/            # inventory literal values, draft tokens
 node scripts/foundations.mjs --inventory <file> --out <dir>   # infer scales from the inventory
-node scripts/normalise.mjs tokens --foundations <file> --out <dir>   # draft tiered tokens
+node scripts/normalise.mjs tokens --analysis <dir>                   # draft tiered tokens from the accepted foundations
 node scripts/components.mjs src/ --out <dir>   # list components, usages, near-duplicates
 node scripts/patterns.mjs --components <file> src/ --out <dir>   # co-occurrence and signals
 node scripts/normalise.mjs plan --analysis <dir>   # actions and batches
