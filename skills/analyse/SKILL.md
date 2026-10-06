@@ -45,7 +45,7 @@ In plain words: a builder inherits a house with no plans. She measures every wal
    ```
    node ${CLAUDE_PLUGIN_ROOT}/scripts/analyse.mjs status
    ```
-   It lists each phase as `done`, `partial` or `missing`, from the artifacts on disk. There is no state file.
+   It lists each phase as `done`, `partial` or `pending`, from the artifacts on disk. Phase 4 is `done` with a `*.tokens.json` under both `04-tokens/foundations/` and `04-tokens/themes/` (or the older flat `04-tokens/primitives.tokens.json`), and `partial` with only one of them. There is no state file.
 3. `status` option: print the list and stop.
 4. Otherwise resume at the first phase that is not `done`. Read the `.md` reports of the earlier phases, including `## Decisions`. Do not ask an answered question again.
 5. If the repo changed since the artifacts were written, say so. Offer to redo from the earliest affected phase.
