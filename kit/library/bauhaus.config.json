@@ -1,5 +1,5 @@
 {
-  "$schema": "https://git.nexapptech.com/vbernier/bauhaus/bauhaus.config.schema.json",
+  "$schema": "https://raw.githubusercontent.com/la-rockoteque/bauhaus/main/bauhaus.config.schema.json",
   "name": "Bauhaus Design System",
   "prefix": "ds",
   "tokens": {

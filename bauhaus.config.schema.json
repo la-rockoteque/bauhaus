@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://git.nexapptech.com/vbernier/bauhaus/bauhaus.config.schema.json",
+  "$id": "https://raw.githubusercontent.com/la-rockoteque/bauhaus/main/bauhaus.config.schema.json",
   "title": "Bauhaus project config",
   "description": "bauhaus.config.json at the project root. Tells Bauhaus agents and skills where each design-system artifact lives. Every path is relative to the project root.",
   "type": "object",
