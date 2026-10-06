@@ -18,7 +18,7 @@ The name comes from the Bauhaus school (Weimar 1919, Dessau 1925, Berlin 1932–
 ## Install
 
 ```bash
-claude plugin marketplace add git@git.nexapptech.com:vbernier/bauhaus.git
+claude plugin marketplace add https://github.com/la-rockoteque/bauhaus.git
 claude plugin install bauhaus@bauhaus
 ```
 
